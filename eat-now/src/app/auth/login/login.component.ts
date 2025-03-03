@@ -13,6 +13,7 @@ export class LoginComponent {
   hidePwd = true;
   localLogin(username: string, password: string) {
     this.inProgressBar = true;
+    debugger
     if (username == 'sadmin' && password == 'Password@123') {
       sessionStorage.setItem('tempToken', 'tou123');
       // this.postService.openSnackBar('Logged In  Successfully', 'SUCCESS');
