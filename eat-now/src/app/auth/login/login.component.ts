@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -6,11 +7,26 @@ import { Component } from '@angular/core';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  constructor(private router: Router){  } 
   loginObj = new Login();
   inProgressBar = false;
   hidePwd = true;
-  login(username: string, password: string) {
+  localLogin(username: string, password: string) {
     this.inProgressBar = true;
+    if (username == 'sadmin' && password == 'Password@123') {
+      sessionStorage.setItem('tempToken', 'tou123');
+      // this.postService.openSnackBar('Logged In  Successfully', 'SUCCESS');
+      this.router.navigate(['/Home']);
+    } else {
+      this.inProgressBar = false;
+      // this.reqFS = true;
+    }
+  }
+  login(username: string, password: string) {
+    if (username === 'sadmin') {
+      this.localLogin(username, password);
+    }
+    
   }
   forgotpass(){
 

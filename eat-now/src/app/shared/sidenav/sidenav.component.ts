@@ -34,7 +34,7 @@ export class SidenavComponent {
 
   /* Logs the user out of the application.*/
   logout() {
-    sessionStorage.clear();
+    // sessionStorage.clear();
     this.router.navigate(['/']);
     // this.idleService.disableIdleDetection();
   }
