@@ -1,1 +1,67 @@
-<p>login works!</p>
+
+<!-- loading layout replaced by app after startupp -->
+<!-- <div class="app-loading" *ngIf="showSplash">
+    <div class="logo">
+        <img src="../../../assets/images/tou-logo.svg" alt="Logo">
+    </div>
+    <img src="../../../assets/images/fade-stagger-circles.svg" alt="" class="loader-circle">
+</div> -->
+<div class="auth-c">
+    <div class="row panel" style="height: 100vh;">
+
+        <div class="col-xl-6 col-xxl-7 leftPanel">
+            <!-- <div class="logo-img d-block px-4 py-3 w-100">
+                <img loading="lazy" src="../../../assets/images/tou-logo.svg" height="30" alt="Logo">
+            </div> -->
+            <!-- <div class="d-none d-xl-flex align-items-center justify-content-center h-n80">
+                <img src="../../../assets/images/login-security.svg" alt="modernize-img" class="img-fluid" width="500">
+            </div> -->
+        </div>
+        <div class="col-xl-6 col-xxl-5 rightPanel">
+            <div class="min-vh-100 row justify-content-center align-items-center px-4" style="height: 100vh;">
+                <div class="auth-max-width col-sm-8 col-md-6 col-xl-7">
+                    <h6 class="mb-1">Welcome to Issuing Platform</h6>
+                    <p class="mb-5">Your <span class="q4">Admin Dashboard</span></p>
+                    <form name="loginForm" #loginForm="ngForm" novalidate>
+                        <mat-label class="form-label">User name</mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input matInput name="uid" #uid="ngModel" [(ngModel)]="loginObj.userName" required
+                                autocomplete="off">
+                            <mat-error *ngIf="uid.errors?.required">User name is required</mat-error>
+                        </mat-form-field>
+                        <mat-label class="form-label">Password</mat-label>
+                        <mat-form-field appearance="outline" class="w-100 mb-2">
+                            <input matInput name="password" #password="ngModel" [(ngModel)]="loginObj.password"
+                                [type]="hidePwd ? 'password' : 'text'" required (keypress)="onKeyPress($event)"
+                                (keyup.enter)="login(uid.value,password.value)" autocomplete="off">
+                            <mat-icon matSuffix (click)="hidePwd = !hidePwd" style="cursor: pointer;"
+                                class="material-symbols-outlined" color="primary">
+                                {{hidePwd ? 'visibility_off' : 'visibility'}}
+                            </mat-icon>
+                            <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
+                        </mat-form-field>
+                        <button mat-flat-button color="accent" name="loginBtn" [disabled]="inProgressBar"
+                            class="w-100 mb-4" (click)="login(uid.value,password.value)"><span
+                                style="display: inline-flex;">{{inProgressBar ?
+                                'Please wait' : 'Sign In'
+                                }}&nbsp;&nbsp;
+                                <mat-spinner diameter="24" *ngIf="inProgressBar"></mat-spinner></span>
+                        </button>
+                        <div class="d-flex justify-content-center align-items-center mb-2">
+                            <p class="m-0">Forgot Password</p>
+                            <a mat-button name="forgotBtn" (click)="forgotpass()" color="primary">Click here</a>
+                        </div>
+                    </form>
+                    <!-- <div class="text-center mt-4" *ngIf="reqFS">
+                        <app-tou-alerts alertType="ERROR" heading="Error" message="{{errMsg}}"></app-tou-alerts>
+                    </div> -->
+                </div>
+            </div>
+            <!-- <div class="d-flex flex-row align-items-center text-center mt-5 poweredBy">
+                <p class="f-10-r">Copyright &copy; 2024. All rights reserved </p>
+                <img src="{{powdbyLogo}}">
+            </div> -->
+        </div>
+
+    </div>
+</div>

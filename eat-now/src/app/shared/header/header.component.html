@@ -1,1 +1,96 @@
-<p>header works!</p>
+
+<mat-toolbar class="primary-header"
+  [ngStyle]="{'width':postService.isCollapsed ? 'calc(100% - 270px)' : 'calc(100% - 100px)' }">
+
+  <button mat-icon-button color="accent" class="me-2" (click)="toggleSideNav()"><mat-icon>menu</mat-icon></button>
+  <span class="tou-spacer"></span>
+  <!-- <button mat-icon-button [matMenuTriggerFor]="notif" class="me-3 notifClass" color="accent" >
+    <mat-icon class="material-symbols-outlined"  matBadge="{{noOfNotifications}}">notifications</mat-icon>
+</button>
+  <mat-menu #notif="matMenu" xPosition="before" yPosition="above" class="menuArea" >
+    <p class="f-20-m m-2">Notifications</p>
+    <mat-divider></mat-divider>
+    <div
+      class="m-3 notifyClass" 
+      *ngFor="let notify of notifyList" 
+      [class.hovered]="isHovered === notify" 
+      (mouseover)="isHovered = notify" 
+      (mouseleave)="isHovered = null"
+    >
+      <p class="f-16-m mb-2">{{notify.title}}</p>
+      <p class="f-12-r-07">{{notify.subtitle}}</p>
+      <p class="f-12-r-07">{{notify.text}}</p>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="m-2" *ngIf="clear">
+      <button mat-button color="accent" class="w-100" (click)="clearNotifyList()">Clear all</button>
+    </div>
+  </mat-menu>   -->
+
+
+
+
+
+
+  <!-- <button [matMenuTriggerFor]="profile" class="menuProfile" color="primary">
+    <div class="d-flex flex-row align-items-center">
+      <div class="userLetter f-14-m">{{(userName | titlecase) | slice:0:1}}</div>
+      <p class="f-14-m m-0 ps-3">{{userName | titlecase}}</p>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </div>
+  </button> -->
+  <button [matMenuTriggerFor]="profile" class="menuProfile" color="primary">
+    <img src="../../assets/images/user-1.jpg" width="40" height="40" alt="user-img">
+  </button>
+  <mat-menu #profile="matMenu" xPosition="before" yPosition="above" class="menuArea">
+    <div class="m-4">
+      <p class="f-20-r mb-4">User Profile</p>
+      <div class="d-flex flex-row align-items-center">
+        <div class="flex-column">
+          <!-- <div class="userLetter cf"><span>{{(userName | titlecase) | slice:0:1}}</span></div> -->
+          <img src="../../assets/images/user-1.jpg" width="80" height="80" alt="user-img" s>
+        </div>
+        <div class="flex-column ms-3">
+          <p class="f-16-m m-0 mb-2"> {{userName | titlecase}}</p>
+          <p class="f-14-r d-flex align-items-center opc"><mat-icon
+              class="material-symbols-outlined ">email</mat-icon>&nbsp;{{loggedInUser}}</p>
+        </div>
+      </div>
+
+      <mat-divider class="my-4"></mat-divider>
+      <div class="links d-flex align-items-center p-3">
+        <span class="d-flex align-items-center justify-content-center ptext">
+          <mat-icon class="material-symbols-outlined" color="primary">account_circle</mat-icon>
+        </span>
+        <div class="d-flex flex-column ms-4">
+          <p class="f-16-r pb-1 hightlight">My Profile</p>
+          <p class="f-12-r-07">Account Settings</p>
+        </div>
+      </div>
+
+      <div class="links d-flex align-items-center p-3 mb-2" (click)="psdChange()">
+        <span class="d-flex align-items-center justify-content-center ptext">
+          <mat-icon class="material-symbols-outlined" color="primary">change_circle</mat-icon>
+        </span>
+        <div class="d-flex flex-column ms-4">
+          <p class="f-16-r pb-1 hightlight">Change Password</p>
+          <p class="f-12-r-07">Manage your password</p>
+        </div> 
+      </div>
+
+      <button mat-stroked-button color="accent" (click)="logout()" class="mt-3 mb-2 w-100">Log Out</button>
+
+      <!-- <div class="m-4" style="text-align: center;">
+        <div class="userLetter f-14-m mb-3"><span>{{(userName | titlecase) | slice:0:1}}</span></div>
+        <p class="f-14-m m-0 mb-2"> {{userName | titlecase}}</p>
+        <p class="f-12-r-07 m-0 mb-4">{{loggedInUser}}</p>
+        <button mat-button color="accent" class="mb-2" (click)="psdChange()"><mat-icon
+            class="material-symbols-outlined">passkey</mat-icon><span>Change Password</span>
+        </button>
+        <button mat-stroked-button color="accent" (click)="logout()"><mat-icon
+            class="material-symbols-outlined">logout</mat-icon><span>Logout</span>
+        </button>
+      </div> -->
+    </div>
+  </mat-menu>
+</mat-toolbar>

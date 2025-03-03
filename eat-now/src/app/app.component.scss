@@ -1,0 +1,39 @@
+.show-scroll {
+    overflow: auto !important;
+    min-width: 1200px;
+    height: 100%;
+  }
+  
+  .show-scroll .mat-drawer-container {
+    height: 100%;
+  }
+  
+  .gap {
+    height: 64px;
+    width: 100%;
+  }
+  
+  .show-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .show-scroll {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+  
+  .expanded {
+    width: 270px;
+  }
+  
+  .collapsed {
+    width: 100px;
+  }
+  .mat-drawer-side.collapsed {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .12);
+  }
+  
+  

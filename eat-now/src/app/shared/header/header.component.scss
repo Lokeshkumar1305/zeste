@@ -1,0 +1,134 @@
+.primary-header {
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding: 0 16px;
+    background-color: #fff;
+    // border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 0.125rem 0rem rgba(0, 0, 0, 0.075) !important;
+  
+  }
+  
+  .sticky {
+    position: fixed;
+    box-shadow: 0 0.125rem 0rem rgba(0, 0, 0, 0.075) !important;
+  }
+  
+  
+  .menuProfile {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  
+    p {
+      font-family: 'Poppins', Helvetica, sans-serif;
+    }
+  
+    img {
+      border-radius: 50%;
+    }
+  }
+  
+  // .menuProfile:hover {
+  // border: 1px solid #f1f1f1;
+  // background-color: #f1f1f1;
+  // border-radius: 50px;
+  // padding: 4px;
+  // opacity: 0.7;
+  
+  // }
+  
+  .btnAcc.mat-mdc-icon-button.mat-mdc-button-base {
+    height: 48px;
+    width: 48px;
+    font-size: 48px;
+    padding: 0px;
+  
+    .mat-icon {
+      height: 48px;
+      width: 48px;
+      font-size: 48px;
+  
+    }
+  }
+  
+  .profileImage {
+    cursor: pointer;
+  
+    img {
+      height: 48px;
+      vertical-align: middle;
+    }
+  
+  
+  }
+  
+  
+  
+  .userLetter {
+    display: inline-block;
+    border: 1px #e3e6f1 solid;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 50%;
+    padding: 4px;
+    background-color: rgba(204, 179, 247, 0.2);
+    color: rgba(103, 58, 183, 1);
+    align-content: center;
+    cursor: pointer;
+    font-family: 'Poppins', Helvetica, sans-serif;
+  }
+  
+  .cf {
+    width: 72px;
+    height: 72px;
+    font-size: 48px;
+    cursor: context-menu;
+  }
+  
+  .opc {
+    opacity: 0.7;
+  }
+  
+  ::ng-deep .menuArea.mat-mdc-menu-panel {
+    max-width: none !important;
+  
+    img {
+      border-radius: 50%;
+    }
+  }
+  
+  
+  .ptext {
+    background-color: #E8EFF6;
+    border-radius: 4px;
+    padding: 12px;
+  }
+  
+  .links:hover {
+    // background-color: rgba(204, 179, 247, 0.2);
+    cursor: pointer;
+  
+    .hightlight {
+      color: #12B393 // cursor: pointer;
+    }
+  }
+  
+  .notifyClass {
+    width: 324px;
+    padding: 12px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    border-radius: 4px;
+  }
+  
+  .notifyClass.hovered {
+    background-color: rgb(253, 241, 245);
+    /* Light gray background */
+    box-shadow: rgb(253, 241, 245);
+    /* Subtle shadow for hover effect */
+    cursor: pointer;
+  }

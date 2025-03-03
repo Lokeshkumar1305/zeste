@@ -1,1 +1,264 @@
-<p>sidenav works!</p>
+<div class="brand-logo d-flex align-items-center justify-content-between">
+    <div style="padding-top: 16px;" [ngClass]="postService.isCollapsed ? '': 'logo-img'">
+      <img src="../../../assets/images/tou-logo.svg" style="height: 36px;">
+    </div>
+  </div>
+  
+  <div class="nav-body" [ngClass]="postService.isCollapsed ? 'nav-hV': 'hV'">
+    <mat-accordion>
+      <mat-list>
+        <div mat-subheader *ngIf="postService.isCollapsed" class="f-12-m mt-4">HOME</div>
+        <div mat-subheader *ngIf="!postService.isCollapsed" class="separator" class="separator"><mat-icon
+            class="material-symbols-outlined">more_horiz</mat-icon></div>
+        <mat-list-item id="home" [routerLink]="['/Home']" [routerLinkActive]="'link-active'"
+          [matTooltip]="postService.isCollapsed ? '' : 'Dashboard'" matTooltipPosition="after">
+          <mat-icon matListItemIcon class="material-symbols-outlined">dashboard</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Dashboard</div>
+        </mat-list-item>
+        <mat-list-item id="institute" [routerLink]="['/core/institutions']" [routerLinkActive]="'link-active'"
+          [matTooltip]="postService.isCollapsed ? '' : 'Institution'" matTooltipPosition="after"
+          *ngIf="getPrivilege('/uam/institution/getall')">
+          <mat-icon matListItemIcon class="material-symbols-outlined">storefront</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Institution</div>
+        </mat-list-item>
+        <mat-list-item id="iam" [routerLink]="['/uam/user-mgmt']" [routerLinkActive]="'link-active'"
+          [matTooltip]="postService.isCollapsed ? '' : 'UAM'" matTooltipPosition="after">
+          <mat-icon matListItemIcon class="material-symbols-outlined">account_box</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">IAM</div>
+        </mat-list-item>
+      </mat-list>
+  
+      <div mat-subheader *ngIf="!postService.isCollapsed" class="separator"><mat-icon
+          class="material-symbols-outlined">more_horiz</mat-icon></div>
+      <div mat-subheader *ngIf="postService.isCollapsed" class="f-12-m mb-3">GENERAL</div>
+      <!-- <mat-expansion-panel [hideToggle]="!postService.isCollapsed" [expanded]="step === 0" (opened)="setStep(0)">
+        <mat-expansion-panel-header [matTooltip]="postService.isCollapsed ? '' : 'IAM'" matTooltipPosition="after">
+          <mat-panel-title>
+            <mat-icon class="material-symbols-rounded">account_box</mat-icon>&nbsp;&nbsp;
+            <p matListItemTitle *ngIf="postService.isCollapsed">IAM</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item id="user" [routerLink]="['/uam/users']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Users'" matTooltipPosition="after">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Users</div>
+          </mat-list-item>
+          <mat-list-item id="roles" [routerLink]="['/uam/roles']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Roles'" matTooltipPosition="after">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Roles</div>
+          </mat-list-item>
+          <mat-list-item id="privileges" [routerLink]="['/uam/Privileges']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Privileges'" matTooltipPosition="after">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Privileges</div>
+          </mat-list-item>
+          <mat-list-item id="userGroups" [routerLink]="['/uam/user_groups']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'User Groups'" matTooltipPosition="after">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">User Groups</div>
+          </mat-list-item>
+          <mat-list-item id="iam" [routerLink]="['/uam/uamRevamp']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'UAM'" matTooltipPosition="after">
+            <mat-icon matListItemIcon class="material-symbols-outlined">account_box</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">IAM</div>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel> -->
+      <mat-expansion-panel [hideToggle]="!postService.isCollapsed" [expanded]="step === 1" (opened)="setStep(1)">
+        <mat-expansion-panel-header [matTooltip]="postService.isCollapsed ? '' : 'Configurations'"
+          matTooltipPosition="after">
+          <mat-panel-title>
+            <mat-icon class="material-symbols-rounded">settings</mat-icon>&nbsp;&nbsp;
+            <p matListItemTitle *ngIf="postService.isCollapsed">Configurations</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item id="sysconfig" [routerLink]="['/core/system-defaults']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'System Defaults'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/systemdefaults/inq')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">System Defaults</div>
+          </mat-list-item>
+          <mat-list-item id="pconfig" [routerLink]="['/core/bin']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'BIN'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/bin/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Bin</div>
+          </mat-list-item>
+          <mat-list-item id="pconfig" [routerLink]="['/core/products']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Products'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/icpproducts/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Products</div>
+          </mat-list-item>
+          <mat-list-item id="fee" [routerLink]="['/fee/feelist']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Fee'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/icpfee/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Fee</div>
+          </mat-list-item>
+          <mat-list-item id="feeLink" [routerLink]="['/fee/feeLinkingHistory']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Fee Linking'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/icpfeeproduct/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Fee Linking</div>
+          </mat-list-item>
+          <mat-list-item id="scconfig" [routerLink]="['/core/scorecardnew']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Score Card'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/onbconfig/inq')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Score Card</div>
+          </mat-list-item>
+          <mat-list-item id="drconfig" [routerLink]="['/core/rule-engine']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Rule Engine'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/decisionruleconfig/inq')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Rule Engine</div>
+          </mat-list-item>
+          <mat-list-item id="stmt" [routerLink]="['/core/statement-dash']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Billing & Statement'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/statementconfig/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Billing & Statement</div>
+          </mat-list-item>
+          <mat-list-item id="blackList" [routerLink]="['/core/blacklists']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Black List'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/blacklisted/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">My Blacklists</div>
+          </mat-list-item>
+          <mat-list-item id="sysconfig" [routerLink]="['/core/comm-templates']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Communication Template'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/isscomm/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Comm Template</div>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel [hideToggle]="!postService.isCollapsed" [expanded]="step === 2" (opened)="setStep(2)">
+        <mat-expansion-panel-header [matTooltip]="postService.isCollapsed ? '' : 'Accounting'" matTooltipPosition="after">
+          <mat-panel-title>
+            <mat-icon class="material-symbols-rounded">manage_accounts</mat-icon>&nbsp;&nbsp;
+            <p matListItemTitle *ngIf="postService.isCollapsed">Accounting</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item id="sysconfig" [routerLink]="['/accounting/hoa']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Head of Accounts'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/icpheadofaccounts/inq')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Head of Accounts</div>
+          </mat-list-item>
+          <mat-list-item id="traceLogs" [routerLink]="['/accounting/prepaid-accounting/cre']"
+            [routerLinkActive]="'link-active'" [matTooltip]="postService.isCollapsed ? '' : 'Prepaid Accounting'"
+            matTooltipPosition="after" *ngIf="getPrivilege('/api/icpaccounts/inq')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Account Summary</div>
+          </mat-list-item>
+          <!-- <mat-list-item id="traceLogs" [routerLink]="['/accounting/acc-entries']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Prepaid Accounting'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/icpaccounts/inq')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Accounting Entries</div>
+          </mat-list-item> -->
+        </mat-list>
+      </mat-expansion-panel>
+  
+      <mat-expansion-panel [hideToggle]="!postService.isCollapsed" [expanded]="step === 3" (opened)="setStep(3)">
+        <mat-expansion-panel-header [matTooltip]="postService.isCollapsed ? '' : 'Inventory'" matTooltipPosition="after">
+          <mat-panel-title>
+            <mat-icon class="material-symbols-rounded">inventory</mat-icon>&nbsp;&nbsp;
+            <p matListItemTitle *ngIf="postService.isCollapsed">Inventory</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item id="plaincard" [routerLink]="['/inventory/plaincards']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Plain Cards Request'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/cardinventory/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Plain Cards Request</div>
+          </mat-list-item>
+          <mat-list-item id="pconfig" [routerLink]="['/inventory/apex']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Plain Cards Approval'" matTooltipPosition="after"
+            *ngIf="getPrivilege('/api/cardinventory/getall')">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed"> Plain Cards Approval</div>
+          </mat-list-item>
+          <mat-list-item id="pconfig" [routerLink]="['/inventory/branch-dashboard']" [routerLinkActive]="'link-active'"
+            [matTooltip]="postService.isCollapsed ? '' : 'Branch dashboard'" matTooltipPosition="after">
+            <mat-icon matListItemIcon class="material-symbols-outlined bulletIcon">circle</mat-icon>
+            <div matListItemTitle *ngIf="postService.isCollapsed">Inventory Dashboard</div>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+  
+      <div mat-subheader *ngIf="!postService.isCollapsed" class="separator"><mat-icon
+          class="material-symbols-outlined">more_horiz</mat-icon></div>
+      <div mat-subheader *ngIf="postService.isCollapsed" class="f-12-m mt-4">OTHERS</div>
+      <mat-list>
+        <mat-list-item id="cardBal" [routerLink]="['/core/cardbal-trnxhistory']" [routerLinkActive]="'link-active'"
+          matTooltipPosition="after" [matTooltip]="postService.isCollapsed ? '' : 'Card Balance'"
+          *ngIf="getPrivilege('/onb/customeraccount/getall')">
+          <mat-icon matListItemIcon class="material-symbols-outlined">account_balance_wallet</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Card Balance</div>
+        </mat-list-item>
+        <mat-list-item id="traceLogs" [routerLink]="['/core/card-closure']" [routerLinkActive]="'link-active'"
+          [matTooltip]="postService.isCollapsed ? '' : 'Card Closure'" matTooltipPosition="after"
+          *ngIf="getPrivilege('/onb/customeraccount/getall')">
+          <mat-icon matListItemIcon class="material-symbols-outlined">credit_card_off</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Card Closure</div>
+        </mat-list-item>
+        <mat-list-item id="traceLogs" [routerLink]="['/core/trace-logs']" [routerLinkActive]="'link-active'"
+          [matTooltip]="postService.isCollapsed ? '' : 'Trace Logs'" matTooltipPosition="after"
+          *ngIf="getPrivilege('/api/trace/getall')">
+          <mat-icon matListItemIcon class="material-symbols-outlined">description</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Trace Logs</div>
+        </mat-list-item>
+        <!-- <mat-list-item id="traceLogs" [routerLink]="['/accounting/prepaid-accounting/cre']"
+          [routerLinkActive]="'link-active'" [matTooltip]="postService.isCollapsed ? '' : 'Prepaid Accounting'"
+          matTooltipPosition="after">
+          <mat-icon matListItemIcon class="material-symbols-outlined">receipt_long</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Prepaid Accounting</div>
+        </mat-list-item> -->
+  
+  
+        <!-- <mat-list-item id="maker" [routerLink]="['/core/maker']" [routerLinkActive]="'link-active'"
+          [matTooltip]="postService.isCollapsed ? '' : 'Maker'" matTooltipPosition="after">
+          <mat-icon matListItemIcon class="material-symbols-outlined">description</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Maker</div>
+        </mat-list-item>
+  
+        <mat-list-item id="makerdetail" [routerLink]="['/core/maker-details']" [routerLinkActive]="'link-active'"
+          [matTooltip]="postService.isCollapsed ? '' : 'Maker detail'" matTooltipPosition="after">
+          <mat-icon matListItemIcon class="material-symbols-outlined">description</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Maker Details</div>
+        </mat-list-item>
+  
+        <mat-list-item id="checker" [routerLink]="['/core/checker']" [routerLinkActive]="'link-active'"
+          [matTooltip]="postService.isCollapsed ? '' : 'Checker'" matTooltipPosition="after"
+          *ngIf="getPrivilege('/api/checker/getall')">
+          <mat-icon matListItemIcon class="material-symbols-outlined">edit_note</mat-icon>
+          <div matListItemTitle *ngIf="postService.isCollapsed">Checker</div>
+        </mat-list-item> -->
+      </mat-list>
+    </mat-accordion>
+  </div>
+  
+  <div class="fixed-profile p-2 m-2" *ngIf="postService.isCollapsed">
+    <div class="hstack d-flex align-items-center">
+      <div class="user-img">
+        <img src="../assets/images/user-1.jpg" width="40" height="40" alt="user-img">
+      </div>
+      <div class="user-title mx-2">
+        <p class="f-14-m" matTooltip="{{userName | titlecase}} ">{{userName | titlecase}}</p>
+        <span class="f-12-r-07">{{designation}}</span>
+      </div>
+      <span class="tou-spacer"></span>
+      <mat-icon class="ms-auto material-symbols-outlined" matTooltip="Logout" (click)="logout()" style="cursor: pointer;"
+        color="accent">power_settings_new </mat-icon>
+  
+  
+    </div>
+  </div>

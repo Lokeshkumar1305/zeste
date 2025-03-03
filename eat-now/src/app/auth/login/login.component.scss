@@ -1,0 +1,62 @@
+.auth-c {
+    .panel {
+        margin: 0;
+        padding: 0;
+    }
+
+    .poweredBy {
+        text-align: center;
+        opacity: 0.5;
+
+        img {
+            height: 24px;
+            margin-left: 40px;
+        }
+    }
+}
+
+.leftPanel {
+    background: url(../../../assets/Images/confetti-doodles.svg);
+    background-size: contain;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 60%;
+
+    .h-n80 {
+        height: calc(100vh - 80px);
+    }
+
+}
+
+.rightPanel {
+    position: relative;
+
+    .auth-max-width {
+        width: 100%;
+        max-width: 520px;
+    }
+
+    .q4 {
+        color: #12B393;
+    }
+}
+
+
+// spalsh
+
+.app-loading {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    .logo img {
+        height: 48px;
+    }
+
+    .loader-circle {
+        height: 104px;
+        justify-content: center;
+    }
+}
