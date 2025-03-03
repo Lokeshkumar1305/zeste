@@ -1,0 +1,110 @@
+.outletContainer {
+    background-color: #FEFEFE !important;
+    width: 95% !important;
+    height: 100vh;
+    padding: 5px;
+    justify-content: center;
+    margin-left: 10px !important;
+}
+
+.example-tab-icon {
+    margin-right: 8px;
+}
+
+mat-card {
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background-color: transparent !important;
+    border-radius: 8px !important;
+    margin: 30px 10px 10px 10px;
+    padding: 0px 20px;
+
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.button-space {
+    margin-right: 10px;
+    /* Adjust the value as needed */
+}
+
+.form-control-file {
+    border: 1px solid #b1b6bb;
+    padding: 7px;
+    border-radius: 4px;
+}
+
+.custom-file-width {
+    width: 100%;
+}
+
+.custom-file-width1 {
+    width: 96%;
+    margin-left: 10px !important;
+}
+
+.custom-icon {
+    font-size: 20px;
+    margin-top: 2px;
+    // color: grey;
+}
+
+//family fields
+.family-field {
+    width: 320px;
+    height: 40px;
+
+}
+
+.placeholder-content {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+::ng-deep .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab {
+    flex-grow: 0 !important;
+}
+
+::ng-deep .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
+    color: #1E1661 !important;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    // border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    margin-top: 5px;
+}
+
+
+.custom-tab-group .mat-tab-body-wrapper {
+    padding-left: 20px;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+.text-start {
+    text-align: left;
+}
+
+
+.footer-container {
+    position: fixed !important;
+    bottom: 0;
+    width: 100% !important;
+    background: #ffffff;
+    border-top: 1px solid #e0e0e0;
+
+}
