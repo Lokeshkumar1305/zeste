@@ -1,1 +1,99 @@
-<p>en-common-table works!</p>
+<div class="insideContainer mt-5">
+    <!-- <mat-card class="card d-flex justify-content-between align-items-center p-3">
+        <div class="d-flex align-items-center w-100 justify-content-between">
+            <p class="p-24-v1 font-xl">{{headTitle}}</p>
+            <div class="d-flex">
+                <span class="tou-spacer"></span>
+                <div class="m-2">
+                    <button mat-flat-button color="primary" (click)="newRow(tableID)" class="text-white" *ngIf="tableID != 'GET_TRANSACTION_DETAILS' && tableID !=  'GET_MAKER_CHECKER' ">ADD NEW
+                        ROW</button>
+                </div>
+            </div>
+        </div>
+    </mat-card> -->
+    <mat-card class="my-3 mx-auto bch">
+        <mat-card-content>
+            <div class="d-flex justify-content-between mb-1">
+                <div>
+                    <!-- <app-breadcrumb [breadCrumb]="breadCrumb"></app-breadcrumb> -->
+                    <p class="f-20-m pb-2">{{headTitle}}</p>
+                    <p class="f-14-r-07">{{subTitle}}</p>
+                </div>
+                <img src="../../../assets/images/bch-widget.svg">
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="mx-auto my-3">
+        <div class="d-flex justify-content-between align-items-center p-3">
+            <div>
+                <mat-form-field style="width:530px;" appearance="outline">
+                    <input matInput placeholder="Search" (keyup)="applyFilter($event)" autocomplate="off">
+                    <mat-icon matSuffix color="accent">search</mat-icon>
+                </mat-form-field>
+            </div>
+            <!-- <button mat-flat-button color="accent" (click)="newRow(tableID)">
+                <mat-icon class="material-symbols-outlined">add</mat-icon>New Row</button> -->
+        </div>
+
+    </mat-card>
+    <table mat-table [dataSource]="dataSource" class="addrowTable mt-2" matSort #commonTableSort="matSort">
+        @for (column of displayedColumns; track column) {
+        <ng-container matColumnDef="{{column}}">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header"><span
+                    class="font-md weight-medium ">{{
+                    columnName[column] }}</span></th>
+            <td mat-cell *matCellDef="let element;let i = index" class="table-text">
+                <ng-container *ngIf="column === 'action'">
+                    <button mat-mini-fab type="button" color="primary"
+                        (click)="tableService.goToInq(tableID, element.id)"
+                        *ngIf="tableID === 'GET_SWITCH_DESTINATIONS' || tableID ===  'GET_MAKER_CHECKER' ">
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+                    <!-- <button mat-icon-button (click)="editRow(tableID, element)"
+                        *ngIf="tableID != 'GET_SWITCH_DESTINATIONS' && tableID !=  'GET_MAKER_CHECKER' ">
+                        <mat-icon>edit</mat-icon>
+                    </button> -->
+                </ng-container>
+                <ng-container *ngIf="column === 'amount'">
+                    {{ element[column] | currency:'INR' }}
+                </ng-container>
+                <ng-container *ngIf="column === 'sno'">
+                    {{i+1}}
+                </ng-container>
+                <!-- [ngClass]="{
+                    'active-status': element[column] === 'ACTIVE',
+                    'blocked-status': element[column] === 'BLOCKED',
+                    'inactive-status': element[column] === 'PENDING'
+                  }" -->
+                <ng-container *ngIf="column === 'status'">
+                    {{ element[column] }}
+                </ng-container>
+                <ng-container *ngIf="column === 'active' && element[column] === false;">
+                    Inactive
+                </ng-container>
+                <ng-container *ngIf="column === 'dateAndTime'">
+                    {{ element[column] | date: 'short' }}
+                </ng-container>
+                <ng-container *ngIf="column ==='ruleCreatedDate' || column ==='statusDate'">
+                    {{ element[column] | date:'short' }}
+                </ng-container>
+                <ng-container *ngIf="column ==='emailId' || column ==='mobile'">
+                </ng-container>
+                <ng-container
+                    *ngIf="column !='emailId' &&  column !== 'action' && column !== 'mobile' && column !== 'status' ">
+                    {{ element[column] }}
+                </ng-container>
+            </td>
+        </ng-container>
+        }
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-toolbar class="paginator">
+        <mat-toolbar-row>
+            <mat-paginator [pageSizeOptions]="[5, 10,25,50, 100]" #commonTablePaginator [pageIndex]="pageIndex"
+                [pageSize]="pageSize" [length]="totalElements" showFirstLastButtons class="mat-elevation-z2 p-14-v2">
+            </mat-paginator>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>

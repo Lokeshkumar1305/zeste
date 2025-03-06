@@ -1,0 +1,90 @@
+/* Expanded Search Bar Animation */
+@keyframes expand {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+
+    to {
+        width: 300px;
+        opacity: 1;
+    }
+}
+
+@keyframes collapse {
+    from {
+        width: 300px;
+        opacity: 1;
+    }
+
+    to {
+        width: 0;
+        opacity: 0;
+    }
+}
+
+/* Apply expand animation on the search field */
+.common-search {
+    animation: expand 1s ease forwards;
+}
+
+/* Apply collapse animation when the search bar closes */
+.common-search.ng-leave {
+    animation: collapse 1s ease forwards;
+}
+
+
+.insideContainer {
+    width: 1300px !important;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.table-header {
+    // background-color: #eee0f0 !important;
+    background-color: #0D47A1 !important;
+    background-size: cover;
+    color: #fff !important;
+}
+
+.mat-header-cell,
+.mat-cell {
+    padding: 8px 10px;
+    min-width: 80px;
+    // max-width: 150px;
+    word-wrap: break-word;
+}
+
+.mat-header-cell {
+    font-size: 14px;
+}
+
+.mat-paginator {
+    justify-content: center !important;
+}
+
+img {
+    max-width: 100px;
+    /* Reduce image size */
+    height: auto;
+}
+
+.card {
+    height: 80px;
+    border-radius: 8px 8px 8px 8px !important;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+mat-card {
+    border-radius: 12px;
+    width: 1300px;
+    height: 120px;
+}
+
+.mat-column-description {
+    width: 400px !important;
+}
