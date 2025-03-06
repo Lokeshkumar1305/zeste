@@ -19,10 +19,10 @@ import { MaterialModule } from '../material/material.module';
   imports: [
     CommonModule,
     CoreRoutingModule,
-    BrowserModule,
-    AppRoutingModule,
+    // BrowserModule,
+    // AppRoutingModule,
     FormsModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
     MaterialModule
