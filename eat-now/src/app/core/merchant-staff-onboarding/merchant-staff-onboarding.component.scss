@@ -1,0 +1,126 @@
+resident-body {
+    background-color: #FEFEFE !important;
+    width: 100%;
+    height: 100vh;
+}
+
+.example-tab-icon {
+    margin-right: 8px;
+}
+
+.card {
+    width: 1412px;
+    height: 91px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: rgba(239, 239, 239, 0.36);
+}
+
+.no-shadow {
+    box-shadow: none !important;
+    margin-bottom: 50px !important;
+
+}
+
+
+mat-card {
+    height: 90px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background-color: transparent !important;
+    border-radius: 8px !important;
+    margin: 30px 10px 10px 10px;
+    padding: 0px 20px;
+
+}
+
+
+
+// .form-width {
+//     width: 1000px;
+//     height: 40px;
+// }
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.button-space {
+    margin-right: 10px;
+    /* Adjust the value as needed */
+}
+
+.form-control-file {
+    border: 1px solid #ced4da;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.custom-file-width {
+    width: 100%;
+}
+
+.custom-file-width1 {
+    width: 96%;
+    margin-left: 10px !important;
+}
+
+.custom-icon {
+    font-size: 20px;
+    margin-top: 2px;
+    // color: grey;
+}
+
+//family fields
+.family-field {
+    width: 320px;
+    height: 40px;
+
+}
+
+.description-width {
+    width: 88%;
+    min-width: 400px;
+
+}
+
+.save-btn {
+    width: 176px;
+    height: 48px;
+    background: #1E1661 !important;
+    color: #FFF !important;
+    gap: 0px;
+    border-radius: 4px 0px 0px 0px;
+    opacity: 0px;
+
+}
+
+.cancel-btn {
+    width: 176px;
+    height: 48px;
+    background-color: none !important;
+    color: #64748B !important;
+    gap: 0px;
+    opacity: 0px;
+
+}
+
+button.enabled {
+    background-color: #1E1661 !important;
+    color: #FFF !important;
+}
+
+button.disabled {
+    background-color: grey !important;
+}
+
+::ng-deep .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab {
+    flex-grow: 0 !important;
+}
+
+::ng-deep .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
+    color: #1E1661 !important;
+}

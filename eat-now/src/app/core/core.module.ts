@@ -9,12 +9,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../material/material.module';
+import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
 
 
 
 @NgModule({
   declarations: [
-    OutletOnboardingComponent
+    OutletOnboardingComponent,
+    MerchantStaffOnboardingComponent
   ],
   imports: [
     CommonModule,
