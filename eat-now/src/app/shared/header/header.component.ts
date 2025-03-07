@@ -2,15 +2,16 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ApiService } from '../../common-library/services/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
+
 })
 export class HeaderComponent {
-  constructor(private router: Router, public dialog: MatDialog, public postService: ApiService){ }
+  constructor(private router: Router, public dialog: MatDialog, public postService: ApiService) { }
   loggedInUser: any;
   userName!: string;
   pwdExpiry: any;
@@ -22,7 +23,7 @@ export class HeaderComponent {
   expiryNotification: any;
   text: any;
   @Output() emitSideMenu = new EventEmitter();
-  ngOninIt(){
+  ngOninIt() {
     // this.loggedInUser = sessionStorage.getItem('loggedInUser')!;
     this.loggedInUser = "eatnow@gmail.com"
     let lu: any = this.loggedInUser;
