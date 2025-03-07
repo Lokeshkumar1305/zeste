@@ -30,8 +30,10 @@ export class AppComponent {
 
 
   constructor(public loginService: LoginService,
-    private router: Router, public snackbar: MatSnackBar, public postService: ApiService){}
+    private router: Router, public snackbar: MatSnackBar, public postService: ApiService) { }
   title = 'eat-now';
+
+
   toggleMenu() {
     this.postService.isCollapsed = !this.postService.isCollapsed;
     if (this.postService.isCollapsed) {
@@ -40,4 +42,6 @@ export class AppComponent {
       this.menuState = 'in';
     }
   }
+
+
 }

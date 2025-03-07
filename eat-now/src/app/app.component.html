@@ -1,4 +1,19 @@
+<!-- <div class="show-scroll">
+  <mat-sidenav-container autosize>
+    <mat-sidenav #sidenav class="primarySideNav" [ngClass]="postService.isCollapsed ? 'expanded' : 'collapsed'"
+      mode="side" [opened]="true" *ngIf="loginService.isUserLoggedIn()">
+      <app-sidenav [@slideInOut]="menuState"></app-sidenav>
+    </mat-sidenav>
+    <app-header *ngIf="loginService.isUserLoggedIn()" (emitSideMenu)="toggleMenu()"></app-header>
+    <div class="gap" *ngIf="loginService.isUserLoggedIn()"></div>
+    <router-outlet></router-outlet>
+  </mat-sidenav-container>
+</div> -->
+
+
+
 <div class="show-scroll">
+  <!-- <mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="progress-bar"></mat-progress-bar> -->
   <mat-sidenav-container autosize>
     <mat-sidenav #sidenav class="primarySideNav" [ngClass]="postService.isCollapsed ? 'expanded' : 'collapsed'"
       mode="side" [opened]="true" *ngIf="loginService.isUserLoggedIn()">
