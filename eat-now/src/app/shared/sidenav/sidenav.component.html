@@ -21,7 +21,7 @@
         <mat-icon matListItemIcon class="material-symbols-outlined">storefront</mat-icon>
         <div matListItemTitle *ngIf="postService.isCollapsed">Institution</div>
       </mat-list-item>
-      <mat-list-item id="iam" [routerLink]="['/uam/user-mgmt']" [routerLinkActive]="'link-active'"
+      <mat-list-item id="iam" [routerLink]="['/core/outlet-onboarding']" [routerLinkActive]="'link-active'"
         [matTooltip]="postService.isCollapsed ? '' : 'UAM'" matTooltipPosition="after">
         <mat-icon matListItemIcon class="material-symbols-outlined">account_box</mat-icon>
         <div matListItemTitle *ngIf="postService.isCollapsed">Outlet</div>
