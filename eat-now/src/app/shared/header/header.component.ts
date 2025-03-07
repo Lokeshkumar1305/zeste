@@ -64,7 +64,7 @@ export class HeaderComponent {
     //       this.postService.openSnackBar(error?.error.message, 'ERROR');
     //     }
     //   });
-    // sessionStorage.clear();
+    sessionStorage.clear();
     // this.router.navigate(['/']);
     // this.idleService.disableIdleDetection();
     // this.postService.closeNotification();

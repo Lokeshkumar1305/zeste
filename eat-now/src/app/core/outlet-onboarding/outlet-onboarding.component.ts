@@ -45,6 +45,8 @@ export class OutletOnboardingComponent {
   constructor(public router: Router, public route: ActivatedRoute,
     public snackbar: MatSnackBar, public dialog: MatDialog, private location: Location, private snackBar: MatSnackBar
   ) {
+    this.dataObj.state = 'TELANGANA';
+    this.dataObj.country = 'INDIA';
 
   }
 

@@ -1,0 +1,9 @@
+<div class="breadcrumb mb-3">
+    <ul>
+        <li *ngFor="let bc of breadCrumb">
+            <a [routerLink]="[bc?.link]" [routerLinkActive]="'link-active'"
+                class="m-14-06 spc-0">{{bc?.name}}</a>
+        </li>
+    </ul>
+</div>
+

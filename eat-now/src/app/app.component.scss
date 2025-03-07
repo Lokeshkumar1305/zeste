@@ -20,7 +20,9 @@
 /* Hide scrollbar for IE, Edge and Firefox */
 .show-scroll {
   -ms-overflow-style: none;
+  /* IE and Edge */
   scrollbar-width: none;
+  /* Firefox */
 }
 
 .expanded {
@@ -30,7 +32,7 @@
 .collapsed {
   width: 100px;
 }
-
 .mat-drawer-side.collapsed {
   box-shadow: 0 10px 20px rgba(0, 0, 0, .12);
 }
+
