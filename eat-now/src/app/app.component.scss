@@ -35,4 +35,17 @@
 .mat-drawer-side.collapsed {
   box-shadow: 0 10px 20px rgba(0, 0, 0, .12);
 }
+.menuProfile {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  p {
+    font-family: 'Poppins', Helvetica, sans-serif;
+  }
+
+  img {
+    border-radius: 50%;
+  }
+}
 

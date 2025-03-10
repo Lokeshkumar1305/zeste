@@ -1,25 +1,60 @@
-<!-- <div class="show-scroll">
-  <mat-sidenav-container autosize>
-    <mat-sidenav #sidenav class="primarySideNav" [ngClass]="postService.isCollapsed ? 'expanded' : 'collapsed'"
-      mode="side" [opened]="true" *ngIf="loginService.isUserLoggedIn()">
-      <app-sidenav [@slideInOut]="menuState"></app-sidenav>
-    </mat-sidenav>
-    <app-header *ngIf="loginService.isUserLoggedIn()" (emitSideMenu)="toggleMenu()"></app-header>
-    <div class="gap" *ngIf="loginService.isUserLoggedIn()"></div>
-    <router-outlet></router-outlet>
-  </mat-sidenav-container>
-</div> -->
-
-
-
 <div class="show-scroll">
-  <!-- <mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="progress-bar"></mat-progress-bar> -->
-  <mat-sidenav-container autosize>
-    <mat-sidenav #sidenav class="primarySideNav" [ngClass]="postService.isCollapsed ? 'expanded' : 'collapsed'"
-      mode="side" [opened]="true" *ngIf="loginService.isUserLoggedIn()">
-      <app-sidenav [@slideInOut]="menuState"></app-sidenav>
+  <mat-toolbar style="background-color: white; border-bottom: 1px solid #e0e0e0;">
+    <button mat-icon-button  (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>EAT-NOW</span>
+    <span class="tou-spacer"></span>
+
+    <button [matMenuTriggerFor]="profile" class="menuProfile" color="primary">
+      <img src="../../../assets/Images/user-1.jpg" width="40" height="40" alt="user-img">
+    </button>
+    <mat-menu #profile="matMenu" xPosition="before" yPosition="above" class="menuArea">
+      <div class="m-4">
+        <p class="f-20-r mb-4">User Profile</p>
+        <div class="d-flex flex-row align-items-center">
+          <div class="flex-column">
+            <!-- <div class="userLetter cf"><span>{{(userName | titlecase) | slice:0:1}}</span></div> -->
+            <img src="../../../assets/Images/user-1.jpg" width="80" height="80" alt="user-img">
+          </div>
+          <div class="flex-column ms-3">
+            <p class="f-16-m m-0 mb-2"> {{userName | titlecase}}</p>
+            <p class="f-14-r d-flex align-items-center opc"><mat-icon
+                class="material-symbols-outlined ">email</mat-icon>&nbsp;{{loggedInUser}}</p>
+          </div>
+        </div>
+  
+        <mat-divider class="my-4"></mat-divider>
+        <div class="links d-flex align-items-center p-3">
+          <span class="d-flex align-items-center justify-content-center ptext">
+            <mat-icon class="material-symbols-outlined" color="primary">account_circle</mat-icon>
+          </span>
+          <div class="d-flex flex-column ms-4">
+            <p class="f-16-r pb-1 hightlight">My Profile</p>
+            <p class="f-12-r-07">Account Settings</p>
+          </div>
+        </div>
+  
+        <div class="links d-flex align-items-center p-3 mb-2" (click)="psdChange()">
+          <span class="d-flex align-items-center justify-content-center ptext">
+            <mat-icon class="material-symbols-outlined" color="primary">change_circle</mat-icon>
+          </span>
+          <div class="d-flex flex-column ms-4">
+            <p class="f-16-r pb-1 hightlight">Change Password</p>
+            <p class="f-12-r-07">Manage your password</p>
+          </div>
+        </div>
+  
+        <button mat-stroked-button color="accent" (click)="logout()" class="mt-3 mb-2 w-100">Log Out</button>
+      </div>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container >
+    <mat-sidenav #sidenav mode="side" [opened]="true" [style.width]="sidenavWidth"
+      *ngIf="loginService.isUserLoggedIn()">
+      <app-sidenav></app-sidenav>
     </mat-sidenav>
-    <app-header *ngIf="loginService.isUserLoggedIn()" (emitSideMenu)="toggleMenu()"></app-header>
     <div class="gap" *ngIf="loginService.isUserLoggedIn()"></div>
     <router-outlet></router-outlet>
   </mat-sidenav-container>

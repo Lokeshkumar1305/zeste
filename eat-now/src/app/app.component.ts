@@ -24,24 +24,62 @@ import { LoginService } from './auth/login.service';
   ]
 })
 export class AppComponent {
-  @ViewChild(MatSidenav)
-  sidenav!: MatSidenav;
-  menuState: string = 'out';
-
 
   constructor(public loginService: LoginService,
     private router: Router, public snackbar: MatSnackBar, public postService: ApiService) { }
   title = 'eat-now';
 
-
-  toggleMenu() {
-    this.postService.isCollapsed = !this.postService.isCollapsed;
-    if (this.postService.isCollapsed) {
-      this.menuState = 'out';
+  sidenavWidth: string = '270px';
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+  toggleSidenav() {
+    if (this.sidenavWidth === '270px') {
+      this.sidenavWidth = '80px'; // Change to 100px when toggled
     } else {
-      this.menuState = 'in';
+      this.sidenavWidth = '270px'; // Change back to 250px when toggled
     }
   }
-
-
+  logout() {
+    // this.postService.refreshToken(APIPath.USER_LOGOUT).subscribe(
+    //   (response) => {
+    //     if (response.success) {
+    //       sessionStorage.clear();
+    //       this.router.navigate(['/']);
+    //       this.idleService.disableIdleDetection();
+    //       this.postService.closeNotification();
+    //     }
+    //     else {
+    //       this.postService.openSnackBar(response?.message, 'ERROR');
+    //     }
+    //   },
+    //   // Error handler when an HTTP error occurs
+    //   (error: HttpErrorResponse) => {
+    //     if (error?.error.error) {
+    //       this.postService.openSnackBar(error?.error.error, 'ERROR');
+    //     } else {
+    //       this.postService.openSnackBar(error?.error.message, 'ERROR');
+    //     }
+    //   });
+    sessionStorage.clear();
+    // this.router.navigate(['/']);
+    // this.idleService.disableIdleDetection();
+    // this.postService.closeNotification();
+  }
+  psdChange() {
+    this.router.navigate(['/core/change-password'])
+  }
+  goToProfile() {
+    this.router.navigate(['/uam/user-profile/' + 1])
+  }
+  loggedInUser: any;
+  userName!: string;
+  ngOninIt() {
+    // this.loggedInUser = sessionStorage.getItem('loggedInUser')!;
+    this.loggedInUser = "eatnow@gmail.com"
+    let lu: any = this.loggedInUser;
+    if (lu) {
+      lu = lu.split('@');
+      lu = lu[0].replace('.', ' ');
+      this.userName = lu;
+    }
+  }
 }
