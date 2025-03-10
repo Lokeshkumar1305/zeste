@@ -31,6 +31,12 @@
         <mat-icon matListItemIcon class="material-symbols-outlined">account_box</mat-icon>
         <div matListItemTitle *ngIf="postService.isCollapsed">Merchant Staff Onboarding</div>
       </mat-list-item>
+
+      <mat-list-item id="iam" [routerLink]="['/shared/ctsearch/GET_USERS']" [routerLinkActive]="'link-active'"
+        [matTooltip]="postService.isCollapsed ? '' : 'UAM'" matTooltipPosition="after">
+        <mat-icon matListItemIcon class="material-symbols-outlined">account_box</mat-icon>
+        <div matListItemTitle *ngIf="postService.isCollapsed">Users</div>
+      </mat-list-item>
     </mat-list>
 
     <div mat-subheader *ngIf="!postService.isCollapsed" class="separator"><mat-icon

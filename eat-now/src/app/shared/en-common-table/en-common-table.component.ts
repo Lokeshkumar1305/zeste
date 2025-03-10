@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../common-library/services/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LocaldataService } from '../services/localdata.service';
+import { MerchantStaffOnboardingComponent } from '../../core/merchant-staff-onboarding/merchant-staff-onboarding.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-en-common-table',
@@ -61,7 +63,7 @@ export class EnCommonTableComponent {
   }
   constructor(public tableService: EnTableSearchviewService, private route: ActivatedRoute,
     private apiService: ApiService, private router: Router, public dialog: MatDialog,
-    public localDataService: LocaldataService,
+    public localDataService: LocaldataService, public bottomSheet: MatBottomSheet,
 
   ) {
     this.route.params.subscribe(routeParams => {
@@ -152,230 +154,244 @@ export class EnCommonTableComponent {
   //     console.warn('No valid columns data available');
   //   }
   // }
-
-
-
-
-
-
-
-  // newRow(tableID: string) {
-  //   let dialogRef!: any;
-  //   debugger
-  //   if (tableID == 'GET_SWITCH_DESTINATIONS') {
-  //     return this.tableService.goToCreate(tableID);
-  //   } else if (tableID == 'GET_ROUTING_RULES') {
-  //     dialogRef = this.dialog.open(RoutingRulesComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //     });
-  //   } else if (tableID == 'GET_SCHEME_CONNECTION') {
-  //     dialogRef = this.dialog.open(SchemeConnectionComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //     });
-  //   } else if (tableID == 'GET_BIN_DETAILS') {
-  //     dialogRef = this.dialog.open(BinTableComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //     });
-  //   } else if (tableID == 'GET_USERS') {
-  //     dialogRef = this.dialog.open(UserComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //     });
-  //   } else if (tableID == 'GET_ROLES') {
-  //     dialogRef = this.dialog.open(RoleComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //     });
-  //   } else if (tableID == 'GET_PRIVILEGES') {
-  //     dialogRef = this.dialog.open(PrivilegeComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //     });
-  //   } else if (tableID == 'GET_SERVICE_DIRECTORY') {
-  //     dialogRef = this.dialog.open(ServiceDirectoryComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //     });
-  //   } else if (tableID == 'GET_MAKER_CHECKER') {
-  //     return this.tableService.goToCreate(tableID);
-  //   }
-  //   if (tableID != 'GET_SWITCH_DESTINATIONS' && tableID != 'GET_MAKER_CHECKER') {
-  //     dialogRef.afterClosed().subscribe((result: any) => {
-  //       if (result) {
-  //         // this.logout();
-  //       }
-  //     });
-  //   }
-  // }
-
-
-  // editRow(tableID: string, dataObj: any) {
-  //   let dialogRef!: any;
-  //   if (tableID == 'GET_SWITCH_DESTINATIONS') {
-  //     dialogRef = this.dialog.open(SwitchDestinationComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //       data: dataObj
-  //     });
-  //   } else if (tableID == 'GET_ROUTING_RULES') {
-  //     dialogRef = this.dialog.open(RoutingRulesComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //       data: dataObj
-  //     });
-  //   } else if (tableID == 'GET_SCHEME_CONNECTION') {
-  //     dialogRef = this.dialog.open(SchemeConnectionComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //       data: dataObj
-  //     });
-  //   } else if (tableID == 'GET_BIN_DETAILS') {
-  //     dialogRef = this.dialog.open(BinTableComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //       data: dataObj
-  //     });
-  //   } else if (tableID == 'GET_USERS') {
-  //     dialogRef = this.dialog.open(UserComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //       data: dataObj
-  //     });
-  //   } else if (tableID == 'GET_ROLES') {
-  //     dialogRef = this.dialog.open(RoleComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       data: dataObj
-  //     });
-  //   } else if (tableID == 'GET_PRIVILEGES') {
-  //     dialogRef = this.dialog.open(PrivilegeComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //       data: dataObj
-  //     });
-  //   } else if (tableID == 'GET_SERVICE_DIRECTORY') {
-  //     dialogRef = this.dialog.open(ServiceDirectoryComponent, {
-  //       width: '80%',
-  //       height: '700px',
-  //       position: { top: '0px', right: '0px' },
-  //       autoFocus: false,
-  //       minHeight: '100vh',
-  //       maxWidth: '80vw',
-  //       minWidth: '600px',
-  //       panelClass: 'custom-dialog-animation',
-  //       disableClose: true,
-  //       data: dataObj
-  //     });
-  //   }
-  //   if (tableID != 'GET_SWITCH_DESTINATIONS') {
-  //     dialogRef.afterClosed().subscribe((result: any) => {
-  //       if (result) {
-  //         // this.logout();
-  //       }
-  //     });
-  //   }
-  // }
+  newRow(tableID: string) {
+    let dialogRef!: any;
+    if (tableID == 'GET_SWITCH_DESTINATIONS') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+      });
+    } else if (tableID == 'GET_ROUTING_RULES') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '40vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+      });
+    } else if (tableID == 'GET_SCHEME_CONNECTION') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+      });
+    } else if (tableID == 'GET_BIN_DETAILS') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+      });
+    } else if (tableID == 'GET_USERS') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+      });
+    } else if (tableID == 'GET_ROLES') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+      });
+    } else if (tableID == 'GET_PRIVILEGES') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+      });
+    } else if (tableID == 'GET_SERVICE_DIRECTORY') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+      });
+    } else if (tableID == 'GET_MAKER_CHECKER') {
+      return this.tableService.goToCreate(tableID);
+    }
+  }
+  editRow(tableID: string, dataObj: any) {
+    let dialogRef!: any;
+    if (tableID == 'GET_SWITCH_DESTINATIONS') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    } else if (tableID == 'GET_ROUTING_RULES') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    } else if (tableID == 'GET_SCHEME_CONNECTION') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    } else if (tableID == 'GET_BIN_DETAILS') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    } else if (tableID == 'GET_USERS') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    } else if (tableID == 'GET_ROLES') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    } else if (tableID == 'GET_PRIVILEGES') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    } else if (tableID == 'GET_SERVICE_DIRECTORY') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    } else if (tableID == 'GET_REPORTS') {
+      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
+        width: '80%',
+        height: '700px',
+        position: { top: '0px', right: '0px' },
+        autoFocus: false,
+        minHeight: '100vh',
+        maxWidth: '50vw',
+        minWidth: '600px',
+        panelClass: 'custom-dialog-animation',
+        disableClose: true,
+        data: dataObj
+      });
+    }
+  }
   applyFilter(event: any) {
 
   }
 
 
+  readRow(tableID: string, dataObj: any) {
+    this.bottomSheet.open(MerchantStaffOnboardingComponent, {
+      data: dataObj,
+      autoFocus: false,
+      panelClass: 'custom-bootomsheet-animation',
+      disableClose: true,
+    }).afterDismissed().subscribe(() => {
 
-
+    });
+  }
 }
 
 export class OPSMenu {

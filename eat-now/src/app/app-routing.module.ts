@@ -4,6 +4,7 @@ import { authGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
+  { path: 'shared', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule), },
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   { path: 'Home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'core', loadChildren: () => import('./core/core.module').then(m => m.CoreModule), canActivate: [authGuard] },
