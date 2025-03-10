@@ -55,7 +55,7 @@ $tou-ops-theme: mat.define-light-theme((color: (primary: $tou-ops-primary,
       typography: $tou-ops-typography,
       density: 0));
 
-   
+
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -306,6 +306,7 @@ h6 {
     }
   }
 }
+
 .snackBar-notification.mat-mdc-snack-bar-container {
   .mdc-snackbar__surface {
     background-color: #FFFFFF;
@@ -780,4 +781,62 @@ h6,
 ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   transform: translateY(-1.1em) scale(.75);
 
+}
+
+
+
+
+.table-responsive {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.insideContainer {
+  width: 1300px !important;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.spc-0 {
+  padding: 0;
+}
+
+.spc-4 {
+  padding: 0 0 4px 0;
+}
+
+.spc-8 {
+  padding: 0 0 8px 0;
+}
+
+.spc-16 {
+  padding: 0 0 16px 0;
+}
+
+.spc-24 {
+  padding: 0 0 24px 0;
+}
+
+.spc-32 {
+  padding: 0 0 32px 0;
+}
+
+.spc-40 {
+  padding: 0 0 40px 0;
+}
+
+.spc-48 {
+  padding: 0 0 48px 0;
+}
+
+.spc-56 {
+  padding: 0 0 56px 0;
+}
+
+.pd-0 {
+  padding: 0 0 0 0 !important;
+}
+
+.mt-70 {
+  margin-top: 70px !important;
 }
