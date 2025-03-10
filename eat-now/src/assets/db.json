@@ -1,0 +1,1964 @@
+{
+    "GET_SWITCH_DESTINATIONS": [
+        {
+            "id": "1",
+            "destination": "VISA",
+            "name": "Visa",
+            "destinationId": "Visa Id"
+        },
+        {
+            "id": "2",
+            "destination": "VISA",
+            "name": "Visa",
+            "destinationId": "Visa Id"
+        },
+        {
+            "id": "3",
+            "destination": "MASTERCARD",
+            "name": "MasterCard",
+            "destinationId": "MasterCard Id"
+        },
+        {
+            "id": "4",
+            "destination": "AMEX",
+            "name": "American Express",
+            "destinationId": "Amex Id"
+        },
+        {
+            "id": "5",
+            "destination": "DISCOVER",
+            "name": "Discover",
+            "destinationId": "Discover Id"
+        },
+        {
+            "id": "6",
+            "destination": "RUPAY",
+            "name": "RuPay",
+            "destinationId": "RuPay Id"
+        },
+        {
+            "id": "7",
+            "destination": "JCB",
+            "name": "JCB",
+            "destinationId": "JCB Id"
+        },
+        {
+            "id": "8",
+            "destination": "DINERS",
+            "name": "Diners Club",
+            "destinationId": "Diners Id"
+        },
+        {
+            "id": "9",
+            "destination": "UNIONPAY",
+            "name": "UnionPay",
+            "destinationId": "UnionPay Id"
+        }
+    ],
+    "GET_SCHEME_CONNECTION": [
+        {
+            "destination": "Visa",
+            "connectionId": "C001",
+            "connectionPoolId": "P001",
+            "ip": "192.168.1.10",
+            "port": "8080",
+            "mode": "Client"
+        },
+        {
+            "destination": "MasterCard",
+            "connectionId": "C002",
+            "connectionPoolId": "P002",
+            "ip": "192.168.1.11",
+            "port": "8081",
+            "mode": "Server"
+        },
+        {
+            "destination": "RuPay",
+            "connectionId": "C003",
+            "connectionPoolId": "P003",
+            "ip": "192.168.1.12",
+            "port": "8082",
+            "mode": "Client"
+        },
+        {
+            "destination": "Visa",
+            "connectionId": "C004",
+            "connectionPoolId": "P004",
+            "ip": "192.168.1.13",
+            "port": "8083",
+            "mode": "Server"
+        },
+        {
+            "destination": "MasterCard",
+            "connectionId": "C005",
+            "connectionPoolId": "P005",
+            "ip": "192.168.1.14",
+            "port": "8084",
+            "mode": "Client"
+        },
+        {
+            "destination": "RuPay",
+            "connectionId": "C006",
+            "connectionPoolId": "P006",
+            "ip": "192.168.1.15",
+            "port": "8085",
+            "mode": "Server"
+        },
+        {
+            "destination": "Visa",
+            "connectionId": "C007",
+            "connectionPoolId": "P007",
+            "ip": "192.168.1.16",
+            "port": "8086",
+            "mode": "Client"
+        },
+        {
+            "destination": "MasterCard",
+            "connectionId": "C008",
+            "connectionPoolId": "P008",
+            "ip": "192.168.1.17",
+            "port": "8087",
+            "mode": "Server"
+        },
+        {
+            "destination": "RuPay",
+            "connectionId": "C009",
+            "connectionPoolId": "P009",
+            "ip": "192.168.1.18",
+            "port": "8088",
+            "mode": "Client"
+        },
+        {
+            "destination": "Visa",
+            "connectionId": "C010",
+            "connectionPoolId": "P010",
+            "ip": "192.168.1.19",
+            "port": "8089",
+            "mode": "Server"
+        }
+    ],
+    "GET_ROUTING_RULES": [
+        {
+            "source": "ATM",
+            "transactionType": "Withdrawal",
+            "onUsOffUs": "On-Us",
+            "cardBrand": "Visa",
+            "destination": "Visa",
+            "destinationId": "D001"
+        },
+        {
+            "source": "POS",
+            "transactionType": "Purchase",
+            "onUsOffUs": "Off-Us",
+            "cardBrand": "MasterCard",
+            "destination": "MasterCard",
+            "destinationId": "D002"
+        },
+        {
+            "source": "Online",
+            "transactionType": "Refund",
+            "onUsOffUs": "On-Us",
+            "cardBrand": "RuPay",
+            "destination": "RuPay",
+            "destinationId": "D003"
+        },
+        {
+            "source": "Mobile Wallet",
+            "transactionType": "Transfer",
+            "onUsOffUs": "Off-Us",
+            "cardBrand": "Visa",
+            "destination": "Visa",
+            "destinationId": "D004"
+        },
+        {
+            "source": "ATM",
+            "transactionType": "Balance Inquiry",
+            "onUsOffUs": "On-Us",
+            "cardBrand": "MasterCard",
+            "destination": "MasterCard",
+            "destinationId": "D005"
+        },
+        {
+            "source": "POS",
+            "transactionType": "Cashback",
+            "onUsOffUs": "Off-Us",
+            "cardBrand": "RuPay",
+            "destination": "RuPay",
+            "destinationId": "D006"
+        },
+        {
+            "source": "Online",
+            "transactionType": "Bill Payment",
+            "onUsOffUs": "On-Us",
+            "cardBrand": "Visa",
+            "destination": "Visa",
+            "destinationId": "D007"
+        },
+        {
+            "source": "Mobile Wallet",
+            "transactionType": "Top-Up",
+            "onUsOffUs": "Off-Us",
+            "cardBrand": "MasterCard",
+            "destination": "MasterCard",
+            "destinationId": "D008"
+        },
+        {
+            "source": "ATM",
+            "transactionType": "Deposit",
+            "onUsOffUs": "On-Us",
+            "cardBrand": "RuPay",
+            "destination": "RuPay",
+            "destinationId": "D009"
+        },
+        {
+            "source": "POS",
+            "transactionType": "Purchase",
+            "onUsOffUs": "Off-Us",
+            "cardBrand": "Visa",
+            "destination": "Visa",
+            "destinationId": "D010"
+        }
+    ],
+    "GET_TRANSACTION_DETAILS": [
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        },
+        {
+            "transactionDate": "2025-03-05",
+            "postingDate": "2025-03-06",
+            "merchantNo": "M12345",
+            "amount": "250",
+            "rrn": "12345667789901",
+            "terminal": "8938746938",
+            "transactionType": "POS",
+            "resp": "12345678",
+            "cardNo": "123456789876",
+            "startDateAndTime": "2025-03-05 12:00am",
+            "effTime": "12:00"
+        }
+    ],
+    "GET_BIN_DETAILS": [
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        },
+        {
+            "binNumber": "498732",
+            "countryCode": "IN",
+            "countryCurrency": "Rupee",
+            "productId": "VISA_DEBIT",
+            "bankName": "SBI",
+            "cardName": "VISA",
+            "cardType": "Platinum"
+        }
+    ],
+    "GET_USERS": [
+        {
+            "fullName": "Amit Sharma",
+            "userId": "amitsharma",
+            "email": "amitsharma001@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Priya Verma",
+            "userId": "priyaverma",
+            "email": "priyaverma002@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Rahul Singh",
+            "userId": "rahulsingh",
+            "email": "rahulsingh003@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Sneha Gupta",
+            "userId": "snehagupta",
+            "email": "snehagupta004@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Vikas Yadav",
+            "userId": "vikasyadav",
+            "email": "vikasyadav005@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Anjali Nair",
+            "userId": "anjalinair",
+            "email": "anjalinair006@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Rohit Mehta",
+            "userId": "rohitmehta",
+            "email": "rohitmehta007@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Kavita Reddy",
+            "userId": "kavitareddy",
+            "email": "kavitareddy008@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Sandeep Kumar",
+            "userId": "sandeepkumar",
+            "email": "sandeepkumar009@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Pooja Mishra",
+            "userId": "poojamishra",
+            "email": "poojamishra010@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Arjun Das",
+            "userId": "arjundas",
+            "email": "arjundas011@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Neha Joshi",
+            "userId": "nehajoshi",
+            "email": "nehajoshi012@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Manish Patel",
+            "userId": "manishpatel",
+            "email": "manishpatel013@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Swati Saxena",
+            "userId": "swatisaxena",
+            "email": "swatisaxena014@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Rajesh Iyer",
+            "userId": "rajeshiyer",
+            "email": "rajeshiyer015@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Divya Menon",
+            "userId": "divyamenon",
+            "email": "divyamenon016@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Abhishek Pandey",
+            "userId": "abhishekpandey",
+            "email": "abhishekpandey017@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Ritika Choudhary",
+            "userId": "ritikachoudhary",
+            "email": "ritikachoudhary018@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Nitin Malhotra",
+            "userId": "nitinmalhotra",
+            "email": "nitinmalhotra019@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Meera Kulkarni",
+            "userId": "meerakulkarni",
+            "email": "meerakulkarni020@gmail.com",
+            "status": "Inactive"
+        }
+    ],
+    "GET_ROLES": [
+        {
+            "roleTitle": " ==hop@default==",
+            "description": " hop@default for default"
+        },
+        {
+            "roleTitle": " ==leadit@default==",
+            "description": " leadit@default for leadit"
+        },
+        {
+            "roleTitle": "  Admin68b7a240",
+            "description": "  TestAutomation"
+        },
+        {
+            "roleTitle": "  ReadOnly",
+            "description": "  Read Only"
+        },
+        {
+            "roleTitle": " ==external@default==",
+            "description": "  external@default for default"
+        },
+        {
+            "roleTitle": " ==checkout@default==",
+            "description": " checkout@default for default"
+        },
+        {
+            "roleTitle": " ==admin@default==",
+            "description": " admin@default for default"
+        },
+        {
+            "roleTitle": " ==hop@default==",
+            "description": " hop@default for default"
+        },
+        {
+            "roleTitle": " ==hop@default==",
+            "description": " hop@default for default"
+        },
+        {
+            "roleTitle": " ==hop@default==",
+            "description": " hop@default for default"
+        }
+    ],
+    "GET_PRIVILEGES": [
+        {
+            "privilegeNumber": "1",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1",
+            "text1": "1",
+            "userDescription": "Access to Settings Page ",
+            "privilegeType": "SCREEN_CONTROL",
+            "text6": "Header",
+            "makerName": "Settings",
+            "text8": "Access",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "100",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "100",
+            "text1": "100",
+            "userDescription": "Inquires role data",
+            "privilegeType": "API",
+            "text4": "/api/role/inq",
+            "text6": "Role",
+            "text8": "Inquiry",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1000",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1000",
+            "text1": "1000",
+            "userDescription": "PDF Conversion",
+            "privilegeType": "API",
+            "text4": "/api/convert/topdf",
+            "text6": "File Conversion Internal API",
+            "text8": "Update",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1001",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1001",
+            "text1": "1001",
+            "userDescription": "Scan uploaded File",
+            "privilegeType": "API",
+            "text4": "/api/scan/multipart",
+            "text6": "File Scan Internal API",
+            "text8": "Update",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1002",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1002",
+            "text1": "1002",
+            "userDescription": "Upload File for Upload Request",
+            "privilegeType": "API",
+            "text4": "/api/uploadrequest/upload",
+            "text6": "File Request upload",
+            "text8": "Update",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1003",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1003",
+            "text1": "1003",
+            "userDescription": "Download File for Upload Request",
+            "privilegeType": "API",
+            "text4": "/api/uploadrequest/download",
+            "text6": "File Request download",
+            "text8": "Update",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1004",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1004",
+            "text1": "1004",
+            "userDescription": "Download trp program files",
+            "privilegeType": "API",
+            "text4": "/api/jobruninfo/1/taxreport/download",
+            "text6": "Reports",
+            "makerName": "File",
+            "text8": "Download",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1005",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1005",
+            "text1": "1005",
+            "userDescription": "Sr Users Communication",
+            "privilegeType": "API",
+            "text4": "/api/serviceRequest/srUsersCommunication",
+            "text6": "SrUsersCommunication",
+            "makerName": "Sr Communication",
+            "text8": "Submit",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "TRUE"
+        },
+        {
+            "privilegeNumber": "1006",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1006",
+            "text1": "1006",
+            "userDescription": "Create Data Download Configuration",
+            "privilegeType": "API",
+            "text4": "/api/datadownloadconfig/cre",
+            "text6": "Data Download Configuration",
+            "text8": "Create",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1007",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1007",
+            "text1": "1007",
+            "userDescription": "Inquire Data Download configuration",
+            "privilegeType": "API",
+            "text4": "/api/datadownloadconfig/inq",
+            "text6": "Data Download Configuration",
+            "text8": "Inquiry",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "TRUE"
+        },
+        {
+            "privilegeNumber": "1008",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1008",
+            "text1": "1008",
+            "userDescription": "Update Data Download configuration",
+            "privilegeType": "API",
+            "text4": "/api/datadownloadconfig/upd",
+            "text6": "Data Download Configuration",
+            "text8": "Update",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1009",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1009",
+            "text1": "1009",
+            "userDescription": "Create Data Download Request",
+            "privilegeType": "API",
+            "text4": "/api/datadownload/cre",
+            "text6": "Data Download Request",
+            "text8": "Create",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "TRUE"
+        },
+        {
+            "privilegeNumber": "1010",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1010",
+            "text1": "1010",
+            "userDescription": "Inquire Data Download request",
+            "privilegeType": "API",
+            "text4": "/api/datadownload/inq",
+            "text6": "Data Download Request",
+            "text8": "Inquiry",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "TRUE"
+        },
+        {
+            "privilegeNumber": "1011",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1011",
+            "text1": "1011",
+            "userDescription": "Update Data Download request",
+            "privilegeType": "API",
+            "text4": "/api/datadownload/upd",
+            "text6": "Data Download Request",
+            "text8": "Update",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "TRUE"
+        },
+        {
+            "privilegeNumber": "1012",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1012",
+            "text1": "1012",
+            "userDescription": "Search Data Download request",
+            "privilegeType": "API",
+            "text4": "/api/datadownload/getall",
+            "text6": "Data Download Request",
+            "text8": "Search",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "TRUE"
+        },
+        {
+            "privilegeNumber": "1013",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1013",
+            "text1": "1013",
+            "userDescription": "Create Application Lead Request",
+            "privilegeType": "API",
+            "text4": "/api/applead/cre",
+            "text6": "Application Lead Request",
+            "text8": "Create",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1014",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1014",
+            "text1": "1014",
+            "userDescription": "Inquire Application Lead request",
+            "privilegeType": "API",
+            "text4": "/api/applead/inq",
+            "text6": "Application Lead Request",
+            "text8": "Inquiry",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1015",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1015",
+            "text1": "1015",
+            "userDescription": "Update Application Lead request",
+            "privilegeType": "API",
+            "text4": "/api/applead/upd",
+            "text6": "Application Lead Request",
+            "text8": "Update",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1016",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1016",
+            "text1": "1016",
+            "userDescription": "Search Application Lead request",
+            "privilegeType": "API",
+            "text4": "/api/applead/getall",
+            "text6": "Application Lead Request",
+            "text8": "Search",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1017",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1017",
+            "text1": "1017",
+            "userDescription": "Upload Application Lead request",
+            "privilegeType": "API",
+            "text4": "/api/applead/upload",
+            "text6": "Application Lead Request",
+            "text8": "Upload",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1018",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1018",
+            "text1": "1018",
+            "userDescription": "Download Application Lead request",
+            "privilegeType": "API",
+            "text4": "/api/applead/download",
+            "text6": "Application Lead Request",
+            "text8": "Download",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1019",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1019",
+            "text1": "1019",
+            "userDescription": "Download file for Report Data",
+            "privilegeType": "API",
+            "text4": "/api/datadownload/download",
+            "text6": "Data Download",
+            "makerName": "Data Download",
+            "text8": "Download",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "TRUE"
+        },
+        {
+            "privilegeNumber": "102",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "102",
+            "text1": "102",
+            "userDescription": "Creates User data",
+            "privilegeType": "API",
+            "text4": "/api/user/cre",
+            "text6": "System User",
+            "text8": "Create",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1020",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1020",
+            "text1": "1020",
+            "userDescription": "Auth API for OnBaording SignUp",
+            "privilegeType": "API",
+            "text4": "/api/auth/onBoarding/signup",
+            "text6": "Auth API for OnBaording SignUp",
+            "makerName": "OnBoarding SignUp",
+            "text8": "OnBoarding SignUp",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        },
+        {
+            "privilegeNumber": "1021",
+            "type": "GENERAL",
+            "model": "PRIVILEDGE",
+            "modelKey": "1021",
+            "text1": "1021",
+            "userDescription": "Approve RetrievalRequest",
+            "privilegeType": "API",
+            "text4": "/api/retrievalrequest/approve",
+            "text6": "Service Request",
+            "makerName": "RetrievalRequest",
+            "text8": "Approve",
+            "checkerName": "TRUE",
+            "text10": "FALSE",
+            "text11": "FALSE"
+        }
+    ],
+    "GET_SERVICE_DIRECTORY": [
+        {
+            "id": "service_directory-default_MERCHANT_CREATION_SERVICE_PAYMENT_YESBANK",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_MERCHANT_CREATION_SERVICE_PAYMENT_YESBANK",
+            "allianceOrgKey": "default",
+            "serviceName": "yesPayments",
+            "providerId": "PAYMENT_YESBANK",
+            "name": "MERCHANT_CREATION_SERVICE"
+        },
+        {
+            "id": "service_directory-default_MERCHANT_CREATION_SERVICE_ONBOARDING_INTEGRATION_YESBANK",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_MERCHANT_CREATION_SERVICE_ONBOARDING_INTEGRATION_YESBANK",
+            "allianceOrgKey": "default",
+            "serviceName": "yesbank",
+            "providerId": "ONBOARDING_INTEGRATION_YESBANK",
+            "name": "MERCHANT_CREATION_SERVICE"
+        },
+        {
+            "id": "service_directory-default_MERCHANT_CREATION_SERVICE_UPI_YESBANK_MGS",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_MERCHANT_CREATION_SERVICE_UPI_YESBANK_MGS",
+            "allianceOrgKey": "default",
+            "serviceName": "mgs",
+            "providerId": "UPI_YESBANK_MGS",
+            "name": "MERCHANT_CREATION_SERVICE"
+        },
+        {
+            "id": "service_directory-default_CARD_AUTH_SERVICE_CARD_AUTH_PAYNEXT",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_CARD_AUTH_SERVICE_CARD_AUTH_PAYNEXT",
+            "allianceOrgKey": "default",
+            "serviceName": "Paynext Auth Service",
+            "providerId": "CARD_AUTH_PAYNEXT",
+            "name": "CARD_AUTH_SERVICE"
+        },
+        {
+            "id": "service_directory-default_UPI_SERVICE_REFUND_YESBANK_MGS",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_UPI_SERVICE_REFUND_YESBANK_MGS",
+            "allianceOrgKey": "default",
+            "serviceName": "srikanth",
+            "providerId": "REFUND_YESBANK_MGS",
+            "name": "UPI_SERVICE"
+        },
+        {
+            "id": "service_directory-default_UPI_SERVICE_NPST_EVOK_UPI",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_UPI_SERVICE_NPST_EVOK_UPI",
+            "allianceOrgKey": "default",
+            "serviceName": "NPSTEvokUPI",
+            "providerId": "NPST_EVOK_UPI",
+            "name": "UPI_SERVICE"
+        },
+        {
+            "id": "service_directory-default_PAY_OUT_SERVICE_PAYMENT_YESBANK",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_PAY_OUT_SERVICE_PAYMENT_YESBANK",
+            "allianceOrgKey": "default",
+            "serviceName": "FtxPayRequest",
+            "providerId": "PAYMENT_YESBANK",
+            "name": "PAY_OUT_SERVICE"
+        },
+        {
+            "id": "service_directory-default_LYRA_SERVICE_MERCHANT_ONBOARDING_LYRA",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_LYRA_SERVICE_MERCHANT_ONBOARDING_LYRA",
+            "allianceOrgKey": "default",
+            "serviceName": "Merchant Onboarding Lyra",
+            "providerId": "MERCHANT_ONBOARDING_LYRA",
+            "name": "LYRA_SERVICE"
+        },
+        {
+            "id": "service_directory-default_OAUTH2_SERVICE_OAUTH2_GOOLGE",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_OAUTH2_SERVICE_OAUTH2_GOOLGE",
+            "allianceOrgKey": "default",
+            "serviceName": "ToucanMerchantLogin",
+            "providerId": "OAUTH2_GOOLGE",
+            "name": "OAUTH2_SERVICE"
+        },
+        {
+            "id": "service_directory-default_THREE_DS_SERVICE_LYRA_THREE_DS",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_THREE_DS_SERVICE_LYRA_THREE_DS",
+            "allianceOrgKey": "default",
+            "serviceName": "three DS lyra",
+            "providerId": "LYRA_THREE_DS",
+            "name": "THREE_DS_SERVICE"
+        },
+        {
+            "id": "service_directory-default_ALT_ID_SERVICE_LYRA_ALT_ID",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_ALT_ID_SERVICE_LYRA_ALT_ID",
+            "allianceOrgKey": "default",
+            "serviceName": "Lyra Alt ID",
+            "providerId": "LYRA_ALT_ID",
+            "name": "ALT_ID_SERVICE"
+        },
+        {
+            "id": "service_directory-default_SMS_SERVICE_SMS_DIGIMILES",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_SMS_SERVICE_SMS_DIGIMILES",
+            "allianceOrgKey": "default",
+            "serviceName": "TOUCAN",
+            "providerId": "SMS_DIGIMILES",
+            "name": "SMS_SERVICE"
+        },
+        {
+            "id": "service_directory-default_UPI_SERVICE_UPI_YESBANK_MGS",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_UPI_SERVICE_UPI_YESBANK_MGS",
+            "allianceOrgKey": "default",
+            "serviceName": "Yes Bank MGS",
+            "providerId": "UPI_YESBANK_MGS",
+            "name": "UPI_SERVICE"
+        },
+        {
+            "id": "service_directory-default_EMAIL_SERVICE_EMAIL_STANDARD",
+            "model": "SERVICE_DIRECTORY",
+            "modelKey": "default_EMAIL_SERVICE_EMAIL_STANDARD",
+            "allianceOrgKey": "default",
+            "serviceName": "Email Service UAT",
+            "providerId": "EMAIL_MAILGUN",
+            "name": "EMAIL_SERVICE"
+        }
+    ],
+    "GET_MAKER_CHECKER": [
+        {
+            "id": "makercheckerstore-672a4bb7be7dd2062dbe4034",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672a4bb7be7dd2062dbe4034",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "pavan",
+            "checkerName": "pavan varma",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-05T22:15:43.876",
+            "expiryDateTime": "2024-11-10T22:15:43.876",
+            "dateTime3": "2024-11-06T11:55:02.502"
+        },
+        {
+            "id": "makercheckerstore-673478142ec7ac3defe5f8e0",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "673478142ec7ac3defe5f8e0",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-13T15:27:40.07",
+            "expiryDateTime": "2024-11-18T15:27:40.07",
+            "dateTime3": "2024-11-13T16:29:43.496"
+        },
+        {
+            "id": "makercheckerstore-673487372e373c72f284d5c2",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "673487372e373c72f284d5c2",
+            "allianceOrgKey": "default",
+            "text1": "Abhinaya Abhinaya",
+            "modelName": "Disputes",
+            "status": "CLOSE_SUCCESS",
+            "text6": "DISPUTE_MANAGEMENT",
+            "makerName": "abhinaya",
+            "text8": "azhar",
+            "checkerName": "Azhar Sk",
+            "text11": "/api/dismgmt/checker/upd",
+            "entryDateTime": "2024-11-13T16:32:15.444",
+            "expiryDateTime": "2024-11-18T16:32:15.444",
+            "dateTime3": "2024-11-13T16:33:28.079"
+        },
+        {
+            "id": "makercheckerstore-673488ec2e373c72f284d5f1",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "673488ec2e373c72f284d5f1",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-13T16:39:32.387",
+            "expiryDateTime": "2024-11-18T16:39:32.387",
+            "dateTime3": "2024-11-13T16:40:29.126"
+        },
+        {
+            "id": "makercheckerstore-6734886a2e373c72f284d5dd",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "6734886a2e373c72f284d5dd",
+            "allianceOrgKey": "default",
+            "text1": "Abhinaya Abhinaya",
+            "modelName": "Disputes",
+            "status": "CLOSE_SUCCESS",
+            "text6": "DISPUTE_MANAGEMENT",
+            "makerName": "abhinaya",
+            "text8": "azhar",
+            "checkerName": "Azhar Sk",
+            "text11": "/api/dismgmt/checker/upd",
+            "entryDateTime": "2024-11-13T16:37:22.935",
+            "expiryDateTime": "2024-11-18T16:37:22.935",
+            "dateTime3": "2024-11-13T16:41:56.766"
+        },
+        {
+            "id": "makercheckerstore-673489ab2e373c72f284d627",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "673489ab2e373c72f284d627",
+            "allianceOrgKey": "default",
+            "text1": "Abhinaya Abhinaya",
+            "modelName": "Disputes",
+            "status": "OPEN",
+            "text6": "DISPUTE_MANAGEMENT",
+            "makerName": "abhinaya",
+            "text8": "azhar",
+            "text11": "/api/dismgmt/checker/upd",
+            "entryDateTime": "2024-11-13T16:42:43.762",
+            "expiryDateTime": "2024-11-18T16:42:43.762"
+        },
+        {
+            "id": "makercheckerstore-6734929d7f080452fe48b968",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "6734929d7f080452fe48b968",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-13T17:20:53.458",
+            "expiryDateTime": "2024-11-18T17:20:53.458",
+            "dateTime3": "2024-11-13T17:21:04.241"
+        },
+        {
+            "id": "makercheckerstore-67346efa2ec7ac3defe5f331",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "67346efa2ec7ac3defe5f331",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-13T14:48:50.221",
+            "expiryDateTime": "2024-11-18T14:48:50.221",
+            "dateTime3": "2024-11-13T14:49:10.883"
+        },
+        {
+            "id": "makercheckerstore-673474d92ec7ac3defe5f7b8",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "673474d92ec7ac3defe5f7b8",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "OPEN",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-13T15:13:53.885",
+            "expiryDateTime": "2024-11-18T15:13:53.885"
+        },
+        {
+            "id": "makercheckerstore-672b0f478a99b155aacabc7c",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b0f478a99b155aacabc7c",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T12:10:07.323",
+            "expiryDateTime": "2024-11-11T12:10:07.323",
+            "dateTime3": "2024-11-06T12:14:43.183"
+        },
+        {
+            "id": "makercheckerstore-672b399d39a19f3a54339ce5",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b399d39a19f3a54339ce5",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T15:10:45.821",
+            "expiryDateTime": "2024-11-11T15:10:45.821",
+            "dateTime3": "2024-11-06T15:22:17.551"
+        },
+        {
+            "id": "makercheckerstore-672b373cbd24b32fb7d2496d",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b373cbd24b32fb7d2496d",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "OPEN",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T15:00:36.791",
+            "expiryDateTime": "2024-11-11T15:00:36.791"
+        },
+        {
+            "id": "makercheckerstore-672b433239a19f3a54339d4f",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b433239a19f3a54339d4f",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T15:51:38.184",
+            "expiryDateTime": "2024-11-11T15:51:38.184",
+            "dateTime3": "2024-11-06T15:53:25.184"
+        },
+        {
+            "id": "makercheckerstore-672b460f39a19f3a54339d78",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b460f39a19f3a54339d78",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T16:03:51.954",
+            "expiryDateTime": "2024-11-11T16:03:51.954",
+            "dateTime3": "2024-11-06T16:04:18.044"
+        },
+        {
+            "id": "makercheckerstore-672b54c939a19f3a54339dc4",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b54c939a19f3a54339dc4",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T17:06:41.187",
+            "expiryDateTime": "2024-11-11T17:06:41.187",
+            "dateTime3": "2024-11-06T17:07:56.334"
+        },
+        {
+            "id": "makercheckerstore-672b569a39a19f3a54339dd4",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b569a39a19f3a54339dd4",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T17:14:26.742",
+            "expiryDateTime": "2024-11-11T17:14:26.742",
+            "dateTime3": "2024-11-06T17:14:51.899"
+        },
+        {
+            "id": "makercheckerstore-672c4776a0d3dc56fd835022",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672c4776a0d3dc56fd835022",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-07T10:22:06.857",
+            "expiryDateTime": "2024-11-12T10:22:06.857",
+            "dateTime3": "2024-11-07T10:22:22.756"
+        },
+        {
+            "id": "makercheckerstore-672c8702b0d0cb34c8f465c2",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672c8702b0d0cb34c8f465c2",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-07T14:53:14.171",
+            "expiryDateTime": "2024-11-12T14:53:14.171",
+            "dateTime3": "2024-11-07T14:54:04.426"
+        },
+        {
+            "id": "makercheckerstore-672b129f8a99b155aacabd03",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b129f8a99b155aacabd03",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "REJECTED",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T12:24:23.198",
+            "expiryDateTime": "2024-11-11T12:24:23.198",
+            "dateTime3": "2024-11-06T12:26:12.384"
+        },
+        {
+            "id": "makercheckerstore-672b19848a99b155aacabfff",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "672b19848a99b155aacabfff",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-06T12:53:48.627",
+            "expiryDateTime": "2024-11-11T12:53:48.627",
+            "dateTime3": "2024-11-06T12:54:28.225"
+        },
+        {
+            "id": "makercheckerstore-6729e793c059c54b394eeb27",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "6729e793c059c54b394eeb27",
+            "allianceOrgKey": "default",
+            "text1": "Mounika Lakshmi",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "mounika",
+            "text8": "mounika",
+            "checkerName": "Mounika Lakshmi",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-11-05T15:08:27.794",
+            "expiryDateTime": "2024-11-10T15:08:27.794",
+            "dateTime3": "2024-11-18T15:18:44.031"
+        },
+        {
+            "id": "makercheckerstore-674fee80b18458577a631655",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "674fee80b18458577a631655",
+            "allianceOrgKey": "default",
+            "text1": "Abhilash Mahajan",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "abhilash",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-12-04T11:24:08.118",
+            "expiryDateTime": "2024-12-09T11:24:08.118",
+            "dateTime3": "2024-12-04T11:24:34.531"
+        },
+        {
+            "id": "makercheckerstore-674fefc4b18458577a631666",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "674fefc4b18458577a631666",
+            "allianceOrgKey": "default",
+            "text1": "Abhilash Mahajan",
+            "modelName": "File Upload Request",
+            "status": "CLOSE_SUCCESS",
+            "text6": "FILEUPLOADREQUEST",
+            "makerName": "abhilash",
+            "text8": "admin@default",
+            "checkerName": "admin default",
+            "text11": "/api/uploadrequest/check",
+            "entryDateTime": "2024-12-04T11:29:32.853",
+            "expiryDateTime": "2024-12-09T11:29:32.853",
+            "dateTime3": "2024-12-04T11:30:02.229"
+        },
+        {
+            "id": "makercheckerstore-67582af31bba43336ae39c4d",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "67582af31bba43336ae39c4d",
+            "allianceOrgKey": "default",
+            "text1": "Abhinaya Abhinaya",
+            "modelName": "Disputes",
+            "status": "OPEN",
+            "text6": "DISPUTE_MANAGEMENT",
+            "makerName": "abhinaya",
+            "text8": "azhar",
+            "text11": "/api/dismgmt/checker/upd",
+            "entryDateTime": "2024-12-10T17:20:11.873",
+            "expiryDateTime": "2024-12-15T17:20:11.873"
+        },
+        {
+            "id": "makercheckerstore-6777b236486d6f55754f90ce",
+            "type": "GENERAL",
+            "model": "MAKERCHECKERSTORE",
+            "modelKey": "6777b236486d6f55754f90ce",
+            "allianceOrgKey": "default",
+            "text1": "Abhinaya Abhinaya",
+            "modelName": "Disputes",
+            "status": "OPEN",
+            "text6": "DISPUTE_MANAGEMENT",
+            "makerName": "abhinaya",
+            "text8": "alekhya",
+            "text11": "/api/dismgmt/checker/upd",
+            "entryDateTime": "2025-01-03T15:17:34.529",
+            "expiryDateTime": "2025-01-08T15:17:34.529"
+        }
+    ],
+    "GET_REPORTS": [
+        {
+            "id": "jobruninfo-67bd4b616eebe259036a712a",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67bd4b616eebe259036a712a",
+            "text1": "67bd4b616eebe259036a712a",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-25T10:17:29.060328714",
+            "text6": "2025-02-25T10:17:29.060342522",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-25",
+            "date2": "2025-02-25",
+            "startTime": "2025-02-25T10:17:29.06",
+            "endTime": "2025-02-25T10:17:29.06"
+        },
+        {
+            "id": "jobruninfo-67bbf9e2118b2300c66701c9",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67bbf9e2118b2300c66701c9",
+            "text1": "67bbf9e2118b2300c66701c9",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-24T10:17:30.288846970",
+            "text6": "2025-02-24T10:17:30.290958099",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-24",
+            "date2": "2025-02-24",
+            "startTime": "2025-02-24T10:17:30.29",
+            "endTime": "2025-02-24T10:17:30.288"
+        },
+        {
+            "id": "jobruninfo-67baa82b609c304adcf094b0",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67baa82b609c304adcf094b0",
+            "text1": "67baa82b609c304adcf094b0",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-23T10:16:35.452381108",
+            "text6": "2025-02-23T10:16:35.452388795",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-23",
+            "date2": "2025-02-23",
+            "startTime": "2025-02-23T10:16:35.452",
+            "endTime": "2025-02-23T10:16:35.452"
+        },
+        {
+            "id": "jobruninfo-67b956c46fc37b77a7e0b45c",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67b956c46fc37b77a7e0b45c",
+            "text1": "67b956c46fc37b77a7e0b45c",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-22T10:17:00.181753085",
+            "text6": "2025-02-22T10:17:00.181759825",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-22",
+            "date2": "2025-02-22",
+            "startTime": "2025-02-22T10:17:00.181",
+            "endTime": "2025-02-22T10:17:00.181"
+        },
+        {
+            "id": "jobruninfo-67b8058a5fd7b7137649753b",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67b8058a5fd7b7137649753b",
+            "text1": "67b8058a5fd7b7137649753b",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-21T10:18:10.000035125",
+            "text6": "2025-02-21T10:18:10.000044411",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-21",
+            "date2": "2025-02-21",
+            "startTime": "2025-02-21T10:18:10",
+            "endTime": "2025-02-21T10:18:10"
+        },
+        {
+            "id": "jobruninfo-67b6b3af02258245f9e6e8e7",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67b6b3af02258245f9e6e8e7",
+            "text1": "67b6b3af02258245f9e6e8e7",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-20T10:16:39.053119493",
+            "text6": "2025-02-20T10:16:39.053126937",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-20",
+            "date2": "2025-02-20",
+            "startTime": "2025-02-20T10:16:39.053",
+            "endTime": "2025-02-20T10:16:39.053"
+        },
+        {
+            "id": "jobruninfo-67b5627c3f85583725bb5fa2",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67b5627c3f85583725bb5fa2",
+            "text1": "67b5627c3f85583725bb5fa2",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-19T10:17:56.718535337",
+            "text6": "2025-02-19T10:17:56.718543510",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-19",
+            "date2": "2025-02-19",
+            "startTime": "2025-02-19T10:17:56.718",
+            "endTime": "2025-02-19T10:17:56.718"
+        },
+        {
+            "id": "jobruninfo-67b410a1dfdbe54f46793c6b",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67b410a1dfdbe54f46793c6b",
+            "text1": "67b410a1dfdbe54f46793c6b",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-18T10:16:25.098214140",
+            "text6": "2025-02-18T10:16:25.098221771",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-18",
+            "date2": "2025-02-18",
+            "startTime": "2025-02-18T10:16:25.098",
+            "endTime": "2025-02-18T10:16:25.098"
+        },
+        {
+            "id": "jobruninfo-67b2bf1d7923e7752835dd48",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67b2bf1d7923e7752835dd48",
+            "text1": "67b2bf1d7923e7752835dd48",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-17T10:16:21.126358867",
+            "text6": "2025-02-17T10:16:21.126366924",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-17",
+            "date2": "2025-02-17",
+            "startTime": "2025-02-17T10:16:21.126",
+            "endTime": "2025-02-17T10:16:21.126"
+        },
+        {
+            "id": "jobruninfo-67b16d9d1e1c3f5d095c71ca",
+            "type": "GENERAL",
+            "model": "JOBRUNINFO",
+            "modelKey": "67b16d9d1e1c3f5d095c71ca",
+            "text1": "67b16d9d1e1c3f5d095c71ca",
+            "text2": "tbr015",
+            "text3": "tbr015",
+            "text4": "SUCCESS",
+            "text5": "2025-02-16T10:16:21.646910481",
+            "text6": "2025-02-16T10:16:21.646918474",
+            "name": "Daily auth transactions",
+            "reportId": "R015",
+            "date1": "2025-02-16",
+            "date2": "2025-02-16",
+            "startTime": "2025-02-16T10:16:21.646",
+            "endTime": "2025-02-16T10:16:21.646"
+        }
+    ],
+    "GET_SWITCH_DESTINATIONS": [
+        {
+            "id": "1",
+            "destination": "VISA",
+            "name": "Visa",
+            "destinationId": "Visa Id"
+        },
+        {
+            "id": "2",
+            "destination": "VISA",
+            "name": "Visa",
+            "destinationId": "Visa Id"
+        },
+        {
+            "id": "3",
+            "destination": "MASTERCARD",
+            "name": "MasterCard",
+            "destinationId": "MasterCard Id"
+        },
+        {
+            "id": "4",
+            "destination": "AMEX",
+            "name": "American Express",
+            "destinationId": "Amex Id"
+        },
+        {
+            "id": "5",
+            "destination": "DISCOVER",
+            "name": "Discover",
+            "destinationId": "Discover Id"
+        },
+        {
+            "id": "6",
+            "destination": "RUPAY",
+            "name": "RuPay",
+            "destinationId": "RuPay Id"
+        },
+        {
+            "id": "7",
+            "destination": "JCB",
+            "name": "JCB",
+            "destinationId": "JCB Id"
+        },
+        {
+            "id": "8",
+            "destination": "DINERS",
+            "name": "Diners Club",
+            "destinationId": "Diners Id"
+        },
+        {
+            "id": "9",
+            "destination": "UNIONPAY",
+            "name": "UnionPay",
+            "destinationId": "UnionPay Id"
+        }
+    ],
+    "GET_SCHEME_CONNECTION": [
+        {
+            "destination": "Visa",
+            "connectionId": "C001",
+            "connectionPoolId": "P001",
+            "ip": "192.168.1.10",
+            "port": "8080",
+            "mode": "Client"
+        },
+        {
+            "destination": "MasterCard",
+            "connectionId": "C002",
+            "connectionPoolId": "P002",
+            "ip": "192.168.1.11",
+            "port": "8081",
+            "mode": "Server"
+        },
+        {
+            "destination": "RuPay",
+            "connectionId": "C003",
+            "connectionPoolId": "P003",
+            "ip": "192.168.1.12",
+            "port": "8082",
+            "mode": "Client"
+        },
+        {
+            "destination": "Visa",
+            "connectionId": "C004",
+            "connectionPoolId": "P004",
+            "ip": "192.168.1.13",
+            "port": "8083",
+            "mode": "Server"
+        },
+        {
+            "destination": "MasterCard",
+            "connectionId": "C005",
+            "connectionPoolId": "P005",
+            "ip": "192.168.1.14",
+            "port": "8084",
+            "mode": "Client"
+        },
+        {
+            "destination": "RuPay",
+            "connectionId": "C006",
+            "connectionPoolId": "P006",
+            "ip": "192.168.1.15",
+            "port": "8085",
+            "mode": "Server"
+        },
+        {
+            "destination": "Visa",
+            "connectionId": "C007",
+            "connectionPoolId": "P007",
+            "ip": "192.168.1.16",
+            "port": "8086",
+            "mode": "Client"
+        },
+        {
+            "destination": "MasterCard",
+            "connectionId": "C008",
+            "connectionPoolId": "P008",
+            "ip": "192.168.1.17",
+            "port": "8087",
+            "mode": "Server"
+        },
+        {
+            "destination": "RuPay",
+            "connectionId": "C009",
+            "connectionPoolId": "P009",
+            "ip": "192.168.1.18",
+            "port": "8088",
+            "mode": "Client"
+        },
+        {
+            "destination": "Visa",
+            "connectionId": "C010",
+            "connectionPoolId": "P010",
+            "ip": "192.168.1.19",
+            "port": "8089",
+            "mode": "Server"
+        }
+    ],
+    "GET_TXNSUPPORTED_DETAILS": [
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        },
+        {
+            "txnCntrlRef": "PURCHASE",
+            " message": "Purchase01D",
+            "terminalTc": "00",
+            "txnSource": "POS",
+            "txnExpiry": "7",
+            "isSingle": "false"
+        }
+    ]
+}
