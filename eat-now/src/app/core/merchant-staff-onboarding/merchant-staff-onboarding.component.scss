@@ -1,28 +1,3 @@
-resident-body {
-    background-color: #FEFEFE !important;
-    width: 100%;
-    height: 100vh;
-}
-
-.example-tab-icon {
-    margin-right: 8px;
-}
-
-.card {
-    width: 1412px;
-    height: 91px;
-    flex-shrink: 0;
-    border-radius: 8px;
-    background: rgba(239, 239, 239, 0.36);
-}
-
-.no-shadow {
-    box-shadow: none !important;
-    margin-bottom: 50px !important;
-
-}
-
-
 .breadcrum-card {
     height: 140px !important;
     width: 1380px !important;
@@ -46,56 +21,16 @@ resident-body {
 
 }
 
-
-
-// .form-width {
-//     width: 1000px;
-//     height: 40px;
-// }
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.button-space {
-    margin-right: 10px;
-    /* Adjust the value as needed */
-}
-
 .form-control-file {
     border: 1px solid #ced4da;
-    padding: 5px;
+    padding: 15px;
     border-radius: 4px;
 }
 
+
 .custom-file-width {
-    width: 100%;
-}
-
-.custom-file-width1 {
-    width: 96%;
+    width: 89% !important;
     margin-left: 10px !important;
-}
-
-.custom-icon {
-    font-size: 20px;
-    margin-top: 2px;
-    // color: grey;
-}
-
-//family fields
-.family-field {
-    width: 320px;
-    height: 40px;
-
-}
-
-.description-width {
-    width: 88%;
-    min-width: 400px;
-
 }
 
 .save-btn {

@@ -7,14 +7,11 @@
     margin-left: 10px !important;
 }
 
-.example-tab-icon {
-    margin-right: 8px;
-}
-
-mat-card {
-    height: 90px;
+.breadcrum-card {
+    height: 140px !important;
+    width: 1380px !important;
     flex-shrink: 0;
-    border-radius: 8px;
+    border-radius: 6px;
     background-color: transparent !important;
     border-radius: 8px !important;
     margin: 30px 10px 10px 10px;
@@ -22,53 +19,57 @@ mat-card {
 
 }
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
+.stepper-card {
+    width: 1380px !important;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background-color: transparent !important;
+    border-radius: 8px !important;
+    margin: 30px 10px 10px 10px;
+    padding: 0px 20px;
 
-.button-space {
-    margin-right: 10px;
-    /* Adjust the value as needed */
 }
 
 .form-control-file {
-    border: 1px solid #b1b6bb;
-    padding: 10px;
+    border: 1px solid #ced4da;
+    padding: 15px;
     border-radius: 4px;
 }
 
-.custom-file-width {
-    width: 100%;
-}
 
-.custom-file-width1 {
-    width: 88%;
+.custom-file-width {
+    width: 89% !important;
     margin-left: 10px !important;
 }
 
-.custom-icon {
-    font-size: 20px;
-    margin-top: 2px;
-    // color: grey;
-}
-
-//family fields
-.family-field {
-    width: 320px;
-    height: 40px;
+.save-btn {
+    width: 176px;
+    height: 48px;
+    background: #1E1661 !important;
+    color: #FFF !important;
+    gap: 0px;
+    border-radius: 4px 0px 0px 0px;
+    opacity: 0px;
 
 }
 
-.placeholder-content {
-    text-align: center;
-    margin-bottom: 10px;
+.cancel-btn {
+    width: 176px;
+    height: 48px;
+    background-color: none !important;
+    color: #64748B !important;
+    gap: 0px;
+    opacity: 0px;
+
 }
 
-img {
-    max-width: 100%;
-    height: auto;
+button.enabled {
+    background-color: #1E1661 !important;
+    color: #FFF !important;
+}
+
+button.disabled {
+    background-color: grey !important;
 }
 
 ::ng-deep .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab {
@@ -80,28 +81,9 @@ img {
     color: #1E1661 !important;
 }
 
-.mat-mdc-row .mat-mdc-cell {
-    // border-bottom: 1px solid transparent;
-    border-top: 1px solid transparent;
-    margin-top: 5px;
-}
-
-
-.custom-tab-group .mat-tab-body-wrapper {
-    padding-left: 20px;
-}
-
-.mat-form-field {
-    width: 100%;
-}
-
-.text-start {
-    text-align: left;
-}
-
 
 .footer-container {
-    position:fixed;
+    position: fixed;
     bottom: 0;
     width: 80%;
 }
