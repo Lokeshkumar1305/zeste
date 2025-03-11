@@ -236,19 +236,6 @@ export class EnCommonTableComponent {
         disableClose: true,
         data: dataObj
       });
-    } else if (tableID == 'GET_USERS') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-        data: dataObj
-      });
 
     } else if (tableID == 'GET_EATNOWSTAFF_DETAILS') {
       dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {

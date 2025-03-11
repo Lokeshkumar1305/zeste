@@ -22,9 +22,6 @@ export class EnTableSearchviewService {
       case 'GET_EATNOWSTAFF_DETAILS':
         returnValue = 'Eat Now Staff';
         break;
-      case 'GET_USERS':
-        returnValue = 'Users';
-        break;
       default:
         break;
     }
@@ -41,9 +38,6 @@ export class EnTableSearchviewService {
         break;
       case 'GET_EATNOWSTAFF_DETAILS':
         returnValue = '';
-        break;
-      case 'GET_USERS':
-        returnValue = 'View all the Active users, Create new users, assign roles and permissions.';
         break;
       default:
         break;
@@ -88,16 +82,6 @@ export class EnTableSearchviewService {
         }
         displayedColumns = Object.keys(columnNames);
         break;
-      case 'GET_USERS':
-        columnNames = {
-          fullName: 'Full Name',
-          userId: 'User Id',
-          email: 'Email Id',
-          status: 'Status',
-          action: 'Actions'
-        }
-        displayedColumns = Object.keys(columnNames);
-        break;
       default:
         break;
     }
@@ -115,9 +99,6 @@ export class EnTableSearchviewService {
         break;
       case 'GET_EATNOWSTAFF_DETAILS':
         columnName = [' staffId', 'staffName', 'role', 'contactNumber', ' status', 'action'];
-        break;
-      case 'GET_USERS':
-        columnName = ['fullName', 'userId', ' email', ' status',];
         break;
       default:
         break;
