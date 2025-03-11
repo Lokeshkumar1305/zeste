@@ -1,5 +1,5 @@
 <div class="show-scroll">
-  <mat-toolbar style="background-color: white; border-bottom: 1px solid #e0e0e0;">
+  <mat-toolbar style="background-color: white; border-bottom: 1px solid #e0e0e0;" *ngIf="loginService.isUserLoggedIn()">
     <button mat-icon-button  (click)="toggleSidenav()">
       <mat-icon>menu</mat-icon>
     </button>
@@ -55,7 +55,7 @@
       *ngIf="loginService.isUserLoggedIn()">
       <app-sidenav></app-sidenav>
     </mat-sidenav>
-    <div class="gap" *ngIf="loginService.isUserLoggedIn()"></div>
+    <!-- <div class="gap" *ngIf="loginService.isUserLoggedIn()"></div> -->
     <router-outlet></router-outlet>
   </mat-sidenav-container>
 </div>
