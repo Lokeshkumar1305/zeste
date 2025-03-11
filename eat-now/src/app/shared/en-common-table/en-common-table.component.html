@@ -19,8 +19,13 @@
                     <mat-icon matSuffix color="accent">search</mat-icon>
                 </mat-form-field>
             </div>
-            <button mat-flat-button color="accent" (click)="newRow(tableID)" class="mb-3">
-                <mat-icon class="material-symbols-outlined">add</mat-icon>New Row</button>
+            <button mat-flat-button color="accent" *ngIf="tableID == 'GET_MERCHANT_DETAILS'" (click)="newRow(tableID)"
+                class="mb-3">
+                <mat-icon class="material-symbols-outlined">add</mat-icon>Add Outlets</button>
+
+            <button mat-flat-button color="accent" *ngIf="tableID == 'GET_ROLES'" (click)="newRow(tableID)"
+                class="mb-3">
+                <mat-icon class="material-symbols-outlined">add</mat-icon>New Roles</button>
         </div>
 
     </mat-card>

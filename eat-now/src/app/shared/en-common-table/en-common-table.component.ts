@@ -156,7 +156,7 @@ export class EnCommonTableComponent {
   // }
   newRow(tableID: string) {
     let dialogRef!: any;
-    if (tableID == 'GET_SWITCH_DESTINATIONS') {
+    if (tableID == 'GET_MERCHANT_DETAILS') {
       dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
         width: '80%',
         height: '700px',
@@ -168,7 +168,7 @@ export class EnCommonTableComponent {
         panelClass: 'custom-dialog-animation',
         disableClose: true,
       });
-    } else if (tableID == 'GET_ROUTING_RULES') {
+    } else if (tableID == 'GET_MERCHANTSTAFF_DETAILS') {
       dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
         width: '80%',
         height: '700px',
@@ -180,19 +180,7 @@ export class EnCommonTableComponent {
         panelClass: 'custom-dialog-animation',
         disableClose: true,
       });
-    } else if (tableID == 'GET_SCHEME_CONNECTION') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-      });
-    } else if (tableID == 'GET_BIN_DETAILS') {
+    } else if (tableID == 'GET_EATNOWSTAFF_DETAILS') {
       dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
         width: '80%',
         height: '700px',
@@ -205,42 +193,6 @@ export class EnCommonTableComponent {
         disableClose: true,
       });
     } else if (tableID == 'GET_USERS') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-      });
-    } else if (tableID == 'GET_ROLES') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-      });
-    } else if (tableID == 'GET_PRIVILEGES') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-      });
-    } else if (tableID == 'GET_SERVICE_DIRECTORY') {
       dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
         width: '80%',
         height: '700px',
@@ -258,7 +210,7 @@ export class EnCommonTableComponent {
   }
   editRow(tableID: string, dataObj: any) {
     let dialogRef!: any;
-    if (tableID == 'GET_SWITCH_DESTINATIONS') {
+    if (tableID == 'GET_MERCHANT_DETAILS') {
       dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
         width: '80%',
         height: '700px',
@@ -271,33 +223,7 @@ export class EnCommonTableComponent {
         disableClose: true,
         data: dataObj
       });
-    } else if (tableID == 'GET_ROUTING_RULES') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-        data: dataObj
-      });
-    } else if (tableID == 'GET_SCHEME_CONNECTION') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-        data: dataObj
-      });
-    } else if (tableID == 'GET_BIN_DETAILS') {
+    } else if (tableID == 'GET_MERCHANTSTAFF_DETAILS') {
       dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
         width: '80%',
         height: '700px',
@@ -323,46 +249,8 @@ export class EnCommonTableComponent {
         disableClose: true,
         data: dataObj
       });
-    } else if (tableID == 'GET_ROLES') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-        data: dataObj
-      });
-    } else if (tableID == 'GET_PRIVILEGES') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-        data: dataObj
-      });
-    } else if (tableID == 'GET_SERVICE_DIRECTORY') {
-      dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
-        width: '80%',
-        height: '700px',
-        position: { top: '0px', right: '0px' },
-        autoFocus: false,
-        minHeight: '100vh',
-        maxWidth: '50vw',
-        minWidth: '600px',
-        panelClass: 'custom-dialog-animation',
-        disableClose: true,
-        data: dataObj
-      });
-    } else if (tableID == 'GET_REPORTS') {
+
+    } else if (tableID == 'GET_EATNOWSTAFF_DETAILS') {
       dialogRef = this.dialog.open(MerchantStaffOnboardingComponent, {
         width: '80%',
         height: '700px',
