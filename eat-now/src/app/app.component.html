@@ -1,4 +1,4 @@
-<div >
+<div class="show-scroll">
   <mat-toolbar style="background-color: white; border-bottom: 1px solid #e0e0e0;" *ngIf="loginService.isUserLoggedIn()">
     <button mat-icon-button  (click)="toggleSidenav()">
       <mat-icon>menu</mat-icon>
@@ -49,7 +49,7 @@
     </mat-menu>
   </mat-toolbar>
 
-  <mat-sidenav-container class="show-scroll" >
+  <mat-sidenav-container>
     <mat-sidenav #sidenav mode="side" [opened]="true" [style.width]="sidenavWidth"
       *ngIf="loginService.isUserLoggedIn()">
       <app-sidenav></app-sidenav>

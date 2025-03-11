@@ -1,15 +1,6 @@
-.outletContainer {
-    background-color: #FEFEFE !important;
-    width: 95% !important;
-    height: 100vh;
-    padding: 5px;
-    justify-content: center;
-    margin-left: 10px !important;
-}
-
 .breadcrum-card {
     height: 140px !important;
-    width: 1380px !important;
+    // width: 1380px !important;
     flex-shrink: 0;
     border-radius: 6px;
     background-color: transparent !important;
@@ -20,7 +11,7 @@
 }
 
 .stepper-card {
-    width: 1380px !important;
+    // width: 1380px !important;
     flex-shrink: 0;
     border-radius: 6px;
     background-color: transparent !important;
@@ -42,48 +33,7 @@
     margin-left: 10px !important;
 }
 
-.save-btn {
-    width: 176px;
-    height: 48px;
-    background: #1E1661 !important;
-    color: #FFF !important;
-    gap: 0px;
-    border-radius: 4px 0px 0px 0px;
-    opacity: 0px;
-
-}
-
-.cancel-btn {
-    width: 176px;
-    height: 48px;
-    background-color: none !important;
-    color: #64748B !important;
-    gap: 0px;
-    opacity: 0px;
-
-}
-
-button.enabled {
-    background-color: #1E1661 !important;
-    color: #FFF !important;
-}
-
-button.disabled {
-    background-color: grey !important;
-}
-
-::ng-deep .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab {
-    flex-grow: 0 !important;
-}
-
-::ng-deep .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
-.mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
-    color: #1E1661 !important;
-}
-
-
-.footer-container {
-    position: fixed;
-    bottom: 0;
-    width: 80%;
+mat-card{
+    width: 1200px;
+    border-radius: 8px;
 }

@@ -1,5 +1,5 @@
 .show-scroll {
-  overflow: auto !important;
+  overflow: hidden;
   min-width: 1200px;
   height: 100%;
 }
@@ -8,10 +8,18 @@
   height: 100%;
 }
 
-.gap {
-  height: 64px;
-  width: 100%;
+.mat-sidenav-container {
+  height: 100%;
 }
+
+.mat-sidenav {
+  overflow-y: auto;
+}
+
+.mat-sidenav-content {
+  overflow: auto;
+}
+
 
 .show-scroll::-webkit-scrollbar {
   display: none;
@@ -25,16 +33,10 @@
   /* Firefox */
 }
 
-.expanded {
-  width: 270px;
-}
-
-.collapsed {
-  width: 100px;
-}
 .mat-drawer-side.collapsed {
   box-shadow: 0 10px 20px rgba(0, 0, 0, .12);
 }
+
 .menuProfile {
   border: none;
   background-color: transparent;
@@ -48,4 +50,3 @@
     border-radius: 50%;
   }
 }
-
