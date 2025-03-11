@@ -23,10 +23,22 @@ resident-body {
 }
 
 
-mat-card {
-    height: 90px;
+.breadcrum-card {
+    height: 140px !important;
+    width: 1380px !important;
     flex-shrink: 0;
-    border-radius: 8px;
+    border-radius: 6px;
+    background-color: transparent !important;
+    border-radius: 8px !important;
+    margin: 30px 10px 10px 10px;
+    padding: 0px 20px;
+
+}
+
+.stepper-card {
+    width: 1380px !important;
+    flex-shrink: 0;
+    border-radius: 6px;
     background-color: transparent !important;
     border-radius: 8px !important;
     margin: 30px 10px 10px 10px;
