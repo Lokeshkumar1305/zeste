@@ -42,7 +42,6 @@ export class MerchantStaffOnboardingComponent {
   selectedTabIndex: number = 0;
   isCreateMode!: boolean;
   datasource = new Array<EmergencyContactInfo>();
-  datasource1 = new Array<WorkExperience>();
   datasource2 = new Array<Skills>();
   displayedColumns: string[] = ['position'];
   sameAsPermanent: boolean = false;
@@ -69,13 +68,6 @@ export class MerchantStaffOnboardingComponent {
     })
   }
 
-  addWorkRow() {
-    const newRow = new WorkExperience();
-    this.datasource1.push(newRow);
-
-    this.datasource = [...this.datasource];
-    // this.duplicateValues = [];
-  }
 
   addEmergencyRow() {
     const newRow = new EmergencyContactInfo();
@@ -427,10 +419,11 @@ export class MerchantStaffOnboardingComponent {
 
 export class PersonalInformation {
   firstName!: string;
-  middleName!: string;
   lastName!: string;
   dateOfBirth!: string;
   gender!: string;
+  aadhar!: string;
+  pan!: string;
 }
 
 export class ContactInfo {
@@ -450,6 +443,7 @@ export class EmergencyContactInfo {
 
 export class PermanentAddress {
   addressline1!: string;
+  addressline2!: string;
   city!: string;
   state!: string;
   country!: string;
@@ -458,6 +452,7 @@ export class PermanentAddress {
 
 export class CurrentAddress {
   addressline1!: string;
+  addressline2!: string;
   city!: string;
   state!: string;
   country!: string;
@@ -468,7 +463,6 @@ export class EmploymentDetails {
   role!: string;
   department!: string;
   employmentType!: string;
-  description!: string;
   startDate!: string;
 }
 export class ShiftDetails {
@@ -477,7 +471,6 @@ export class ShiftDetails {
   shiftEndTime!: string;
   shiftStartDate!: string;
   shiftEndDate!: string;
-  location!: string;
 }
 export class Skills {
   languages!: string;
@@ -486,12 +479,7 @@ export class Skills {
     this.technicalskills = new Array<string>();
   }
 }
-export class WorkExperience {
-  jobTitle!: string;
-  department!: string;
-  startDate!: string;
-  endDate!: string;
-}
+
 export class BankDetails {
   pan!: string;
   bankName!: string;
@@ -499,6 +487,7 @@ export class BankDetails {
   ifscCode!: string;
   accountType!: string;
   accountNumber!: string;
+  reaccountNumber!: string;
 }
 
 export class Documents {
@@ -530,7 +519,6 @@ export class staffDetails {
   employmentDetails!: EmploymentDetails;
   shiftDetails!: ShiftDetails;
   skills!: Skills;
-  workExperience!: WorkExperience;
   bankDetails!: BankDetails;
   documents!: Documents;
   constructor() {
@@ -541,7 +529,6 @@ export class staffDetails {
     this.currentAddress = new CurrentAddress();
     this.employmentDetails = new EmploymentDetails();
     this.shiftDetails = new ShiftDetails();
-    this.workExperience = new WorkExperience();
     this.bankDetails = new BankDetails();
     this.skills = new Skills();
   }
