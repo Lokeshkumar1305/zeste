@@ -19,7 +19,7 @@ export class OutletOnboardingComponent {
   fileArray = new Array<any>();
   vehicleobj = new Vehicle();
   familyobj = new FamilyMember();
-  flatobj = new Flat();
+  flatobj = new Outlet();
   residentObj = new residentDocument();
   fileName = new Array<any>();
   isfileUploaded!: boolean;
@@ -539,14 +539,11 @@ export class residentAddress {
 }
 
 
-export class Flat {
-  block!: string;
-  doorNo!: string;
-  floor!: number;
-  unitType!: string;
-  residentId!: string;
-  legalOwner!: string;
-  registerId!: string;
+export class Outlet {
+  outletName!: string;
+  outletType!: string;
+  gstNumber!: string;
+  fssaiNumber!: string;
 }
 
 export class PersonalInfo {
@@ -555,6 +552,8 @@ export class PersonalInfo {
   lastName!: string;
   dateOfBirth!: string;
   gender!: string;
+  aadhar!: string;
+  panNumber!: string;
 }
 
 export class FamilyMember {
@@ -590,7 +589,7 @@ export class Pet {
 }
 export class residentDetails {
   id!: string;
-  flat!: Flat;
+  outlet!: Outlet;
   personalInformation!: PersonalInfo;
   emailId!: string;
   mobile!: string;
@@ -619,7 +618,7 @@ export class residentDetails {
 
 
   constructor() {
-    this.flat = new Flat();
+    this.outlet = new Outlet();
     this.personalInformation = new PersonalInfo();
     this.familyMembers = new Array<FamilyMember>();
     this.vehicle = new Array<Vehicle>();

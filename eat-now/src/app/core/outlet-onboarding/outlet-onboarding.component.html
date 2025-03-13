@@ -16,7 +16,8 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <mat-label class="p-16-v2 black-color-v1 mb-2">Outlet Name*</mat-label>
                                 <mat-form-field appearance="outline" class="col-11">
-                                    <input matInput name="outletName" required />
+                                    <input matInput name="outletName" name="outletName" #outletName="ngModel"
+                                        [(ngModel)]="dataObj.outlet.outletName" required />
                                     <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
                                         Outlet Name is required*
                                     </mat-error>
@@ -27,7 +28,8 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <mat-label class="p-16-v2 black-color-v1 mb-2">Outlet Type*</mat-label>
                                 <mat-form-field appearance="outline" class="col-11">
-                                    <mat-select name="outletType" required>
+                                    <mat-select name="outletType" name="outletType" #outleType="ngModel"
+                                        [(ngModel)]="dataObj.outlet.outletType" required>
                                         <mat-option value="RESTAURANT">Restaurant</mat-option>
                                         <mat-option value="RETAIL">Retail</mat-option>
                                     </mat-select>
@@ -43,7 +45,8 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <mat-label class="p-16-v2 black-color-v1 mb-2">GST Number</mat-label>
                                 <mat-form-field appearance="outline" class="col-11">
-                                    <input matInput name="gstNumber" required />
+                                    <input matInput name="gstNumber" name="gstNumber" #gstNumber="ngModel"
+                                        [(ngModel)]="dataObj.outlet.gstNumber" required />
                                     <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
                                         Outlet Name is required*
                                     </mat-error>
@@ -54,7 +57,8 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <mat-label class="p-16-v2 black-color-v1 mb-2">FSSAI Number</mat-label>
                                 <mat-form-field appearance="outline" class="col-11">
-                                    <input matInput name="fssaiNumber" required />
+                                    <input matInput name="fssaiNumber" #fssaiNumber="ngModel"
+                                        [(ngModel)]="dataObj.outlet.fssaiNumber" required />
                                     <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
                                         Outlet Name is required*
                                     </mat-error>
@@ -78,7 +82,7 @@
                                 <mat-label class="p-16-v2 black-color-v1">Outlet Registration Type*</mat-label>
                             </div>
                             <div>
-                                <mat-radio-group name="residentType" #residentType="ngModel"
+                                <mat-radio-group name=" registrationType" #registrationType="ngModel"
                                     [(ngModel)]="dataObj.registrationType" (change)="onCheckboxChange()">
                                     <mat-radio-button value="SOLOPROPRIETOR">SOLO
                                         PROPRIETOR</mat-radio-button>
@@ -179,8 +183,8 @@
                                             <mat-form-field appearance="outline" class="col-11">
                                                 <input autocomplete="off" matInput
                                                     pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                                                    name="userEmail" #userEmail="ngModel" [(ngModel)]="dataObj.emailId"
-                                                    required />
+                                                    name="aadhar" #aadhar="ngModel"
+                                                    [(ngModel)]="dataObj.personalInformation.aadhar" required />
                                                 <mat-error *ngIf="userEmail.errors?.['required']"> Aadhar is required*
                                                 </mat-error>
                                             </mat-form-field>
@@ -190,8 +194,8 @@
                                             <mat-label class="p-16-v2 black-color-v1 mb-2">PAN Number*</mat-label>
                                             <mat-form-field appearance="outline" class="col-11">
                                                 <input autocomplete="off" matInput pattern="^[0-9]{10}$" maxlength="10"
-                                                    name="mobileNo" #mobileNo="ngModel" [(ngModel)]="dataObj.mobile"
-                                                    required />
+                                                    name="panNumber" #panNumber="ngModel"
+                                                    [(ngModel)]="dataObj.personalInformation.panNumber" required />
                                                 <mat-error *ngIf="mobileNo.errors?.['required']"> PAN Number is
                                                     required*
                                                 </mat-error>
@@ -327,8 +331,8 @@
                                         <mat-label class="p-16-v2 black-color-v1 mb-2">Aadhar*</mat-label>
                                         <mat-form-field appearance="outline" class="col-11">
                                             <input autocomplete="off" matInput
-                                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                                                name="userEmail" #userEmail="ngModel" [(ngModel)]="dataObj.emailId"
+                                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" name="adhar"
+                                                #adhar="ngModel" [(ngModel)]="dataObj.personalInformation.aadhar"
                                                 required />
                                             <mat-error *ngIf="userEmail.errors?.['required']"> Aadhar is required*
                                             </mat-error>
@@ -339,8 +343,8 @@
                                         <mat-label class="p-16-v2 black-color-v1 mb-2">PAN Number*</mat-label>
                                         <mat-form-field appearance="outline" class="col-11">
                                             <input autocomplete="off" matInput pattern="^[0-9]{10}$" maxlength="10"
-                                                name="mobileNo" #mobileNo="ngModel" [(ngModel)]="dataObj.mobile"
-                                                required />
+                                                name="pan" #pan="ngModel"
+                                                [(ngModel)]="dataObj.personalInformation.panNumber" required />
                                             <mat-error *ngIf="mobileNo.errors?.['required']"> PAN Number is required*
                                             </mat-error>
                                         </mat-form-field>
