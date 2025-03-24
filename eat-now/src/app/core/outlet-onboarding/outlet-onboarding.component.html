@@ -15,7 +15,8 @@
                             <div class="me-5">
                                 <label class="form-label">Outlet Name*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput name="outletName" required />
+                                    <input matInput name="outletName" name="outletName" #outletName="ngModel"
+                                        [(ngModel)]="dataObj.outlet.outletName" required />
                                     <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
                                         Outlet Name is required*
                                     </mat-error>
@@ -24,7 +25,8 @@
                             <div>
                                 <label class="form-label">Outlet Type*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <mat-select name="outletType" required>
+                                    <mat-select name="outletType" name="outletType" #outleType="ngModel"
+                                        [(ngModel)]="dataObj.outlet.outletType" required>
                                         <mat-option value="RESTAURANT">Restaurant</mat-option>
                                         <mat-option value="RETAIL">Retail</mat-option>
                                     </mat-select>
@@ -38,7 +40,8 @@
                             <div class="me-5">
                                 <label class="form-label">GST Number</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput name="gstNumber" required />
+                                    <input matInput name="gstNumber" name="gstNumber" #gstNumber="ngModel"
+                                        [(ngModel)]="dataObj.outlet.gstNumber" required />
                                     <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
                                         Outlet Name is required*
                                     </mat-error>
@@ -47,7 +50,8 @@
                             <div>
                                 <label class="form-label">FSSAI Number</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput name="fssaiNumber" required />
+                                    <input matInput name="fssaiNumber" #fssaiNumber="ngModel"
+                                        [(ngModel)]="dataObj.outlet.fssaiNumber" required />
                                     <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
                                         Outlet Name is required*
                                     </mat-error>
@@ -67,7 +71,7 @@
                 <mat-step label="Step 2">
                     <div>
                         <label class="form-label">Outlet Registration Type*</label>
-                        <mat-radio-group name="residentType" #residentType="ngModel"
+                        <mat-radio-group name=" registrationType" #registrationType="ngModel"
                             [(ngModel)]="dataObj.registrationType" (change)="onCheckboxChange()">
                             <mat-radio-button value="SOLOPROPRIETOR">SOLO
                                 PROPRIETOR</mat-radio-button>
@@ -175,7 +179,7 @@
                                     <label class="form-label">PAN Number*</label>
                                     <mat-form-field appearance="outline" class="feild-width">
                                         <input autocomplete="off" matInput pattern="^[0-9]{10}$" maxlength="10"
-                                            name="mobileNo" #mobileNo="ngModel" [(ngModel)]="dataObj.mobile" required />
+                                            name="panNumber" #panNumber="ngModel" [(ngModel)]="dataObj.personalInformation.panNumber" required />
                                         <mat-error *ngIf="mobileNo.errors?.['required']"> PAN Number is
                                             required*
                                         </mat-error>

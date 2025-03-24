@@ -4,9 +4,14 @@
         <p class="breadcrumb mt-4">UAM > <span class="breadcrumb-active">STAFF</span></p>
     </mat-card>
 
+
+    <mat-card class="breadcrum-card mx-auto">
+        <p class="breadcrumb mt-4">UAM > <span class="breadcrumb-active">STAFF</span></p>
+    </mat-card>
+
     <mat-card class="stepper-card mx-auto">
         <mat-stepper>
-            <form name="staffInfo" #staffInfo="ngForm">
+            <form name="staffInfo" #staffInfo="ngForm" (keydown.enter)="$event.preventDefault()">
                 <mat-step label="Step 1">
                     <div style="margin-left: 25px;">
                         <div class="mt-4 m-1 d-flex flex-row ">
@@ -36,13 +41,17 @@
                                     <input matInput [matDatepicker]="picker" required>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error *ngIf="dateBirth.errors?.['required']">
+                                        DOB is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div>
                                 <label class="form-label">Gender*</label>
                                 <div>
-                                    <mat-radio-group aria-label="Select an option" required>
+                                    <mat-radio-group aria-label="Select an option" name="gendr" #gendr="ngModel"
+                                        [(ngModel)]="dataObj.personalInformation.gender" required>
                                         <mat-radio-button value="MALE">Male</mat-radio-button>
                                         <mat-radio-button value="FEMALE">Female</mat-radio-button>
                                         <mat-radio-button value="OTHERS">Others</mat-radio-button>
@@ -55,14 +64,22 @@
                             <div class="me-5">
                                 <label class="form-label">Aadhar*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput required />
+                                    <input autocomplete="off" matInput name="aadhar" #aadhar="ngModel"
+                                        [(ngModel)]="dataObj.personalInformation.aadhar" required />
+                                    <mat-error *ngIf="aadhar.errors?.['required']">
+                                        Aadhar is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div>
                                 <label class="form-label">PAN Number*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput required />
+                                    <input autocomplete="off" matInput name="pan" #pan="ngModel"
+                                        [(ngModel)]="dataObj.personalInformation.pan" required />
+                                    <mat-error *ngIf="pan.errors?.['required']">
+                                        PAN Number is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -117,7 +134,11 @@
                             <div class="me-5">
                                 <label class="form-label">Email ID*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput required />
+                                    <input autocomplete="off" matInput name="userEmail" #userEmail="ngModel"
+                                            [(ngModel)]="dataObj.contactInfo.emailId" required />
+                                        <mat-error *ngIf="userEmail.errors?.['required']">
+                                            Email ID is required.
+                                        </mat-error>
                                 </mat-form-field>
                             </div>
 
@@ -125,7 +146,12 @@
                                 <label class="form-label">Primary Mobile
                                     Number*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput required />
+                                    <input autocomplete="off" matInput pattern="" name="primaryMobile"
+                                            #primaryMobile="ngModel" [(ngModel)]="dataObj.contactInfo.primaryMobile"
+                                            required />
+                                        <mat-error *ngIf="primaryMobile.errors?.['required']">
+                                            Primary Mobile Number is required.
+                                        </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -135,11 +161,15 @@
                                 <label class="form-label">Secondary Mobile
                                     Number*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput required />
+                                    <input autocomplete="off" matInput pattern="" name="secondaryMoblie"
+                                            #secondaryMoblie="ngModel" [(ngModel)]="dataObj.contactInfo.secondaryMoblie"
+                                            required />
+                                        <mat-error *ngIf="secondaryMoblie.errors?.['required']">
+                                            Secondary Mobile Number is required.
+                                        </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
-
 
 
                         <div class="d-flex flex-row m-1 mt-2">
@@ -152,14 +182,23 @@
                                 <div class="me-5">
                                     <label class="form-label">First Name*</label>
                                     <mat-form-field appearance="outline" class="feild-width">
-                                        <input autocomplete="off" matInput required />
+                                        <input autocomplete="off" matInput pattern="" name="fistName"
+                                            #fistName="ngModel" [(ngModel)]="dataObj.emergencyContactInfo.firstName"
+                                            required />
+                                        <mat-error *ngIf="fistName.errors?.['required']">
+                                            First Name is required.
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
 
                                 <div>
                                     <label class="form-label">Last Name*</label>
                                     <mat-form-field appearance="outline" class="feild-width">
-                                        <input autocomplete="off" matInput required />
+                                        <input autocomplete="off" matInput pattern="" name="lstName" #lstName="ngModel"
+                                            [(ngModel)]="dataObj.emergencyContactInfo.lastName" required />
+                                        <mat-error *ngIf="lstName.errors?.['required']">
+                                            Last Name is required.
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -168,14 +207,19 @@
                                 <div class="me-5">
                                     <label class="form-label">Mobile Number*</label>
                                     <mat-form-field appearance="outline" class="feild-width">
-                                        <input autocomplete="off" matInput required />
+                                        <input autocomplete="off" matInput pattern="" name="mobil" #mobil="ngModel"
+                                            [(ngModel)]="dataObj.emergencyContactInfo.mobile" required />
+                                        <mat-error *ngIf="mobil.errors?.['required']">
+                                            Mobile Number is required.
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
 
                                 <div>
                                     <label class="form-label">Relation*</label>
                                     <mat-form-field appearance="outline" class="feild-width">
-                                        <mat-select name="outletType" required>
+                                        <mat-select name="outletType" name="relaton" #relaton="ngModel"
+                                            [(ngModel)]="dataObj.emergencyContactInfo.relation" required>
                                             <mat-option value="father">FATHER</mat-option>
                                             <mat-option value="mother">MOTHER</mat-option>
                                             <mat-option value="brother">BROTHER</mat-option>
@@ -184,6 +228,9 @@
                                             <mat-option value="friend">FRIEND</mat-option>
                                             <mat-option value="other">OTHER</mat-option>
                                         </mat-select>
+                                        <mat-error *ngIf="relaton.errors?.['required']">
+                                            Relation is required.
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -200,8 +247,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </mat-step>
                 <mat-step label="Step 3">
                     <div style="margin-left: 25px;">
@@ -212,14 +257,24 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">Address Line1*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="addres"
+                                        #addres="ngModel" [(ngModel)]="dataObj.permanentAddress.addressline1"
+                                        required />
+                                    <mat-error *ngIf="addres.errors?.['required']">
+                                        Address Line1 is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">Address Line2*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="addrees"
+                                        #addrees="ngModel" [(ngModel)]="dataObj.permanentAddress.addressline2"
+                                        required />
+                                    <mat-error *ngIf="addrees.errors?.['required']">
+                                        Address Line2 is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -228,14 +283,22 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">City*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="cty"
+                                        #cty="ngModel" [(ngModel)]="dataObj.permanentAddress.city" required />
+                                    <mat-error *ngIf="cty.errors?.['required']">
+                                        City is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">State*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="stat"
+                                        #stat="ngModel" [(ngModel)]="dataObj.permanentAddress.state" required />
+                                    <mat-error *ngIf="stat.errors?.['required']">
+                                        State is required.
+                                    </mat-error>
 
                                 </mat-form-field>
                             </div>
@@ -245,14 +308,22 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">ZIP CODE*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="zip"
+                                        #zip="ngModel" [(ngModel)]="dataObj.permanentAddress.zipcode" required />
+                                    <mat-error *ngIf="zip.errors?.['required']">
+                                        Zip Code is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">Country*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="contry"
+                                        #contry="ngModel" [(ngModel)]="dataObj.permanentAddress.country" required />
+                                    <mat-error *ngIf="contry.errors?.['required']">
+                                        Country is required.
+                                    </mat-error>
 
                                 </mat-form-field>
                             </div>
@@ -272,14 +343,24 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">Address Line1*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="contry"
+                                        name="address1" #address1="ngModel"
+                                        [(ngModel)]="dataObj.currentAddress.addressline1" required />
+                                    <mat-error *ngIf="address1.errors?.['required']">
+                                        Address Line1 is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">Address Line2*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="address2"
+                                        #address2="ngModel" [(ngModel)]="dataObj.currentAddress.addressline2"
+                                        required />
+                                    <mat-error *ngIf="address2.errors?.['required']">
+                                        Address Line2 is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -288,14 +369,22 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">City*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="city"
+                                        #city="ngModel" [(ngModel)]="dataObj.currentAddress.city" required />
+                                    <mat-error *ngIf="city.errors?.['required']">
+                                        City is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">State*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="state"
+                                        #state="ngModel" [(ngModel)]="dataObj.currentAddress.state" required />
+                                    <mat-error *ngIf="state.errors?.['required']">
+                                        State is required.
+                                    </mat-error>
 
                                 </mat-form-field>
                             </div>
@@ -305,21 +394,26 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">ZIP CODE*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="zipcode"
+                                        #zipcode="ngModel" [(ngModel)]="dataObj.currentAddress.zipcode" required />
+                                    <mat-error *ngIf="zipcode.errors?.['required']">
+                                        Zip Code is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">Country*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="country"
+                                        #country="ngModel" [(ngModel)]="dataObj.currentAddress.country" required />
+                                    <mat-error *ngIf="country.errors?.['required']">
+                                        Country is required.
+                                    </mat-error>
 
                                 </mat-form-field>
                             </div>
                         </div>
-
-
-
                         <div class="d-flex mb-5">
                             <div class="ms-auto">
                                 <button mat-stroked-button color="accent" class=" me-5"
@@ -329,8 +423,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </mat-step>
                 <mat-step label="Step 4">
                     <div style="margin-left: 25px;">
@@ -342,20 +434,28 @@
                             <div class="me-5">
                                 <label class="form-label">Role*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <mat-select name="outletType" required>
+                                    <mat-select name="outletType" name="role" #role="ngModel"
+                                        [(ngModel)]="dataObj.employmentDetails.role" required>
                                         <mat-option value="manager">MANAGER</mat-option>
                                         <mat-option value="chef">CHEF</mat-option>
                                         <mat-option value="waiter">WAITER</mat-option>
                                     </mat-select>
+                                    <mat-error *ngIf="role.errors?.['required']">
+                                        Role is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div>
                                 <label class="form-label">Employment Start Date*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput [matDatepicker]="espicker" required>
+                                    <input matInput [matDatepicker]="espicker" name="startDat" #startDat="ngModel"
+                                        [(ngModel)]="dataObj.employmentDetails.startDate" required>
                                     <mat-datepicker-toggle matSuffix [for]="espicker"></mat-datepicker-toggle>
                                     <mat-datepicker #espicker></mat-datepicker>
+                                    <mat-error *ngIf="startDat.errors?.['required']">
+                                        Employment Start Date is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -364,39 +464,47 @@
                             <div class="me-5">
                                 <label class="form-label">Employment Type*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <mat-select name="outletType" required>
+                                    <mat-select name="outletType" name="employmentType" #employmentType="ngModel"
+                                        [(ngModel)]="dataObj.employmentDetails.employmentType" required>
                                         <mat-option value="fulltime">FULL TIME</mat-option>
                                         <mat-option value="parttime">PART TIME</mat-option>
                                         <mat-option value="contract">CONTRACT</mat-option>
                                     </mat-select>
+                                    <mat-error *ngIf="employmentType.errors?.['required']">
+                                        Employment Type is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                         </div>
 
-
                         <mat-divider></mat-divider>
-
                         <div class="mt-4  d-flex flex-row">
                             <p class="p-16-v1 me-1">SHIFT DETAILS</p>
-
                         </div>
-
                         <div class="d-flex">
                             <div class="me-5">
                                 <label class="form-label">Shift Type*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <mat-select name="outletType" required>
+                                    <mat-select name="outletType" name="shiftTyp" #shiftTyp="ngModel"
+                                        [(ngModel)]="dataObj.shiftDetails.shiftType" required>
                                         <mat-option value="day">DAY</mat-option>
                                         <mat-option value="night">Night</mat-option>
                                     </mat-select>
+                                    <mat-error *ngIf="shiftTyp.errors?.['required']">
+                                        Shift Type is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div>
                                 <label class="form-label">Shift Start Time*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="shiftStartTime"
+                                        #shiftStartTime="ngModel" [(ngModel)]="shiftStartTimes" required />
+                                    <mat-error *ngIf="shiftStartTime.errors?.['required']">
+                                        Shift Start Time is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -405,16 +513,25 @@
                             <div class="me-5">
                                 <label class="form-label">Shift End Time*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="shiftEndTime"
+                                        #shiftEndTime="ngModel" [(ngModel)]="shiftEndTimes" required />
+                                    <mat-error *ngIf="shiftEndTime.errors?.['required']">
+                                        Shift End Time is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div>
                                 <label class="form-label">Shift Start Date*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput [matDatepicker]="sspicker" required>
+                                    <input matInput [matDatepicker]="sspicker" name="shiftStartDate"
+                                        #shiftStartDate="ngModel" [(ngModel)]="dataObj.shiftDetails.shiftStartDate"
+                                        required>
                                     <mat-datepicker-toggle matSuffix [for]="sspicker"></mat-datepicker-toggle>
                                     <mat-datepicker #sspicker></mat-datepicker>
+                                    <mat-error *ngIf="shiftStartDate.errors?.['required']">
+                                        Shift Start Date is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -423,13 +540,17 @@
                             <div class="me-5">
                                 <label class="form-label">Shift End Date*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput [matDatepicker]="sepicker" required>
+                                    <input matInput [matDatepicker]="sepicker" name="shiftEndDate"
+                                        #shiftEndDate="ngModel" [(ngModel)]="dataObj.shiftDetails.shiftEndDate"
+                                        required>
                                     <mat-datepicker-toggle matSuffix [for]="sepicker"></mat-datepicker-toggle>
                                     <mat-datepicker #sepicker></mat-datepicker>
+                                    <mat-error *ngIf="shiftEndDate.errors?.['required']">
+                                        Shift End Date is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
-
                         <mat-divider></mat-divider>
                         <div class="mt-4  d-flex flex-row">
                             <p class="p-16-v1 me-1">SKILLS</p>
@@ -439,12 +560,14 @@
                             <div class="col-lg-5 d-flex flex-column">
                                 <label class="form-label">Languages*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="lang"
+                                        #lang="ngModel" [(ngModel)]=" dataObj.skills.languages" required />
+                                    <mat-error *ngIf="lang.errors?.['required']">
+                                        Language is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
-
-
                         <div class="d-flex mb-5">
                             <div class="ms-auto">
                                 <button mat-stroked-button color="accent" class=" me-5"
@@ -454,8 +577,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </mat-step>
                 <mat-step label="Step 5">
                     <div style="margin-left: 25px;">
@@ -466,16 +587,22 @@
                             <div class="me-5">
                                 <label class="form-label">Bank Name*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="addressline1"
-                                        required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="bankName"
+                                        #bankName="ngModel" [(ngModel)]="dataObj.bankDetails.bankName" required />
+                                    <mat-error *ngIf="bankName.errors?.['required']">
+                                        Bank Name is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div>
                                 <label class="form-label">IFSC code*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="addressline2"
-                                        required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="ifscCode"
+                                        #ifscCode="ngModel" [(ngModel)]="dataObj.bankDetails.ifscCode" required />
+                                    <mat-error *ngIf="ifscCode.errors?.['required']">
+                                        IFSC code is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -484,17 +611,25 @@
                             <div class="me-5">
                                 <label class="form-label">Branch*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="city" required />
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="branch"
+                                        #branch="ngModel" [(ngModel)]="dataObj.bankDetails.branch" required />
+                                    <mat-error *ngIf="branch.errors?.['required']">
+                                        Branch is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div>
                                 <label class="form-label">Account Type*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <mat-select name="outletType" required>
+                                    <mat-select name="outletType" name="accountType" #accountType="ngModel"
+                                        [(ngModel)]="dataObj.bankDetails.accountType" required>
                                         <mat-option value="savings">SAVINGS</mat-option>
                                         <mat-option value="current">CURRENT</mat-option>
                                     </mat-select>
+                                    <mat-error *ngIf="accountType.errors?.['required']">
+                                        Account Type is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -503,24 +638,27 @@
                             <div class="me-5">
                                 <label class="form-label">Account Number*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="zipcode"
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="accountNumber"
+                                        #accountNumber="ngModel" [(ngModel)]="dataObj.bankDetails.accountNumber"
                                         required />
+                                    <mat-error *ngIf="accountNumber.errors?.['required']">
+                                        Account Number is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div>
                                 <label class="form-label">Re-enter Account Number*</label>
                                 <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="country"
+                                    <input autocomplete="off" matInput pattern="" placeholder="" name="reaccountNumber"
+                                        #reaccountNumber="ngModel" [(ngModel)]="dataObj.bankDetails.reaccountNumber"
                                         required />
-
+                                    <mat-error *ngIf="reaccountNumber.errors?.['required']">
+                                        Re-enter Account Number is required.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
-
-
-
-
                         <div class="d-flex mb-5">
                             <div class="ms-auto">
                                 <button mat-stroked-button color="accent" class=" me-5"
@@ -530,8 +668,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </mat-step>
             </form>
         </mat-stepper>
