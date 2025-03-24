@@ -1,9 +1,9 @@
 <div class="d-flex flex-column">
-    
-        <mat-card class="breadcrum-card mx-auto">
-            <p class="breadcrumb mt-4">UAM > <span class="breadcrumb-active">STAFF</span></p>
-        </mat-card>
-    
+
+    <mat-card class="breadcrum-card mx-auto">
+        <p class="breadcrumb mt-4">UAM > <span class="breadcrumb-active">STAFF</span></p>
+    </mat-card>
+
     <mat-card class="stepper-card mx-auto">
         <mat-stepper>
             <form name="staffInfo" #staffInfo="ngForm">
@@ -13,36 +13,36 @@
                             <p class="p-16-v1">PERSONAL INFORMATION</p>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">First Name*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex ">
+                            <div class="me-5">
+                                <label class="form-label">First Name*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput required />
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Last Name*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                            <div>
+                                <label class="form-label">Last Name*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput required />
                                 </mat-form-field>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Date of Birth*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex ">
+                            <div class="me-5">
+                                <label class="form-label">Date of Birth*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input matInput [matDatepicker]="picker" required>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Gender*</mat-label>
-                                <div class="col-12">
-                                    <mat-radio-group aria-mat-label="Select an option" required>
+                            <div>
+                                <label class="form-label">Gender*</label>
+                                <div>
+                                    <mat-radio-group aria-label="Select an option" required>
                                         <mat-radio-button value="MALE">Male</mat-radio-button>
                                         <mat-radio-button value="FEMALE">Female</mat-radio-button>
                                         <mat-radio-button value="OTHERS">Others</mat-radio-button>
@@ -51,23 +51,23 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Aadhar*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Aadhar*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput required />
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">PAN Number*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                            <div>
+                                <label class="form-label">PAN Number*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput required />
                                 </mat-form-field>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
+                        <div class="d-flex">
                             <div class="col-lg-5 d-flex flex-column">
                                 <div class="d-flex flex-row">
                                     <p class="p-16-v1 me-1">Identity Proof</p>
@@ -96,10 +96,10 @@
                         </div>
 
                         <div class="row mb-5">
-                            <div class="col d-flex justify-content-center" style="margin-left:570px;margin-top: 50px;">
-                                <button mat-stroked-button color="primary" class="btn p-16-v1 me-5"
+                            <div class="col d-flex justify-content-center">
+                                <button mat-stroked-button color="accent" class=" me-5"
                                     (click)="backToMain()">Cancel</button>
-                                <button mat-raised-button type="submit" color="accent" class="btn p-16-v1"
+                                <button mat-flat-button type="submit" color="accent"
                                     (click)="goToNextTab()">Next</button>
                             </div>
                         </div>
@@ -112,35 +112,35 @@
                                 <p class="p-16-v1 me-1" style="margin-left: 14px;">CONTACT INFORMATION</p>
                             </div>
                         </div>
-                        <div style="margin-left: 18px;">
-                            <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                                <div class="col-lg-5 d-flex flex-column">
-                                    <mat-label class="p-16-v2 black-color-v1 mb-2">Email ID*</mat-label>
-                                    <mat-form-field appearance="outline" class="col-11">
-                                        <input autocomplete="off" matInput required />
-                                    </mat-form-field>
-                                </div>
 
-                                <div class="col-lg-5 d-flex flex-column">
-                                    <mat-label class="p-16-v2 black-color-v1 mb-2">Primary Mobile
-                                        Number*</mat-label>
-                                    <mat-form-field appearance="outline" class="col-11">
-                                        <input autocomplete="off" matInput required />
-                                    </mat-form-field>
-                                </div>
+                        <div class="d-flex ">
+                            <div class="me-5">
+                                <label class="form-label">Email ID*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
+                                    <input autocomplete="off" matInput required />
+                                </mat-form-field>
                             </div>
 
-                            <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                                <div class="col-lg-5 d-flex flex-column">
-                                    <mat-label class="p-16-v2 black-color-v1 mb-2">Secondary Mobile
-                                        Number*</mat-label>
-                                    <mat-form-field appearance="outline" class="col-11">
-                                        <input autocomplete="off" matInput required />
-                                    </mat-form-field>
-                                </div>
+                            <div>
+                                <label class="form-label">Primary Mobile
+                                    Number*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
+                                    <input autocomplete="off" matInput required />
+                                </mat-form-field>
                             </div>
-
                         </div>
+
+                        <div class="d-flex">
+                            <div>
+                                <label class="form-label">Secondary Mobile
+                                    Number*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
+                                    <input autocomplete="off" matInput required />
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+
 
                         <div class="d-flex flex-row m-1 mt-2">
                             <div class="mt-4  d-flex flex-row">
@@ -148,33 +148,33 @@
                             </div>
                         </div>
                         <div style="margin-left: 18px;">
-                            <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                                <div class="col-lg-5 d-flex flex-column">
-                                    <mat-label class="p-16-v2 black-color-v1 mb-2">First Name*</mat-label>
-                                    <mat-form-field appearance="outline" class="col-11">
+                            <div class="d-flex">
+                                <div class="me-5">
+                                    <label class="form-label">First Name*</label>
+                                    <mat-form-field appearance="outline" class="feild-width">
                                         <input autocomplete="off" matInput required />
                                     </mat-form-field>
                                 </div>
 
-                                <div class="col-lg-5 d-flex flex-column">
-                                    <mat-label class="p-16-v2 black-color-v1 mb-2">Last Name*</mat-label>
-                                    <mat-form-field appearance="outline" class="col-11">
+                                <div>
+                                    <label class="form-label">Last Name*</label>
+                                    <mat-form-field appearance="outline" class="feild-width">
                                         <input autocomplete="off" matInput required />
                                     </mat-form-field>
                                 </div>
                             </div>
 
-                            <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                                <div class="col-lg-5 d-flex flex-column">
-                                    <mat-label class="p-16-v2 black-color-v1 mb-2">Mobile Number*</mat-label>
-                                    <mat-form-field appearance="outline" class="col-11">
+                            <div class="d-flex">
+                                <div class="me-5">
+                                    <label class="form-label">Mobile Number*</label>
+                                    <mat-form-field appearance="outline" class="feild-width">
                                         <input autocomplete="off" matInput required />
                                     </mat-form-field>
                                 </div>
 
-                                <div class="col-lg-5 d-flex flex-column">
-                                    <mat-label class="p-16-v2 black-color-v1 mb-2">Relation*</mat-label>
-                                    <mat-form-field appearance="outline" class="col-11">
+                                <div>
+                                    <label class="form-label">Relation*</label>
+                                    <mat-form-field appearance="outline" class="feild-width">
                                         <mat-select name="outletType" required>
                                             <mat-option value="father">FATHER</mat-option>
                                             <mat-option value="mother">MOTHER</mat-option>
@@ -192,9 +192,9 @@
 
                             <div class="row mb-5">
                                 <div class="col d-flex justify-content-end">
-                                    <button mat-stroked-button color="primary" class="btn p-16-v1 me-5"
+                                    <button mat-stroked-button color="accent" class="me-5"
                                         (click)="backToMain()">Cancel</button>
-                                    <button mat-raised-button type="submit" color="accent" class="btn p-16-v1"
+                                    <button mat-flat-button type="submit" color="accent"
                                         (click)=" goToNextTab()">Next</button>
                                 </div>
                             </div>
@@ -208,50 +208,50 @@
                         <div class="mt-4  d-flex flex-row">
                             <p class="p-16-v1 me-1">PERMANENT ADDRESS</p>
                         </div>
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
+                        <div class="d-flex">
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Address Line1*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">Address Line1*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Address Line2*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">Address Line2*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
+                        <div class="d-flex">
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">City*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">City*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">State*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">State*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
 
                                 </mat-form-field>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
+                        <div class="d-flex">
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">ZIP CODE*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">ZIP CODE*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Country*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">Country*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
 
                                 </mat-form-field>
@@ -268,63 +268,63 @@
                             </mat-checkbox>
                         </section>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
+                        <div class="d-flex">
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Address Line1*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">Address Line1*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Address Line2*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">Address Line2*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
+                        <div class="d-flex">
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">City*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">City*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
 
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">State*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
-
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">ZIP CODE*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
-                                </mat-form-field>
-                            </div>
-
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Country*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">State*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
 
                                 </mat-form-field>
                             </div>
                         </div>
 
+                        <div class="d-flex">
+                            <div class="col-lg-5 d-flex flex-column">
+                                <label class="form-label">ZIP CODE*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
+                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-lg-5 d-flex flex-column">
+                                <label class="form-label">Country*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
+                                    <input autocomplete="off" matInput pattern="" placeholder="" required />
+
+                                </mat-form-field>
+                            </div>
+                        </div>
 
 
-                        <div class="row mb-5">
-                            <div class="col d-flex justify-content-center" style="margin-left:570px;margin-top: 50px;">
-                                <button mat-stroked-button color="primary" class="btn p-16-v1 me-5"
+
+                        <div class="d-flex mb-5">
+                            <div class="ms-auto">
+                                <button mat-stroked-button color="accent" class=" me-5"
                                     (click)="backToMain()">Cancel</button>
-                                <button mat-raised-button type="submit" color="accent" class="btn p-16-v1"
+                                <button mat-flat-button type="submit" color="accent"
                                     (click)="goToNextTab()">Next</button>
                             </div>
                         </div>
@@ -338,10 +338,10 @@
                             <p class="p-16-v1 me-1">EMPLOYMENT DETAILS</p>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Role*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Role*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <mat-select name="outletType" required>
                                         <mat-option value="manager">MANAGER</mat-option>
                                         <mat-option value="chef">CHEF</mat-option>
@@ -350,9 +350,9 @@
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Employment Start Date*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                            <div>
+                                <label class="form-label">Employment Start Date*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input matInput [matDatepicker]="espicker" required>
                                     <mat-datepicker-toggle matSuffix [for]="espicker"></mat-datepicker-toggle>
                                     <mat-datepicker #espicker></mat-datepicker>
@@ -360,10 +360,10 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Employment Type*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Employment Type*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <mat-select name="outletType" required>
                                         <mat-option value="fulltime">FULL TIME</mat-option>
                                         <mat-option value="parttime">PART TIME</mat-option>
@@ -382,10 +382,10 @@
 
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Shift Type*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Shift Type*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <mat-select name="outletType" required>
                                         <mat-option value="day">DAY</mat-option>
                                         <mat-option value="night">Night</mat-option>
@@ -393,25 +393,25 @@
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Shift Start Time*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                            <div>
+                                <label class="form-label">Shift Start Time*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Shift End Time*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Shift End Time*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Shift Start Date*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                            <div>
+                                <label class="form-label">Shift Start Date*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input matInput [matDatepicker]="sspicker" required>
                                     <mat-datepicker-toggle matSuffix [for]="sspicker"></mat-datepicker-toggle>
                                     <mat-datepicker #sspicker></mat-datepicker>
@@ -419,10 +419,10 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Shift End Date*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Shift End Date*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input matInput [matDatepicker]="sepicker" required>
                                     <mat-datepicker-toggle matSuffix [for]="sepicker"></mat-datepicker-toggle>
                                     <mat-datepicker #sepicker></mat-datepicker>
@@ -435,21 +435,21 @@
                             <p class="p-16-v1 me-1">SKILLS</p>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
+                        <div class="d-flex">
                             <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Languages*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                                <label class="form-label">Languages*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" required />
                                 </mat-form-field>
                             </div>
                         </div>
 
 
-                        <div class="row mb-5">
-                            <div class="col d-flex justify-content-center" style="margin-left:570px;margin-top: 50px;">
-                                <button mat-stroked-button color="primary" class="btn p-16-v1 me-5"
+                        <div class="d-flex mb-5">
+                            <div class="ms-auto">
+                                <button mat-stroked-button color="accent" class=" me-5"
                                     (click)="backToMain()">Cancel</button>
-                                <button mat-raised-button type="submit" color="accent" class="btn p-16-v1"
+                                <button mat-flat-button type="submit" color="accent"
                                     (click)="goToNextTab()">Next</button>
                             </div>
                         </div>
@@ -462,35 +462,35 @@
                         <div class="mt-4  d-flex flex-row">
                             <p class="p-16-v1 me-1"> BANK DETAILS</p>
                         </div>
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Bank Name*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Bank Name*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" name="addressline1"
                                         required />
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">IFSC code*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                            <div>
+                                <label class="form-label">IFSC code*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" name="addressline2"
                                         required />
                                 </mat-form-field>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Branch*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Branch*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" name="city" required />
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Account Type*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                            <div>
+                                <label class="form-label">Account Type*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <mat-select name="outletType" required>
                                         <mat-option value="savings">SAVINGS</mat-option>
                                         <mat-option value="current">CURRENT</mat-option>
@@ -499,18 +499,18 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row flex-wrap col-12 gap-5">
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Account Number*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <label class="form-label">Account Number*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" name="zipcode"
                                         required />
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-lg-5 d-flex flex-column">
-                                <mat-label class="p-16-v2 black-color-v1 mb-2">Re-enter Account Number*</mat-label>
-                                <mat-form-field appearance="outline" class="col-11">
+                            <div>
+                                <label class="form-label">Re-enter Account Number*</label>
+                                <mat-form-field appearance="outline" class="feild-width">
                                     <input autocomplete="off" matInput pattern="" placeholder="" name="country"
                                         required />
 
@@ -521,11 +521,11 @@
 
 
 
-                        <div class="row mb-5">
-                            <div class="col d-flex justify-content-center" style="margin-left:570px;margin-top: 50px;">
-                                <button mat-stroked-button color="primary" class="btn p-16-v1 me-5"
+                        <div class="d-flex mb-5">
+                            <div class="ms-auto">
+                                <button mat-stroked-button color="accent" class=" me-5"
                                     (click)="backToMain()">Cancel</button>
-                                <button mat-raised-button type="submit" color="accent" class="btn p-16-v1"
+                                <button mat-flat-button type="submit" color="accent"
                                     (click)="goToNextTab()">Save</button>
                             </div>
                         </div>
