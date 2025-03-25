@@ -8,10 +8,6 @@ pipeline {
         CONTAINER_NAME = "frontend"
     }
 
-    tools {
-        gradle "gradle-8.4"
-    }
-
     stages {
         stage('Fetch code') {
             steps {
