@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    environment {
+        LOGIN_CREDS = credentials('hub_cred')
+        IMAGE_NAME = "eatnow8/eatnow"
+        IMAGE_TAG = "${IMAGE_NAME}:frontend"
+        CONTAINER_NAME = "frontend"
+    }
+
+    tools {
+        gradle "gradle-8.4"
+    }
+
+    stages {
+        stage('Fetch code') {
+            steps {
+                cleanWs()
+                git branch: 'dev', credentialsId: 'github_acc', url: 'https://github.com/eatnow-8/dineat-frontend.git'
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    sh "echo '${LOGIN_CREDS_PSW}' | docker login -u '${LOGIN_CREDS_USR}' --password-stdin"
+                }
+            }
+        }
+
+        stage('Build and Push Image') {
+            steps {
+                script {
+                    dir("eat-now") {
+                        sh """
+                            docker build -t ${IMAGE_TAG} .
+                            docker push ${IMAGE_TAG}
+                            docker rmi -f ${IMAGE_TAG} || true
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                script {
+                    sh """
+                        docker stop ${CONTAINER_NAME} || true
+                        docker rm ${CONTAINER_NAME} || true
+                        docker pull ${IMAGE_TAG}
+                        docker run -d --name ${CONTAINER_NAME} -p 80:30880 ${IMAGE_TAG}
+                    """
+                }
+            }
+        }
+    }
+}
