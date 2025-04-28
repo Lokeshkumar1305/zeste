@@ -12,21 +12,23 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 
-$tou-ops-primary-palette: (
-  100: #E6F6F3,
-  300:#12B393,
-  500:#0E9177,
-  700:#0A6F5B,
-  900:#064E40,
-  contrast:(100: #064E40,
-    300:#1A1A1A,
-    500:#000D1F,
-    700:#FFFFFF,
-    900:#FFFFFF,
+$eat-now-primary-palette: (
+  100: #F3E8D0,
+  300: #D1B97A,
+  500: #AE8E48,
+  700: #7B632E,
+  900: #AE8E48,
+  contrast: (
+    100: #4B3B1A,
+    300: #1A1A1A,
+    500: #000D1F,
+    700: #FFFFFF,
+    900: #FFFFFF,
   )
 );
 
-$tou-ops-accent-palette: (
+
+$eat-now-accent-palette: (
   100: #E8EFF6,
   300:#376DAA,
   500:#2D5A90,
@@ -40,19 +42,19 @@ $tou-ops-accent-palette: (
   )
 );
 
-$tou-ops-primary: mat.define-palette($tou-ops-primary-palette, 300);
-$tou-ops-accent: mat.define-palette($tou-ops-accent-palette, 900);
+$eat-now-primary: mat.define-palette($eat-now-primary-palette, 900);
+$eat-now-accent: mat.define-palette($eat-now-accent-palette, 900);
 // The warn palette is optional (defaults to red).
-$tou-ops-warn: mat.define-palette(mat.$red-palette);
+$eat-now-warn: mat.define-palette(mat.$red-palette);
 
-$tou-ops-typography: mat.define-typography-config($font-family: '"Poppins", "Helvetica Neue", sans-serif');
+$eat-now-typography: mat.define-typography-config($font-family: '"Poppins", "Helvetica Neue", sans-serif');
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$tou-ops-theme: mat.define-light-theme((color: (primary: $tou-ops-primary,
-        accent: $tou-ops-accent,
-        warn: $tou-ops-warn,
+$eat-now-theme: mat.define-light-theme((color: (primary: $eat-now-primary,
+        accent: $eat-now-accent,
+        warn: $eat-now-warn,
       ),
-      typography: $tou-ops-typography,
+      typography: $eat-now-typography,
       density: 0));
 
 
@@ -60,7 +62,7 @@ $tou-ops-theme: mat.define-light-theme((color: (primary: $tou-ops-primary,
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($tou-ops-theme);
+@include mat.all-component-themes($eat-now-theme);
 // @include mat.all-component-densities(-3);
 // @include mat.button-density(-1);
 // @include mat.form-field-density(-3);
