@@ -10,7 +10,7 @@ import { SharedModule } from '../shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../material/material.module';
 import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
-
+import { SharedRoutingModule } from '../shared/shared-routing.module';
 
 
 @NgModule({
@@ -27,7 +27,8 @@ import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/me
     // BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
-    MaterialModule
+    MaterialModule,
+    SharedRoutingModule
   ],
 
   providers: [],

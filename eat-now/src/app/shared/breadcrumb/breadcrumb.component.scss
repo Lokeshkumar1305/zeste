@@ -1,0 +1,72 @@
+.breadcrumb ul {
+    & {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        & {
+            display: inline;
+        }
+
+        &:before {
+            content: "/";
+            margin: 0 6px;
+            font-size: 14px;
+        }
+
+        &:first-child:before {
+            content: "";
+            margin: 0;
+        }
+    }
+
+
+    a {
+        list-style: none;
+        text-decoration: none;
+        cursor: pointer;
+        color: #ADB5BD;
+        font-weight: 300 ;
+        // font-family: Poppins;
+        font-size: 14px;
+        opacity: 0.8;
+    }
+
+    a:any-link {
+        color: unset;
+        cursor: pointer;
+    }
+
+    a:-webkit-any-link {
+        color: unset;
+        cursor: pointer;
+    }
+
+    a:-moz-any-link {
+        color: unset;
+        cursor: pointer;
+    }
+
+    a:hover {
+        cursor: pointer;
+    }
+
+}
+
+a.link-active {
+    color: #12B393 !important;
+    font-weight: 400 !important;
+    font-size: 14px;
+    opacity: 1 !important;
+  
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 48
+}

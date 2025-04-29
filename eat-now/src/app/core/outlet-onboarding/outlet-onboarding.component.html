@@ -1,442 +1,245 @@
-<div class="d-flex flex-column">
-    <mat-card class="breadcrum-card mx-auto">
-        <p class="breadcrumb mt-4">UAM > <span class="breadcrumb-active">Outlet</span></p>
+<div class="p-5">
+    <mat-card class="p-5" style="background-color: #AE8E481A;">
+        <app-breadcrumb [breadCrumb]="breadCrumb"></app-breadcrumb>
     </mat-card>
-
-    <mat-card class="stepper-card mx-auto">
-        <mat-stepper>
-            <form name="outletInfo" #outletInfo="ngForm">
-                <mat-step label="Step 1">
-                    <div class=" ml-2 p-3 text-start">
-                        <div class="mt-4 m-1 d-flex flex-row ">
-                            <p class="p-16-v1">OUTLET INFORMATION</p>
+    <mat-card class="mt-5">
+        <mat-stepper [linear]="isLinear" #stepper class="p-5">
+            <mat-step>
+                <form name="basicDetailsForm" #basicDetailsForm="ngForm" (keydown.enter)="$event.preventDefault()">
+                    <ng-template matStepLabel>OUTLET DETAILS</ng-template>
+                    <div class="p-3">
+                        <div class="d-flex mt-3">
+                            <mat-form-field appearance="outline" class="w-600 me-5">
+                                <mat-label>Outlet Name</mat-label>
+                                <input matInput name="outletName" name="outletName" #outletName="ngModel"
+                                    [(ngModel)]="dataObj.outletName" required />
+                                <mat-error *ngIf="outletName.errors?.required">Value is required</mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="w-600">
+                                <mat-label>Outlet Type</mat-label>
+                                <mat-select name="outletType" name="outle" #outle="ngModel"
+                                    [(ngModel)]="dataObj.outletType" required>
+                                    <mat-option value="RESTAURANT">Restaurant</mat-option>
+                                    <mat-option value="RETAIL">Retail</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="outle.errors?.required">Value is required</mat-error>
+                            </mat-form-field>
                         </div>
-                        <div class="d-flex">
-                            <div class="me-5">
-                                <label class="form-label">Outlet Name*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput name="outletName" name="outletName" #outletName="ngModel"
-                                        [(ngModel)]="dataObj.outlet.outletName" required />
-                                    <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
-                                        Outlet Name is required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <label class="form-label">Outlet Type*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <mat-select name="outletType" name="outletType" #outleType="ngModel"
-                                        [(ngModel)]="dataObj.outlet.outletType" required>
-                                        <mat-option value="RESTAURANT">Restaurant</mat-option>
-                                        <mat-option value="RETAIL">Retail</mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="outletInfo.form.controls['outletType']?.errors?.['required']">
-                                        Outlet Type is required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
+                        <div class="d-flex mt-3">
+                            <mat-form-field appearance="outline" class="w-600 me-5">
+                                <mat-label>GST Number</mat-label>
+                                <input matInput name="gstNum" #gstNum="ngModel" [(ngModel)]="dataObj.gstNumber"
+                                    pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}Z[A-Z0-9]{1}$" required />
+                                <mat-error *ngIf="gstNum.errors?.required">Value is required</mat-error>
+                                <mat-error *ngIf="gstNum.errors?.pattern">Invalid GST Number format</mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="w-600">
+                                <mat-label>Fssai Number</mat-label>
+                                <input matInput name="fssaiNumber" #fssaiNumber="ngModel"
+                                    [(ngModel)]="dataObj.fssaiNumber" pattern="^[0-9]{14}$" required />
+                                <mat-error *ngIf="fssaiNumber.errors?.required">Value is required</mat-error>
+                            </mat-form-field>
                         </div>
-                        <div class="d-flex">
-                            <div class="me-5">
-                                <label class="form-label">GST Number</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput name="gstNumber" name="gstNumber" #gstNumber="ngModel"
-                                        [(ngModel)]="dataObj.outlet.gstNumber" required />
-                                    <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
-                                        Outlet Name is required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <label class="form-label">FSSAI Number</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput name="fssaiNumber" #fssaiNumber="ngModel"
-                                        [(ngModel)]="dataObj.outlet.fssaiNumber" required />
-                                    <mat-error *ngIf="outletInfo.form.controls['outletName']?.errors?.['required']">
-                                        Outlet Name is required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="ms-auto">
-                                <button mat-stroked-button color="accent" class="me-3">Cancel</button>
-                                <button mat-flat-button color="accent" matStepperNext>Next</button>
-                            </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button mat-stroked-button color="accent" class="me-3"
+                                style="height: 48px;width: 130px;">Cancel</button>
+                            <button mat-flat-button color="accent" matStepperNext style="height: 48px;width: 146px;"
+                                [disabled]="!basicDetailsForm.valid">Next</button>
                         </div>
                     </div>
-                </mat-step>
-
-                <mat-step label="Step 2">
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>OUTLET REGISTRATION TYPE</ng-template>
+                <div class="p-3">
                     <div>
                         <label class="form-label">Outlet Registration Type*</label>
-                        <mat-radio-group name=" registrationType" #registrationType="ngModel"
-                            [(ngModel)]="dataObj.registrationType" (change)="onCheckboxChange()">
+                        <mat-radio-group name=" outletRegistrationType" #outletRegistrationType="ngModel"
+                            [(ngModel)]="dataObj.outletRegistrationType">
                             <mat-radio-button value="SOLOPROPRIETOR">SOLO
                                 PROPRIETOR</mat-radio-button>
                             <mat-radio-button value="PARTNERSHIP" class="ml-3">PARTNERSHIP</mat-radio-button>
                         </mat-radio-group>
                     </div>
-
-                    <div *ngIf="dataObj.registrationType === 'SOLOPROPRIETOR'">
-                        <div class="mt-4  d-flex">
-                            <p class="f-14-m">SOLO PROPRIETOR INFORMATION</p>
-                            <!-- <mat-icon matTooltip="Fill the owner Information" class="custom-icon">info</mat-icon> -->
-                        </div>
-                        <div>
-                            <div class="d-flex">
-                                <div class="me-5">
-                                    <label class="form-label">First Name*</label>
-                                    <mat-form-field appearance="outline" class="feild-width ">
-                                        <input autocomplete="off" matInput name="firstName" #firstName="ngModel"
-                                            [(ngModel)]="dataObj.personalInformation.firstName"
-                                            (ngModelChange)="dataObj.personalInformation.firstName = capitalizeFirstLetter($event)"
-                                            required />
-                                        <mat-error *ngIf="firstName.errors?.['required']"> First Name is
-                                            required*
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-
-                                <div>
-                                    <label class="form-label">Last Name*</label>
-                                    <mat-form-field appearance="outline" class="feild-width">
-                                        <input autocomplete="off" matInput name="lasttName" #lasttName="ngModel"
-                                            [(ngModel)]="dataObj.personalInformation.lastName"
-                                            (ngModelChange)="dataObj.personalInformation.lastName = capitalizeFirstLetter($event)"
-                                            required />
-                                        <mat-error *ngIf="lasttName.errors?.['required']"> Last name is required*
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-
-                            <div class="d-flex">
-                                <div class="me-5">
-                                    <label class="form-label">Date of Birth*</label>
-                                    <mat-form-field appearance="outline" class="feild-width">
-                                        <input matInput [matDatepicker]="picker" name="dob" #dob="ngModel"
-                                            [(ngModel)]="dataObj.personalInformation.dateOfBirth" required>
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker></mat-datepicker>
-                                        <mat-error *ngIf="dob.errors?.['required']"> DOB is required*
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="feild-width">
-                                    <label class="form-label">Gender*</label>
-
-                                    <mat-radio-group aria-mat-label="Select an option"
-                                        [(ngModel)]="dataObj.personalInformation.gender" name="gendr" #gendr="ngModel"
-                                        required>
-                                        <mat-radio-button value="MALE">Male</mat-radio-button>
-                                        <mat-radio-button value="FEMALE">Female</mat-radio-button>
-                                        <mat-radio-button value="OTHERS">Others</mat-radio-button>
-                                    </mat-radio-group>
-
-                                </div>
-                            </div>
-
-                            <div class="d-flex">
-                                <div class="me-5">
-                                    <label class="form-label">Email*</label>
-                                    <mat-form-field appearance="outline" class="feild-width">
-                                        <input autocomplete="off" matInput
-                                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" name="userEmail"
-                                            #userEmail="ngModel" [(ngModel)]="dataObj.emailId" required />
-                                        <mat-error *ngIf="userEmail.errors?.['required']"> Email is required*
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-
-                                <div>
-                                    <label class="form-label">Mobile Number*</label>
-                                    <mat-form-field appearance="outline" class="feild-width">
-                                        <input autocomplete="off" matInput pattern="^[0-9]{10}$" maxlength="10"
-                                            name="mobileNo" #mobileNo="ngModel" [(ngModel)]="dataObj.mobile" required />
-                                        <mat-error *ngIf="mobileNo.errors?.['required']"> Mobile Number is
-                                            required*
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-
-                            <div class="d-flex">
-                                <div class="me-5">
-                                    <label class="form-label">Aadhar*</label>
-                                    <mat-form-field appearance="outline" class="feild-width">
-                                        <input autocomplete="off" matInput
-                                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" name="userEmail"
-                                            #userEmail="ngModel" [(ngModel)]="dataObj.emailId" required />
-                                        <mat-error *ngIf="userEmail.errors?.['required']"> Aadhar is required*
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-
-                                <div>
-                                    <label class="form-label">PAN Number*</label>
-                                    <mat-form-field appearance="outline" class="feild-width">
-                                        <input autocomplete="off" matInput pattern="^[0-9]{10}$" maxlength="10"
-                                            name="panNumber" #panNumber="ngModel" [(ngModel)]="dataObj.personalInformation.panNumber" required />
-                                        <mat-error *ngIf="mobileNo.errors?.['required']"> PAN Number is
-                                            required*
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-
-                            <div class="d-flex flex-column">
-
-                                <div class="d-flex">
-                                    <p class="form-label">Identity Proof</p> &nbsp;&nbsp;
-                                    <mat-icon matTooltip="Upload Aadhar" class="mb-">info</mat-icon>
-                                </div>
-                                <div class="d-flex " *ngIf="!dataObj.docIdentityProof">
-                                    <input id="identification-file-input" class="form-control-file feild-width"
-                                        type="file" accept=".pdf,.jpg,.png,.jpeg" required>
-
-                                </div>
-                                <p class="d-flex mt-2"> Accepted formats: .pdf, .jpg, .png,
-                                    .jpeg</p>
-                                <mat-chip-grid *ngIf="dataObj.docIdentityProof">
-                                    <mat-chip-row (removed)="remove('DocumentName')">
-                                        {{ DocumentName }}
-                                        <button matChipRemove>
-                                            <mat-icon>cancel</mat-icon>
-                                        </button>
-                                    </mat-chip-row>
-                                </mat-chip-grid>
-
-                            </div>
-
-
-                        </div>
+                    <div class="d-flex justify-content-end mt-3"
+                        *ngIf="dataObj.outletRegistrationType === 'PARTNERSHIP'">
+                        <button mat-button color="primary" (click)="addRow()">
+                            <mat-icon>add</mat-icon>
+                            <span>Add More</span>
+                        </button>
                     </div>
-
-                    <div *ngIf="dataObj.registrationType === 'PARTNERSHIP'">
-                        <div class="d-flex flex-row ml-4">
-                            <div class="mt-4  d-flex flex-row">
-                                <p class="p-16-v1 me-1" style="margin-left:0px;">PARTNER 1 INFORMATION</p>
-                                <!-- <mat-icon matTooltip="Fill the property Information" class="custom-icon">info</mat-icon> -->
-                            </div>
-                            <!-- <span class="tou-spacer"></span>
-                            <button mat-button color="accent">+Add more</button> -->
-                        </div>
-                        <div class="d-flex">
-                            <div class="me-5">
-                                <label class="form-label">First Name*</label>
-                                <mat-form-field appearance="outline" class="feild-width ">
-                                    <input autocomplete="off" matInput name="firstName" #firstName="ngModel"
-                                        [(ngModel)]="dataObj.personalInformation.firstName"
-                                        (ngModelChange)="dataObj.personalInformation.firstName = capitalizeFirstLetter($event)"
-                                        required />
-                                    <mat-error *ngIf="firstName.errors?.['required']"> First Name is
-                                        required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div>
-                                <label class="form-label">Last Name*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput name="lasttName" #lasttName="ngModel"
-                                        [(ngModel)]="dataObj.personalInformation.lastName"
-                                        (ngModelChange)="dataObj.personalInformation.lastName = capitalizeFirstLetter($event)"
-                                        required />
-                                    <mat-error *ngIf="lasttName.errors?.['required']"> Last name is required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="me-5">
-                                <label class="form-label">Date of Birth*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input matInput [matDatepicker]="picker" name="dob" #dob="ngModel"
-                                        [(ngModel)]="dataObj.personalInformation.dateOfBirth" required>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                    <mat-error *ngIf="dob.errors?.['required']"> DOB is required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div class="feild-width">
-                                <label class="form-label">Gender*</label>
-
-                                <mat-radio-group aria-mat-label="Select an option"
-                                    [(ngModel)]="dataObj.personalInformation.gender" name="gendr" #gendr="ngModel"
-                                    required>
-                                    <mat-radio-button value="MALE">Male</mat-radio-button>
-                                    <mat-radio-button value="FEMALE">Female</mat-radio-button>
-                                    <mat-radio-button value="OTHERS">Others</mat-radio-button>
-                                </mat-radio-group>
-
-                            </div>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="me-5">
-                                <label class="form-label">Email*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput
-                                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" name="userEmail"
-                                        #userEmail="ngModel" [(ngModel)]="dataObj.emailId" required />
-                                    <mat-error *ngIf="userEmail.errors?.['required']"> Email is required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div>
-                                <label class="form-label">Mobile Number*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="^[0-9]{10}$" maxlength="10"
-                                        name="mobileNo" #mobileNo="ngModel" [(ngModel)]="dataObj.mobile" required />
-                                    <mat-error *ngIf="mobileNo.errors?.['required']"> Mobile Number is
-                                        required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="me-5">
-                                <label class="form-label">Aadhar*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput
-                                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" name="userEmail"
-                                        #userEmail="ngModel" [(ngModel)]="dataObj.emailId" required />
-                                    <mat-error *ngIf="userEmail.errors?.['required']"> Aadhar is required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div>
-                                <label class="form-label">PAN Number*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="^[0-9]{10}$" maxlength="10"
-                                        name="mobileNo" #mobileNo="ngModel" [(ngModel)]="dataObj.mobile" required />
-                                    <mat-error *ngIf="mobileNo.errors?.['required']"> PAN Number is
-                                        required*
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="d-flex flex-column">
-
-                            <div class="d-flex">
-                                <p class="form-label">Identity Proof</p> &nbsp;&nbsp;
-                                <mat-icon matTooltip="Upload Aadhar" class="mb-">info</mat-icon>
-                            </div>
-                            <div class="d-flex " *ngIf="!dataObj.docIdentityProof">
-                                <input id="identification-file-input" class="form-control-file feild-width" type="file"
-                                    accept=".pdf,.jpg,.png,.jpeg" required>
-
-                            </div>
-                            <p class="d-flex mt-2"> Accepted formats: .pdf, .jpg, .png,
-                                .jpeg</p>
-                            <mat-chip-grid *ngIf="dataObj.docIdentityProof">
-                                <mat-chip-row (removed)="remove('DocumentName')">
-                                    {{ DocumentName }}
-                                    <button matChipRemove>
-                                        <mat-icon>cancel</mat-icon>
-                                    </button>
-                                </mat-chip-row>
-                            </mat-chip-grid>
-
-                        </div>
-
+                    <p class="f-16-b mt-4" *ngIf="dataObj.outletRegistrationType === 'SOLOPROPRIETOR'">Details
+                        of Partner 1*</p>
+                    <div style="overflow: hidden;">
+                        <form name="partnerForm" #partnerForm="ngForm" (keydown.enter)="$event.preventDefault()">
+                            <table mat-table [dataSource]="datasource" class="me-5">
+                                <ng-container matColumnDef="Owners">
+                                    <td mat-cell *matCellDef="let element;let i = index">
+                                        <p class="f-16-b mt-4" *ngIf="dataObj.outletRegistrationType === 'PARTNERSHIP'">
+                                            Partner {{ i + 1 }} Information*</p>
+                                        <div class="d-flex mt-3">
+                                            <mat-form-field appearance="outline" class="w-600 me-5">
+                                                <mat-label>First Name</mat-label>
+                                                <input autocomplete="off" matInput name="firstName" #firstName="ngModel"
+                                                    [(ngModel)]="element.firstName" pattern="^[a-zA-Z]+$" required />
+                                                <mat-error *ngIf="firstName.errors?.required">Value is
+                                                    required</mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" class="w-600">
+                                                <mat-label>Last Name</mat-label>
+                                                <input autocomplete="off" matInput name="lastName" #lastName="ngModel"
+                                                    [(ngModel)]="element.lastName" pattern="^[a-zA-Z]+$" required />
+                                                <mat-error *ngIf="lastName.errors?.required">Value is
+                                                    required</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="d-flex mt-3">
+                                            <mat-form-field appearance="outline" class="w-600 me-5">
+                                                <mat-label>Date of Birth</mat-label>
+                                                <input matInput [matDatepicker]="picker" name="dob" #dob="ngModel"
+                                                    [(ngModel)]="element.dateOfBirth" required>
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                                <mat-error *ngIf="dob.errors?.['required']"> DOB is required*
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <div class="w-600">
+                                                <label class="form-label">Outlet Registration Type*</label>
+                                                <mat-radio-group aria-mat-label="Select an option"
+                                                    [(ngModel)]="element.gender" name="gendr" #gendr="ngModel" required>
+                                                    <mat-radio-button value="MALE">Male</mat-radio-button>
+                                                    <mat-radio-button value="FEMALE">Female</mat-radio-button>
+                                                    <mat-radio-button value="OTHERS">Others</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mt-3">
+                                            <mat-form-field appearance="outline" class="w-600 me-5">
+                                                <mat-label>Email</mat-label>
+                                                <input autocomplete="off" matInput
+                                                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                                                    name="email" #email="ngModel" [(ngModel)]="element.email"
+                                                    required />
+                                                <mat-error *ngIf="email.errors?.required">Value is required</mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" class="w-600">
+                                                <mat-label>Mobile Number</mat-label>
+                                                <input autocomplete="off" matInput pattern="^[0-9]{10}$" maxlength="10"
+                                                    name="mobileNumber" #mobileNumber="ngModel"
+                                                    [(ngModel)]="element.mobileNumber" required />
+                                                <mat-error *ngIf="mobileNumber.errors?.required">Value is
+                                                    required</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="d-flex mt-3">
+                                            <mat-form-field appearance="outline" class="w-600 me-5">
+                                                <mat-label>Aadhar</mat-label>
+                                                <input autocomplete="off" matInput pattern="^[0-9]{12}$" name="aadhar"
+                                                    #aadhar="ngModel" [(ngModel)]="element.aadhar" required />
+                                                <mat-error *ngIf="aadhar.errors?.required">Value is required</mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" class="w-600">
+                                                <mat-label>PAN Number</mat-label>
+                                                <input autocomplete="off" matInput pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$"
+                                                    maxlength="10" name="panNumber" #panNumber="ngModel"
+                                                    [(ngModel)]="element.panNumber" required />
+                                                <mat-error *ngIf="panNumber.errors?.required">Value is
+                                                    required</mat-error>
+                                                <mat-error *ngIf="panNumber.errors?.pattern">Invalid PAN
+                                                    format</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="d-flex mt-3">
+                                            <mat-form-field appearance="outline" class="w-400">
+                                                <input matInput type="text"
+                                                    [placeholder]="!profileName ? 'Choose file' : ''" maxlength="64"
+                                                    readonly name="doc" #doc="ngModel" [(ngModel)]="name">
+                                                <mat-chip-listbox #chipList class="file-chip" *ngIf="profileName">
+                                                    <mat-chip-option ngDefaultControl style="cursor: pointer;">
+                                                        <span class="text-overflow">{{ profileName }}</span>
+                                                        <mat-icon matChipRemove>cancel</mat-icon>
+                                                    </mat-chip-option>
+                                                </mat-chip-listbox>
+                                                <button type="button" matSuffix mat-mini-fab color="primary"
+                                                    style="margin-right: 4px;" class="upload-btn"
+                                                    (click)="profile.click()" matTooltip="Upload File">
+                                                    <mat-icon>attach_file</mat-icon>
+                                                </button>
+                                                <input type="file" class="file-input" hidden #profile />
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </form>
                     </div>
-                    <div class="row mb-5">
-                        <div class="col d-flex justify-content-center" style="margin-left:570px;margin-top: 50px;">
-                            <button mat-stroked-button color="primary" class="btn p-16-v1 me-5">Cancel</button>
-                            <button mat-raised-button type="submit" color="accent" class="btn p-16-v1">Next</button>
-                        </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button mat-stroked-button color="accent" class="me-3"
+                            style="height: 48px;width: 130px;">Cancel</button>
+                        <button mat-flat-button color="accent" matStepperNext style="height: 48px;width: 146px;"
+                            [disabled]="!partnerForm.valid">Submit</button>
                     </div>
+                </div>
+            </mat-step>
 
-                </mat-step>
-
-                <mat-step label="Step 3">
-                    <div class=" ml-2 p-3 text-start">
-                        <div class="mt-4 m-1 d-flex flex-row ">
-                            <p class="p-16-v1">ADDRESS INFORMATION</p>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="me-5">
-                                <label class="form-label">Address Line1*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="addressline1"
-                                        #addressline1="ngModel" [(ngModel)]="dataObj.addressline1"
-                                        (ngModelChange)="dataObj.addressline1 = capitalizeFirstLetter($event)"
-                                        required />
-                                </mat-form-field>
-                            </div>
-
-                            <div>
-                                <label class="form-label">Address Line2*</label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="addressline2"
-                                        #addressline2="ngModel" [(ngModel)]="dataObj.addressline2"
-                                        (ngModelChange)="dataObj.addressline2 = capitalizeFirstLetter($event)"
-                                        required />
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="d-flex ">
-                            <div class="me-5">
-                                <mat-label class="form-label">City*</mat-label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="city"
-                                        #city="ngModel" [(ngModel)]="dataObj.city"
-                                        (ngModelChange)="dataObj.city = capitalizeFirstLetter($event)" required />
-                                </mat-form-field>
-                            </div>
-
-                            <div>
-                                <mat-label class="form-label">State*</mat-label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="state"
-                                        #state="ngModel" [(ngModel)]="dataObj.state" required />
-                                    <mat-error *ngIf="state.errors?.required">Value is required</mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="d-flex ">
-                            <div class="me-5">
-                                <mat-label class="form-label">ZIP CODE*</mat-label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="zipcode"
-                                        #zipcode="ngModel" [(ngModel)]="dataObj.zipcode" required />
-                                </mat-form-field>
-                            </div>
-
-                            <div>
-                                <mat-label class="form-label">Country*</mat-label>
-                                <mat-form-field appearance="outline" class="feild-width">
-                                    <input autocomplete="off" matInput pattern="" placeholder="" name="country"
-                                        #country="ngModel" [(ngModel)]="dataObj.country" required />
-                                    <mat-error *ngIf="country.errors?.required">Value is required</mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="ms-auto">
-                                <button mat-stroked-button color="accent" class=" me-5">Cancel</button>
-                                <button mat-flat-button type="submit" color="accent">Save</button>
-                            </div>
-                        </div>
+            <mat-step>
+                <ng-template matStepLabel>OUTLET ADDRESS</ng-template>
+                <form name="addressForm" #addressForm="ngForm" (keydown.enter)="$event.preventDefault()">
+                    <div class="d-flex mt-3">
+                        <mat-form-field appearance="outline" class="w-600 me-5">
+                            <mat-label>Address Line1</mat-label>
+                            <input autocomplete="off" matInput pattern="" placeholder="" name="addressLine1"
+                                #addressLine1="ngModel" [(ngModel)]="dataObj.address.addressLine1"
+                                pattern="^[a-zA-Z0-9\s,./#-]{1,100}$" required />
+                            <mat-error *ngIf="addressLine1?.errors?.required">Value is required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="w-600">
+                            <mat-label>Address Line2</mat-label>
+                            <input autocomplete="off" matInput pattern="" placeholder="" name="addressLine2"
+                                #addressLine2="ngModel" [(ngModel)]="dataObj.address.addressLine2"
+                                pattern="^[a-zA-Z0-9\s,./#-]{1,100}$" required />
+                            <mat-error *ngIf="addressLine2.errors?.required">Value is required</mat-error>
+                        </mat-form-field>
                     </div>
-                </mat-step>
-
-            </form>
+                    <div class="d-flex mt-3">
+                        <mat-form-field appearance="outline" class="w-600 me-5">
+                            <mat-label>Zip Code</mat-label>
+                            <input autocomplete="off" matInput pattern="" placeholder="" name="pinCode"
+                                #pinCode="ngModel" [(ngModel)]="dataObj.address.pinCode" pattern="^[1-9][0-9]{5}$"
+                                required />
+                            <mat-error *ngIf="pinCode.errors?.required">Value is required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="w-600">
+                            <mat-label>City</mat-label>
+                            <input autocomplete="off" matInput pattern="" placeholder="" name="city" #city="ngModel"
+                                [(ngModel)]="dataObj.address.city" pattern="^[a-zA-Z\s.'-]{2,100}$" required />
+                            <mat-error *ngIf="city.errors?.required">Value is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="d-flex mt-3">
+                        <mat-form-field appearance="outline" class="w-600 me-5">
+                            <mat-label>State</mat-label>
+                            <input autocomplete="off" matInput pattern="" placeholder="" name="state" #state="ngModel"
+                                [(ngModel)]="dataObj.address.state" pattern="^[a-zA-Z\s.'-]{2,100}$" required />
+                            <mat-error *ngIf="state.errors?.required">Value is required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="w-600">
+                            <mat-label>Country</mat-label>
+                            <input autocomplete="off" matInput pattern="" placeholder="" name="country"
+                                #country="ngModel" [(ngModel)]="dataObj.address.country"
+                                pattern="^[a-zA-Z\s.'-]{2,100}$" required />
+                            <mat-error *ngIf="country.errors?.required">Value is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </form>
+                <div class="d-flex justify-content-end mt-3">
+                    <button mat-stroked-button color="accent" class="me-3"
+                        style="height: 48px;width: 130px;">Cancel</button>
+                    <button mat-flat-button color="accent" matStepperNext style="height: 48px;width: 146px;"
+                        [disabled]="!addressForm.valid">Submit</button>
+                </div>
+            </mat-step>
         </mat-stepper>
     </mat-card>
 </div>
