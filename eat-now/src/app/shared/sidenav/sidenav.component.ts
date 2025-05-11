@@ -64,69 +64,76 @@ export class SidenavComponent {
     // this.idleService.disableIdleDetection();
   }
 
- 
-activeIndex: number | null = null;
-icons = [
-  { name: 'home', tooltip: 'Home' },
-  { name: 'groups', tooltip: 'Onboarding' },
-  { name: 'list_alt', tooltip: 'Menu' },
-  { name: 'table_restaurant', tooltip: 'Table' },
-  { name: 'inventory', tooltip: 'Inventory' },
-  { name: 'room_service', tooltip: 'Orders' },
-  { name: 'chef_hat', tooltip: 'Kitchen' }
-];
+
+  activeIndex: number | null = null;
+  activeListItemIndex: number | null = null;
+
+  icons = [
+    { name: 'home', tooltip: 'Home' },
+    { name: 'groups', tooltip: 'Onboarding' },
+    { name: 'list_alt', tooltip: 'Menu' },
+    { name: 'table_restaurant', tooltip: 'Table' },
+    { name: 'inventory', tooltip: 'Inventory' },
+    { name: 'room_service', tooltip: 'Orders' },
+    { name: 'chef_hat', tooltip: 'Kitchen' }
+  ];
 
 
-iconListData: { [key: string]: { title: string, items: { icon: string, title: string }[] } } = {
-  home: {
-    title: 'Home',
-    items: [
-      { icon: 'home', title: 'Dashboard' },
-      { icon: 'account_circle', title: 'Profile' }
-    ]
-  },
-  groups: {
-    title: 'Onboarding',
-    items: [
-      { icon: 'person_add', title: 'Outlet' },
-      { icon: 'group', title: 'Staff' }
-    ]
-  },
-  list_alt: {
-    title: 'Menu',
-    items: [
-      { icon: 'restaurant_menu', title: 'View Menu' },
-      { icon: 'add', title: 'Add Item' }
-    ]
-  },
-  table_restaurant: {
-    title: 'Table',
-    items: [
-      { icon: 'event_seat', title: 'Table Map' },
-      { icon: 'add', title: 'Add Table' }
-    ]
-  },
-  inventory: {
-    title: 'Inventory',
-    items: [
-      { icon: 'inventory_2', title: 'Stock' },
-      { icon: 'add_shopping_cart', title: 'Order Supplies' }
-    ]
-  },
-  room_service: {
-    title: 'Orders',
-    items: [
-      { icon: 'room_service', title: 'Current Orders' },
-      { icon: 'history', title: 'Order History' }
-    ]
-  },
-  chef_hat: {
-    title: 'Kitchen',
-    items: [
-      { icon: 'restaurant', title: 'Current Dishes' },
-      { icon: 'schedule', title: 'Prep Schedule' }
-    ]
+  iconListData : { [key: string]: { title: string, items: { icon: string; title: string; route: string }[] } } = {
+    home: {
+      title: 'Home',
+      items: [
+        { icon: 'home', title: 'Dashboard',route:'/core/outlet-onboarding' },
+        { icon: 'account_circle', title: 'Profile',route:'/core/outlet-onboarding' }
+      ]
+    },
+    groups: {
+      title: 'Onboarding',
+      items: [
+        { icon: 'person_add', title: 'Outlet', route:'/core/outlet-onboarding'},
+        { icon: 'group', title: 'Staff',route:'/core/outlet-onboarding' }
+      ]
+    },
+    list_alt: {
+      title: 'Menu',
+      items: [
+        { icon: 'restaurant_menu', title: 'View Menu',route:'/core/outlet-onboarding' },
+        { icon: 'add', title: 'Add Item',route:'/core/outlet-onboarding' }
+      ]
+    },
+    table_restaurant: {
+      title: 'Table',
+      items: [
+        { icon: 'event_seat', title: 'Table Map',route:'/core/outlet-onboarding' },
+        { icon: 'add', title: 'Add Table',route:'/core/outlet-onboarding' }
+      ]
+    },
+    inventory: {
+      title: 'Inventory',
+      items: [
+        { icon: 'inventory_2', title: 'Stock',route:'/core/outlet-onboarding' },
+        { icon: 'add_shopping_cart', title: 'Order Supplies',route:'/core/outlet-onboarding' }
+      ]
+    },
+    room_service: {
+      title: 'Orders',
+      items: [
+        { icon: 'room_service', title: 'Current Orders',route:'/core/outlet-onboarding' },
+        { icon: 'history', title: 'Order History',route:'/core/outlet-onboarding' }
+      ]
+    },
+    chef_hat: {
+      title: 'Kitchen',
+      items: [
+        { icon: 'restaurant', title: 'Current Dishes',route:'/core/outlet-onboarding' },
+        { icon: 'schedule', title: 'Prep Schedule',route:'/core/outlet-onboarding' }
+      ]
+    }
+  };
+  navigateTo(route: string) {
+    if (route) {
+      this.router.navigate([route]);
+    }
   }
-};
-
+  
 }

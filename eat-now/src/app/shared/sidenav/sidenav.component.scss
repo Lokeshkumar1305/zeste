@@ -166,8 +166,22 @@
 .active-btn {
     background-color: black !important;
   }
-  /* Reduce the gap between the icon and the title in mat-list-item */
-::ng-deep .mat-list-item .mat-list-item-icon {
-    margin-right: 4px !important; /* Default is usually 16px; set to 8px or less as you like */
+  
+ ::ng-deep .mdc-list-item--with-leading-icon .mdc-list-item__start {
+    margin-left: 4px !important;
+    margin-right: 24px !important;
+}
+  
+.active-list-item {
+    background-color: #F3E8D0 !important;
+    color: #7B632E !important;
   }
+  
+  .active-list-item .mat-list-item-icon,
+  .active-list-item .list-title-link {
+    color: #7B632E !important; 
+  }
+  .mat-mdc-list-item.mdc-list-item--with-leading-avatar.mdc-list-item--with-one-line, .mat-mdc-list-item.mdc-list-item--with-leading-checkbox.mdc-list-item--with-one-line, .mat-mdc-list-item.mdc-list-item--with-leading-icon.mdc-list-item--with-one-line {
+    height: 40px !important;
+}
   

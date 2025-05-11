@@ -53,14 +53,11 @@
 </div> -->
 
 <div class="d-flex" style="height: 100vh;">
-  <!-- Sidebar -->
-  <div class="d-flex flex-column align-items-center pt-4" style="width: 60px; min-width: 60px; max-width: 60px;background-color: #001B3D; gap: 16px;">
+  <div class="d-flex flex-column align-items-center pt-4"
+    style="width: 60px; min-width: 60px; max-width: 60px;background-color: #001B3D; gap: 16px;">
     <div *ngFor="let icon of icons; let i = index">
-      <button mat-icon-button
-              [ngClass]="{'active-btn': activeIndex === i}"
-              (click)="activeIndex = i"
-              [matTooltip]="icon.tooltip"
-              matTooltipPosition="right">
+      <button mat-icon-button [ngClass]="{'active-btn': activeIndex === i}" (click)="activeIndex = i"
+        [matTooltip]="icon.tooltip" matTooltipPosition="right">
         <mat-icon style="color: aliceblue;">
           <span class="material-symbols-outlined">{{icon.name}}</span>
         </mat-icon>
@@ -74,12 +71,21 @@
         <div mat-subheader style="font-weight: 600;">
           {{ iconListData[icons[activeIndex].name].title }}
         </div>
-        <mat-list-item *ngFor="let item of iconListData[icons[activeIndex].name]?.items">
-          <mat-icon matListItemIcon>
-            <span class="material-symbols-outlined">{{item.icon}}</span>
-          </mat-icon>
-          <div matListItemTitle>{{ item.title }}</div>
-        </mat-list-item>
+        <mat-list-item
+        *ngFor="let item of iconListData[icons[activeIndex].name].items; let idx = index"
+        [ngClass]="{'active-list-item': activeListItemIndex === idx}"
+      >
+        <mat-icon matListItemIcon>
+          <span class="material-symbols-outlined">{{item.icon}}</span>
+        </mat-icon>
+        <div matListItemTitle
+             class="list-title-link"
+             (click)="activeListItemIndex = idx; navigateTo(item.route)">
+          {{ item.title }}
+        </div>
+      </mat-list-item>
+      
+        
       </mat-list>
     </ng-container>
     <ng-container *ngIf="activeIndex === null">
