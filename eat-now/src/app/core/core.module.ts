@@ -11,12 +11,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../material/material.module';
 import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
 import { SharedRoutingModule } from '../shared/shared-routing.module';
+import { OutletsComponent } from './outlets/outlets.component';
 
 
 @NgModule({
   declarations: [
     OutletOnboardingComponent,
-    MerchantStaffOnboardingComponent
+    MerchantStaffOnboardingComponent,
+    OutletsComponent
   ],
   imports: [
     CommonModule,

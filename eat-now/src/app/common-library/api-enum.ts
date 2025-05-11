@@ -1,3 +1,4 @@
 export enum APIPath {
-    REFRESH_TOKEN = "/uam/users/refreshtoken",
+    OUTLET_ONB = "/outlet/save",
+    REFRESH_TOKEN = "VCBHBHB",
 }

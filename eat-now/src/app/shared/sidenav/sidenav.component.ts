@@ -64,9 +64,69 @@ export class SidenavComponent {
     // this.idleService.disableIdleDetection();
   }
 
-  getPrivilege(api: any) {
-    //  return this.postService.getPrivilege(api);
-  }
+ 
+activeIndex: number | null = null;
+icons = [
+  { name: 'home', tooltip: 'Home' },
+  { name: 'groups', tooltip: 'Onboarding' },
+  { name: 'list_alt', tooltip: 'Menu' },
+  { name: 'table_restaurant', tooltip: 'Table' },
+  { name: 'inventory', tooltip: 'Inventory' },
+  { name: 'room_service', tooltip: 'Orders' },
+  { name: 'chef_hat', tooltip: 'Kitchen' }
+];
 
+
+iconListData: { [key: string]: { title: string, items: { icon: string, title: string }[] } } = {
+  home: {
+    title: 'Home',
+    items: [
+      { icon: 'home', title: 'Dashboard' },
+      { icon: 'account_circle', title: 'Profile' }
+    ]
+  },
+  groups: {
+    title: 'Onboarding',
+    items: [
+      { icon: 'person_add', title: 'Outlet' },
+      { icon: 'group', title: 'Staff' }
+    ]
+  },
+  list_alt: {
+    title: 'Menu',
+    items: [
+      { icon: 'restaurant_menu', title: 'View Menu' },
+      { icon: 'add', title: 'Add Item' }
+    ]
+  },
+  table_restaurant: {
+    title: 'Table',
+    items: [
+      { icon: 'event_seat', title: 'Table Map' },
+      { icon: 'add', title: 'Add Table' }
+    ]
+  },
+  inventory: {
+    title: 'Inventory',
+    items: [
+      { icon: 'inventory_2', title: 'Stock' },
+      { icon: 'add_shopping_cart', title: 'Order Supplies' }
+    ]
+  },
+  room_service: {
+    title: 'Orders',
+    items: [
+      { icon: 'room_service', title: 'Current Orders' },
+      { icon: 'history', title: 'Order History' }
+    ]
+  },
+  chef_hat: {
+    title: 'Kitchen',
+    items: [
+      { icon: 'restaurant', title: 'Current Dishes' },
+      { icon: 'schedule', title: 'Prep Schedule' }
+    ]
+  }
+};
 
 }

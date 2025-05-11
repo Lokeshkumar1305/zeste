@@ -3,12 +3,6 @@
     <mat-card class="breadcrum-card mx-auto">
         <p class="breadcrumb mt-4">UAM > <span class="breadcrumb-active">STAFF</span></p>
     </mat-card>
-
-
-    <mat-card class="breadcrum-card mx-auto">
-        <p class="breadcrumb mt-4">UAM > <span class="breadcrumb-active">STAFF</span></p>
-    </mat-card>
-
     <mat-card class="stepper-card mx-auto">
         <mat-stepper>
             <form name="staffInfo" #staffInfo="ngForm" (keydown.enter)="$event.preventDefault()">
@@ -112,8 +106,8 @@
                             </div>
                         </div>
 
-                        <div class="row mb-5">
-                            <div class="col d-flex justify-content-center">
+                        <div class="d-flex mb-5">
+                            <div class="ms-auto">
                                 <button mat-stroked-button color="accent" class=" me-5"
                                     (click)="backToMain()">Cancel</button>
                                 <button mat-flat-button type="submit" color="accent"

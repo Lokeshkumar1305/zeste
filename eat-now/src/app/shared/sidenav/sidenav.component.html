@@ -1,11 +1,11 @@
-<div class="nav-body" [ngClass]="postService.isCollapsed ? 'nav-hV': 'hV'">
+<!-- <div class="nav-body" [ngClass]="postService.isCollapsed ? 'nav-hV': 'hV'">
   <mat-accordion>
     <mat-list>
       <div mat-subheader *ngIf="postService.isCollapsed" class="f-12-m mt-4">HOME</div>
       <div mat-subheader *ngIf="!postService.isCollapsed" class="separator" class="separator"><mat-icon
           class="material-symbols-outlined">more_horiz</mat-icon></div>
       <mat-list-item id="home" [routerLink]="['/Home']" [routerLinkActive]="'link-active'"
-        [matTooltip]="postService.isCollapsed ? '' : 'Dashboard'" matTooltipPosition="after">
+        [matTooltip]="postService.isCollapsed ? '' : 'Dashboard'" matTooltipPosition="after"> 
         <mat-icon matListItemIcon class="material-symbols-outlined">dashboard</mat-icon>
         <div matListItemTitle *ngIf="postService.isCollapsed">Dashboard</div>
       </mat-list-item>
@@ -49,5 +49,41 @@
     <mat-icon class="ms-auto material-symbols-outlined" matTooltip="Logout" (click)="logout()" style="cursor: pointer;"
       color="accent">power_settings_new </mat-icon>
 
+  </div>
+</div> -->
+
+<div class="d-flex" style="height: 100vh;">
+  <!-- Sidebar -->
+  <div class="d-flex flex-column align-items-center pt-4" style="width: 60px; min-width: 60px; max-width: 60px;background-color: #001B3D; gap: 16px;">
+    <div *ngFor="let icon of icons; let i = index">
+      <button mat-icon-button
+              [ngClass]="{'active-btn': activeIndex === i}"
+              (click)="activeIndex = i"
+              [matTooltip]="icon.tooltip"
+              matTooltipPosition="right">
+        <mat-icon style="color: aliceblue;">
+          <span class="material-symbols-outlined">{{icon.name}}</span>
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column flex-grow-1 p-4">
+    <ng-container *ngIf="activeIndex !== null">
+      <mat-list>
+        <div mat-subheader style="font-weight: 600;">
+          {{ iconListData[icons[activeIndex].name].title }}
+        </div>
+        <mat-list-item *ngFor="let item of iconListData[icons[activeIndex].name]?.items">
+          <mat-icon matListItemIcon>
+            <span class="material-symbols-outlined">{{item.icon}}</span>
+          </mat-icon>
+          <div matListItemTitle>{{ item.title }}</div>
+        </mat-list-item>
+      </mat-list>
+    </ng-container>
+    <ng-container *ngIf="activeIndex === null">
+      <div class="text-muted">Please select a menu item.</div>
+    </ng-container>
   </div>
 </div>

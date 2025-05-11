@@ -161,3 +161,13 @@
         width: 224px;
     }
 }
+
+
+.active-btn {
+    background-color: black !important;
+  }
+  /* Reduce the gap between the icon and the title in mat-list-item */
+::ng-deep .mat-list-item .mat-list-item-icon {
+    margin-right: 4px !important; /* Default is usually 16px; set to 8px or less as you like */
+  }
+  

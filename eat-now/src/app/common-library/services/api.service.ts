@@ -12,8 +12,7 @@ export class ApiService {
 
   public isCollapsed = true;
   private onlineStatus: boolean = navigator.onLine;
-  private privileges: string[] = [];
-
+  
   constructor(
     private snackBar: MatSnackBar,
     private router: Router,
@@ -35,10 +34,7 @@ export class ApiService {
     return this.onlineStatus;
   }
 
-  getPrivilege(api: string): boolean {
-    this.privileges = JSON.parse(sessionStorage.getItem('privileges') || '[]');
-    return this.privileges.includes(api);
-  }
+ 
 
   private createHttpOptions(withAuth: boolean = false): HttpHeaders {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
@@ -55,13 +51,13 @@ export class ApiService {
     const baseUrl = window.location.href.split('/#/')[0];
     if (baseUrl.includes('localhost')) {
       if (baseUrl.endsWith('4200') || baseUrl.endsWith('4300')) {
-        return 'https://cards-dev.toucanint.com/toucan';
+        return 'http://192.168.1.5:8085';
       }
       if (baseUrl.endsWith('4500') || baseUrl.endsWith('4600')) {
         return 'https://cards-qa.toucanint.com/toucan';
       }
     }
-    if (baseUrl.startsWith('https://cards-dev.toucanint.com') || baseUrl.startsWith('https://cust-onb-dev.toucanint.com')) {
+    if (baseUrl.startsWith('http://192.168.1.5:8085') || baseUrl.startsWith('https://cust-onb-dev.toucanint.com')) {
       return 'https://cards-dev.toucanint.com/toucan';
     }
     if (baseUrl.startsWith('https://cards-qa.toucanint.com') || baseUrl.startsWith('https://cust-onb-qa.toucanint.com')) {
@@ -106,11 +102,7 @@ export class ApiService {
       .pipe(catchError(err => this.handleError(err, endPath, obj)));
   }
 
-  // public doPostParams(endPath: APIPath, formData: FormData): Observable<any> {
-  //   const apiURL = this.getBaseURL() + endPath;
-  //   return this.http.post(apiURL, formData, { headers: this.createHttpOptions(true) })
-  //     .pipe(catchError(err => this.handleError(err, endPath, formData)));
-  // }
+ 
 
   doPostParams(endPath: APIPath, formData: FormData): Observable<any> {
     let token: string;
@@ -176,18 +168,7 @@ export class ApiService {
     }
   }
 
-  // public openNotificationSnackBar(heading: string, primaryText: string, secondaryText: string, type: string, duration: number = 30000) {
-  //   const config = new MatSnackBarConfig();
-  //   config.politeness = 'assertive';
-  //   config.duration = duration;
-  //   config.verticalPosition = 'bottom';
-  //   config.horizontalPosition = 'right';
-  //   config.panelClass = this.getSnackBarClass(type);
-  //   return this.snackBar.openFromComponent(NotificationComponent, {
-  //     ...config,
-  //     data: { heading, primaryText, secondaryText, buttonText: '' },
-  //   });
-  // }
+ 
 
   public closeNotification() {
     this.snackBar.dismiss();
