@@ -34,32 +34,50 @@ export class Address {
     pinCode!: string;
     country!: string;
 }
-
-
 export class Staff {
     employeeId!: string;
     firstName!: string;
     lastName!: string;
-    email!: string;
-    phoneNumber!: string;
+    primaryMobileNumber!: string;
     dateOfBirth!: string;
     gender!: string;
     aadhar!: string;
-    emergencyContactNumber!: string;
-    designation!: string;
-    department!: string;
-    dateOfJoining!: string;
+    emailId!: string;
+    emergencyContact:EmergencyContactInfo;
+    presentAddress:Address;
+    permanentAddress:Address;
+    additionalStaffInfo:AdditionalStaffInfo;
+    bankDetails:BankDetails;
+    constructor(){
+        this.emergencyContact = new EmergencyContactInfo();
+        this.presentAddress = new Address();
+        this.permanentAddress = new Address();
+        this.additionalStaffInfo = new AdditionalStaffInfo();
+        this.bankDetails = new BankDetails();
+    }
+
+}
+export class EmergencyContactInfo{
+    firstName!: string;
+    lastName!: string;
+    emergencyMobileNumber!: string;
+    relation!: string;
+}
+export class AdditionalStaffInfo{
+    role!: string;
+    employmentStartDate!: string;
     employmentType!: string;
     shiftType!: string;
-    shiftStartTime!: string;
-    shiftEndTime!: string;
     shiftStartDate!: string;
     shiftEndDate!: string;
-    reportingManagerId!: string;
-    address!: Address
+    languages!: string;
+}
+export class BankDetails{
+    bankHolderName!: string;
     bankName!: string;
-    accountNumber!: string;
-    ifscCode!: string;
-    salary!: number
-    roles!: string;
+    IFSCCode!: string;
+    accountType!: string;
+    AccountNumber!: string;
+    branch!: string;
+    reAccountNumber!: string;
 }

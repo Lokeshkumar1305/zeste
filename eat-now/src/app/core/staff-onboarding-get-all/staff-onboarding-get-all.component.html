@@ -1,4 +1,4 @@
-<div class="p-5 section">
+<div class="p-5 section" >
     <mat-card class="p-5" style="background-color: #AE8E481A;">
         <app-breadcrumb [breadCrumb]="breadCrumb"></app-breadcrumb>
     </mat-card>
@@ -13,7 +13,7 @@
             </div>
             <div class="flex-grow-1"></div>
             <div>
-              <button mat-flat-button color="accent" style="height: 48px;width: 146px;" (click)="addOutlet()">Add Outlet</button>
+              <button mat-flat-button color="accent" style="height: 48px;width: 146px;" (click)="addStaff()">Add Staff</button>
             </div>
           </div>
     </mat-card>
@@ -21,7 +21,7 @@
         <div class="col">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1">Outlet Name </th>
+                    <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1">Staff Name </th>
                     <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
                 </ng-container>
                 <ng-container matColumnDef="ID">
@@ -35,7 +35,7 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1"> Actions </th>
                     <td mat-cell *matCellDef="let element">
-                        <span class="me-3" (click)="outletInq(element)"><i
+                        <span class="me-3" (click)="staffInq(element)"><i
                                 class="bi bi-pencil-fill cursor-pointer"></i></span>
                     </td>
                 </ng-container>

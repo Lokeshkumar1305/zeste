@@ -7,11 +7,11 @@ import { ApiService } from '../../common-library/services/api.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-outlets',
-  templateUrl: './outlets.component.html',
-  styleUrl: './outlets.component.scss'
+  selector: 'app-staff-onboarding-get-all',
+  templateUrl: './staff-onboarding-get-all.component.html',
+  styleUrl: './staff-onboarding-get-all.component.scss'
 })
-export class OutletsComponent {
+export class StaffOnboardingGetAllComponent {
   breadCrumb = new Array<OPSMenu>();
   displayedColumns: string[] = ['name', 'ID', 'gender', 'actions'];
   pageNumber = 0;
@@ -26,12 +26,12 @@ export class OutletsComponent {
   ngOnInit(): void {
     const bc = [
       { "name": 'UAM', "link": "/uam/users" },
-      { "name": 'Outlet', "link": "/outlet-getAll" },
+      { "name": 'Staff', "link": "/staff-onboarding-getAll" },
     ];
     this.breadCrumb = bc;
   }
-  addOutlet(){
-    this.router.navigate(['/core/outlet-onboarding']);
+  addStaff() {
+    this.router.navigate(['/core/staff-onboarding']);
   }
   getAll(index: number, size: number) {
     let obj = {
@@ -57,9 +57,11 @@ export class OutletsComponent {
     //   }
     // })
   }
-  outletInq(element: any) {
+  staffInq(element: any) {
   }
   getPagination(event: { pageIndex: number; pageSize: number; }) {
     this.getAll(event.pageIndex, event.pageSize);
   }
+
 }
+

@@ -1,0 +1,59 @@
+.breadcrum-card {
+    height: 140px !important;
+    // width: 1380px !important;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background-color: transparent !important;
+    border-radius: 8px !important;
+    margin: 30px 10px 10px 10px;
+    padding: 0px 20px;
+
+}
+
+.stepper-card {
+    // width: 1380px !important;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background-color: transparent !important;
+    border-radius: 8px !important;
+    margin: 30px 10px 10px 10px;
+    padding: 0px 20px;
+
+}
+
+.form-control-file {
+    border: 1px solid #ced4da;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+
+.custom-file-width {
+    width: 89% !important;
+    margin-left: 10px !important;
+}
+
+mat-card{
+    width: 1200px;
+    border-radius: 8px;
+}
+.feild-width{
+    width: 350px;
+}
+.w-600 {
+    width: 530px;
+  }
+  .w-400 {
+    width: 485px;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+}
+
+.tou-spacer {
+    flex: 1 1 auto !important;
+  }
+  .contact-info {
+    display: flex;
+    align-items: center; 
+  }

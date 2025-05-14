@@ -12,13 +12,16 @@ import { MaterialModule } from '../material/material.module';
 import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
 import { SharedRoutingModule } from '../shared/shared-routing.module';
 import { OutletsComponent } from './outlets/outlets.component';
-
+import { StaffOnboardingComponent } from './staff-onboarding/staff-onboarding.component';
+import { StaffOnboardingGetAllComponent } from './staff-onboarding-get-all/staff-onboarding-get-all.component';
 
 @NgModule({
   declarations: [
     OutletOnboardingComponent,
     MerchantStaffOnboardingComponent,
-    OutletsComponent
+    OutletsComponent,
+    StaffOnboardingComponent,
+    StaffOnboardingGetAllComponent
   ],
   imports: [
     CommonModule,

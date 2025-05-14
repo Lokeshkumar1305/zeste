@@ -90,8 +90,9 @@ export class SidenavComponent {
     groups: {
       title: 'Onboarding',
       items: [
-        { icon: 'person_add', title: 'Outlet', route:'/core/outlet-onboarding'},
-        { icon: 'group', title: 'Staff',route:'/core/outlet-onboarding' }
+        { icon: 'person_add', title: 'Outlet', route:'/core/outlet-getAll'},
+        { icon: 'group', title: 'Staff',route:'/core/staff-onboarding-getAll' },
+        
       ]
     },
     list_alt: {
