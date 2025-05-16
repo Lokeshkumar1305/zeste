@@ -2,7 +2,7 @@
     <mat-card class="p-5" style="background-color: #AE8E481A;">
         <app-breadcrumb [breadCrumb]="breadCrumb"></app-breadcrumb>
     </mat-card>
-    <mat-card class="mt-5">
+    <mat-card class="mt-5 mb-5">
         <mat-stepper [linear]="isLinear" #stepper class="p-5">
             <mat-step>
                 <form name="personalDetailsForm" #personalDetailsForm="ngForm" (keydown.enter)="$event.preventDefault()">

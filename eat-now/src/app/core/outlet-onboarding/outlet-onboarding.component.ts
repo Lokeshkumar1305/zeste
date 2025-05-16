@@ -30,7 +30,7 @@ export class OutletOnboardingComponent {
   ngOnInit(): void {
     const bc = [
       { "name": 'UAM', "link": "/uam/users" },
-      { "name": 'Outlet', "link": "/core/outlet-onboarding" },
+      { "name": 'Outlet onboarding', "link": "/core/outlet-onboarding" },
     ];
     this.breadCrumb = bc;
     this.dataObj.outletRegistrationType = 'SOLOPROPRIETOR';

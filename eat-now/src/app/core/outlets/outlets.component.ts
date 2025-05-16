@@ -25,8 +25,8 @@ export class OutletsComponent {
   }
   ngOnInit(): void {
     const bc = [
-      { "name": 'UAM', "link": "/uam/users" },
-      { "name": 'Outlet', "link": "/outlet-getAll" },
+      { "name": 'Home', "link": "/uam/users" },
+      { "name": 'Outlet', "link": "/core/outlet-getAll" },
     ];
     this.breadCrumb = bc;
   }

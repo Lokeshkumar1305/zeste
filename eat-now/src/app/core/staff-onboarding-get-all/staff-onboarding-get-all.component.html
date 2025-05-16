@@ -2,22 +2,22 @@
     <mat-card class="p-5" style="background-color: #AE8E481A;">
         <app-breadcrumb [breadCrumb]="breadCrumb"></app-breadcrumb>
     </mat-card>
-    <mat-card class="p-5 mt-5">
+    <mat-card class="p-2 mt-4">
         <div class="d-flex align-items-center">
             <div>
-              <mat-form-field appearance="outline" class="search-field">
+              <mat-form-field appearance="outline" class="search-field ms-3 mt-3">
                 <mat-label>Search by</mat-label>
                 <input matInput>
                 <mat-icon matSuffix>search</mat-icon>
               </mat-form-field>
             </div>
             <div class="flex-grow-1"></div>
-            <div>
+            <div class="me-3">
               <button mat-flat-button color="accent" style="height: 48px;width: 146px;" (click)="addStaff()">Add Staff</button>
             </div>
           </div>
     </mat-card>
-    <div class="row mt-5">
+    <div class="row mt-4 mb-5">
         <div class="col">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
                 <ng-container matColumnDef="name">

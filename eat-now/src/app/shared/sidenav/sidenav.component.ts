@@ -92,6 +92,7 @@ export class SidenavComponent {
       items: [
         { icon: 'person_add', title: 'Outlet', route:'/core/outlet-getAll'},
         { icon: 'group', title: 'Staff',route:'/core/staff-onboarding-getAll' },
+        { icon: 'home', title: 'IAM',route:'/uam/users' },
         
       ]
     },

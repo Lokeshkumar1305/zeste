@@ -25,8 +25,8 @@ export class StaffOnboardingGetAllComponent {
   }
   ngOnInit(): void {
     const bc = [
-      { "name": 'UAM', "link": "/uam/users" },
-      { "name": 'Staff', "link": "/staff-onboarding-getAll" },
+      { "name": 'Home', "link": "/uam/users" },
+      { "name": 'Staff Dierctory', "link": "/core/staff-onboarding-getAll" },
     ];
     this.breadCrumb = bc;
   }
