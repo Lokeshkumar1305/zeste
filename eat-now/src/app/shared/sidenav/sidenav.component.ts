@@ -59,7 +59,7 @@ export class SidenavComponent {
 
   /* Logs the user out of the application.*/
   logout() {
-    // sessionStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['/']);
     // this.idleService.disableIdleDetection();
   }
@@ -79,64 +79,63 @@ export class SidenavComponent {
     { name: 'chef_hat', tooltip: 'Kitchen' }
   ];
 
-
-  iconListData : { [key: string]: { title: string, items: { icon: string; title: string; route: string }[] } } = {
+  iconListData: { [key: string]: { title: string, items: { icon: string; title: string; route: string }[] } } = {
     home: {
       title: 'Home',
       items: [
-        { icon: 'home', title: 'Dashboard',route:'/core/outlet-onboarding' },
-        { icon: 'account_circle', title: 'Profile',route:'/core/outlet-onboarding' }
+        { icon: 'home', title: 'Dashboard', route: '/core/outlet-onboarding' },
+        { icon: 'account_circle', title: 'Profile', route: '/core/outlet-onboarding' }
       ]
     },
     admin_panel_settings: {
       title: 'IAM',
       items: [
-        { icon: 'account_box', title: 'Users',route:'/uam/users' },
-        { icon: 'security', title: 'Roles',route:'/uam/roles'}
+        { icon: 'account_box', title: 'Users', route: '/uam/users' },
+        { icon: 'security', title: 'Roles', route: '/uam/roles' }
       ]
     },
     groups: {
       title: 'Onboarding',
       items: [
-        { icon: 'person_add', title: 'Outlet', route:'/core/outlet-getAll'},
-        { icon: 'group', title: 'Staff',route:'/core/staff-onboarding-getAll' },
-        { icon: 'home', title: 'IAM',route:'/uam/users' },
-        
+        { icon: 'person_add', title: 'Outlet', route: '/core/outlet-getAll' },
+        { icon: 'group', title: 'Staff', route: '/core/staff-onboarding-getAll' },
+        { icon: 'home', title: 'IAM', route: '/uam/users' },
+
       ]
     },
     list_alt: {
       title: 'Menu',
       items: [
-        { icon: 'restaurant_menu', title: 'View Menu',route:'/core/outlet-onboarding' },
-        { icon: 'add', title: 'Add Item',route:'/core/outlet-onboarding' }
+        { icon: 'restaurant_menu', title: 'View Menu', route: '/core/outlet-onboarding' },
+        { icon: 'add', title: 'Add Item', route: '/core/outlet-onboarding' }
       ]
     },
     table_restaurant: {
       title: 'Table',
       items: [
-        { icon: 'square', title: 'Area',route:'/core/area' },
-        { icon: 'table_bar', title: 'Table',route:'/core/table' }
+        { icon: 'square', title: 'Area', route: '/core/area' },
+        { icon: 'table_bar', title: 'Table', route: '/core/table' }
       ]
     },
     inventory: {
       title: 'Inventory',
       items: [
-        { icon: 'inventory_2', title: 'Stock',route:'/core/outlet-onboarding' },
-        { icon: 'add_shopping_cart', title: 'Order Supplies',route:'/core/outlet-onboarding' }
+        { icon: 'inventory_2', title: 'Stock', route: '/core/outlet-onboarding' },
+        { icon: 'add_shopping_cart', title: 'Order Supplies', route: '/core/outlet-onboarding' }
       ]
     },
     room_service: {
       title: 'Orders',
       items: [
-        { icon: 'room_service', title: 'Current Orders',route:'/core/outlet-onboarding' },
-        { icon: 'history', title: 'Order History',route:'/core/outlet-onboarding' }
+        { icon: 'room_service', title: 'Current Orders', route: '/core/outlet-onboarding' },
+        { icon: 'history', title: 'Order History', route: '/core/outlet-onboarding' }
       ]
     },
     chef_hat: {
       title: 'Kitchen',
       items: [
-        { icon: 'restaurant', title: 'Current Dishes',route:'/core/outlet-onboarding' },
-        { icon: 'schedule', title: 'Prep Schedule',route:'/core/outlet-onboarding' }
+        { icon: 'restaurant', title: 'Current Dishes', route: '/core/outlet-onboarding' },
+        { icon: 'schedule', title: 'Prep Schedule', route: '/core/outlet-onboarding' }
       ]
     }
   };
@@ -145,5 +144,5 @@ export class SidenavComponent {
       this.router.navigate([route]);
     }
   }
-  
+
 }
