@@ -14,6 +14,9 @@ import { SharedRoutingModule } from '../shared/shared-routing.module';
 import { OutletsComponent } from './outlets/outlets.component';
 import { StaffOnboardingComponent } from './staff-onboarding/staff-onboarding.component';
 import { StaffOnboardingGetAllComponent } from './staff-onboarding-get-all/staff-onboarding-get-all.component';
+import { AreaComponent } from './area/area.component';
+import { TableComponent } from './table/table.component';
+import { AreaTableModalComponent } from './area-table-modal/area-table-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { StaffOnboardingGetAllComponent } from './staff-onboarding-get-all/staff
     MerchantStaffOnboardingComponent,
     OutletsComponent,
     StaffOnboardingComponent,
-    StaffOnboardingGetAllComponent
+    StaffOnboardingGetAllComponent,
+    AreaComponent,
+    TableComponent,
+    AreaTableModalComponent
   ],
   imports: [
     CommonModule,

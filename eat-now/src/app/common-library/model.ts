@@ -43,12 +43,12 @@ export class Staff {
     gender!: string;
     aadhar!: string;
     emailId!: string;
-    emergencyContact:EmergencyContactInfo;
-    presentAddress:Address;
-    permanentAddress:Address;
-    additionalStaffInfo:AdditionalStaffInfo;
-    bankDetails:BankDetails;
-    constructor(){
+    emergencyContact: EmergencyContactInfo;
+    presentAddress: Address;
+    permanentAddress: Address;
+    additionalStaffInfo: AdditionalStaffInfo;
+    bankDetails: BankDetails;
+    constructor() {
         this.emergencyContact = new EmergencyContactInfo();
         this.presentAddress = new Address();
         this.permanentAddress = new Address();
@@ -57,13 +57,13 @@ export class Staff {
     }
 
 }
-export class EmergencyContactInfo{
+export class EmergencyContactInfo {
     firstName!: string;
     lastName!: string;
     emergencyMobileNumber!: string;
     relation!: string;
 }
-export class AdditionalStaffInfo{
+export class AdditionalStaffInfo {
     role!: string;
     employmentStartDate!: string;
     employmentType!: string;
@@ -72,7 +72,7 @@ export class AdditionalStaffInfo{
     shiftEndDate!: string;
     languages!: string;
 }
-export class BankDetails{
+export class BankDetails {
     bankHolderName!: string;
     bankName!: string;
     IFSCCode!: string;
@@ -81,8 +81,18 @@ export class BankDetails{
     branch!: string;
     reAccountNumber!: string;
 }
-export class roelDetails{
+export class roelDetails {
     roleTitle!: string;
     roleDescription!: string;
     privilegeId!: Array<string>;
+}
+export class Table {
+    area!: string;
+    tableCapacity!: string;
+    tableCode!: string;
+    status!: string;
+}
+export class Area {
+    area_name!: string;
+    noOfTables!: string
 }

@@ -114,8 +114,8 @@ export class SidenavComponent {
     table_restaurant: {
       title: 'Table',
       items: [
-        { icon: 'event_seat', title: 'Table Map',route:'/core/outlet-onboarding' },
-        { icon: 'add', title: 'Add Table',route:'/core/outlet-onboarding' }
+        { icon: 'square', title: 'Area',route:'/core/area' },
+        { icon: 'table_bar', title: 'Table',route:'/core/table' }
       ]
     },
     inventory: {

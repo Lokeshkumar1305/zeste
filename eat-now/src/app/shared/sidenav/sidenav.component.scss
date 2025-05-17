@@ -178,9 +178,9 @@
     background-color: #e6e4de !important;
     color: #7B632E !important;
 }
-
-.active-list-item .mat-list-item-icon,
-.active-list-item .list-title-link {
+::ng-deep .active-list-item .mat-list-item-icon,
+::ng-deep .active-list-item .mat-list-item-title,
+::ng-deep .active-list-item .list-title-link  {
     color: #7B632E !important;
 }
 
