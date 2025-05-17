@@ -14,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 export class UsersComponent {
 
   breadCrumb = new Array<OPSMenu>();
-  displayedColumns: string[] = ['role', 'description', 'permissions', 'actions'];
+  displayedColumns: string[] = ['name', 'emailId', 'mobleNumber', 'actions'];
   pageNumber = 0;
   totalElements = 0;
   pageSize = 5;
@@ -26,12 +26,12 @@ export class UsersComponent {
   }
   ngOnInit(): void {
     const bc = [
-      { "name": 'IAM', "link": "/uam/users" },
-      { "name": 'Roles', "link": "/core/staff-onboarding-getAll" },
+      { "name": 'IAM', "link": "/uam/dashboard" },
+      { "name": 'Users', "link": "/uam/users" },
     ];
     this.breadCrumb = bc;
   }
-  addRole() {
+  addUser() {
     this.router.navigate(['/core/staff-onboarding']);
   }
   getAll(index: number, size: number) {
@@ -58,7 +58,7 @@ export class UsersComponent {
     //   }
     // })
   }
-  staffInq(element: any) {
+  userInq(element: any) {
   }
   getPagination(event: { pageIndex: number; pageSize: number; }) {
     this.getAll(event.pageIndex, event.pageSize);

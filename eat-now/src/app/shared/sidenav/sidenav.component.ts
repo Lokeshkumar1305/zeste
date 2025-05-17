@@ -70,6 +70,7 @@ export class SidenavComponent {
 
   icons = [
     { name: 'home', tooltip: 'Home' },
+    { name: 'admin_panel_settings', tooltip: 'IAM' },
     { name: 'groups', tooltip: 'Onboarding' },
     { name: 'list_alt', tooltip: 'Menu' },
     { name: 'table_restaurant', tooltip: 'Table' },
@@ -85,6 +86,13 @@ export class SidenavComponent {
       items: [
         { icon: 'home', title: 'Dashboard',route:'/core/outlet-onboarding' },
         { icon: 'account_circle', title: 'Profile',route:'/core/outlet-onboarding' }
+      ]
+    },
+    admin_panel_settings: {
+      title: 'IAM',
+      items: [
+        { icon: 'account_box', title: 'Users',route:'/uam/users' },
+        { icon: 'security', title: 'Roles',route:'/uam/roles'}
       ]
     },
     groups: {

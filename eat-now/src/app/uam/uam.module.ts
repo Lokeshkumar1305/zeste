@@ -7,12 +7,14 @@ import { RolesComponent } from './roles/roles.component';
 import { UsersComponent } from './users/users.component';
 import { SharedRoutingModule } from '../shared/shared-routing.module';
 import { MaterialModule } from '../material/material.module';
-
+import { RoleDetailsComponent } from './role-details/role-details.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     RolesComponent,
-    UsersComponent
+    UsersComponent,
+    RoleDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { MaterialModule } from '../material/material.module';
     HttpClientModule,
     SharedModule,
     MaterialModule,
-    SharedRoutingModule
+    SharedRoutingModule,
+    FormsModule
   ]
 })
 export class UamModule { }

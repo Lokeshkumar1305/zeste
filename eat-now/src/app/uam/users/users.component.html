@@ -13,30 +13,29 @@
             </div>
             <div class="flex-grow-1"></div>
             <div class="me-3">
-              <button mat-flat-button color="accent" style="height: 48px;width: 146px;" (click)="addRole()">Add Role</button>
+              <button mat-flat-button color="accent" style="height: 48px;width: 146px;" (click)="addUser()">Add User</button>
             </div>
           </div>
     </mat-card>
     <div class="row mt-4 mb-5">
         <div class="col">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
-                <ng-container matColumnDef="role">
-                    <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1">Role </th>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1"> Name </th>
                     <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
                 </ng-container>
-                <ng-container matColumnDef="description">
-                    <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1"> Description</th>
+                <ng-container matColumnDef="emailId">
+                    <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1"> Email ID</th>
                     <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
                 </ng-container>
-                <ng-container matColumnDef="permissions">
-                    <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1"> Permissions</th>
+                <ng-container matColumnDef="mobleNumber">
+                    <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1">Mobile Number</th>
                     <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
                 </ng-container>
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef class="table-header p-14-v1"> Actions </th>
                     <td mat-cell *matCellDef="let element">
-                        <span class="me-3" (click)="staffInq(element)"><i
-                                class="bi bi-pencil-fill cursor-pointer"></i></span>
+                        <span class="me-3" (click)="userInq(element)"><mat-icon>edit</mat-icon></span>
                     </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

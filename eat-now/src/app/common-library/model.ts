@@ -81,3 +81,8 @@ export class BankDetails{
     branch!: string;
     reAccountNumber!: string;
 }
+export class roelDetails{
+    roleTitle!: string;
+    roleDescription!: string;
+    privilegeId!: Array<string>;
+}
