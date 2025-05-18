@@ -1,84 +1,24 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from './common-library/services/api.service';
 import { LoginService } from './auth/login.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  animations: [
-    trigger('slideInOut', [
-      state('in', style({
-        transform: 'translate3d(0,0,0)'
-      })),
-      state('out', style({
-        transform: 'translate3d(100%, 0, 0)'
-      })),
-      transition('in => out', animate('400ms ease-in-out')),
-      transition('out => in', animate('400ms ease-in-out'))
-    ]),
-  ]
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  constructor(public loginService: LoginService,
-    private router: Router, public snackbar: MatSnackBar, public postService: ApiService) { }
+export class AppComponent implements OnInit {
   title = 'eat-now';
-  logout() {
-    // this.postService.refreshToken(APIPath.USER_LOGOUT).subscribe(
-    //   (response) => {
-    //     if (response.success) {
-    //       sessionStorage.clear();
-    //       this.router.navigate(['/']);
-    //       this.idleService.disableIdleDetection();
-    //       this.postService.closeNotification();
-    //     }
-    //     else {
-    //       this.postService.openSnackBar(response?.message, 'ERROR');
-    //     }
-    //   },
-    //   // Error handler when an HTTP error occurs
-    //   (error: HttpErrorResponse) => {
-    //     if (error?.error.error) {
-    //       this.postService.openSnackBar(error?.error.error, 'ERROR');
-    //     } else {
-    //       this.postService.openSnackBar(error?.error.message, 'ERROR');
-    //     }
-    //   });
-    sessionStorage.clear();
-    // this.router.navigate(['/']);
-    // this.idleService.disableIdleDetection();
-    // this.postService.closeNotification();
-  }
-  psdChange() {
-    this.router.navigate(['/core/change-password'])
-  }
-  goToProfile() {
-    this.router.navigate(['/uam/user-profile/' + 1])
-  }
-  loggedInUser: any;
-  userName!: string;
-  ngOninIt() {
-    // this.loggedInUser = sessionStorage.getItem('loggedInUser')!;
-    this.loggedInUser = "eatnow@gmail.com"
-    let lu: any = this.loggedInUser;
-    if (lu) {
-      lu = lu.split('@');
-      lu = lu[0].replace('.', ' ');
-      this.userName = lu;
-    }
-    this.activeIndex = 0;
-    this.sidenavOpened = false;
-    this.navigateTo(this.iconListData[this.icons[0].name].items[0].route);
-  }
 
-  activeIndex: number = 0; // Default to Home
+  activeIndex: number = 0;
   activeListItemIndex: number | null = null;
-  sidenavOpened: boolean = false; // Control sidenav open state
+  sidenavOpened: boolean = false;
+  sidenavWidth: string = '260px';
 
+  loggedInUser: string = '';
+  userName: string = '';
 
   icons = [
     { name: 'home', tooltip: 'Home' },
@@ -111,8 +51,7 @@ export class AppComponent {
       items: [
         { icon: 'person_add', title: 'Outlet', route: '/core/outlet-getAll' },
         { icon: 'group', title: 'Staff', route: '/core/staff-onboarding-getAll' },
-        { icon: 'home', title: 'IAM', route: '/uam/users' },
-
+        { icon: 'home', title: 'IAM', route: '/uam/users' }
       ]
     },
     list_alt: {
@@ -151,25 +90,61 @@ export class AppComponent {
       ]
     }
   };
+
+  constructor(
+    public loginService: LoginService,
+    private router: Router,
+    public snackbar: MatSnackBar,
+    public postService: ApiService
+  ) { }
+
+  ngOnInit() {
+    // Example: fetch user info from session or service
+    this.loggedInUser = "eatnow@gmail.com";
+    const lu = this.loggedInUser.split('@')[0].replace('.', ' ');
+    this.userName = lu;
+
+    // Default to Home
+    this.activeIndex = 0;
+    this.sidenavOpened = false;
+    this.navigateTo(this.iconListData[this.icons[0].name].items[0].route);
+  }
+
+  logout() {
+    sessionStorage.clear();
+    // Add additional logout logic if needed
+    // this.router.navigate(['/']);
+  }
+
+  psdChange() {
+    this.router.navigate(['/core/change-password']);
+  }
+
+  goToProfile() {
+    this.router.navigate(['/uam/user-profile/' + 1]);
+  }
+
+  onIconClick(index: number) {
+    this.activeIndex = index;
+
+    if (index === 0) {
+      this.sidenavOpened = false;
+      this.activeListItemIndex = null;
+      this.navigateTo(this.iconListData[this.icons[0].name].items[0].route);
+    } else {
+      this.sidenavOpened = true;
+      this.activeListItemIndex = 0;
+
+      const iconKey = this.icons[index].name;
+      const firstItemRoute = this.iconListData[iconKey].items[0].route;
+      this.navigateTo(firstItemRoute);
+    }
+  }
+
+
   navigateTo(route: string) {
     if (route) {
       this.router.navigate([route]);
     }
   }
-  onIconClick(index: number) {
-    this.activeIndex = index;
-    this.activeListItemIndex = null; // Reset list selection
-
-    if (index === 0) {
-      // Home: close sidenav and navigate to home
-      this.sidenavOpened = false;
-      this.navigateTo(this.iconListData[this.icons[0].name].items[0].route);
-    } else {
-      // Other: open sidenav, do NOT navigate
-      this.sidenavOpened = true;
-    }
-  }
-
 }
-
-

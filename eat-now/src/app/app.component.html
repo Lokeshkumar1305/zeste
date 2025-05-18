@@ -19,7 +19,7 @@
     <mat-sidenav-container style="flex: 1 1 auto; min-height: 500px;">
       <mat-sidenav #sidenav mode="side" [opened]="sidenavOpened" position="start" *ngIf="loginService.isUserLoggedIn()">
         <div *ngIf="activeIndex !== 0">
-          <div class="d-flex flex-column flex-grow-1 p-4">
+          <div class="d-flex flex-column flex-grow-1 p-3">
             <mat-list>
               <div mat-subheader style="font-weight: 600;">
                 {{ iconListData[icons[activeIndex].name].title }}
