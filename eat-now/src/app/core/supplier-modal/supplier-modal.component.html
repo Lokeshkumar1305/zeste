@@ -1,7 +1,5 @@
 <div class="dialog-header">
     <div class="d-flex justify-content-between align-items-center px-4 py-2">
-        <!-- <p class="f-16-m"> {{data.mode|titlecase}} {{data.mode == 'CREATE'? 'New
-            ':''}}{{data.type|enum}}</p> -->
         <p class="f-16-m">Add {{data.type|titlecase}}</p>
         <button mat-icon-button (click)="dialogClose()"> <mat-icon>close</mat-icon></button>
     </div>
@@ -9,69 +7,83 @@
 </div>
 <mat-dialog-content class="modal-height px-3">
     <div class="d-flex">
+        <h2 class="ms-3">Supplier Details </h2>
         <button mat-stroked-button color="accent" class="ms-auto mb-3" (click)="addRow()">Add more</button>
     </div>
-    <form *ngIf="data.type =='TABLE'">
-        <table mat-table [dataSource]="dataSource1" class="mat-elevation-z">
+    <form *ngIf="data.type =='SUPPLIER'">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z">
             <ng-container matColumnDef="area">
                 <!-- <th mat-header-cell *matHeaderCellDef> No. </th> -->
                 <td mat-cell *matCellDef="let element">
                     <div class="d-flex ">
                         <div class="me-5">
                             <mat-form-field appearance="outline" class="form-feild-width">
-                                <mat-label>Select Area</mat-label>
-                                <mat-select>
-                                    <mat-option value="FIRST_FLOOR">First floor</mat-option>
-                                    <mat-option value="ROOFTOP">Rooftop</mat-option>
-                                    <mat-option value="FAMILY_DINING">Family Dining</mat-option>
-                                </mat-select>
+                                <mat-label>Name</mat-label>
+                                <input matInput required>
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field appearance="outline" class="form-feild-width">
-                                <mat-label>Table code</mat-label>
-                                <input matInput>
+                                <mat-label>Contact</mat-label>
+                                <input matInput required>
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="d-flex">
                         <div class="me-5">
                             <mat-form-field appearance="outline" class="form-feild-width">
-                                <mat-label>Seating Capacity</mat-label>
-                                <input matInput>
+                                <mat-label>Email</mat-label>
+                                <input matInput required>
                             </mat-form-field>
                         </div>
                         <div>
-                            <label class="form-label">Status</label>
-                            <mat-radio-group aria-label="Select an option">
-                                <mat-radio-button value="SERVICEABLE">Serviceable</mat-radio-button>
-                                <mat-radio-button value="UNSERVICEABLE">UnServiceable</mat-radio-button>
-                            </mat-radio-group>
-
+                            <mat-form-field appearance="outline" class="form-feild-width">
+                                <mat-label>Shop Type</mat-label>
+                                <input matInput required>
+                            </mat-form-field>
                         </div>
                     </div>
-                </td>
-            </ng-container>
-            <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    </form>
-    <form *ngIf="data.type =='AREA'">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z">
-            <ng-container matColumnDef="area">
-                <!-- <th mat-header-cell *matHeaderCellDef> No. </th> -->
-                <td mat-cell *matCellDef="let element">
+                    <mat-divider></mat-divider>
+                    <h2 class="mt-4">Supplier Address </h2>
+                    <div class="d-flex">
+                        <div class="me-5 mt-2">
+                            <mat-form-field appearance="outline" class="form-feild-width">
+                                <mat-label>Address Line 1</mat-label>
+                                <input matInput required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="outline" class="form-feild-width">
+                                <mat-label>Address Line 2</mat-label>
+                                <input matInput required>
+                            </mat-form-field>
+                        </div>
+                    </div>
                     <div class="d-flex">
                         <div class="me-5">
                             <mat-form-field appearance="outline" class="form-feild-width">
-                                <mat-label>Area Name</mat-label>
-                                <input matInput>
+                                <mat-label>Zip Code</mat-label>
+                                <input matInput required>
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field appearance="outline" class="form-feild-width">
-                                <mat-label>No. of Tables</mat-label>
-                                <input matInput>
+                                <mat-label>City</mat-label>
+                                <input matInput required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="me-5">
+                            <mat-form-field appearance="outline" class="form-feild-width">
+                                <mat-label>State</mat-label>
+                                <input matInput required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="outline" class="form-feild-width">
+                                <mat-label>Country</mat-label>
+                                <input matInput required>
                             </mat-form-field>
                         </div>
                     </div>

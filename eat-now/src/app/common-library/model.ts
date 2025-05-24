@@ -96,3 +96,13 @@ export class Area {
     area_name!: string;
     noOfTables!: string
 }
+export class Orders {
+    itemName!: string;
+    brand!: string;
+    category!: string;
+    quantity!: string;
+    supplierName!: string;
+    prefferedSupplier!: string;
+
+
+}

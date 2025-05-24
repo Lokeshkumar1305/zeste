@@ -17,7 +17,14 @@ import { StaffOnboardingGetAllComponent } from './staff-onboarding-get-all/staff
 import { AreaComponent } from './area/area.component';
 import { TableComponent } from './table/table.component';
 import { AreaTableModalComponent } from './area-table-modal/area-table-modal.component';
-
+import { PurchaseOrdersComponent } from './purchase-orders/purchase-orders.component';
+import { SuppliersComponent } from './suppliers/suppliers.component';
+import { StockMomentComponent } from './stock-moment/stock-moment.component';
+import { ItemsComponent } from './items/items.component';
+import { ItemsModalComponent } from './items-modal/items-modal.component';
+import { PurchaseOrderDetailsComponent } from './purchase-order-details/purchase-order-details.component';
+import { SupplierModalComponent } from './supplier-modal/supplier-modal.component';
+import { StockModalComponent } from './stock-modal/stock-modal.component';
 @NgModule({
   declarations: [
     OutletOnboardingComponent,
@@ -27,7 +34,15 @@ import { AreaTableModalComponent } from './area-table-modal/area-table-modal.com
     StaffOnboardingGetAllComponent,
     AreaComponent,
     TableComponent,
-    AreaTableModalComponent
+    AreaTableModalComponent,
+    PurchaseOrdersComponent,
+    SuppliersComponent,
+    StockMomentComponent,
+    ItemsComponent,
+    ItemsModalComponent,
+    PurchaseOrderDetailsComponent,
+    SupplierModalComponent,
+    StockModalComponent,
   ],
   imports: [
     CommonModule,

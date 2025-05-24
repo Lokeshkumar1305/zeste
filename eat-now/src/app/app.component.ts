@@ -71,9 +71,12 @@ export class AppComponent implements OnInit {
     inventory: {
       title: 'Inventory',
       items: [
-        { icon: 'inventory_2', title: 'Stock', route: '/core/outlet-onboarding' },
-        { icon: 'add_shopping_cart', title: 'Order Supplies', route: '/core/outlet-onboarding' }
+        { icon: 'inventory_2', title: 'Items', route: '/core/items' }, 
+        { icon: 'shopping_cart', title: 'Purchase Orders', route: '/core/purchase-order' },
+        { icon: 'local_shipping', title: 'Suppliers', route: '/core/supplier' },
+        { icon: 'sync_alt', title: 'Stock Moment', route: '/core/stock-moment' }
       ]
+      
     },
     room_service: {
       title: 'Orders',

@@ -6,21 +6,21 @@ import { Area, Table } from '../../common-library/model';
 import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-area-table-modal',
-  templateUrl: './area-table-modal.component.html',
-  styleUrl: './area-table-modal.component.scss'
+  selector: 'app-items-modal',
+  templateUrl: './items-modal.component.html',
+  styleUrl: './items-modal.component.scss'
 })
-export class AreaTableModalComponent {
-  dataSource = new MatTableDataSource<any>();
-  dataSource1 = new MatTableDataSource<any>();
+export class ItemsModalComponent {
+ dataSource = new MatTableDataSource<any>();
   displayedColumns = ['area']
-  @ViewChild('AreaForm')
+  @ViewChild('itemForm')
   AreaForm!: NgForm;
-  @ViewChild('TableForm') TableForm!: NgForm;
-  constructor(private dialogRef: MatDialogRef<AreaTableModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,) {
+  @ViewChild('itemForm') itemForm!: NgForm;
+  constructor(private dialogRef: MatDialogRef<ItemsModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,) {
 
   }
   ngOnInit() {
+   
     this.addRow();
 
   }
@@ -34,20 +34,12 @@ export class AreaTableModalComponent {
 
   }
   addRow() {
-    if (this.data.type == 'TABLE') {
-      const newRow = new Table();
-      this.dataSource1.data.push(newRow);
-      this.dataSource1.data = [...this.dataSource1.data];
-      if (this.dataSource1.data.length > 1) {
-        this.TableForm.untouched;
-      }
-    }
-    else {
+    if (this.data.type == 'INVENTORY ITEM') {
       const newRow = new Area();
       this.dataSource.data.push(newRow);
       this.dataSource.data = [...this.dataSource.data];
       if (this.dataSource.data.length > 1) {
-        this.AreaForm.untouched;
+        this.itemForm.untouched;
       }
     }
   }
@@ -55,3 +47,4 @@ export class AreaTableModalComponent {
 
   }
 }
+

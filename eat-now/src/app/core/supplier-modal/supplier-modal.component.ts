@@ -1,4 +1,3 @@
-import { DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,21 +5,22 @@ import { Area, Table } from '../../common-library/model';
 import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-area-table-modal',
-  templateUrl: './area-table-modal.component.html',
-  styleUrl: './area-table-modal.component.scss'
+  selector: 'app-supplier-modal',
+  templateUrl: './supplier-modal.component.html',
+  styleUrl: './supplier-modal.component.scss'
 })
-export class AreaTableModalComponent {
+export class SupplierModalComponent {
+
   dataSource = new MatTableDataSource<any>();
-  dataSource1 = new MatTableDataSource<any>();
   displayedColumns = ['area']
-  @ViewChild('AreaForm')
-  AreaForm!: NgForm;
-  @ViewChild('TableForm') TableForm!: NgForm;
-  constructor(private dialogRef: MatDialogRef<AreaTableModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,) {
+  @ViewChild('supplierForm')
+  supplierForm!: NgForm;
+  @ViewChild('supplierForm') itemForm!: NgForm;
+  constructor(private dialogRef: MatDialogRef<SupplierModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,) {
 
   }
   ngOnInit() {
+   
     this.addRow();
 
   }
@@ -34,20 +34,12 @@ export class AreaTableModalComponent {
 
   }
   addRow() {
-    if (this.data.type == 'TABLE') {
-      const newRow = new Table();
-      this.dataSource1.data.push(newRow);
-      this.dataSource1.data = [...this.dataSource1.data];
-      if (this.dataSource1.data.length > 1) {
-        this.TableForm.untouched;
-      }
-    }
-    else {
+    if (this.data.type == 'SUPPLIER') {
       const newRow = new Area();
       this.dataSource.data.push(newRow);
       this.dataSource.data = [...this.dataSource.data];
       if (this.dataSource.data.length > 1) {
-        this.AreaForm.untouched;
+        this.supplierForm.untouched;
       }
     }
   }
