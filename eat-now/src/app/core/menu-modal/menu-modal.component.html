@@ -8,7 +8,23 @@
     <mat-divider></mat-divider>
 </div>
 <mat-dialog-content class="modal-height px-3">
-    <form >
+    <form>
+
+        <div class="text-center mb-4">
+            <div class="d-flex flex-column align-items-center">
+                <label for="iconUpload" class="cursor-pointer">
+                    <img [src]="selectedImage || 'assets/images/placeholder-image.svg'" alt="Upload Icon" width="100"
+                        height="100"
+                        style="object-fit: contain; border: 1px dashed #ccc; border-radius: 8px; padding: 10px;" />
+                </label>
+                <input type="file" id="iconUpload" hidden (change)="onImageSelected($event)"
+                    accept=".png,.jpg,.jpeg,.svg" />
+                <button mat-stroked-button class="mt-2" (click)="triggerImageUpload()">Change Icon</button>
+                <p class="mt-1 small text-muted">Format: .jpg, .png, .svg</p>
+            </div>
+        </div>
+
+
         <div class="d-flex">
             <div class="me-5">
                 <mat-form-field appearance="outline" class="form-feild-width">
@@ -16,7 +32,7 @@
                     <input matInput>
                 </mat-form-field>
             </div>
-            <div >
+            <div>
                 <mat-form-field appearance="outline" class="form-feild-width">
                     <mat-label>Item Type</mat-label>
                     <mat-select>
@@ -38,7 +54,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div >
+            <div>
                 <mat-form-field appearance="outline" class="form-feild-width">
                     <mat-label>Availability</mat-label>
                     <mat-select>
@@ -55,7 +71,7 @@
                     <input matInput>
                 </mat-form-field>
             </div>
-            <div >
+            <div>
                 <mat-form-field appearance="outline" class="form-feild-width">
                     <mat-label>Preparation Time</mat-label>
                     <input matInput>
@@ -73,7 +89,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div >
+            <div>
                 <mat-form-field appearance="outline" class="form-feild-width">
                     <mat-label>Chef Special / Recommended</mat-label>
                     <mat-select>
@@ -93,7 +109,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div >
+            <div>
                 <mat-form-field appearance="outline" class="form-feild-width">
                     <mat-label>Description</mat-label>
                     <input matInput>
@@ -104,53 +120,54 @@
 
         <div class="d-flex align-items-center mt-3">
             <mat-slide-toggle [(ngModel)]="hasVariants" (change)="toggleVariants()" color="accent">
-              Has Variants
+                Has Variants
             </mat-slide-toggle>
-          
-            <button mat-stroked-button color="primary" type="button" (click)="addVariant()" class="ms-auto" [disabled]="!hasVariants">
-              + Add More
+
+            <button mat-stroked-button color="primary" type="button" (click)="addVariant()" class="ms-auto"
+                [disabled]="!hasVariants">
+                + Add More
             </button>
-          </div>
-          
-          <div *ngIf="hasVariants">
+        </div>
+
+        <div *ngIf="hasVariants">
             <table mat-table [dataSource]="variants" class="mat-elevation-z8 mt-4">
-      
-              <ng-container matColumnDef="variant">
-                <td mat-cell *matCellDef="let element; let i = index">
-                  <div class="d-flex">
-                    <div class="me-5">
-                      <mat-form-field appearance="outline" class="form-feild-width">
-                        <mat-label>Variant Name</mat-label>
-                        <input matInput [(ngModel)]="element.variantName" name="variantName{{i}}">
-                      </mat-form-field>
-                    </div>
-                    <div>
-                      <mat-form-field appearance="outline" class="form-feild-width">
-                        <mat-label>Price</mat-label>
-                        <input matInput [(ngModel)]="element.variantCode" name="variantCode{{i}}">
-                      </mat-form-field>
-                    </div>
-                    <button mat-icon-button color="warn" (click)="removeVariant(i)">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
-                </td>
-              </ng-container>
-      
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <ng-container matColumnDef="variant">
+                    <td mat-cell *matCellDef="let element; let i = index">
+                        <div class="d-flex">
+                            <div class="me-5">
+                                <mat-form-field appearance="outline" class="form-feild-width">
+                                    <mat-label>Variant Name</mat-label>
+                                    <input matInput [(ngModel)]="element.variantName" name="variantName{{i}}">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="form-feild-width">
+                                    <mat-label>Price</mat-label>
+                                    <input matInput [(ngModel)]="element.variantCode" name="variantCode{{i}}">
+                                </mat-form-field>
+                            </div>
+                            <button mat-icon-button color="warn" (click)="removeVariant(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
-          </div> 
-            
+        </div>
+
     </form>
 </mat-dialog-content>
 <div class="dialog-footer">
     <mat-divider></mat-divider>
     <div class=" d-flex align-items-center px-4 py-3">
-        <div class="ms-auto " >
+        <div class="ms-auto ">
             <button mat-stroked-button color="accent" (click)="dialogClose()" class="me-5">Cancel</button>
             <button mat-flat-button color="accent" (click)="CreateUpdate()">Save
             </button>
         </div>
-        
+
     </div>
 </div>

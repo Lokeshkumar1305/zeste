@@ -76,6 +76,23 @@ export class MenuModalComponent {
     this.variants.splice(index, 1);
   }
 
-  
+  selectedImage: string | ArrayBuffer | null = null;
+
+triggerImageUpload(): void {
+  const fileInput = document.getElementById('iconUpload') as HTMLInputElement;
+  fileInput?.click();
+}
+
+onImageSelected(event: Event): void {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.selectedImage = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
 
 }
