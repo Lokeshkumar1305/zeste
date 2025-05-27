@@ -12,17 +12,17 @@
         <div class="d-flex">
             <div class="me-5">
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Table code</mat-label>
+                    <mat-label>Item Name</mat-label>
                     <input matInput>
                 </mat-form-field>
             </div>
             <div >
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Select Menu</mat-label>
+                    <mat-label>Item Type</mat-label>
                     <mat-select>
-                        <mat-option value="FIRST_FLOOR">First floor</mat-option>
-                        <mat-option value="ROOFTOP">Rooftop</mat-option>
-                        <mat-option value="FAMILY_DINING">Family Dining</mat-option>
+                        <mat-option value="NON_VEG">NON VEG</mat-option>
+                        <mat-option value="VEG">VEG</mat-option>
+                        <mat-option value="EGG">EGG</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -30,21 +30,20 @@
         <div class="d-flex ">
             <div class="me-5">
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Select Menu</mat-label>
+                    <mat-label>Select Category</mat-label>
                     <mat-select>
-                        <mat-option value="FIRST_FLOOR">First floor</mat-option>
-                        <mat-option value="ROOFTOP">Rooftop</mat-option>
-                        <mat-option value="FAMILY_DINING">Family Dining</mat-option>
+                        <mat-option value="STARTERS">Starters</mat-option>
+                        <mat-option value="BREADS">Breads</mat-option>
+                        <mat-option value="RICE">Rice</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div >
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Select Menu</mat-label>
+                    <mat-label>Availability</mat-label>
                     <mat-select>
-                        <mat-option value="FIRST_FLOOR">First floor</mat-option>
-                        <mat-option value="ROOFTOP">Rooftop</mat-option>
-                        <mat-option value="FAMILY_DINING">Family Dining</mat-option>
+                        <mat-option value="AVAILABILE">Availabile</mat-option>
+                        <mat-option value="OUT_OF_STOCK">Out of Stock</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -52,13 +51,13 @@
         <div class="d-flex">
             <div class="me-5">
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Table code</mat-label>
+                    <mat-label>Price</mat-label>
                     <input matInput>
                 </mat-form-field>
             </div>
             <div >
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Table code</mat-label>
+                    <mat-label>Preparation Time</mat-label>
                     <input matInput>
                 </mat-form-field>
             </div>
@@ -66,21 +65,20 @@
         <div class="d-flex ">
             <div class="me-5">
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Select Menu</mat-label>
+                    <mat-label>Spice Level</mat-label>
                     <mat-select>
-                        <mat-option value="FIRST_FLOOR">First floor</mat-option>
-                        <mat-option value="ROOFTOP">Rooftop</mat-option>
-                        <mat-option value="FAMILY_DINING">Family Dining</mat-option>
+                        <mat-option value="LOW">Low</mat-option>
+                        <mat-option value="MEDIUM">Medium</mat-option>
+                        <mat-option value="HIGH">High</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div >
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Select Menu</mat-label>
+                    <mat-label>Chef Special / Recommended</mat-label>
                     <mat-select>
-                        <mat-option value="FIRST_FLOOR">First floor</mat-option>
-                        <mat-option value="ROOFTOP">Rooftop</mat-option>
-                        <mat-option value="FAMILY_DINING">Family Dining</mat-option>
+                        <mat-option value="Yes">Yes</mat-option>
+                        <mat-option value="No">No</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -88,17 +86,16 @@
         <div class="d-flex ">
             <div class="me-5">
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Select Menu</mat-label>
+                    <mat-label>Customizable</mat-label>
                     <mat-select>
-                        <mat-option value="FIRST_FLOOR">First floor</mat-option>
-                        <mat-option value="ROOFTOP">Rooftop</mat-option>
-                        <mat-option value="FAMILY_DINING">Family Dining</mat-option>
+                        <mat-option value="YES">Yes</mat-option>
+                        <mat-option value="NO">No</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div >
                 <mat-form-field appearance="outline" class="form-feild-width">
-                    <mat-label>Table code</mat-label>
+                    <mat-label>Description</mat-label>
                     <input matInput>
                 </mat-form-field>
             </div>
@@ -118,7 +115,6 @@
           <div *ngIf="hasVariants">
             <table mat-table [dataSource]="variants" class="mat-elevation-z8 mt-4">
       
-              <!-- Variant Column -->
               <ng-container matColumnDef="variant">
                 <td mat-cell *matCellDef="let element; let i = index">
                   <div class="d-flex">
@@ -130,7 +126,7 @@
                     </div>
                     <div>
                       <mat-form-field appearance="outline" class="form-feild-width">
-                        <mat-label>Variant Code</mat-label>
+                        <mat-label>Price</mat-label>
                         <input matInput [(ngModel)]="element.variantCode" name="variantCode{{i}}">
                       </mat-form-field>
                     </div>
