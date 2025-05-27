@@ -92,6 +92,38 @@ export class Table {
     tableCode!: string;
     status!: string;
 }
+
+export class Variation {
+    variationName!: string;
+    price!: number;
+  }
+
+  export class Category {
+    categoryName!: string;
+    menuItems!: Menu[];
+  }
+
+  export class Menu {
+    itemName!: string;
+    itemType!: string;
+    availability!: string;
+    preparationTime!: number;
+    description!: string;
+    price!: number;
+    hasVariation!: boolean;
+    variations!: Variation[];
+    spiceLevel!: string;
+    isRecommended!: boolean;
+    isCustomizable!: boolean;
+    image!: string;
+    category: Category;
+    variation: Variation;
+    constructor() {
+        this.category = new Category();
+        this.variation = new Variation();
+    }
+  }
+
 export class Area {
     area_name!: string;
     noOfTables!: string

@@ -12,6 +12,7 @@ import { SuppliersComponent } from './suppliers/suppliers.component';
 import { PurchaseOrdersComponent } from './purchase-orders/purchase-orders.component';
 import { ItemsComponent } from './items/items.component';
 import { PurchaseOrderDetailsComponent } from './purchase-order-details/purchase-order-details.component';
+import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'outlet-getAll', component: OutletsComponent },
   { path: 'area', component:AreaComponent },
   { path: 'table', component: TableComponent },
+  { path: 'menu', component: MenuComponent },
   { path: 'items', component: ItemsComponent },
   { path: 'purchase-order', component: PurchaseOrdersComponent },
   { path: 'supplier', component: SuppliersComponent },

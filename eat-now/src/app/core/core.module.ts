@@ -25,6 +25,12 @@ import { ItemsModalComponent } from './items-modal/items-modal.component';
 import { PurchaseOrderDetailsComponent } from './purchase-order-details/purchase-order-details.component';
 import { SupplierModalComponent } from './supplier-modal/supplier-modal.component';
 import { StockModalComponent } from './stock-modal/stock-modal.component';
+import { MatCardModule } from '@angular/material/card';
+import { MenuComponent } from './menu/menu.component';
+import { MenuModalComponent } from './menu-modal/menu-modal.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     OutletOnboardingComponent,
@@ -43,6 +49,8 @@ import { StockModalComponent } from './stock-modal/stock-modal.component';
     PurchaseOrderDetailsComponent,
     SupplierModalComponent,
     StockModalComponent,
+    MenuComponent,
+    MenuModalComponent,
   ],
   imports: [
     CommonModule,
@@ -54,7 +62,12 @@ import { StockModalComponent } from './stock-modal/stock-modal.component';
     HttpClientModule,
     SharedModule,
     MaterialModule,
-    SharedRoutingModule
+    SharedRoutingModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+   
   ],
 
   providers: [],
