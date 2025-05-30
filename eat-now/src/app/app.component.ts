@@ -57,6 +57,7 @@ export class AppComponent implements OnInit {
     list_alt: {
       title: 'Menu',
       items: [
+         { icon: 'category', title: 'View Category', route: '/core/category' },
         { icon: 'restaurant_menu', title: 'View Menu', route: '/core/menu' },
         { icon: 'add', title: 'Add Item', route: '/core/menu' }
       ]

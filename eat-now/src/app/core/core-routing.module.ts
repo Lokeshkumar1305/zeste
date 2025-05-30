@@ -13,6 +13,7 @@ import { PurchaseOrdersComponent } from './purchase-orders/purchase-orders.compo
 import { ItemsComponent } from './items/items.component';
 import { PurchaseOrderDetailsComponent } from './purchase-order-details/purchase-order-details.component';
 import { MenuComponent } from './menu/menu.component';
+import { CategoryComponent } from './category/category.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'outlet-getAll', component: OutletsComponent },
   { path: 'area', component:AreaComponent },
   { path: 'table', component: TableComponent },
+  { path: 'category', component: CategoryComponent},
   { path: 'menu', component: MenuComponent },
   { path: 'items', component: ItemsComponent },
   { path: 'purchase-order', component: PurchaseOrdersComponent },

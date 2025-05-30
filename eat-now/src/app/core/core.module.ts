@@ -31,6 +31,8 @@ import { MenuModalComponent } from './menu-modal/menu-modal.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { CategoryComponent } from './category/category.component';
+import { CategoryModalComponent } from './category-modal/category-modal.component';
 @NgModule({
   declarations: [
     OutletOnboardingComponent,
@@ -51,6 +53,8 @@ import { MatInputModule } from '@angular/material/input';
     StockModalComponent,
     MenuComponent,
     MenuModalComponent,
+    CategoryComponent,
+    CategoryModalComponent,
   ],
   imports: [
     CommonModule,

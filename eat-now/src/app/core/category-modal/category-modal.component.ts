@@ -1,17 +1,17 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { Area, Menu, Table } from '../../common-library/model';
 import { MatTableDataSource } from '@angular/material/table';
+import { Menu } from '../../common-library/model';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AreaTableModalComponent } from '../area-table-modal/area-table-modal.component';
+import { MenuModalComponent } from '../menu-modal/menu-modal.component';
 
 @Component({
-  selector: 'app-menu-modal',
-  templateUrl: './menu-modal.component.html',
-  styleUrl: './menu-modal.component.scss'
+  selector: 'app-category-modal',
+  templateUrl: './category-modal.component.html',
+  styleUrl: './category-modal.component.scss'
 })
-export class MenuModalComponent {
- dataSource = new MatTableDataSource<any>();
+export class CategoryModalComponent {
+dataSource = new MatTableDataSource<any>();
   variants = new MatTableDataSource<any>();
   hasVariation = false;
   dataObj = new Menu();
@@ -52,7 +52,7 @@ export class MenuModalComponent {
 
 
   addRow() {
-    if (this.data.type == 'Menu') {
+    if (this.data.type == 'Category') {
       const newRow = new Menu();
       this.variants.data.push(newRow);
       this.variants.data = [...this.variants.data];
@@ -75,6 +75,4 @@ removeVariant(index: number): void {
 
 
  
-
-
 }
