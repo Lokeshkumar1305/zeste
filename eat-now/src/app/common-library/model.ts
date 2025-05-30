@@ -104,6 +104,7 @@ export class Variation {
   }
 
   export class Menu {
+    id!:string;
     itemName!: string;
     itemType!: string;
     availability!: string;
@@ -118,12 +119,21 @@ export class Variation {
     image!: string;
     category: Category;
     variation: Variation;
+    status!:string;
     constructor() {
         this.category = new Category();
         this.variation = new Variation();
     }
   }
 
+   export class Categories {
+    id!:string;
+    categoryName!: string;
+    description!: string;
+    outletId!: string;
+    image!: string;
+    status!:string;
+   }
 export class Area {
     area_name!: string;
     noOfTables!: string

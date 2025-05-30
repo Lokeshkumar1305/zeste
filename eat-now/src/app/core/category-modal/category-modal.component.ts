@@ -1,6 +1,6 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Menu } from '../../common-library/model';
+import { Categories } from '../../common-library/model';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MenuModalComponent } from '../menu-modal/menu-modal.component';
@@ -14,7 +14,7 @@ export class CategoryModalComponent {
 dataSource = new MatTableDataSource<any>();
   variants = new MatTableDataSource<any>();
   hasVariation = false;
-  dataObj = new Menu();
+  dataObj = new Categories();
   displayedColumns: string[] = ['variant'];
   @ViewChild('MenuForm')
   AreaForm!: NgForm;
@@ -53,7 +53,7 @@ dataSource = new MatTableDataSource<any>();
 
   addRow() {
     if (this.data.type == 'Category') {
-      const newRow = new Menu();
+      const newRow = new Categories();
       this.variants.data.push(newRow);
       this.variants.data = [...this.variants.data];
       if (this.variants.data.length > 1) {

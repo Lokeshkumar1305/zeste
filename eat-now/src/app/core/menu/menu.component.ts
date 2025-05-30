@@ -1,8 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AreaTableModalComponent } from '../area-table-modal/area-table-modal.component';
 import { OPSMenu } from '../../shared/en-common-table/en-common-table.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuModalComponent } from '../menu-modal/menu-modal.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
+import { ApiService } from '../../common-library/services/api.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-menu',
@@ -11,9 +16,16 @@ import { MenuModalComponent } from '../menu-modal/menu-modal.component';
 })
 export class MenuComponent {
   breadCrumb = new Array<OPSMenu>();
-  constructor(public dialog: MatDialog) {
-
-  }
+     displayedColumns: string[] = ['id', 'itemType', 'itemName', 'category', 'price', 'status', 'actions'];
+     pageNumber = 0;
+     totalElements = 0;
+     pageSize = 5;
+     pageEvent: any;
+     dataSource!: MatTableDataSource<any>;
+     @ViewChild(MatPaginator) paginator!: MatPaginator;
+     constructor(private router: Router, private postService: ApiService, public http: HttpClient, public dialog: MatDialog) {
+   
+     }
   ngOnInit() {
     const bc = [
       { "name": 'Home', "link": "/uam/users" },
@@ -38,4 +50,42 @@ export class MenuComponent {
 
     });
   }
+
+
+
+  
+    addOutlet(){
+      this.router.navigate(['/core/outlet-onboarding']);
+    }
+    getAll(index: number, size: number) {
+      let obj = {
+        "page": index,
+        "size": size,
+        "sortField": "text2",
+        "sortOrder": "ASC"
+      }
+      let url = 'APIPATH.STUDENT_GETALL'
+  
+      // this.postService.getAll(url, obj).subscribe((res: any) => {
+      //   this.dataSource = res.responseObject;
+      //   this.totalElements = res.totalCount;
+      //   if (this.paginator) {
+      //     this.dataSource.paginator = this.paginator;
+      //   } else {
+      //     setTimeout(() => {
+      //       if (this.paginator) {
+      //         this.dataSource.paginator = this.paginator;
+  
+      //       }
+      //     });
+      //   }
+      // })
+    }
+    outletInq(element: any) {
+    }
+    getPagination(event: { pageIndex: number; pageSize: number; }) {
+      this.getAll(event.pageIndex, event.pageSize);
+    }
+
+    
 }
