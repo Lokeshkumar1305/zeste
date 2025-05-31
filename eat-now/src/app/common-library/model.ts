@@ -1,3 +1,7 @@
+export class Login{
+  emailId!: string;
+  password!: string;
+}
 export class ENbreadcrumb {
     name!: string;
     link!: string;

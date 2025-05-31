@@ -6,7 +6,7 @@
     </div>
     <img src="../../../assets/images/fade-stagger-circles.svg" alt="" class="loader-circle">
 </div> -->
-<div class="auth-c">
+<div class="auth-c" *ngIf="!showOtpScreen">
     <div class="row panel" style="height: 100vh;">
 
         <div class="col-xl-6 col-xxl-7 leftPanel">
@@ -25,15 +25,15 @@
                     <form name="loginForm" #loginForm="ngForm" novalidate>
                         <mat-label class="form-label">User name</mat-label>
                         <mat-form-field appearance="outline" class="w-100">
-                            <input matInput name="uid" #uid="ngModel" [(ngModel)]="loginObj.userName" required
-                                autocomplete="off">
-                            <mat-error *ngIf="uid.errors?.required">User name is required</mat-error>
+                               <input matInput name="emailId" #emailId="ngModel" [(ngModel)]="loginObj.emailId"   placeholder="" type="text" autocomplete="on"
+                                pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required >
+                            <mat-error *ngIf="emailId.errors?.required">User name is required</mat-error>
                         </mat-form-field>
                         <mat-label class="form-label">Password</mat-label>
                         <mat-form-field appearance="outline" class="w-100 mb-2">
                             <input matInput name="password" #password="ngModel" [(ngModel)]="loginObj.password"
                                 [type]="hidePwd ? 'password' : 'text'" required (keypress)="onKeyPress($event)"
-                                (keyup.enter)="login(uid.value,password.value)" autocomplete="off">
+                                (keyup.enter)="validateUser()" autocomplete="off">
                             <mat-icon matSuffix (click)="hidePwd = !hidePwd" style="cursor: pointer;"
                                 class="material-symbols-outlined" color="primary">
                                 {{hidePwd ? 'visibility_off' : 'visibility'}}
@@ -41,7 +41,7 @@
                             <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
                         </mat-form-field>
                         <button mat-flat-button color="accent" name="loginBtn" [disabled]="inProgressBar"
-                            class="w-100 mb-4" (click)="login(uid.value,password.value)"><span
+                            class="w-100 mb-4" (click)="validateUser()"><span
                                 style="display: inline-flex;">{{inProgressBar ?
                                 'Please wait' : 'Sign In'
                                 }}&nbsp;&nbsp;
@@ -64,4 +64,61 @@
         </div>
 
     </div>
+
+</div>
+
+
+
+
+<div class="otp" *ngIf="showOtpScreen">
+<mat-card class="p-4 otp-card justify-content-center">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="p-24-v1">OTP Verification</span>
+        <mat-icon class="me-1" style="cursor: pointer;">close</mat-icon>
+      </div>
+        
+    <hr />
+    <mat-divider></mat-divider>
+    <div class="text-center mt-3">
+      <p class="p-14-v2">We sent a code to <span color="primary">{{email}}</span></p>
+      <div class="otp-inputs d-flex justify-content-center my-3">
+        <input #otpInput1 type="text" (keypress)="movetoNext($event)"
+          (keyup)="move($event, '', otpInput1, otpInput2)" maxlength="1"
+          class="input-size me-2" [(ngModel)]="otpval1" autocomplete="off">
+        <input #otpInput2 type="text" (keypress)="movetoNext($event)"
+          (keyup)="move($event, otpInput1, otpInput2, otpInput3)" maxlength="1"
+          class="input-size me-2" [(ngModel)]="otpval2" autocomplete="off">
+        <input #otpInput3 type="text" (keypress)="movetoNext($event)"
+          (keyup)="move($event, otpInput2, otpInput3, otpInput4)" maxlength="1"
+          class="input-size me-2" [(ngModel)]="otpval3" autocomplete="off">
+        <input #otpInput4 type="text" (keypress)="movetoNext($event)"
+          (keyup)="move($event, otpInput3, otpInput4, otpInput5)" maxlength="1"
+          class="input-size me-2" [(ngModel)]="otpval4" autocomplete="off">
+        <input #otpInput5 type="text" (keypress)="movetoNext($event)"
+          (keyup)="move($event, otpInput4, otpInput5, otpInput6)" maxlength="1"
+          class="input-size me-2" [(ngModel)]="otpval5" autocomplete="off">
+        <input #otpInput6 type="text" (keypress)="movetoNext($event)"
+          (keyup)="move($event, otpInput5, otpInput6, '')" maxlength="1"
+          class="input-size" [(ngModel)]="otpval6" autocomplete="off">
+      </div>
+  
+      <button mat-flat-button  color="primary"
+        class="continue-butt"
+        [disabled]="!otpval1 || !otpval2 || !otpval3 || !otpval4 || !otpval5 || !otpval6 || seconds <= 0"
+        [ngClass]="{
+          'enabled': otpval1 && otpval2 && otpval3 && otpval4 && otpval5 && otpval6 && seconds > 0,
+          'disabled': !otpval1 || !otpval2 || !otpval3 || !otpval4 || !otpval5 || !otpval6 || seconds <= 0
+        }" (click)=" loginWithOtp()">
+        Continue
+      </button>
+  
+      <div class="mt-3">
+        <span class="p-14-v2">
+          Didn’t receive the email?
+          <a class="p-14-v2 resend-text" *ngIf="seconds <= 0" >Click to resend</a>
+          <span *ngIf="seconds > 0">&nbsp;{{ formattedTime }}</span>
+        </span>
+      </div>
+    </div>
+  </mat-card>
 </div>

@@ -1,7 +1,8 @@
 export enum APIPath {
     OUTLET_ONB = "/outlet/save",
     REFRESH_TOKEN = "VCBHBHB",
-
+    USER_VALIDATION = "/api/eatnow/uam/users/uservalidation",
+    USER_LOGIN = "/api/eatnow/uam/users/login",
 
     // CATEGORY
     CREATE_CATEGORY = "/category/save",
