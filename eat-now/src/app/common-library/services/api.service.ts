@@ -47,24 +47,59 @@ export class ApiService {
     return headers;
   }
 
-  public getBaseURL(): string {
-    const baseUrl = window.location.href.split('/#/')[0];
-    if (baseUrl.includes('localhost')) {
-      if (baseUrl.endsWith('4200') || baseUrl.endsWith('4300')) {
-        return 'http://192.168.1.5:8085';
-      }
-      if (baseUrl.endsWith('4500') || baseUrl.endsWith('4600')) {
-        return 'https://cards-qa.toucanint.com/toucan';
-      }
-    }
-    if (baseUrl.startsWith('http://192.168.1.5:8085') || baseUrl.startsWith('https://cust-onb-dev.toucanint.com')) {
-      return 'https://cards-dev.toucanint.com/toucan';
-    }
-    if (baseUrl.startsWith('https://cards-qa.toucanint.com') || baseUrl.startsWith('https://cust-onb-qa.toucanint.com')) {
-      return 'https://cards-qa.toucanint.com/toucan';
-    }
-    return baseUrl; // Fallback
+  // public getBaseURL(): string {
+  //   const baseUrl = window.location.href.split('/#/')[0];
+  //   if (baseUrl.includes('localhost')) {
+  //     if (baseUrl.endsWith('4200') || baseUrl.endsWith('4300')) {
+  //       return 'http://192.168.1.5:8085';
+        
+  //     }
+  //     if (baseUrl.endsWith('4500') || baseUrl.endsWith('4600')) {
+  //       return 'https://cards-qa.toucanint.com/toucan';
+  //     }
+  //   }
+  //   if (baseUrl.startsWith('http://192.168.1.5:8085') || baseUrl.startsWith('https://cust-onb-dev.toucanint.com')) {
+  //     return 'https://cards-dev.toucanint.com/toucan';
+  //   }
+  //   if (baseUrl.startsWith('https://cards-qa.toucanint.com') || baseUrl.startsWith('https://cust-onb-qa.toucanint.com')) {
+  //     return 'https://cards-qa.toucanint.com/toucan';
+  //   }
+  //   return baseUrl; // Fallback
+  // }
+
+
+public getBaseURL(): string {
+  const baseUrl = window.location.href.split('/#/')[0];
+
+  // ✅ Use 192.168.29.102:8082 instead of localhost:8082
+  if (
+    baseUrl.includes('localhost') ||
+    baseUrl.includes('192.168.29.102:4200')
+  ) {
+    return 'http://192.168.29.102:8082';
   }
+
+  // Other environments if needed (QA, DEV, etc.)
+  if (
+    baseUrl.startsWith('https://cards-qa.toucanint.com') ||
+    baseUrl.startsWith('https://cust-onb-qa.toucanint.com')
+  ) {
+    return 'https://cards-qa.toucanint.com/toucan';
+  }
+
+  if (
+    baseUrl.startsWith('http://192.168.1.5:8085') ||
+    baseUrl.startsWith('https://cust-onb-dev.toucanint.com')
+  ) {
+    return 'https://cards-dev.toucanint.com/toucan';
+  }
+
+  return baseUrl; // fallback
+}
+
+
+
+
 
   public doPostGetWithoutToken(endPath: string): Observable<any> {
     const apiURL = this.getBaseURL() + endPath;

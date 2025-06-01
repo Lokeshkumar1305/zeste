@@ -170,8 +170,10 @@ interval: any;
 
 
 loginWithOtp() {
+  this.otp = this.otpval1 + this.otpval2 + this.otpval3 + this.otpval4 + this.otpval5 + this.otpval6;
+
   const encryptedPassword = this.encryptservice.encrypt(this.password);
-  const encryptedOtp = this.encryptservice.encrypt(this.otp); 
+  const encryptedOtp = this.encryptservice.encrypt(this.otp);
 
   const loginPayload = {
     requestObject: {
@@ -181,39 +183,41 @@ loginWithOtp() {
     }
   };
 
-  this.postService.doPost(APIPath.USER_LOGIN, loginPayload)
-    .subscribe((res: any) => {
-      this.inProgressBar = false;
-      const response = res?.responseObject;
+ this.postService.doPost(APIPath.USER_LOGIN, loginPayload)
+  .subscribe((res: any) => {
+    this.inProgressBar = false;
 
-      if (response?.token) {
-        sessionStorage.setItem('token', response.token);
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('email', response.email);
-        localStorage.setItem('lastActive', Date.now().toString());
-        localStorage.setItem('id', response.id);
-        localStorage.setItem('userStatus', response.userStatus);
-        localStorage.setItem('currentFailedLoginCount', response.currentFailedLoginCount);
-        sessionStorage.setItem('roleTitle', response.role);
-        localStorage.setItem('p', response.privilege);
+    if (res?.success) {
+      const response = res.responseObject;
 
-        if (response.forcePasswordChange) {
-          this.islogin = false;
-          this.loggedIn = true;
-          this.screen1 = true;
-        } else {
-          this.router.navigate(['/home']);
-          this.postService.openSnackBar('Logged In Successfully', 'SUCCESS');
-        }
+      this.router.navigate(['/home']);
+      sessionStorage.setItem('token', res.token);
+      localStorage.setItem('token', res.token);
+      localStorage.setItem('email', this.email); 
+      localStorage.setItem('lastActive', Date.now().toString());
+      localStorage.setItem('userName', response.userName);
+      sessionStorage.setItem('roleTitle', JSON.stringify(response.roleTitles));
+
+      if (res.firstTimeLogin) {
+        this.islogin = false;
+        this.loggedIn = true;
+        this.screen1 = true;
       } else {
-        this.postService.openSnackBar('Invalid OTP or credentials', 'ERROR');
+        this.router.navigate(['/home']);
+        this.postService.openSnackBar('Logged In Successfully', 'SUCCESS');
       }
-    }, err => {
-      this.inProgressBar = false;
-      console.error(err);
-      this.postService.openSnackBar('Login failed. Please try again.', 'ERROR');
-    });
+
+    } else {
+      this.postService.openSnackBar('Invalid OTP or credentials', 'ERROR');
+    }
+  }, err => {
+    this.inProgressBar = false;
+    console.error(err);
+    this.postService.openSnackBar('Login failed. Please try again.', 'ERROR');
+  });
+
 }
+
 
  movetoNext(event: any) {
     const pattern = new RegExp('^[0-9]+$');
