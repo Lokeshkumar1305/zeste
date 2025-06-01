@@ -4,6 +4,10 @@ import { Categories } from '../../common-library/model';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MenuModalComponent } from '../menu-modal/menu-modal.component';
+import { Router } from '@angular/router';
+import { EncryptionService } from '../../shared/services/encryption.service';
+import { ApiService } from '../../common-library/services/api.service';
+import { APIPath } from '../../common-library/api-enum';
 
 @Component({
   selector: 'app-category-modal',
@@ -12,18 +16,17 @@ import { MenuModalComponent } from '../menu-modal/menu-modal.component';
 })
 export class CategoryModalComponent {
 dataSource = new MatTableDataSource<any>();
-  variants = new MatTableDataSource<any>();
-  hasVariation = false;
   dataObj = new Categories();
-  displayedColumns: string[] = ['variant'];
   @ViewChild('MenuForm')
   AreaForm!: NgForm;
   @ViewChild('TableForm') TableForm!: NgForm;
-  constructor(private dialogRef: MatDialogRef<MenuModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,) {
+  id: any;
+  constructor(private dialogRef: MatDialogRef<MenuModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+private router: Router, public encryptservice: EncryptionService, public postService: ApiService) {
 
   }
   ngOnInit() {
-    this.addRow();
+    
    
   }
   dialogClose() {
@@ -51,27 +54,45 @@ dataSource = new MatTableDataSource<any>();
 }
 
 
-  addRow() {
-    if (this.data.type == 'Category') {
-      const newRow = new Categories();
-      this.variants.data.push(newRow);
-      this.variants.data = [...this.variants.data];
-      if (this.variants.data.length > 1) {
-        this.TableForm.untouched;
-      }
+// createCategory() {
+//   const payload = {
+//     requestObject: {
+//       ...this.dataObj,
+//       image: this.uploadedImage || '',  
+//       outletId: this.id,       
+//     }
+//   };
+
+//   this.postService.doPost(APIPath.CREATE_CATEGORY, payload).subscribe({
+//     next: (response) => {
+//       console.log('Category created successfully:', response);
+
+//       this.dialogRef.close(payload.requestObject); 
+//     },
+//     error: (err) => {
+//       console.error('Error while creating category:', err);
+//     }
+//   });
+
+// }
+
+
+createCategory() {
+  const id = localStorage.getItem('id');
+
+  const payload = {
+    requestObject: {
+      ...this.dataObj,   
+      image: this.uploadedImage || '',
+      outletId: id
     }
-  }
-  CreateUpdate() {
+  };
 
-  }
-
-
-
-removeVariant(index: number): void {
-  const updatedData = [...this.variants.data]; 
-  updatedData.splice(index, 1);                
-  this.variants.data = updatedData;            
+  this.postService.doPost(APIPath.CREATE_CATEGORY, payload).subscribe((response: any) => {
+    console.log(response);
+  });
 }
+
 
 
  

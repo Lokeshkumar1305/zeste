@@ -13,7 +13,7 @@ import { Login } from '../../common-library/model';
 export class LoginComponent {
   loginObj = new Login();
   inProgressBar = false;
-   showOtpScreen: boolean = false;
+  showOtpScreen: boolean = false;
   hidePwd = true;
   email: any;
   encryptedPassword: any;
@@ -23,7 +23,7 @@ export class LoginComponent {
   islogin!: boolean;
   loggedIn!: boolean;
   screen1!: boolean;
-   otpval1!: string;
+  otpval1!: string;
   otpval2!: string;
   otpval3!: string;
   otpval4!: string;
@@ -32,15 +32,15 @@ export class LoginComponent {
   intervalId: any;
   show!: boolean;
   formattedTime: string = '';
- 
+
   seconds: number = 60;
-interval: any;
+  interval: any;
 
-  constructor(private router: Router, public encryptservice: EncryptionService, public postService: ApiService){  } 
+  constructor(private router: Router, public encryptservice: EncryptionService, public postService: ApiService) { }
 
-   ngOnInit() {
+  ngOnInit() {
     // this.countDown()
-     this.startTimer();
+    this.startTimer();
   }
 
 
@@ -59,9 +59,9 @@ interval: any;
     if (username === 'sadmin') {
       this.localLogin(username, password);
     }
-    
+
   }
-  forgotpass(){
+  forgotpass() {
 
   }
   onKeyPress(event: KeyboardEvent) {
@@ -98,34 +98,34 @@ interval: any;
 
 
 
-// validateUser() {
-//   const encryptedPassword = this.encryptservice.encrypt(this.password);
+  // validateUser() {
+  //   const encryptedPassword = this.encryptservice.encrypt(this.password);
 
-//   const userValidationPayload = {
-//     requestObject: {
-//       emailId: this.loginObj.emailId, 
-//       password: encryptedPassword
-//     }
-//   };
- 
-//   console.log('Sending payload:', userValidationPayload); 
+  //   const userValidationPayload = {
+  //     requestObject: {
+  //       emailId: this.loginObj.emailId, 
+  //       password: encryptedPassword
+  //     }
+  //   };
 
-//   this.postService.doPost(APIPath.USER_VALIDATION, userValidationPayload)
-//     .subscribe((res: any) => {
-//       if (res?.success && res.message.includes('otp sent')) {
-//         this.postService.openSnackBar('OTP sent to your email', 'SUCCESS');
+  //   console.log('Sending payload:', userValidationPayload); 
 
-//         localStorage.setItem('email', this.loginObj.emailId);
-//         localStorage.setItem('password', encryptedPassword);
+  //   this.postService.doPost(APIPath.USER_VALIDATION, userValidationPayload)
+  //     .subscribe((res: any) => {
+  //       if (res?.success && res.message.includes('otp sent')) {
+  //         this.postService.openSnackBar('OTP sent to your email', 'SUCCESS');
 
-//         this.router.navigate(['./auth/otp-validate']);
-//       } else {
-//         this.postService.openSnackBar(res.message || 'Invalid credentials', 'ERROR');
-//       }
-//     }, err => {
-//       this.postService.openSnackBar('Validation failed. Please try again.', 'ERROR');
-//     });
-// }
+  //         localStorage.setItem('email', this.loginObj.emailId);
+  //         localStorage.setItem('password', encryptedPassword);
+
+  //         this.router.navigate(['./auth/otp-validate']);
+  //       } else {
+  //         this.postService.openSnackBar(res.message || 'Invalid credentials', 'ERROR');
+  //       }
+  //     }, err => {
+  //       this.postService.openSnackBar('Validation failed. Please try again.', 'ERROR');
+  //     });
+  // }
 
 
 
@@ -169,55 +169,57 @@ interval: any;
 
 
 
-loginWithOtp() {
-  this.otp = this.otpval1 + this.otpval2 + this.otpval3 + this.otpval4 + this.otpval5 + this.otpval6;
+  loginWithOtp() {
+    this.otp = this.otpval1 + this.otpval2 + this.otpval3 + this.otpval4 + this.otpval5 + this.otpval6;
 
-  const encryptedPassword = this.encryptservice.encrypt(this.password);
-  const encryptedOtp = this.encryptservice.encrypt(this.otp);
+    const encryptedPassword = this.encryptservice.encrypt(this.password);
+    const encryptedOtp = this.encryptservice.encrypt(this.otp);
 
-  const loginPayload = {
-    requestObject: {
-      emailId: this.email,
-      password: encryptedPassword,
-      otp: encryptedOtp
-    }
-  };
-
- this.postService.doPost(APIPath.USER_LOGIN, loginPayload)
-  .subscribe((res: any) => {
-    this.inProgressBar = false;
-
-    if (res?.success) {
-  const response = res.responseObject;
-  sessionStorage.setItem('token', res.token);
-  localStorage.setItem('token', res.token);
-  localStorage.setItem('email', this.email); 
-  localStorage.setItem('lastActive', Date.now().toString());
-  localStorage.setItem('userName', response.userName);
-  sessionStorage.setItem('roleTitle', JSON.stringify(response.roleTitles));
-
-      if (res.firstTimeLogin) {
-        this.islogin = false;
-        this.loggedIn = true;
-        this.screen1 = true;
-      } else {
-        this.postService.openSnackBar('Logged In Successfully', 'SUCCESS');
-         this.router.navigate(['/home']);
+    const loginPayload = {
+      requestObject: {
+        emailId: this.email,
+        password: encryptedPassword,
+        otp: encryptedOtp
       }
+    };
 
-    } else {
-      this.postService.openSnackBar('Invalid OTP or credentials', 'ERROR');
-    }
-  }, err => {
-    this.inProgressBar = false;
-    console.error(err);
-    this.postService.openSnackBar('Login failed. Please try again.', 'ERROR');
-  });
+    this.postService.doPost(APIPath.USER_LOGIN, loginPayload)
+      .subscribe((res: any) => {
+        this.inProgressBar = false;
 
-}
+        if (res?.success) {
+          const response = res.responseObject;
+          sessionStorage.setItem('token', res.token);
+          localStorage.setItem('email', this.email);
+          localStorage.setItem('lastActive', Date.now().toString());
+          localStorage.setItem('userName', response.userName);
+          localStorage.setItem('id', res.id);
+          sessionStorage.setItem('roleTitle', JSON.stringify(response.roleTitles));
+
+          if (res.firstTimeLogin) {
+            this.islogin = false;
+            this.loggedIn = true;
+            this.screen1 = true;
+          } else {
+            debugger
+            this.postService.openSnackBar('Logged In Successfully', 'SUCCESS');
+            this.router.navigate(['/core/outlet-getAll']);
+            
+          }
+
+        } else {
+          this.postService.openSnackBar('Invalid OTP or credentials', 'ERROR');
+        }
+      }, err => {
+        this.inProgressBar = false;
+        console.error(err);
+        this.postService.openSnackBar('Login failed. Please try again.', 'ERROR');
+      });
+
+  }
 
 
- movetoNext(event: any) {
+  movetoNext(event: any) {
     const pattern = new RegExp('^[0-9]+$');
     if (!pattern.test(event.key)) {
       event.preventDefault();
@@ -255,32 +257,32 @@ loginWithOtp() {
   // }
   // clearTimer() {
   //   clearInterval(this.intervalId);
- 
+
   // }
 
 
-startTimer() {
-  this.seconds = 60;
-  this.updateFormattedTime();
-  this.interval = setInterval(() => {
-    this.seconds--;
+  startTimer() {
+    this.seconds = 60;
     this.updateFormattedTime();
-    if (this.seconds <= 0) {
-      clearInterval(this.interval);
-    }
-  }, 1000);
-}
+    this.interval = setInterval(() => {
+      this.seconds--;
+      this.updateFormattedTime();
+      if (this.seconds <= 0) {
+        clearInterval(this.interval);
+      }
+    }, 1000);
+  }
 
-resetTimer() {
-  clearInterval(this.interval);
-  this.startTimer();
-}
+  resetTimer() {
+    clearInterval(this.interval);
+    this.startTimer();
+  }
 
-updateFormattedTime() {
-  const mins = Math.floor(this.seconds / 60);
-  const secs = this.seconds % 60;
-  this.formattedTime = `${mins}:${secs < 10 ? '0' + secs : secs}`;
-}
+  updateFormattedTime() {
+    const mins = Math.floor(this.seconds / 60);
+    const secs = this.seconds % 60;
+    this.formattedTime = `${mins}:${secs < 10 ? '0' + secs : secs}`;
+  }
 
 
 
