@@ -104,11 +104,7 @@
   
       <button mat-flat-button  color="primary"
         class="continue-butt"
-        [disabled]="!otpval1 || !otpval2 || !otpval3 || !otpval4 || !otpval5 || !otpval6 || seconds <= 0"
-        [ngClass]="{
-          'enabled': otpval1 && otpval2 && otpval3 && otpval4 && otpval5 && otpval6 && seconds > 0,
-          'disabled': !otpval1 || !otpval2 || !otpval3 || !otpval4 || !otpval5 || !otpval6 || seconds <= 0
-        }" (click)=" loginWithOtp()">
+        (click)=" loginWithOtp()">
         Continue
       </button>
   

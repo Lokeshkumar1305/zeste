@@ -6,7 +6,7 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: 'shared', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule), },
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
-  { path: 'Home', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'core', loadChildren: () => import('./core/core.module').then(m => m.CoreModule), canActivate: [authGuard] },
   { path: 'uam', loadChildren: () => import('./uam/uam.module').then(m => m.UamModule), canActivate: [authGuard] },
   // { path: 'common', loadChildren: () => import('./common-library/common-library.module').then(m => m.CommonLibraryModule), canActivate: [authGuard] },

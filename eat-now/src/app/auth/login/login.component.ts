@@ -39,7 +39,7 @@ interval: any;
   constructor(private router: Router, public encryptservice: EncryptionService, public postService: ApiService){  } 
 
    ngOnInit() {
-    this.countDown()
+    // this.countDown()
      this.startTimer();
   }
 
@@ -188,23 +188,21 @@ loginWithOtp() {
     this.inProgressBar = false;
 
     if (res?.success) {
-      const response = res.responseObject;
-
-      this.router.navigate(['/home']);
-      sessionStorage.setItem('token', res.token);
-      localStorage.setItem('token', res.token);
-      localStorage.setItem('email', this.email); 
-      localStorage.setItem('lastActive', Date.now().toString());
-      localStorage.setItem('userName', response.userName);
-      sessionStorage.setItem('roleTitle', JSON.stringify(response.roleTitles));
+  const response = res.responseObject;
+  sessionStorage.setItem('token', res.token);
+  localStorage.setItem('token', res.token);
+  localStorage.setItem('email', this.email); 
+  localStorage.setItem('lastActive', Date.now().toString());
+  localStorage.setItem('userName', response.userName);
+  sessionStorage.setItem('roleTitle', JSON.stringify(response.roleTitles));
 
       if (res.firstTimeLogin) {
         this.islogin = false;
         this.loggedIn = true;
         this.screen1 = true;
       } else {
-        this.router.navigate(['/home']);
         this.postService.openSnackBar('Logged In Successfully', 'SUCCESS');
+         this.router.navigate(['/home']);
       }
 
     } else {
@@ -240,25 +238,25 @@ loginWithOtp() {
     }
   }
 
-  countDown() {
-    this.seconds = 60;
-    this.intervalId = setInterval(() => {
-      if (this.seconds > 0) {
-        this.seconds -= 1;
-        const minutes = Math.floor(this.seconds / 60);
-        const remainingSeconds = this.seconds % 60;
-        this.formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-      }
-      else {
-        this.clearTimer();
-        this.show = true;
-      }
-    }, 1000);
-  }
-  clearTimer() {
-    clearInterval(this.intervalId);
+  // countDown() {
+  //   this.seconds = 60;
+  //   this.intervalId = setInterval(() => {
+  //     if (this.seconds > 0) {
+  //       this.seconds -= 1;
+  //       const minutes = Math.floor(this.seconds / 60);
+  //       const remainingSeconds = this.seconds % 60;
+  //       this.formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  //     }
+  //     else {
+  //       this.clearTimer();
+  //       this.show = true;
+  //     }
+  //   }, 1000);
+  // }
+  // clearTimer() {
+  //   clearInterval(this.intervalId);
  
-  }
+  // }
 
 
 startTimer() {
