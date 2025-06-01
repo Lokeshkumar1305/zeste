@@ -13,25 +13,29 @@
 
             <!-- Categories -->
             <div class="section-title fw-semibold mb-2">Choose the category</div>
+
             <div class="categories d-flex align-items-center mt-3">
                 <button class="nav-arrow me-2" (click)="scrollCategories('left')">&#8249;</button>
-                <div #categoryScroll class="d-flex overflow-auto" style="scroll-behavior: smooth;">
-                    <div class="category me-3 text-center" [ngClass]="{ active: selectedCategory === 'Chicken' }"
-                        (click)="selectCategory('Chicken')">
+
+                <div #categoryScroll class="d-flex overflow-auto flex-nowrap" style="scroll-behavior: smooth; max-width: 100%;">
+
+                    <div class="category me-3 text-center flex-shrink-0"
+                        [ngClass]="{ active: selectedCategory === 'Chicken' }" (click)="selectCategory('Chicken')">
                         <div class="category-icon fs-3">🍗</div>
                         <div class="category-text">Chicken</div>
                     </div>
 
-                    <div class="category me-3 text-center" *ngFor="let cat of pizzas"
+                    <div class="category me-3 text-center flex-shrink-0" *ngFor="let cat of pizzas"
                         [ngClass]="{ active: selectedCategory === cat.name }" (click)="selectCategory(cat.name)">
                         <div class="fs-3">🍕</div>
                         <div>{{ cat.name }}</div>
                     </div>
-                </div>
 
+                </div>
 
                 <button class="nav-arrow ms-2" (click)="scrollCategories('right')">&#8250;</button>
             </div>
+
 
 
             <!-- Divider line -->
@@ -129,10 +133,7 @@
 
 <!-- This will be used for printing the bill -->
 <div #printSection style="display: none;">
-  <app-bill-slip
-    [orderItems]="orderItems"
-    [subTotal]="subTotal"
-    [totalAmount]="totalAmount"
-    [selectedOrderType]="selectedOrderType">
-  </app-bill-slip>
+    <app-bill-slip [orderItems]="orderItems" [subTotal]="subTotal" [totalAmount]="totalAmount"
+        [selectedOrderType]="selectedOrderType">
+    </app-bill-slip>
 </div>

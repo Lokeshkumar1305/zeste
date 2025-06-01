@@ -14,7 +14,8 @@ export class BillingComponent {
     { name: 'Pepperoni' },
     { name: 'Veggie' },
     { name: 'BBQ Chicken' },
-  ];
+    { name: 'Supreme' },
+  ]
 
   items: any[] = [];
   allItems = [
@@ -32,14 +33,25 @@ export class BillingComponent {
 
 
   scrollCategories(direction: 'left' | 'right'): void {
-    const scrollAmount = 150;
-    const element = this.categoryScroll.nativeElement as HTMLElement;
-    if (direction === 'left') {
-      element.scrollLeft -= scrollAmount;
-    } else {
-      element.scrollLeft += scrollAmount;
+    const container = this.categoryScroll.nativeElement as HTMLElement;
+
+    if (container) {
+      const scrollAmount = container.offsetWidth / 2;
+
+      if (direction === 'left') {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+
+        console.log('scrollLeft before:', container.scrollLeft);
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        console.log('scrollLeft after:', container.scrollLeft);
+
+      } else {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
     }
   }
+
+
 
   selectCategory(categoryName: string): void {
     this.selectedCategory = categoryName;
@@ -55,76 +67,76 @@ export class BillingComponent {
     });
   }
 
-orderItems: any[] = [];
+  orderItems: any[] = [];
 
-addToOrder(item: any): void {
-  const existingItem = this.orderItems.find(i => i.name === item.name);
-  if (existingItem) {
-    existingItem.qty += 1;
-    existingItem.amount = existingItem.qty * existingItem.price;
-  } else {
-    this.orderItems.push({
-      name: item.name,
-      qty: 1,
-      price: 30, // Hardcoded as per your template
-      amount: 30
-    });
+  addToOrder(item: any): void {
+    const existingItem = this.orderItems.find(i => i.name === item.name);
+    if (existingItem) {
+      existingItem.qty += 1;
+      existingItem.amount = existingItem.qty * existingItem.price;
+    } else {
+      this.orderItems.push({
+        name: item.name,
+        qty: 1,
+        price: 30, // Hardcoded as per your template
+        amount: 30
+      });
+    }
   }
-}
 
   removeItem(item: any): void {
-  this.orderItems = this.orderItems.filter(i => i !== item);
-}
-
-
-get totalQty(): number {
-  return this.orderItems.reduce((sum, item) => sum + item.qty, 0);
-}
-
-get subTotal(): number {
-  return this.orderItems.reduce((sum, item) => sum + item.amount, 0);
-}
-
-get tax(): number {
-  return this.subTotal * 0.05; // 2.5% SGST + 2.5% CGST
-}
-
-get totalAmount(): number {
-  return this.subTotal + this.tax;
-}
-
-
-increaseQty(item: any): void {
-  item.qty++;
-  item.amount = item.qty * item.price;
-}
-
-decreaseQty(item: any): void {
-  if (item.qty > 1) {
-    item.qty--;
-    item.amount = item.qty * item.price;
-  } else {
-    // Optionally, remove item if qty reaches 0 or disable decrease button when qty=1
-    this.removeItem(item);
+    this.orderItems = this.orderItems.filter(i => i !== item);
   }
-}
-
-selectedOrderType: string = 'Dine In';
-
-setOrderType(type: string) {
-  this.selectedOrderType = type;
-}
-
-// printBill() {
-//   window.print();
-// }
 
 
-printBill() {
-  const printContents = this.printSection.nativeElement.innerHTML;
-  const popupWin = window.open('', '_blank', 'width=600,height=800');
-  popupWin?.document.open();
-  popupWin?.document.write(`
+  get totalQty(): number {
+    return this.orderItems.reduce((sum, item) => sum + item.qty, 0);
+  }
+
+  get subTotal(): number {
+    return this.orderItems.reduce((sum, item) => sum + item.amount, 0);
+  }
+
+  get tax(): number {
+    return this.subTotal * 0.05; // 2.5% SGST + 2.5% CGST
+  }
+
+  get totalAmount(): number {
+    return this.subTotal + this.tax;
+  }
+
+
+  increaseQty(item: any): void {
+    item.qty++;
+    item.amount = item.qty * item.price;
+  }
+
+  decreaseQty(item: any): void {
+    if (item.qty > 1) {
+      item.qty--;
+      item.amount = item.qty * item.price;
+    } else {
+      // Optionally, remove item if qty reaches 0 or disable decrease button when qty=1
+      this.removeItem(item);
+    }
+  }
+
+  selectedOrderType: string = 'Dine In';
+
+  setOrderType(type: string) {
+    this.selectedOrderType = type;
+  }
+
+  // printBill() {
+  //   window.print();
+  // }
+
+
+  printBill() {
+    const printContents = this.printSection.nativeElement.innerHTML;
+    const popupWin = window.open('', '_blank', 'width=600,height=800');
+    popupWin?.document.open();
+    popupWin?.document.write(`
     <html>
       <head>
         <title>Print Bill</title>
@@ -139,7 +151,7 @@ printBill() {
       </body>
     </html>
   `);
-  popupWin?.document.close();
-}
+    popupWin?.document.close();
+  }
 
 }
