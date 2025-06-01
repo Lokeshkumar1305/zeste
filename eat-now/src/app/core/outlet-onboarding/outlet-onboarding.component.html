@@ -56,7 +56,7 @@
                         <label class="form-label">Outlet Registration Type*</label>
                         <mat-radio-group name=" outletRegistrationType" #outletRegistrationType="ngModel"
                             [(ngModel)]="dataObj.outletRegistrationType">
-                            <mat-radio-button value="SOLOPROPRIETOR">SOLO
+                            <mat-radio-button value="SOLEPROPRIETOR">SOLE
                                 PROPRIETOR</mat-radio-button>
                             <mat-radio-button value="PARTNERSHIP" class="ml-3">PARTNERSHIP</mat-radio-button>
                         </mat-radio-group>
@@ -132,12 +132,6 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="d-flex mt-3">
-                                            <mat-form-field appearance="outline" class="w-600 me-5">
-                                                <mat-label>Aadhar</mat-label>
-                                                <input autocomplete="off" matInput pattern="^[0-9]{12}$" name="aadhar"
-                                                    #aadhar="ngModel" [(ngModel)]="element.aadhar" required />
-                                                <mat-error *ngIf="aadhar.errors?.required">Value is required</mat-error>
-                                            </mat-form-field>
                                             <mat-form-field appearance="outline" class="w-600">
                                                 <mat-label>PAN Number</mat-label>
                                                 <input autocomplete="off" matInput pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$"
@@ -149,25 +143,7 @@
                                                     format</mat-error>
                                             </mat-form-field>
                                         </div>
-                                        <div class="d-flex mt-3">
-                                            <mat-form-field appearance="outline" class="w-400">
-                                                <input matInput type="text"
-                                                    [placeholder]="!profileName ? 'Choose file' : ''" maxlength="64"
-                                                    readonly name="doc" #doc="ngModel" [(ngModel)]="name">
-                                                <mat-chip-listbox #chipList class="file-chip" *ngIf="profileName">
-                                                    <mat-chip-option ngDefaultControl style="cursor: pointer;">
-                                                        <span class="text-overflow">{{ profileName }}</span>
-                                                        <mat-icon matChipRemove>cancel</mat-icon>
-                                                    </mat-chip-option>
-                                                </mat-chip-listbox>
-                                                <button type="button" matSuffix mat-mini-fab color="primary"
-                                                    style="margin-right: 4px;" class="upload-btn"
-                                                    (click)="profile.click()" matTooltip="Upload File">
-                                                    <mat-icon>attach_file</mat-icon>
-                                                </button>
-                                                <input type="file" class="file-input" hidden #profile />
-                                            </mat-form-field>
-                                        </div>
+                                        
                                     </td>
                                 </ng-container>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -178,7 +154,7 @@
                         <button mat-stroked-button color="accent" class="me-3"
                             style="height: 48px;width: 130px;">Cancel</button>
                         <button mat-flat-button color="accent" matStepperNext style="height: 48px;width: 146px;"
-                            [disabled]="!partnerForm.valid">Submit</button>
+                            [disabled]="!partnerForm.valid">Next</button>
                     </div>
                 </div>
             </mat-step>
@@ -190,14 +166,14 @@
                         <mat-form-field appearance="outline" class="w-600 me-5">
                             <mat-label>Address Line1</mat-label>
                             <input autocomplete="off" matInput pattern="" placeholder="" name="addressLine1"
-                                #addressLine1="ngModel" [(ngModel)]="dataObj.address.addressLine1"
+                                #addressLine1="ngModel" [(ngModel)]="dataObj.baseAddress.addressLine1"
                                 pattern="^[a-zA-Z0-9\s,./#-]{1,100}$" required />
                             <mat-error *ngIf="addressLine1?.errors?.required">Value is required</mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="w-600">
                             <mat-label>Address Line2</mat-label>
                             <input autocomplete="off" matInput pattern="" placeholder="" name="addressLine2"
-                                #addressLine2="ngModel" [(ngModel)]="dataObj.address.addressLine2"
+                                #addressLine2="ngModel" [(ngModel)]="dataObj.baseAddress.addressLine2"
                                 pattern="^[a-zA-Z0-9\s,./#-]{1,100}$" required />
                             <mat-error *ngIf="addressLine2.errors?.required">Value is required</mat-error>
                         </mat-form-field>
@@ -206,14 +182,14 @@
                         <mat-form-field appearance="outline" class="w-600 me-5">
                             <mat-label>Zip Code</mat-label>
                             <input autocomplete="off" matInput pattern="" placeholder="" name="pinCode"
-                                #pinCode="ngModel" [(ngModel)]="dataObj.address.pinCode" pattern="^[1-9][0-9]{5}$"
+                                #pinCode="ngModel" [(ngModel)]="dataObj.baseAddress.pinCode" pattern="^[1-9][0-9]{5}$"
                                 required />
                             <mat-error *ngIf="pinCode.errors?.required">Value is required</mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="w-600">
                             <mat-label>City</mat-label>
                             <input autocomplete="off" matInput pattern="" placeholder="" name="city" #city="ngModel"
-                                [(ngModel)]="dataObj.address.city" pattern="^[a-zA-Z\s.'-]{2,100}$" required />
+                                [(ngModel)]="dataObj.baseAddress.city" pattern="^[a-zA-Z\s.'-]{2,100}$" required />
                             <mat-error *ngIf="city.errors?.required">Value is required</mat-error>
                         </mat-form-field>
                     </div>
@@ -221,13 +197,13 @@
                         <mat-form-field appearance="outline" class="w-600 me-5">
                             <mat-label>State</mat-label>
                             <input autocomplete="off" matInput pattern="" placeholder="" name="state" #state="ngModel"
-                                [(ngModel)]="dataObj.address.state" pattern="^[a-zA-Z\s.'-]{2,100}$" required />
+                                [(ngModel)]="dataObj.baseAddress.state" pattern="^[a-zA-Z\s.'-]{2,100}$" required />
                             <mat-error *ngIf="state.errors?.required">Value is required</mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="w-600">
                             <mat-label>Country</mat-label>
                             <input autocomplete="off" matInput pattern="" placeholder="" name="country"
-                                #country="ngModel" [(ngModel)]="dataObj.address.country"
+                                #country="ngModel" [(ngModel)]="dataObj.baseAddress.country"
                                 pattern="^[a-zA-Z\s.'-]{2,100}$" required />
                             <mat-error *ngIf="country.errors?.required">Value is required</mat-error>
                         </mat-form-field>
@@ -237,7 +213,7 @@
                     <button mat-stroked-button color="accent" class="me-3"
                         style="height: 48px;width: 130px;">Cancel</button>
                     <button mat-flat-button color="accent" matStepperNext style="height: 48px;width: 146px;"
-                        [disabled]="!addressForm.valid">Submit</button>
+                         (click)="submit()">Submit</button>
                 </div>
             </mat-step>
         </mat-stepper>

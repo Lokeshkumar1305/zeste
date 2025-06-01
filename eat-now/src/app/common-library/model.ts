@@ -13,10 +13,10 @@ export class Outlet {
     fssaiNumber!: string;
     outletRegistrationType!: string;
     ownersList!: Array<Owners>;
-    address!: Address;
+    baseAddress!: Address;
     constructor() {
         this.ownersList = new Array<Owners>;
-        this.address = new Address()
+        this.baseAddress = new Address()
     }
 
 }

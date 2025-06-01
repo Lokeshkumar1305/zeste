@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { OPSMenu } from '../../shared/en-common-table/en-common-table.component';
 import { Outlet, Owners } from '../../common-library/model';
 import { MatTableDataSource } from '@angular/material/table';
+import { ApiService } from '../../common-library/services/api.service';
+import { APIPath } from '../../common-library/api-enum';
 
 @Component({
   selector: 'app-outlet-onboarding',
@@ -19,11 +21,11 @@ export class OutletOnboardingComponent {
   name!: string;
   id!: any;
   dataObj = new Outlet();
-  datasource=new Array<Owners>();
-  displayedColumns=['Owners'];
+  datasource = new Array<Owners>();
+  displayedColumns = ['Owners'];
   breadCrumb = new Array<OPSMenu>();
   constructor(public router: Router, public route: ActivatedRoute,
-    public snackbar: MatSnackBar, public dialog: MatDialog, private location: Location, private snackBar: MatSnackBar
+    public snackbar: MatSnackBar, public dialog: MatDialog, private location: Location, private snackBar: MatSnackBar, public ApiService: ApiService
   ) {
   }
 
@@ -48,5 +50,15 @@ export class OutletOnboardingComponent {
     //   this.dataObj.owners = new Array<owners>
     // }
     // this.dataObj.owners.push(ownerInfo);
+  }
+  submit() {
+    // console.log(this.dataObj);
+    this.dataObj.ownersList = this.datasource;
+    const payload = {
+      requestObject:this.dataObj
+    }
+    this.ApiService.doPostWithOutToken(APIPath.OUTLET_ONB, payload).subscribe((response: any) => {
+      console.log(response);
+    })
   }
 }
