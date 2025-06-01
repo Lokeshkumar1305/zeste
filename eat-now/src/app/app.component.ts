@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
     { name: 'admin_panel_settings', tooltip: 'IAM' },
     { name: 'groups', tooltip: 'Onboarding' },
     { name: 'list_alt', tooltip: 'Menu' },
+    { name: 'shopping_cart', tooltip: 'Billing' },
     { name: 'table_restaurant', tooltip: 'Table' },
     { name: 'inventory', tooltip: 'Inventory' },
     { name: 'room_service', tooltip: 'Orders' },
@@ -67,6 +68,12 @@ export class AppComponent implements OnInit {
       items: [
         { icon: 'square', title: 'Area', route: '/core/area' },
         { icon: 'table_bar', title: 'Table', route: '/core/table' }
+      ]
+    },
+      shopping_cart: {
+      title: 'Billing',
+      items: [
+        { icon: 'shopping_cart', title: 'Billing', route: '/core/billing' },
       ]
     },
     inventory: {

@@ -1,0 +1,64 @@
+<div id="bill-slip" class="p-4" style="font-family: monospace;">
+  <h4 class="text-center">EatNow Restaurant</h4>
+  <div>Order #: 05</div>
+  <div>Type: {{ selectedOrderType }}</div>
+  <hr />
+  <div *ngFor="let item of orderItems" class="d-flex justify-content-between small">
+    <span>{{ item.name }} x{{ item.qty }}</span>
+    <span>₹{{ item.amount.toFixed(2) }}</span>
+  </div>
+  <hr />
+  <div class="d-flex justify-content-between small">
+    <span>Sub Total</span>
+    <span>₹{{ subTotal.toFixed(2) }}</span>
+  </div>
+  <div class="d-flex justify-content-between small">
+    <span>SGST (2.5%)</span>
+    <span>₹{{ (subTotal * 0.025).toFixed(2) }}</span>
+  </div>
+  <div class="d-flex justify-content-between small">
+    <span>CGST (2.5%)</span>
+    <span>₹{{ (subTotal * 0.025).toFixed(2) }}</span>
+  </div>
+  <hr />
+  <div class="d-flex justify-content-between fw-bold">
+    <span>Total</span>
+    <span>₹{{ totalAmount.toFixed(2) }}</span>
+  </div>
+  <div class="text-center mt-2 small">Thank you! Visit again 🍽️</div>
+</div>
+
+
+
+<!-- BILL SLIP TEMPLATE -->
+<!-- <div id="bill-slip" class="d-none d-print-block p-4" style="font-family: monospace;">
+  <h4 class="text-center mb-3">EatNow Restaurant</h4>
+  <div class="mb-2">Order #: 05</div>
+  <div class="mb-2">Order Type: {{ selectedOrderType }}</div>
+  <hr />
+  <div *ngFor="let item of orderItems" class="d-flex justify-content-between small">
+    <span>{{ item.name }} x{{ item.qty }}</span>
+    <span>₹{{ item.amount.toFixed(2) }}</span>
+  </div>
+  <hr />
+  <div class="d-flex justify-content-between small">
+    <span>Sub Total</span>
+    <span>₹{{ subTotal.toFixed(2) }}</span>
+  </div>
+  <div class="d-flex justify-content-between small">
+    <span>SGST (2.5%)</span>
+    <span>₹{{ (subTotal * 0.025).toFixed(2) }}</span>
+  </div>
+  <div class="d-flex justify-content-between small">
+    <span>CGST (2.5%)</span>
+    <span>₹{{ (subTotal * 0.025).toFixed(2) }}</span>
+  </div>
+  <hr />
+  <div class="d-flex justify-content-between fw-bold">
+    <span>Total</span>
+    <span>₹{{ totalAmount.toFixed(2) }}</span>
+  </div>
+  <hr />
+  <div class="text-center mt-2 small">Thank you! Visit again 🍽️</div>
+</div> -->
+

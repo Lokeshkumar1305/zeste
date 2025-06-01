@@ -78,13 +78,10 @@ private router: Router, public encryptservice: EncryptionService, public postSer
 
 
 createCategory() {
-  const id = localStorage.getItem('id');
-
   const payload = {
     requestObject: {
       ...this.dataObj,   
       image: this.uploadedImage || '',
-      outletId: id
     }
   };
 

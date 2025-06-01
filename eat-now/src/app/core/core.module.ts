@@ -33,6 +33,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CategoryComponent } from './category/category.component';
 import { CategoryModalComponent } from './category-modal/category-modal.component';
+import { BillingComponent } from './billing/billing.component';
+import { BillSlipComponent } from './bill-slip/bill-slip.component';
 @NgModule({
   declarations: [
     OutletOnboardingComponent,
@@ -55,6 +57,8 @@ import { CategoryModalComponent } from './category-modal/category-modal.componen
     MenuModalComponent,
     CategoryComponent,
     CategoryModalComponent,
+    BillingComponent,
+    BillSlipComponent,
   ],
   imports: [
     CommonModule,

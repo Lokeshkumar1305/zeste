@@ -14,6 +14,7 @@ import { ItemsComponent } from './items/items.component';
 import { PurchaseOrderDetailsComponent } from './purchase-order-details/purchase-order-details.component';
 import { MenuComponent } from './menu/menu.component';
 import { CategoryComponent } from './category/category.component';
+import { BillingComponent } from './billing/billing.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'category', component: CategoryComponent},
   { path: 'menu', component: MenuComponent },
   { path: 'items', component: ItemsComponent },
+  { path: 'billing', component:BillingComponent },
   { path: 'purchase-order', component: PurchaseOrdersComponent },
   { path: 'supplier', component: SuppliersComponent },
   { path: 'stock-moment', component: StockMomentComponent },
