@@ -1,120 +1,82 @@
-
-<!-- loading layout replaced by app after startupp -->
-<!-- <div class="app-loading" *ngIf="showSplash">
-    <div class="logo">
-        <img src="../../../assets/images/tou-logo.svg" alt="Logo">
-    </div>
-    <img src="../../../assets/images/fade-stagger-circles.svg" alt="" class="loader-circle">
-</div> -->
-<div class="auth-c" *ngIf="!showOtpScreen">
-    <div class="row panel" style="height: 100vh;">
-
-        <div class="col-xl-6 col-xxl-7 leftPanel">
-            <!-- <div class="logo-img d-block px-4 py-3 w-100">
-                <img loading="lazy" src="../../../assets/images/tou-logo.svg" height="30" alt="Logo">
-            </div> -->
-            <!-- <div class="d-none d-xl-flex align-items-center justify-content-center h-n80">
-                <img src="../../../assets/images/login-security.svg" alt="modernize-img" class="img-fluid" width="500">
-            </div> -->
+<div class="container-fluid login-screen min-vh-100 d-flex">
+  <!-- Left (What’s New) -->
+  <div class="col-md-6 col-lg-6 col-xl-5 d-none d-md-flex left-pane text-white">
+    <div class="left-content text-center mx-auto">
+      <h2 class="f-28-b mb-4">What’s New</h2>
+      <div class="mb-4">
+        <img src="assets/images/whatsnew-puzzle.svg" alt="Unified Billing Software" class="illustration">
+      </div>
+      <p class="f-18-m mb-2">Advanced Billing Software</p>
+      <p class="left-desc f-14-r mx-auto">
+        Streamline invoicing, track payments, and manage subscriptions effortlessly with our intuitive, scalable, and
+        secure billing software solution.
+      </p>
+      <div class="dots my-4">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <div class="help-divider d-flex align-items-center justify-content-center my-4">
+        <div class="line"></div>
+        <div class="mx-3 f-16-m ">Need help? Contact us</div>
+        <div class="line"></div>
+      </div>
+      <div class="contact d-flex justify-content-center gap-4 small">
+        <div>
+          <i class="bi bi-telephone-fill me-2 f-14-m"></i> +91 7975499056
         </div>
-        <div class="col-xl-6 col-xxl-5 rightPanel">
-            <div class="min-vh-100 row justify-content-center align-items-center px-4" style="height: 100vh;">
-                <div class="auth-max-width col-sm-8 col-md-6 col-xl-7">
-                    <h6 class="mb-1">Welcome to Eat-Now</h6>
-                    <p class="mb-5">Your <span class="q4">Admin Dashboard</span></p>
-                    <form name="loginForm" #loginForm="ngForm" novalidate>
-                        <mat-label class="form-label">User name</mat-label>
-                        <mat-form-field appearance="outline" class="w-100">
-                               <input matInput name="emailId" #emailId="ngModel" [(ngModel)]="loginObj.emailId"   placeholder="" type="text" autocomplete="on"
-                                pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required >
-                            <mat-error *ngIf="emailId.errors?.required">User name is required</mat-error>
-                        </mat-form-field>
-                        <mat-label class="form-label">Password</mat-label>
-                        <mat-form-field appearance="outline" class="w-100 mb-2">
-                            <input matInput name="password" #password="ngModel" [(ngModel)]="loginObj.password"
-                                [type]="hidePwd ? 'password' : 'text'" required (keypress)="onKeyPress($event)"
-                                (keyup.enter)="validateUser()" autocomplete="off">
-                            <mat-icon matSuffix (click)="hidePwd = !hidePwd" style="cursor: pointer;"
-                                class="material-symbols-outlined" color="primary">
-                                {{hidePwd ? 'visibility_off' : 'visibility'}}
-                            </mat-icon>
-                            <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
-                        </mat-form-field>
-                        <button mat-flat-button color="accent" name="loginBtn" [disabled]="inProgressBar"
-                            class="w-100 mb-4" (click)="validateUser()"><span
-                                style="display: inline-flex;">{{inProgressBar ?
-                                'Please wait' : 'Sign In'
-                                }}&nbsp;&nbsp;
-                                <mat-spinner diameter="24" *ngIf="inProgressBar"></mat-spinner></span>
-                        </button>
-                        <div class="d-flex justify-content-center align-items-center mb-2">
-                            <p class="m-0">Forgot Password</p>
-                            <a mat-button name="forgotBtn" (click)="forgotpass()" color="primary">Click here</a>
-                        </div>
-                    </form>
-                    <!-- <div class="text-center mt-4" *ngIf="reqFS">
-                        <app-tou-alerts alertType="ERROR" heading="Error" message="{{errMsg}}"></app-tou-alerts>
-                    </div> -->
-                </div>
+        <div>
+          <i class="bi bi-envelope-fill me-2 f-14-m"></i> support&#64;zeste.com
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right (Login) -->
+  <div class="col-12 col-md-6 col-lg-6 col-xl-7 right-pane d-flex flex-column align-items-center">
+    <div class="login-wrap w-100">
+      <div class="text-center mb-4">
+        <img src="assets/images/zeste-logo.svg" alt="Zeste Logo" class="zeste-logo mb-3">
+        <p class="login-title f-32-m mb-2">Login</p>
+        <p class="text-muted f-16-r mb-0">Use your zeste credentials to login.</p>
+      </div>
+      <div class="mx-auto">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label d-block f-16-r mb-1">Email ID<span class="text-danger">*</span></label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput formControlName="email" autocomplete="email" required>
+              <mat-error *ngIf="f.email?.hasError('required')">Email is required</mat-error>
+              <mat-error *ngIf="f.email?.hasError('email')">Please enter a valid email</mat-error>
+            </mat-form-field>
+          </div>
+          <!-- Password -->
+          <div class="mb-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <label class="form-label f-16-r mb-0">Password<span class="text-danger ms-1">*</span></label>
             </div>
-            <!-- <div class="d-flex flex-row align-items-center text-center mt-5 poweredBy">
-                <p class="f-10-r">Copyright &copy; 2024. All rights reserved </p>
-                <img src="{{powdbyLogo}}">
-            </div> -->
-        </div>
-
-    </div>
-
-</div>
-
-
-
-
-<div class="otp" *ngIf="showOtpScreen">
-<mat-card class="p-4 otp-card justify-content-center">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <span class="p-24-v1">OTP Verification</span>
-        <mat-icon class="me-1" style="cursor: pointer;">close</mat-icon>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
+                autocomplete="current-password" required>
+              <button mat-button type="button" matSuffix class="toggle-show f-14-m" (click)="togglePassword()">
+                {{ hide ? 'show' : 'hide' }}
+              </button>
+              <mat-error *ngIf="f.password?.hasError('required')">Password is required</mat-error>
+              <mat-error *ngIf="f.password?.hasError('minlength')">Password must be at least 6 characters</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="text-end mb-3">
+            <a href="#" class="forgot-link f-16-m" (click)="onForgotPassword($event)">Forgot Password?</a>
+          </div>
+          <button mat-raised-button color="primary" class="w-100 btn-login" [disabled]="loginForm.invalid">
+            Login
+          </button>
+        </form>
       </div>
-        
-    <hr />
-    <mat-divider></mat-divider>
-    <div class="text-center mt-3">
-      <p class="p-14-v2">We sent a code to <span color="primary">{{email}}</span></p>
-      <div class="otp-inputs d-flex justify-content-center my-3">
-        <input #otpInput1 type="text" (keypress)="movetoNext($event)"
-          (keyup)="move($event, '', otpInput1, otpInput2)" maxlength="1"
-          class="input-size me-2" [(ngModel)]="otpval1" autocomplete="off">
-        <input #otpInput2 type="text" (keypress)="movetoNext($event)"
-          (keyup)="move($event, otpInput1, otpInput2, otpInput3)" maxlength="1"
-          class="input-size me-2" [(ngModel)]="otpval2" autocomplete="off">
-        <input #otpInput3 type="text" (keypress)="movetoNext($event)"
-          (keyup)="move($event, otpInput2, otpInput3, otpInput4)" maxlength="1"
-          class="input-size me-2" [(ngModel)]="otpval3" autocomplete="off">
-        <input #otpInput4 type="text" (keypress)="movetoNext($event)"
-          (keyup)="move($event, otpInput3, otpInput4, otpInput5)" maxlength="1"
-          class="input-size me-2" [(ngModel)]="otpval4" autocomplete="off">
-        <input #otpInput5 type="text" (keypress)="movetoNext($event)"
-          (keyup)="move($event, otpInput4, otpInput5, otpInput6)" maxlength="1"
-          class="input-size me-2" [(ngModel)]="otpval5" autocomplete="off">
-        <input #otpInput6 type="text" (keypress)="movetoNext($event)"
-          (keyup)="move($event, otpInput5, otpInput6, '')" maxlength="1"
-          class="input-size" [(ngModel)]="otpval6" autocomplete="off">
-      </div>
-  
-      <button mat-flat-button  color="primary"
-        class="continue-butt"
-        (click)=" loginWithOtp()">
-        Continue
-      </button>
-  
-      <div class="mt-3">
-        <span class="p-14-v2">
-          Didn’t receive the email?
-          <a class="p-14-v2 resend-text" *ngIf="seconds <= 0" >Click to resend</a>
-          <span *ngIf="seconds > 0">&nbsp;{{ formattedTime }}</span>
-        </span>
+      <div class="text-center mt-4">
+        <!-- <img src="assets/images/pci-badge.svg" alt="PCI DSS" class="pci-badge"> -->
       </div>
     </div>
-  </mat-card>
+  </div>
 </div>

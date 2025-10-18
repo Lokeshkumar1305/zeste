@@ -1,123 +1,126 @@
-.auth-c {
-    .panel {
-        margin: 0;
-        padding: 0;
-    }
-
-    .poweredBy {
-        text-align: center;
-        opacity: 0.5;
-
-        img {
-            height: 24px;
-            margin-left: 40px;
-        }
-    }
+.login-screen {
+  background: var(--bg-page);
+  min-height: 100vh;
+  display: flex;
 }
 
-.leftPanel {
-    background: url(../../../assets/Images/confetti-doodles.svg);
-    background-size: contain;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 60%;
-
-    .h-n80 {
-        height: calc(100vh - 80px);
-    }
-
+/* Left panel */
+.left-pane {
+  background: var(--brand-primary);
+  padding: 48px 24px;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.rightPanel {
-    position: relative;
+.left-content {
+  max-width: 440px;
+  width: 100%;
+}
 
-    .auth-max-width {
-        width: 100%;
-        max-width: 520px;
-    }
+.left-pane h2 {
+  font-size: 28px;
+}
 
-    .q4 {
-        color: #12B393;
-    }
+.illustration {
+  width: 96px;
+  height: auto;
+}
+
+.left-desc {
+  max-width: 380px;
+  margin-top: 15px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* dots under the text */
+.dots .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  margin: 0 4px;
+}
+.dots .dot.active {
+  width: 30px;
+  border-radius: 8px;
+  background: var(--brand-green);
+}
+
+/* "Need help? Contact us" divider with lines */
+.help-divider .line {
+  height: 1px;
+  width: 80px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Right panel */
+.right-pane {
+  background: #fff;
+  padding: 48px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-wrap {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.zeste-logo {
+  max-width: 120px;
+  height: auto;
+}
+
+.login-title {
+  color: var(--brand-navy);
 }
 
 
-// spalsh
 
-.app-loading {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+/* Toggle show/hide button inside mat-form-field */
+.toggle-show.mdc-button {
+  min-width: auto;
+  padding: 0 6px;
+  color: #6b7280;
+  text-transform: unset;
+}
 
-    .logo img {
-        height: 48px;
-    }
-
-    .loader-circle {
-        height: 104px;
-        justify-content: center;
-    }
+/* Forgot password link in green */
+.forgot-link {
+  color: var(--brand-green);
 }
 
 
 
+/* Badges */
+.pci-badge {
+  height: 28px;
+  opacity: 0.6;
+}
 
-//otp-css
+/* Responsive tweaks */
+@media (max-width: 767.98px) {
+  .right-pane { padding: 32px 16px; }
+  .login-wrap { max-width: 520px; }
+  .login-card { border: none; padding: 0; }
+  .left-pane { display: none; } /* Hide left pane on small screens */
+}
 
-.otp {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url('../../../assets/Images/user-1.jpg');
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .otp-card {
-    width: 100%;
-    max-width: 550px;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
+@media (min-width: 768px) {
+  .left-pane { display: flex; } /* Show left pane on medium and larger screens */
+}
 
-button.enabled {
-    background-color: #0D47A1;
-  }
-   
-  button.disabled {
-    background-color: #d9d9d9;
-  }
-   
-  .input-size {
-    height: 64px;
-    width: 64px;
-    text-align: center;
-    font-size: 24px;
-    margin: 0 5px;
-  }
-   
-  .otp-inputs {
-    display: flex;
-    justify-content: center;
-  }
-   
-  .otp-text {
-    color: #252525
-  }
-   
-  .icon-color {
-    color: #000;
-  }
-   
-  .continue-butt {
-    width: 340px;
-    height: 49px;
-  }
-   
-  .resend-text {
-    text-decoration: none
-  }
+/* Keep Bootstrap Icons white inside the left pane */
+.left-pane .bi { color: #fff; }
+
+/* Maintain visual balance on larger screens */
+@media (min-width: 1200px) {
+  .left-pane { padding-left: 56px; padding-right: 56px; }
+}
+
+
+

@@ -1,148 +1,162 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, HostBinding, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../common-library/services/api.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSelectionList } from '@angular/material/list';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss'
 })
-export class SidenavComponent {
-  @ViewChild('sideMenu', { static: true }) private sideMenu!: MatSelectionList;
-  sidenav!: MatSidenav;
-  isMobile = true;
+export class SidenavComponent implements OnInit {
+  selectedMenu: string = 'dashboard';
+  privileges: string[] = [];
+  filteredMenuConfig: { [key: string]: { title: string, items: any[] } } = {};
 
-  constructor(private cdRef: ChangeDetectorRef, public postService: ApiService, private router: Router) { }
-  step!: number;
-  userName!: string;
-  designation!: string;
-  ngOnInit() {
-    // this.step = Number(sessionStorage.getItem('step'))!;
-    this.designation = 'Administrator';
-    // Retrieve and format logged-in user's name from session storage
-    // let loggedInUser = sessionStorage.getItem('loggedInUser')!
-    let loggedInUser = "Eatnow@gmail.com"
-
-    let lu: any = loggedInUser;
-    if (lu) {
-      lu = lu.split('@');
-      lu = lu[0].replace('.', ' ');
-      this.userName = lu;
-    }
-  }
-
-  toggleMenu() {
-    if (this.isMobile) {
-      this.sidenav.toggle();
-      this.postService.isCollapsed = false; // On mobile, the menu can never be collapsed
-    } else {
-      this.sidenav.open(); // On desktop/tablet, the menu can never be fully closed
-      this.postService.isCollapsed = !this.postService.isCollapsed;
-    }
-  }
-  isMenuExpanded = false;
-  toggleSideNav() {
-    if (this.isMenuExpanded) {
-      this.isMenuExpanded = false;
-    } else {
-      this.isMenuExpanded = true;
-    }
-
-  }
-
-  /* Sets the current step index for a multi-step process.*/
-  setStep(index: any) {
-    this.step = index;
-  }
-
-  /* Logs the user out of the application.*/
-  logout() {
-    sessionStorage.clear();
-    this.router.navigate(['/']);
-    // this.idleService.disableIdleDetection();
-  }
-
-
-  activeIndex: number | null = null;
-  activeListItemIndex: number | null = null;
-
-  icons = [
-    { name: 'home', tooltip: 'Home' },
-    { name: 'admin_panel_settings', tooltip: 'IAM' },
-    { name: 'groups', tooltip: 'Onboarding' },
-    { name: 'list_alt', tooltip: 'Menu' },
-    { name: 'table_restaurant', tooltip: 'Table' },
-    { name: 'inventory', tooltip: 'Inventory' },
-    { name: 'room_service', tooltip: 'Orders' },
-    { name: 'chef_hat', tooltip: 'Kitchen' }
-  ];
-
-  iconListData: { [key: string]: { title: string, items: { icon: string; title: string; route: string }[] } } = {
-    home: {
-      title: 'Home',
+  menuConfig: { [key: string]: { title: string, items: any[] } } = {
+    dashboard: {
+      title: 'Dashboard',
       items: [
-        { icon: 'home', title: 'Dashboard', route: '/core/outlet-onboarding' },
-        { icon: 'account_circle', title: 'Profile', route: '/core/outlet-onboarding' }
+        { title: 'Case Dashboard', route: '/case-mgmt/case-dashboard', privilege: '_CASEMGMT_API_CASE_GETALL_POST' },
       ]
     },
-    admin_panel_settings: {
-      title: 'IAM',
+    uam: {
+      title: 'User Access Management',
       items: [
-        { icon: 'account_box', title: 'Users', route: '/uam/users' },
-        { icon: 'security', title: 'Roles', route: '/uam/roles' }
+        { title: 'IAM', route: '/uam/users', privilege: '_CASEMGMT_API_USER_GETALL_POST' }
       ]
     },
-    groups: {
-      title: 'Onboarding',
+    caseManagement: {
+      title: 'Case Management',
       items: [
-        { icon: 'person_add', title: 'Outlet', route: '/core/outlet-getAll' },
-        { icon: 'group', title: 'Staff', route: '/core/staff-onboarding-getAll' },
-        { icon: 'home', title: 'IAM', route: '/uam/users' },
-
+        { title: 'Cases', route: '/case-mgmt/cases', privilege: '_CASEMGMT_API_CASE_GETALL_POST' },
+        { title: 'Create Field Config', route: '/case-mgmt/case-fields-config', privilege: '_CASEMGMT_API_CASE_CREATE_POST' },
+        { title: 'Escalation Dashboard', route: '/case-mgmt/escalation', privilege: '_CASEMGMT_API_CASE_CREATE_POST' },
+        { title: 'Escalation', route: '/case-mgmt/escalation-directory', privilege: '_CASEMGMT_API_CASE_CREATE_POST' },
       ]
     },
-    list_alt: {
-      title: 'Menu',
+    administration: {
+      title: 'Administration',
       items: [
-        { icon: 'restaurant_menu', title: 'View Menu', route: '/core/menu' },
-        { icon: 'add', title: 'Add Item', route: '/core/menu' }
-      ]
-    },
-    table_restaurant: {
-      title: 'Table',
-      items: [
-        { icon: 'square', title: 'Area', route: '/core/area' },
-        { icon: 'table_bar', title: 'Table', route: '/core/table' }
-      ]
-    },
-    inventory: {
-      title: 'Inventory',
-      items: [
-        { icon: 'inventory_2', title: 'Stock', route: '/core/outlet-onboarding' },
-        { icon: 'add_shopping_cart', title: 'Order Supplies', route: '/core/outlet-onboarding' }
-      ]
-    },
-    room_service: {
-      title: 'Orders',
-      items: [
-        { icon: 'room_service', title: 'Current Orders', route: '/core/outlet-onboarding' },
-        { icon: 'history', title: 'Order History', route: '/core/outlet-onboarding' }
-      ]
-    },
-    chef_hat: {
-      title: 'Kitchen',
-      items: [
-        { icon: 'restaurant', title: 'Current Dishes', route: '/core/outlet-onboarding' },
-        { icon: 'schedule', title: 'Prep Schedule', route: '/core/outlet-onboarding' }
+        { title: 'Case Configuration', route: '/administration/manage-case-config/case-configuration', privilege: '_CASEMGMT_API_CASECONFIGURATION_POST' },
+        { title: 'Case Type Configurations', route: '/administration/manage-case-config/case-type-configurations', privilege: '_CASEMGMT_API_CASETYPECONFIGURATION_POST' },
+        { title: 'General Configurations', route: '/administration/config/general-configuration', privilege: '_CASEMGMT_API_CASETYPECONFIGURATION_POST' }
       ]
     }
   };
-  navigateTo(route: string) {
-    if (route) {
-      this.router.navigate([route]);
+
+  isCollapsed = false;
+  isMobile = false;
+  tenantId: string | null = null; // Store tenantId
+
+  // Dynamic host binding for CSS classes
+  @HostBinding('class.dashboard-only') 
+  get isDashboardOnly() {
+    return this.selectedMenu === 'dashboard' || !this.hasMenuItems(this.selectedMenu);
+  }
+
+  @HostBinding('class.with-secondary') 
+  get hasSecondary() {
+    return this.selectedMenu !== 'dashboard' && this.hasMenuItems(this.selectedMenu);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  constructor(private router: Router,) {
+    console.log('Sidenav Initial Privileges:', this.privileges);
+    console.log('Sidenav Tenant ID:', this.tenantId);
+    this.filterMenuByPrivileges();
+    console.log('Sidenav Initial Filtered Menu Config:', this.filteredMenuConfig);
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        const url = event.urlAfterRedirects;
+        console.log('Sidenav Navigation URL:', url);
+
+        if (url.startsWith('/uam')) {
+          this.selectedMenu = 'uam';
+        } else if (url.startsWith('/administration')) {
+          this.selectedMenu = 'administration';
+        } else if (url.startsWith('/case-mgmt/case-dashboard')) {
+          this.selectedMenu = 'dashboard';   
+        } else if (url.startsWith('/case-mgmt')) {
+          this.selectedMenu = 'caseManagement';
+        } else {
+          this.selectedMenu = 'dashboard';
+        }
+
+        console.log('Sidenav Selected Menu:', this.selectedMenu);
+      });
+  }
+
+  ngOnInit(): void {
+    this.checkScreenSize(); 
+  }
+
+  private checkScreenSize() {
+    this.isMobile = window.innerWidth < 768;
+    if (this.isMobile) {
+      this.isCollapsed = true;
     }
   }
 
+  toggleCollapse() {
+    if (!this.isMobile) {
+      this.isCollapsed = !this.isCollapsed;
+    }
+  }
+
+  selectMenu(menu: string) {
+    this.selectedMenu = menu;
+    console.log('Sidenav Menu Selected:', menu);
+    
+    // For dashboard, navigate to the dashboard route directly
+    if (menu === 'dashboard') {
+      console.log('Navigating to dashboard');
+      this.router.navigate(['/case-mgmt/case-dashboard']);
+    } else {
+      // Navigate to the first item in the section if applicable
+      const firstItemRoute = this.filteredMenuConfig[menu]?.items[0]?.route;
+      if (firstItemRoute) {
+        console.log('Navigating to:', firstItemRoute);
+        this.router.navigate([firstItemRoute]);
+      }
+    }
+  }
+
+  filterMenuByPrivileges() {
+    this.filteredMenuConfig = {};
+    for (const key in this.menuConfig) {
+      const section = this.menuConfig[key];
+      let filteredItems = section.items.filter(item =>
+        (!item.privilege || this.privileges.includes(item.privilege))
+      );
+      if (filteredItems.length > 0) {
+        this.filteredMenuConfig[key] = {
+          ...section,
+          items: filteredItems
+        };
+      }
+    }
+  }
+
+  getSidenavHeading(): string {
+    if (this.selectedMenu === 'dashboard') return '';
+    return this.filteredMenuConfig[this.selectedMenu]?.title || '';
+  }
+
+  hasMenuItems(menu: string): boolean {
+    return !!this.filteredMenuConfig[menu]?.items && this.filteredMenuConfig[menu].items.length > 0;
+  }
+
+  navigate(item: any) {
+    console.log('Navigating to:', item.route);
+    this.router.navigate([item.route]);
+  }
 }
