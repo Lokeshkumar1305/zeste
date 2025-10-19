@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OPSMenu } from '../../shared/en-common-table/en-common-table.component';
@@ -31,6 +31,9 @@ export class RoleDetailsComponent implements OnInit {
   breadCrumb: OPSMenu[] = [];
   form!: FormGroup;
   submitted = false;
+  expanded = false;
+
+  @ViewChildren('expandIcon') expandIcons!: QueryList<ElementRef>;
 
   permissionsSelection = new Set<string>();
 
