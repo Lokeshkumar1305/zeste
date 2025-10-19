@@ -43,28 +43,16 @@ interface MenuConfig {
   ]
 })
 export class SidenavComponent implements OnInit, OnDestroy {
-  /** Selected menu category */
+  private closeTimeout: any;
+  private isSubmenuHovered: boolean = false;
   selectedMenu: string = 'home';
-
-  /** Hovered menu category */
   hoveredMenu: string | null = null;
-
-  /** Submenu card position */
   submenuPosition: { left: number, top: number } = { left: 0, top: 0 };
-
-  /** Hover timeout reference */
   private hoverTimeout: any;
-  
-  /** Leave timeout reference */
   private leaveTimeout: any;
-
-  /** User privileges */
   privileges: string[] = [];
-
-  /** Filtered menu configuration based on privileges */
   filteredMenuConfig: { [key: string]: MenuConfig } = {};
 
-  /** Menu configuration */
   private readonly menuConfig: { [key: string]: MenuConfig } = {
     home: {
       title: 'Home',
@@ -130,16 +118,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
   };
 
-  /** Whether the sidenav is collapsed */
   isCollapsed: boolean = true;
-
-  /** Whether the device is mobile */
   isMobile: boolean = false;
-
-  /** Subject for unsubscribing */
   private destroy$ = new Subject<void>();
-
-  /** Listen for window resize events */
   @HostListener('window:resize')
   onResize(): void {
     this.checkScreenSize();
@@ -150,13 +131,13 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.subscribeToRouterEvents();
   }
 
-  /** Initialize component */
+
   ngOnInit(): void {
     this.checkScreenSize();
-    this.updateSelectedMenuFromUrl(this.router.url); // Set initial selectedMenu
+    this.updateSelectedMenuFromUrl(this.router.url); 
   }
 
-  /** Cleanup on destroy */
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -169,7 +150,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Subscribe to router events to update selected menu */
   private subscribeToRouterEvents(): void {
     this.router.events
       .pipe(
@@ -181,7 +161,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       });
   }
 
-  /** Update selected menu based on URL */
+
   private updateSelectedMenuFromUrl(url: string): void {
     if (url.startsWith('/core/outlet')) {
       this.selectedMenu = 'home';
@@ -204,30 +184,23 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Check screen size to adjust sidenav behavior */
   private checkScreenSize(): void {
     this.isMobile = window.innerWidth < 768;
     this.isCollapsed = this.isMobile;
   }
 
-  /** Toggle sidenav collapse state */
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  /** Handle menu hover with delay and update submenu position */
   onMenuHover(menu: string, event: MouseEvent): void {
     if (this.isMobile) return;
-
-    // Clear any existing timeouts
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
     }
     if (this.leaveTimeout) {
       clearTimeout(this.leaveTimeout);
     }
-
-    // Update submenu position based on the hovered menu item
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     this.submenuPosition = {
@@ -235,7 +208,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
       top: rect.top + window.scrollY
     };
 
-    // Show submenu after brief delay
     this.hoverTimeout = setTimeout(() => {
       if (this.hasMenuItems(menu)) {
         this.hoveredMenu = menu;
@@ -243,7 +215,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  /** Handle menu leave with delay */
   onMenuLeave(): void {
     if (this.isMobile) return;
 
@@ -266,6 +237,14 @@ export class SidenavComponent implements OnInit, OnDestroy {
     if (this.leaveTimeout) {
       clearTimeout(this.leaveTimeout);
     }
+  }
+
+    closeSubmenu() {
+    // When leaving submenu, close it
+    this.isSubmenuHovered = false;
+    this.closeTimeout = setTimeout(() => {
+      this.hoveredMenu = null;
+    }, 100);
   }
 
   /** Select a menu category and navigate */

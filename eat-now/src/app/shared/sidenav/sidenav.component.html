@@ -15,7 +15,8 @@
     <ul class="sidenav-menu">
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'home'" 
+        [class.active]="selectedMenu === 'home'"
+        [class.hovered]="hoveredMenu === 'home'"
         (mouseenter)="onMenuHover('home', $event)"
         (mouseleave)="onMenuLeave()"
         (click)="selectMenu('home')" 
@@ -27,7 +28,8 @@
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'admin_panel_settings'" 
+        [class.active]="selectedMenu === 'admin_panel_settings'"
+        [class.hovered]="hoveredMenu === 'admin_panel_settings'"
         (mouseenter)="onMenuHover('admin_panel_settings', $event)"
         (mouseleave)="onMenuLeave()"
         (click)="selectMenu('admin_panel_settings')" 
@@ -39,7 +41,8 @@
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'groups'" 
+        [class.active]="selectedMenu === 'groups'"
+        [class.hovered]="hoveredMenu === 'groups'"
         (mouseenter)="onMenuHover('groups', $event)"
         (mouseleave)="onMenuLeave()"
         (click)="selectMenu('groups')" 
@@ -51,7 +54,8 @@
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'list_alt'" 
+        [class.active]="selectedMenu === 'list_alt'"
+        [class.hovered]="hoveredMenu === 'list_alt'"
         (mouseenter)="onMenuHover('list_alt', $event)"
         (mouseleave)="onMenuLeave()"
         (click)="selectMenu('list_alt')" 
@@ -63,7 +67,8 @@
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'table_restaurant'" 
+        [class.active]="selectedMenu === 'table_restaurant'"
+        [class.hovered]="hoveredMenu === 'table_restaurant'"
         (mouseenter)="onMenuHover('table_restaurant', $event)"
         (mouseleave)="onMenuLeave()"
         (click)="selectMenu('table_restaurant')" 
@@ -75,7 +80,8 @@
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'inventory'" 
+        [class.active]="selectedMenu === 'inventory'"
+        [class.hovered]="hoveredMenu === 'inventory'"
         (mouseenter)="onMenuHover('inventory', $event)"
         (mouseleave)="onMenuLeave()"
         (click)="selectMenu('inventory')" 
@@ -87,7 +93,8 @@
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'room_service'" 
+        [class.active]="selectedMenu === 'room_service'"
+        [class.hovered]="hoveredMenu === 'room_service'"
         (mouseenter)="onMenuHover('room_service', $event)"
         (mouseleave)="onMenuLeave()"
         (click)="selectMenu('room_service')" 
@@ -99,7 +106,8 @@
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'chef_hat'" 
+        [class.active]="selectedMenu === 'chef_hat'"
+        [class.hovered]="hoveredMenu === 'chef_hat'"
         (mouseenter)="onMenuHover('chef_hat', $event)"
         (mouseleave)="onMenuLeave()"
         (click)="selectMenu('chef_hat')" 
@@ -125,7 +133,7 @@
     [style.left.px]="submenuPosition.left"
     [style.top.px]="submenuPosition.top"
     (mouseenter)="keepSubmenuOpen()"
-    (mouseleave)="onMenuLeave()"
+    (mouseleave)="closeSubmenu()"
     [@slideIn]>
     <div class="submenu-header">
       <h3 class="submenu-title">{{ getSubmenuTitle() }}</h3>
