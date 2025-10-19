@@ -3,7 +3,6 @@
   <div class="header-brand" aria-label="Brand">
     <span class="brand-name">BUSSINESS NAME</span>
   </div>
-
   <!-- Search -->
   <div class="header-search" role="search">
     <div class="search-container">
@@ -12,14 +11,13 @@
         #searchInput
         type="text"
         class="search-input"
-        placeholder="Search employees or actions (Ex: Apply Leave)"
+        placeholder="Search"
         (keyup.enter)="onSearch()"
         aria-label="Search"
       />
       <span class="search-shortcut" aria-hidden="true">Alt + K</span>
     </div>
   </div>
-
   <!-- Right side -->
   <div class="header-right">
     <!-- Notifications -->
@@ -30,11 +28,13 @@
       matTooltip="Notifications"
     >
       <mat-icon aria-hidden="true">notifications</mat-icon>
-      <span class="notification-badge" *ngIf="notificationCount > 0">
+      <span
+        class="notification-badge"
+        *ngIf="notificationCount > 0"
+      >
         {{ notificationCount }}
       </span>
     </button>
-
     <!-- Profile avatar -> profile menu -->
     <button
       [matMenuTriggerFor]="profileMenu"
@@ -42,21 +42,42 @@
       aria-label="Open profile menu"
       aria-haspopup="true"
     >
-      <img src="assets/Images/user-1.jpg" alt="Profile" class="profile-avatar" />
+      <img
+        src="assets/Images/user-1.jpg"
+        alt="Profile"
+        class="profile-avatar"
+      />
       <mat-icon class="dropdown-icon" aria-hidden="true">keyboard_arrow_down</mat-icon>
     </button>
   </div>
 
   <!-- Notifications menu -->
-  <mat-menu #notificationsMenu="matMenu" class="notification-menu" xPosition="before" yPosition="below">
+  <mat-menu
+    #notificationsMenu="matMenu"
+    class="notification-menu"
+    xPosition="before"
+    yPosition="below"
+  >
     <div class="notification-header">
       <h3>Notifications</h3>
-      <button mat-button class="mark-read-btn" (click)="markAllRead()">Mark all as read</button>
+      <button
+        mat-button
+        class="mark-read-btn"
+        (click)="markAllRead()"
+      >
+        Mark all as read
+      </button>
     </div>
     <mat-divider></mat-divider>
     <div class="notification-list">
-      <div class="notification-item" *ngFor="let n of notificationsList">
-        <div class="notification-icon" [style.background-color]="n.color + '20'">
+      <div
+        class="notification-item"
+        *ngFor="let n of notificationsList"
+      >
+        <div
+          class="notification-icon"
+          [style.background-color]="n.color + '20'"
+        >
           <mat-icon [ngStyle]="{ color: n.color }" aria-hidden="true">{{ n.icon }}</mat-icon>
         </div>
         <div class="notification-content">
@@ -65,45 +86,45 @@
           <p class="notification-time">{{ n.time }}</p>
         </div>
       </div>
-
-      <div class="notification-empty" *ngIf="notificationsList.length === 0">
+      <div
+        class="notification-empty"
+        *ngIf="notificationsList.length === 0"
+      >
         <mat-icon aria-hidden="true">notifications_off</mat-icon>
         <p>No new notifications</p>
       </div>
     </div>
   </mat-menu>
 
-  <!-- Profile dropdown card (theme controls live here) -->
+  <!-- Profile dropdown card -->
   <mat-menu
     #profileMenu="matMenu"
     class="profile-menu"
     xPosition="before"
     yPosition="below"
   >
-    <!-- small arrow pointing to avatar -->
     <div class="menu-arrow" aria-hidden="true"></div>
-
     <div class="profile-menu-items">
       <button mat-menu-item (click)="goToProfile()">
         <mat-icon aria-hidden="true">person</mat-icon>
         <span>View profile</span>
       </button>
-
       <button mat-menu-item (click)="psdChange()">
         <mat-icon aria-hidden="true">vpn_key</mat-icon>
         <span>Change Password</span>
       </button>
-
       <button mat-menu-item (click)="logout()">
         <mat-icon aria-hidden="true">logout</mat-icon>
         <span>Logout</span>
       </button>
     </div>
-
     <mat-divider></mat-divider>
-
     <!-- Theme section -->
-    <div class="theme-section" (click)="$event.stopPropagation()" aria-label="Theme controls">
+    <div
+      class="theme-section"
+      (click)="$event.stopPropagation()"
+      aria-label="Theme controls"
+    >
       <div class="swatches" role="group" aria-label="Accent color">
         <button
           *ngFor="let color of themeColors"
@@ -116,7 +137,6 @@
           [attr.aria-label]="'Set theme color ' + color"
         ></button>
       </div>
-
       <div class="mode-toggle">
         <span>Light</span>
         <mat-slide-toggle

@@ -66,6 +66,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       items: [
         { title: 'Users', route: '/uam/users' },
         { title: 'Roles', route: '/uam/roles' },
+         { title: 'Roles Create', route: '/uam/role-details' },
         { title: 'Permissions', route: '/uam/permissions' }
       ]
     },
@@ -260,18 +261,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   /** Navigate to submenu item */
-  navigateToSubmenu(item: MenuItem): void {
-    this.router.navigate([item.route]).catch(err => {
-      console.error('Navigation error:', err);
-    });
-
-    // Close submenu after navigation
-    this.hoveredMenu = null;
-
-    if (this.isMobile) {
-      this.isCollapsed = true;
-    }
+ navigateToSubmenu(item: MenuItem): void {
+  this.router.navigate([item.route]).catch(err => {
+    console.error(`Navigation error for route ${item.route}:`, err);
+  });
+  this.hoveredMenu = null;
+  if (this.isMobile) {
+    this.isCollapsed = true;
   }
+}
 
   /** Filter menu items based on user privileges */
   private filterMenuByPrivileges(): void {

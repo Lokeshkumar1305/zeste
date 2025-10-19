@@ -1,129 +1,157 @@
-import { Component, ViewChild } from '@angular/core';
-import { OPSMenu } from '../../shared/en-common-table/en-common-table.component';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { OPSMenu } from '../../shared/en-common-table/en-common-table.component';
 import { ApiService } from '../../common-library/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { roelDetails } from '../../common-library/model';
-import { SelectionModel } from '@angular/cdk/collections';
+
+interface Permission {
+  id: string;
+  label: string;
+}
+interface Resource {
+  key: string;
+  title: string;
+  permissions: Permission[];
+}
+interface FeatureModule {
+  key: string;
+  title: string;
+  defaultExpanded?: boolean;
+  resources: Resource[];
+}
 
 @Component({
   selector: 'app-role-details',
   templateUrl: './role-details.component.html',
-  styleUrl: './role-details.component.scss'
+  styleUrls: ['./role-details.component.scss']
 })
-export class RoleDetailsComponent {
-breadCrumb = new Array<OPSMenu>();
-  displayedColumns: string[] = ['select', 'prevId', 'description'];
-  pageNumber = 0;
-  totalElements = 0;
-  pageSize = 5;
-  pageEvent: any;
-  dataObj=new roelDetails();
-  selection = new SelectionModel<any>(true, []);
-  // dataSource!: MatTableDataSource<any>;
-  dataSource = [
+export class RoleDetailsComponent implements OnInit {
+  breadCrumb: OPSMenu[] = [];
+  form!: FormGroup;
+  submitted = false;
+
+  permissionsSelection = new Set<string>();
+
+  modules: FeatureModule[] = [
     {
-      prevId: 'GET_USERS',
-      description: 'Allows viewing the list of users',
+      key: 'user_mgmt',
+      title: 'User Management',
+      defaultExpanded: true,
+      resources: [
+        {
+          key: 'role',
+          title: 'Role',
+          permissions: [
+            { id: 'CREATE_ROLE', label: 'Create' },
+            { id: 'UPDATE_ROLE', label: 'Update' },
+            { id: 'VIEW_ROLE',   label: 'View' },
+            { id: 'DELETE_ROLE', label: 'Delete' }
+          ]
+        }
+      ]
     },
     {
-      prevId: 'CREATE_USER',
-      description: 'Allows creating a new user',
+      key: 'resident_mgmt',
+      title: 'Resident Management',
+      resources: [
+        {
+          key: 'resident_role',
+          title: 'Role',
+          permissions: [
+            { id: 'CREATE_RESIDENT_ROLE', label: 'Create' },
+            { id: 'UPDATE_RESIDENT_ROLE', label: 'Update' },
+            { id: 'VIEW_RESIDENT_ROLE',   label: 'View' },
+            { id: 'DELETE_RESIDENT_ROLE', label: 'Delete' }
+          ]
+        }
+      ]
     },
     {
-      prevId: 'DELETE_USER',
-      description: 'Allows deletion of a user account',
-    },
-    {
-      prevId: 'ASSIGN_ROLE',
-      description: 'Allows assigning roles to users',
-    },
-    {
-      prevId: 'VIEW_AUDIT_LOGS',
-      description: 'Allows viewing system audit logs',
+      key: 'community_core_mgmt',
+      title: 'Community Core Management',
+      resources: [
+        {
+          key: 'community_role',
+          title: 'Role',
+          permissions: [
+            { id: 'CREATE_COMMUNITY_ROLE', label: 'Create' },
+            { id: 'UPDATE_COMMUNITY_ROLE', label: 'Update' },
+            { id: 'VIEW_COMMUNITY_ROLE',   label: 'View' },
+            { id: 'DELETE_COMMUNITY_ROLE', label: 'Delete' }
+          ]
+        }
+      ]
     }
   ];
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private router: Router, private postService: ApiService, public http: HttpClient,) {
 
-  }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private postService: ApiService,
+    public http: HttpClient
+  ) {}
+
   ngOnInit(): void {
-    const bc = [
-      { "name": 'IAM', "link": "/uam/dashboard" },
-      { "name": 'Role-Details', "link": "/uam/role-details" },
+    this.form = this.fb.group({
+      roleTitle: ['', [Validators.required, Validators.maxLength(60)]],
+      roleDescription: ['', [Validators.required, Validators.maxLength(160)]]
+    });
+
+    // Breadcrumbs: IAM / Roles / Create New Role
+    this.breadCrumb = [
+      { name: 'IAM', link: '/uam/dashboard' } as any,
+      { name: 'Roles', link: '/uam/roles' } as any,
+      { name: 'Create New Role' } as any
     ];
-    this.breadCrumb = bc;
-  }
-  getAll(pageNumber: number, pageSize: number) {
-    let obj = {
-      "page": pageNumber,
-      "size": pageSize,
-      "sortField": "text2",
-      "sortOrder": "ASC"
-    }
-    let url = 'APIPATH.STUDENT_GETALL'
 
-    // this.postService.getAll(url, obj).subscribe((res: any) => {
-    //   this.dataSource = res.responseObject;
-    //   this.totalElements = res.totalCount;
-    //   if (this.paginator) {
-    //     this.dataSource.paginator = this.paginator;
-    //   } else {
-    //     setTimeout(() => {
-    //       if (this.paginator) {
-    //         this.dataSource.paginator = this.paginator;
-
-    //       }
-    //     });
-    //   }
-    // })
-  }
-  save() {
-    let url =''
-    this.dataObj.privilegeId = new Array<string>
-     this.selection.selected.forEach((privId:any)=>{
-      this.dataObj.privilegeId.push(privId.privilegeId)
-     })
-     console.log(this.dataObj.privilegeId)
-    let obj = {
-      requestObject: this.dataObj
-    }
-    // this.postService.doPost(api, obj).subscribe((res:any) => {
-    //   this.snackbar.open(res.message, 'Dismiss', { duration: 3000 });
-    //   this.getAll();
-      
-    // })
-  }
-  getPagination(event: { pageIndex: number; pageSize: number; }) {
-    this.getAll(event.pageIndex, event.pageSize);
-  }
-  cancel() {
-    this.getAll(this.pageNumber, this.pageSize);
+    // Example: match screenshot default selection
+    this.permissionsSelection.add('UPDATE_ROLE');
+    this.permissionsSelection.add('VIEW_ROLE');
   }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.length;
-    return numSelected === numRows;
+  // Accessors
+  get f() {
+    return this.form.controls;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.dataSource);
+  // Selection
+  isSelected(id: string): boolean {
+    return this.permissionsSelection.has(id);
+  }
+  onPermissionChange(id: string, checked: boolean): void {
+    if (checked) this.permissionsSelection.add(id);
+    else this.permissionsSelection.delete(id);
   }
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: any): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  // Actions
+  onSave(): void {
+    this.submitted = true;
+    if (this.form.invalid || this.permissionsSelection.size === 0) return;
+
+    const payload: roelDetails = {
+      ...new (class implements roelDetails {
+        roleTitle!: string;
+        roleDescription!: string;
+        privilegeId!: string[];
+      })(),
+      roleTitle: this.form.value.roleTitle?.trim(),
+      roleDescription: this.form.value.roleDescription?.trim(),
+      privilegeId: Array.from(this.permissionsSelection)
+    };
+
+    console.log('Create Role payload:', payload);
+    // TODO: call API and navigate
   }
+
+  onCancel(): void {
+    this.router.navigate(['/uam/roles']);
+  }
+
+  // trackBys
+  trackByModule = (_: number, item: FeatureModule) => item.key;
+  trackByResource = (_: number, item: Resource) => item.key;
+  trackByPermission = (_: number, item: Permission) => item.id;
+  trackByCrumb = (_: number, item: OPSMenu) => (item as any)?.name;
 }

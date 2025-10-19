@@ -1,8 +1,34 @@
-<div class="breadcrumb mb-3">
-    <ul>
-            <li *ngFor="let bc of breadCrumb">
-                <a [routerLink]="[bc?.link]" [routerLinkActive]="'link-active'"
-                    class="m-14-06 spc-0">{{bc?.name}}</a>
-            </li>
-    </ul>
-</div>
+<nav class="secondary-header" aria-label="Breadcrumb">
+  <div class="breadcrumb-inner">
+    <ol class="breadcrumb" role="list">
+      <li
+        class="crumb"
+        *ngFor="let bc of breadcrumbs$ | async; let last = last; trackBy: trackByUrl"
+        role="listitem"
+      >
+        <a
+          *ngIf="!last"
+          class="crumb-link f-14-r"
+          [routerLink]="bc.url"
+        >
+          <mat-icon *ngIf="bc.icon" class="crumb-icon" aria-hidden="true">{{ bc.icon }}</mat-icon>
+          <span>{{ bc.label }}</span>
+        </a>
+        <span
+          *ngIf="last"
+          class="crumb-current f-14-r"
+          aria-current="page"
+          [class.active]="last"
+        >
+          <mat-icon *ngIf="bc.icon" class="crumb-icon" aria-hidden="true">{{ bc.icon }}</mat-icon>
+          <span>{{ bc.label }}</span>
+        </span>
+        <mat-icon *ngIf="!last" class="crumb-sep" aria-hidden="true">chevron_right</mat-icon>
+      </li>
+    </ol>
+    <!-- Optional right-side actions (slot) -->
+    <div class="breadcrumb-actions">
+      <ng-content select="[breadcrumb-actions]"></ng-content>
+    </div>
+  </div>
+</nav>

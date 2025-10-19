@@ -4,14 +4,15 @@ import { RolesComponent } from './roles/roles.component';
 import { UsersComponent } from './users/users.component';
 import { RoleDetailsComponent } from './role-details/role-details.component';
 
+
 const routes: Routes = [
-   { path: 'roles', component: RolesComponent },
-   { path: 'users', component: UsersComponent },
-   { path: 'role-details', component: RoleDetailsComponent },
+  { path: 'roles', component: RolesComponent, data: { breadcrumb: 'Roles' } },
+  { path: 'users', component: UsersComponent, data: { breadcrumb: 'Users' } },
+  { path: 'role-details', component: RoleDetailsComponent, data: { breadcrumb: 'Role Details' } },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class UamRoutingModule { }
+export class UamRoutingModule {}

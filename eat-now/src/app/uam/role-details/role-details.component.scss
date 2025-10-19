@@ -1,8 +1,127 @@
-.section{
-    width: 1200px;
-    border-radius: 8px;
-    margin-bottom: 12px;
+/* Keep page width consistent with your theme */
+.page-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
 }
-.search-field{
-    width: 380px !important;
+
+/* Top bar card */
+.topbar-card {
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+}
+
+/* Breadcrumb in top bar - "ecard" style */
+.breadcrumb-card {
+  height: 50px; /* Increased height */
+  width: 100%; /* Full width matching header */
+  max-width: 1800px !important;
+  margin-left: 15px !important;
+}
+
+.breadcrumb-inner {
+  padding: 16px;
+}
+
+.breadcrumb-ecard {
+  .breadcrumb-item {
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-muted, #6c757d);
+    position: relative;
+    margin: 0;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        color: var(--brand-primary, #0d6efd);
+      }
+    }
+  }
+
+  /* Use simple separators for non-active crumbs */
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: '/';
+    color: var(--border-muted, #c7c7c7);
+    margin-right: 16px;
+  }
+
+  /* Active crumb color + small triangle indicator under it */
+  .breadcrumb-item.active {
+    color: var(--brand-accent, #b83265); /* tune to match your design */
+  }
+  .breadcrumb-item.active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--brand-accent, #b83265); /* triangle */
+  }
+}
+
+/* Page title keeps same look as screenshot */
+.page-title {
+  color: var(--text-strong, #2b2b2b);
+}
+
+/* Create button look consistent with theme */
+.btn-create.mdc-button.mdc-button--raised {
+  background: var(--button-background) !important;
+  color: var(--button-text) !important;
+  border-radius: 8px !important;
+  height: 40px;
+}
+
+/* Feature accordion to match screenshot */
+.feature-accordion {
+  .mat-expansion-panel {
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    box-shadow: none;
+    background: var(--card-background);
+  }
+
+  .feature-header.mat-expansion-panel-header {
+    background: rgba(32, 201, 151, 0.08); /* subtle green tint */
+    border-radius: 6px;
+    height: 48px;
+    padding: 0 16px;
+  }
+
+  .module-title {
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+
+  /* Hide default material indicator; we use bootstrap chevrons */
+  .mat-expansion-indicator {
+    display: none !important;
+  }
+}
+
+/* Permission card (white box inside each panel) */
+.permission-card {
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--card-background);
+}
+
+/* Cancel link accent */
+.text-accent {
+  color: var(--brand-green) !important;
+  font-weight: 600;
+}
+
+/* Responsive: allow breadcrumb to wrap nicely on small screens */
+@media (max-width: 576px) {
+  .breadcrumb-ecard .breadcrumb {
+    gap: 12px;
+  }
 }

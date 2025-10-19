@@ -8,7 +8,7 @@ import { UsersComponent } from './users/users.component';
 import { SharedRoutingModule } from '../shared/shared-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { RoleDetailsComponent } from './role-details/role-details.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     SharedModule,
     MaterialModule,
     SharedRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class UamModule { }

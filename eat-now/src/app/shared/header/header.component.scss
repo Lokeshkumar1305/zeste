@@ -1,15 +1,21 @@
+:host {
+  --font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+  --drawer-width: 100px; /* Sync with sidenav width */
+  --header-height: 64px;
+}
+
 .primary-header {
   position: fixed;
   top: 0;
-  left: 100px;
+  left: var(--drawer-width);
   right: 0;
-  height: 64px;
+  height: var(--header-height);
   z-index: 998;
   background: var(--brand-primary);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 0 24px;
-  display: grid; /* grid fixes overflows */
-  grid-template-columns: auto 1fr auto; /* brand | search | right */
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -30,19 +36,17 @@
     font-family: var(--font-family);
     letter-spacing: 0.5px;
     text-transform: uppercase;
-  }
 
-  @media (max-width: 767.98px) {
-    display: none;
+    @media (max-width: 767.98px) {
+      display: none;
+    }
   }
 }
 
-/* Centered, flexible search that never pushes actions off-screen */
 .header-search {
-  min-width: 0;           /* allow the middle track to shrink */
+  min-width: 0;
   width: 100%;
-  margin: 0;              /* no extra push */
-  justify-self: center;   /* center the search in its grid cell */
+  justify-self: center;
   display: flex;
   justify-content: center;
 
@@ -55,10 +59,10 @@
     border-radius: 24px;
     padding: 0 14px;
     height: 40px;
-    width: min(100%, 500px);        /* clamp the width so right actions stay visible */
+    width: min(100%, 500px);
     transition: box-shadow 0.2s ease, border-color 0.2s ease;
     border: 1px solid rgba(0, 0, 0, 0.06);
-    overflow: hidden;               /* keeps the Alt + K pill inside the rounded container */
+    overflow: hidden;
 
     &:focus-within {
       box-shadow: 0 0 0 3px rgba(91, 74, 159, 0.12);
@@ -66,55 +70,55 @@
 
     .search-icon {
       font-size: 18px;
-      color: var(--text-muted);
+      margin-top: 8px;
+      color: var(--text-muted, #757575);
       flex-shrink: 0;
     }
 
     .search-input {
       flex: 1 1 auto;
-      min-width: 0;       /* prevent input from forcing overflow */
+      min-width: 0;
       border: none;
       background: transparent;
       outline: none;
       font-size: 14px;
-      color: var(--text-color);
+      color: var(--text-color, #212121);
       font-family: var(--font-family);
 
-      &::placeholder { color: var(--text-muted); }
+      &::placeholder {
+        color: var(--text-muted, #757575);
+      }
     }
 
     .search-shortcut {
       flex-shrink: 0;
       white-space: nowrap;
       background: #fff;
-      padding: 0px 10px;
+      padding: 0 10px;
       height: 30px;
       border-radius: 300px;
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--text-muted, #757575);
       font-weight: 600;
-      border: 1px solid var(--card-border);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial;
-    }
-  }
+      border: 1px solid var(--card-border, #e0e0e0);
+      font-family: var(--font-family);
 
-  @media (max-width: 767.98px) {
-    .search-container { width: 100%; }
-    .search-shortcut { display: none; }
+      @media (max-width: 767.98px) {
+        display: none;
+      }
+    }
   }
 }
 
-/* Right side now stays visible */
 .header-right {
-  justify-self: end;   /* stick it to the right in the grid */
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 10px;
-  min-width: max-content; /* prevent icon group from wrapping/clipping */
+  min-width: max-content;
   margin-right: 80px;
 }
 
-/* Keep your existing styles below unchanged */
 .header-icon-btn {
   position: relative;
   width: 40px;
@@ -128,16 +132,21 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
-  &:hover { background: rgba(255, 255, 255, 0.12); }
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
 
-  mat-icon { font-size: 22px; color: #fff; }
+  mat-icon {
+    font-size: 22px;
+    color: #fff;
+  }
 }
 
 .notification-badge {
   position: absolute;
   top: 6px;
   right: 6px;
-  background: #FF4757;
+  background: #ff4757;
   color: #fff;
   font-size: 10px;
   font-weight: 700;
@@ -148,7 +157,7 @@
   align-items: center;
   justify-content: center;
   padding: 0 4px;
-  border: 2px solid var(--brand-primary);
+  border: 2px solid var(--brand-primary, #1976d2);
 }
 
 .profile-button {
@@ -162,7 +171,9 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
-  &:hover { background: rgba(255, 255, 255, 0.12); }
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
 
   .profile-avatar {
     width: 32px;
@@ -172,10 +183,12 @@
     border: 2px solid rgba(255, 255, 255, 0.35);
   }
 
-  .dropdown-icon { font-size: 18px; color: #fff; }
+  .dropdown-icon {
+    font-size: 18px;
+    color: #fff;
+  }
 }
 
-/* Notifications menu */
 .notification-menu {
   max-width: 380px;
   min-width: 360px;
@@ -183,7 +196,9 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   margin-top: 8px;
 
-  .mat-mdc-menu-content { padding: 0 !important; }
+  .mat-mdc-menu-content {
+    padding: 0 !important;
+  }
 }
 
 .notification-header {
@@ -196,17 +211,20 @@
     margin: 0;
     font-size: 16px;
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--text-color, #212121);
   }
 
   .mark-read-btn {
-    color: var(--brand-primary);
+    color: var(--brand-primary, #1976d2);
     text-transform: none;
     font-size: 13px;
   }
 }
 
-.notification-list { max-height: 400px; overflow-y: auto; }
+.notification-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
 
 .notification-item {
   display: flex;
@@ -215,7 +233,9 @@
   cursor: pointer;
   transition: background 0.2s ease;
 
-  &:hover { background: var(--input-background); }
+  &:hover {
+    background: var(--input-background, #f5f5f5);
+  }
 
   .notification-icon {
     width: 40px;
@@ -226,7 +246,9 @@
     justify-content: center;
     flex-shrink: 0;
 
-    mat-icon { font-size: 20px; }
+    mat-icon {
+      font-size: 20px;
+    }
   }
 
   .notification-content {
@@ -236,19 +258,19 @@
       margin: 0 0 4px 0;
       font-size: 14px;
       font-weight: 500;
-      color: var(--text-color);
+      color: var(--text-color, #212121);
     }
 
     .notification-desc {
       margin: 0 0 6px 0;
       font-size: 13px;
-      color: var(--text-muted);
+      color: var(--text-muted, #757575);
     }
 
     .notification-time {
       margin: 0;
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--text-muted, #757575);
     }
   }
 }
@@ -256,24 +278,28 @@
 .notification-empty {
   padding: 40px 20px;
   text-align: center;
-  color: var(--text-muted);
+  color: var(--text-muted, #757575);
 
-  mat-icon { font-size: 28px; margin-bottom: 6px; }
+  mat-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
 }
 
-/* Profile dropdown card */
 .profile-menu {
   min-width: 320px !important;
   border-radius: 12px !important;
   overflow: visible !important;
   padding: 8px 0 !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  background: var(--card-background);
-  color: var(--text-color);
-  border: 1px solid var(--card-border);
+  background: var(--card-background, #fff);
+  color: var(--text-color, #212121);
+  border: 1px solid var(--card-border, #e0e0e0);
   margin-top: 10px;
 
-  .mat-mdc-menu-content { padding: 0 !important; }
+  .mat-mdc-menu-content {
+    padding: 0 !important;
+  }
 
   .menu-arrow {
     position: absolute;
@@ -281,9 +307,9 @@
     right: 18px;
     width: 14px;
     height: 14px;
-    background: var(--card-background);
-    border-left: 1px solid var(--card-border);
-    border-top: 1px solid var(--card-border);
+    background: var(--card-background, #fff);
+    border-left: 1px solid var(--card-border, #e0e0e0);
+    border-top: 1px solid var(--card-border, #e0e0e0);
     transform: rotate(45deg);
     border-radius: 2px;
   }
@@ -295,18 +321,22 @@
   button.mat-mdc-menu-item {
     gap: 12px;
 
-    mat-icon { font-size: 20px; color: var(--text-muted); }
+    mat-icon {
+      font-size: 20px;
+      color: var(--text-muted, #757575);
+    }
 
     .mdc-list-item__primary-text {
       font-size: 14px;
-      color: var(--text-color);
+      color: var(--text-color, #212121);
     }
 
-    &:hover { background: var(--input-background); }
+    &:hover {
+      background: var(--input-background, #f5f5f5);
+    }
   }
 }
 
-/* Theme section */
 .theme-section {
   padding: 12px 14px 10px;
 
@@ -327,7 +357,9 @@
       transition: transform 0.12s ease, box-shadow 0.12s ease;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 
-      &:hover { transform: translateY(-1px); }
+      &:hover {
+        transform: translateY(-1px);
+      }
 
       &.active {
         border-color: #fff;
@@ -342,13 +374,11 @@
     justify-content: center;
     gap: 8px;
     padding: 6px 8px 2px;
-    color: var(--text-muted);
+    color: var(--text-muted, #757575);
 
-    span { font-size: 13px; user-select: none; }
+    span {
+      font-size: 13px;
+      user-select: none;
+    }
   }
-}
-
-/* Typography + vars */
-:host {
-  --font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
 }
