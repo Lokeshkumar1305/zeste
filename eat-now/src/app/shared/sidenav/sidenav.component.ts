@@ -1,3 +1,4 @@
+
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
@@ -152,6 +153,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   /** Initialize component */
   ngOnInit(): void {
     this.checkScreenSize();
+    this.updateSelectedMenuFromUrl(this.router.url); // Set initial selectedMenu
   }
 
   /** Cleanup on destroy */
@@ -175,8 +177,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe((event: NavigationEnd) => {
-        const url = event.urlAfterRedirects;
-        this.updateSelectedMenuFromUrl(url);
+        this.updateSelectedMenuFromUrl(event.urlAfterRedirects);
       });
   }
 
