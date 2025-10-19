@@ -1,4 +1,16 @@
-<div style="padding: 0; margin: 0;">
+<!-- <div style="padding: 0; margin: 0;">
   <router-outlet></router-outlet>
   <div class="gap" *ngIf="loginService.isUserLoggedIn()"></div>
+</div> -->
+
+
+<div class="app-container">
+  <app-sidenav></app-sidenav>
+  <div class="main-content">
+    <app-header></app-header>
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
+

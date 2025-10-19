@@ -1,142 +1,308 @@
-import { ChangeDetectorRef, Component, HostBinding, HostListener, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../common-library/services/api.service';
-import { NavigationEnd, Router } from '@angular/router';
-import { MatSidenav } from '@angular/material/sidenav';
-import { MatSelectionList } from '@angular/material/list';
-import { filter } from 'rxjs';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Event, NavigationEnd, Router } from '@angular/router';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { trigger, transition, style, animate } from '@angular/animations';
 
+/**
+ * Interface for menu items
+ */
+interface MenuItem {
+  title: string;
+  route: string;
+  privilege?: string;
+}
+
+/**
+ * Interface for menu configuration
+ */
+interface MenuConfig {
+  title: string;
+  items: MenuItem[];
+}
+
+/**
+ * Sidenav component with hover-based submenu (Keka-style)
+ */
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.scss'
+  styleUrls: ['./sidenav.component.scss'],
+  animations: [
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(-10px)' }),
+        animate('250ms cubic-bezier(0.4, 0, 0.2, 1)', 
+          style({ opacity: 1, transform: 'translateX(0)' }))
+      ]),
+      transition(':leave', [
+        animate('200ms cubic-bezier(0.4, 0, 0.2, 1)', 
+          style({ opacity: 0, transform: 'translateX(-10px)' }))
+      ])
+    ])
+  ]
 })
-export class SidenavComponent implements OnInit {
-  selectedMenu: string = 'dashboard';
-  privileges: string[] = [];
-  filteredMenuConfig: { [key: string]: { title: string, items: any[] } } = {};
+export class SidenavComponent implements OnInit, OnDestroy {
+  /** Selected menu category */
+  selectedMenu: string = 'home';
 
-  menuConfig: { [key: string]: { title: string, items: any[] } } = {
-    dashboard: {
-      title: 'Dashboard',
+  /** Hovered menu category */
+  hoveredMenu: string | null = null;
+
+  /** Submenu card position */
+  submenuPosition: { left: number, top: number } = { left: 0, top: 0 };
+
+  /** Hover timeout reference */
+  private hoverTimeout: any;
+  
+  /** Leave timeout reference */
+  private leaveTimeout: any;
+
+  /** User privileges */
+  privileges: string[] = [];
+
+  /** Filtered menu configuration based on privileges */
+  filteredMenuConfig: { [key: string]: MenuConfig } = {};
+
+  /** Menu configuration */
+  private readonly menuConfig: { [key: string]: MenuConfig } = {
+    home: {
+      title: 'Home',
       items: [
-        { title: 'Case Dashboard', route: '/case-mgmt/case-dashboard', privilege: '_CASEMGMT_API_CASE_GETALL_POST' },
+        { title: 'Dashboard', route: '/core/outlet-onboarding' },
+        { title: 'Profile', route: '/core/profile' }
       ]
     },
-    uam: {
-      title: 'User Access Management',
+    admin_panel_settings: {
+      title: 'IAM',
       items: [
-        { title: 'IAM', route: '/uam/users', privilege: '_CASEMGMT_API_USER_GETALL_POST' }
+        { title: 'Users', route: '/uam/users' },
+        { title: 'Roles', route: '/uam/roles' },
+        { title: 'Permissions', route: '/uam/permissions' }
       ]
     },
-    caseManagement: {
-      title: 'Case Management',
+    groups: {
+      title: 'Onboarding',
       items: [
-        { title: 'Cases', route: '/case-mgmt/cases', privilege: '_CASEMGMT_API_CASE_GETALL_POST' },
-        { title: 'Create Field Config', route: '/case-mgmt/case-fields-config', privilege: '_CASEMGMT_API_CASE_CREATE_POST' },
-        { title: 'Escalation Dashboard', route: '/case-mgmt/escalation', privilege: '_CASEMGMT_API_CASE_CREATE_POST' },
-        { title: 'Escalation', route: '/case-mgmt/escalation-directory', privilege: '_CASEMGMT_API_CASE_CREATE_POST' },
+        { title: 'Outlet', route: '/core/outlet-getAll' },
+        { title: 'Staff', route: '/core/staff-onboarding-getAll' },
+        { title: 'IAM', route: '/uam/users' }
       ]
     },
-    administration: {
-      title: 'Administration',
+    list_alt: {
+      title: 'Menu',
       items: [
-        { title: 'Case Configuration', route: '/administration/manage-case-config/case-configuration', privilege: '_CASEMGMT_API_CASECONFIGURATION_POST' },
-        { title: 'Case Type Configurations', route: '/administration/manage-case-config/case-type-configurations', privilege: '_CASEMGMT_API_CASETYPECONFIGURATION_POST' },
-        { title: 'General Configurations', route: '/administration/config/general-configuration', privilege: '_CASEMGMT_API_CASETYPECONFIGURATION_POST' }
+        { title: 'View Menu', route: '/core/menu' },
+        { title: 'Add Item', route: '/core/menu/add' },
+        { title: 'Categories', route: '/core/menu/categories' }
+      ]
+    },
+    table_restaurant: {
+      title: 'Table',
+      items: [
+        { title: 'Area', route: '/core/area' },
+        { title: 'Table', route: '/core/table' },
+        { title: 'Floor Plan', route: '/core/floor-plan' }
+      ]
+    },
+    inventory: {
+      title: 'Inventory',
+      items: [
+        { title: 'Stock', route: '/core/stock' },
+        { title: 'Order Supplies', route: '/core/supplies' },
+        { title: 'Vendors', route: '/core/vendors' }
+      ]
+    },
+    room_service: {
+      title: 'Orders',
+      items: [
+        { title: 'Current Orders', route: '/core/orders' },
+        { title: 'Order History', route: '/core/order-history' },
+        { title: 'Analytics', route: '/core/order-analytics' }
+      ]
+    },
+    chef_hat: {
+      title: 'Kitchen',
+      items: [
+        { title: 'Current Dishes', route: '/core/kitchen' },
+        { title: 'Prep Schedule', route: '/core/prep-schedule' }
       ]
     }
   };
 
-  isCollapsed = false;
-  isMobile = false;
-  tenantId: string | null = null; // Store tenantId
+  /** Whether the sidenav is collapsed */
+  isCollapsed: boolean = true;
 
-  // Dynamic host binding for CSS classes
-  @HostBinding('class.dashboard-only') 
-  get isDashboardOnly() {
-    return this.selectedMenu === 'dashboard' || !this.hasMenuItems(this.selectedMenu);
-  }
+  /** Whether the device is mobile */
+  isMobile: boolean = false;
 
-  @HostBinding('class.with-secondary') 
-  get hasSecondary() {
-    return this.selectedMenu !== 'dashboard' && this.hasMenuItems(this.selectedMenu);
-  }
+  /** Subject for unsubscribing */
+  private destroy$ = new Subject<void>();
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
+  /** Listen for window resize events */
+  @HostListener('window:resize')
+  onResize(): void {
     this.checkScreenSize();
   }
 
-  constructor(private router: Router,) {
-    console.log('Sidenav Initial Privileges:', this.privileges);
-    console.log('Sidenav Tenant ID:', this.tenantId);
+  constructor(private router: Router) {
     this.filterMenuByPrivileges();
-    console.log('Sidenav Initial Filtered Menu Config:', this.filteredMenuConfig);
+    this.subscribeToRouterEvents();
+  }
 
+  /** Initialize component */
+  ngOnInit(): void {
+    this.checkScreenSize();
+  }
+
+  /** Cleanup on destroy */
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    if (this.leaveTimeout) {
+      clearTimeout(this.leaveTimeout);
+    }
+  }
+
+  /** Subscribe to router events to update selected menu */
+  private subscribeToRouterEvents(): void {
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(
+        filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe((event: NavigationEnd) => {
         const url = event.urlAfterRedirects;
-        console.log('Sidenav Navigation URL:', url);
-
-        if (url.startsWith('/uam')) {
-          this.selectedMenu = 'uam';
-        } else if (url.startsWith('/administration')) {
-          this.selectedMenu = 'administration';
-        } else if (url.startsWith('/case-mgmt/case-dashboard')) {
-          this.selectedMenu = 'dashboard';   
-        } else if (url.startsWith('/case-mgmt')) {
-          this.selectedMenu = 'caseManagement';
-        } else {
-          this.selectedMenu = 'dashboard';
-        }
-
-        console.log('Sidenav Selected Menu:', this.selectedMenu);
+        this.updateSelectedMenuFromUrl(url);
       });
   }
 
-  ngOnInit(): void {
-    this.checkScreenSize(); 
+  /** Update selected menu based on URL */
+  private updateSelectedMenuFromUrl(url: string): void {
+    if (url.startsWith('/core/outlet')) {
+      this.selectedMenu = 'home';
+    } else if (url.startsWith('/uam')) {
+      this.selectedMenu = 'admin_panel_settings';
+    } else if (url.startsWith('/core/staff') || url.includes('onboarding')) {
+      this.selectedMenu = 'groups';
+    } else if (url.startsWith('/core/menu')) {
+      this.selectedMenu = 'list_alt';
+    } else if (url.startsWith('/core/area') || url.startsWith('/core/table')) {
+      this.selectedMenu = 'table_restaurant';
+    } else if (url.startsWith('/core/stock') || url.startsWith('/core/inventory')) {
+      this.selectedMenu = 'inventory';
+    } else if (url.startsWith('/core/order')) {
+      this.selectedMenu = 'room_service';
+    } else if (url.startsWith('/core/kitchen') || url.startsWith('/core/prep')) {
+      this.selectedMenu = 'chef_hat';
+    } else {
+      this.selectedMenu = 'home';
+    }
   }
 
-  private checkScreenSize() {
+  /** Check screen size to adjust sidenav behavior */
+  private checkScreenSize(): void {
     this.isMobile = window.innerWidth < 768;
+    this.isCollapsed = this.isMobile;
+  }
+
+  /** Toggle sidenav collapse state */
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  /** Handle menu hover with delay and update submenu position */
+  onMenuHover(menu: string, event: MouseEvent): void {
+    if (this.isMobile) return;
+
+    // Clear any existing timeouts
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    if (this.leaveTimeout) {
+      clearTimeout(this.leaveTimeout);
+    }
+
+    // Update submenu position based on the hovered menu item
+    const target = event.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    this.submenuPosition = {
+      left: rect.right,
+      top: rect.top + window.scrollY
+    };
+
+    // Show submenu after brief delay
+    this.hoverTimeout = setTimeout(() => {
+      if (this.hasMenuItems(menu)) {
+        this.hoveredMenu = menu;
+      }
+    }, 100);
+  }
+
+  /** Handle menu leave with delay */
+  onMenuLeave(): void {
+    if (this.isMobile) return;
+
+    // Clear hover timeout
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+
+    // Hide submenu after delay to allow mouse movement to submenu
+    this.leaveTimeout = setTimeout(() => {
+      this.hoveredMenu = null;
+    }, 150);
+  }
+
+  /** Keep submenu open when hovering over it */
+  keepSubmenuOpen(): void {
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    if (this.leaveTimeout) {
+      clearTimeout(this.leaveTimeout);
+    }
+  }
+
+  /** Select a menu category and navigate */
+  selectMenu(menu: string): void {
+    this.selectedMenu = menu;
+    const firstItemRoute = this.filteredMenuConfig[menu]?.items[0]?.route;
+    if (firstItemRoute) {
+      this.router.navigate([firstItemRoute]).catch(err => console.error('Navigation error:', err));
+    }
     if (this.isMobile) {
       this.isCollapsed = true;
     }
   }
 
-  toggleCollapse() {
-    if (!this.isMobile) {
-      this.isCollapsed = !this.isCollapsed;
+  /** Navigate to submenu item */
+  navigateToSubmenu(item: MenuItem): void {
+    this.router.navigate([item.route]).catch(err => {
+      console.error('Navigation error:', err);
+    });
+
+    // Close submenu after navigation
+    this.hoveredMenu = null;
+
+    if (this.isMobile) {
+      this.isCollapsed = true;
     }
   }
 
-  selectMenu(menu: string) {
-    this.selectedMenu = menu;
-    console.log('Sidenav Menu Selected:', menu);
-    
-    // For dashboard, navigate to the dashboard route directly
-    if (menu === 'dashboard') {
-      console.log('Navigating to dashboard');
-      this.router.navigate(['/case-mgmt/case-dashboard']);
-    } else {
-      // Navigate to the first item in the section if applicable
-      const firstItemRoute = this.filteredMenuConfig[menu]?.items[0]?.route;
-      if (firstItemRoute) {
-        console.log('Navigating to:', firstItemRoute);
-        this.router.navigate([firstItemRoute]);
-      }
-    }
-  }
-
-  filterMenuByPrivileges() {
+  /** Filter menu items based on user privileges */
+  private filterMenuByPrivileges(): void {
     this.filteredMenuConfig = {};
-    for (const key in this.menuConfig) {
+    
+    for (const key of Object.keys(this.menuConfig)) {
       const section = this.menuConfig[key];
-      let filteredItems = section.items.filter(item =>
-        (!item.privilege || this.privileges.includes(item.privilege))
+      const filteredItems = section.items.filter(item =>
+        !item.privilege || this.privileges.includes(item.privilege)
       );
+
       if (filteredItems.length > 0) {
         this.filteredMenuConfig[key] = {
           ...section,
@@ -146,17 +312,19 @@ export class SidenavComponent implements OnInit {
     }
   }
 
-  getSidenavHeading(): string {
-    if (this.selectedMenu === 'dashboard') return '';
-    return this.filteredMenuConfig[this.selectedMenu]?.title || '';
+  /** Get submenu title */
+  getSubmenuTitle(): string {
+    return this.hoveredMenu ? this.filteredMenuConfig[this.hoveredMenu]?.title || '' : '';
   }
 
+  /** Get submenu items */
+  getSubmenuItems(): MenuItem[] {
+    return this.hoveredMenu ? this.filteredMenuConfig[this.hoveredMenu]?.items || [] : [];
+  }
+
+  /** Check if a menu category has items */
   hasMenuItems(menu: string): boolean {
-    return !!this.filteredMenuConfig[menu]?.items && this.filteredMenuConfig[menu].items.length > 0;
-  }
-
-  navigate(item: any) {
-    console.log('Navigating to:', item.route);
-    this.router.navigate([item.route]);
+    return !!this.filteredMenuConfig[menu]?.items && 
+           this.filteredMenuConfig[menu].items.length > 0;
   }
 }

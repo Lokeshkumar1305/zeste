@@ -1,14 +1,11 @@
 @use '@angular/material' as mat;
 
-@include mat.core();
-
-// Import Poppins font
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-// Root variables for light and dark themes
 :root {
-  --brand-primary: #1A365D; /* Primary color for the application */
-  --brand-primary-700: #14294A; /* Darker shade for hover/focus states */
+  --brand-primary: #1A365D;
+  --brand-primary-700: #14294A;
+  --brand-primary-dark: #14294A; /* Darker shade of default brand-primary */
   --brand-green: #20C997;
   --text-muted: #6c757d;
   --bg-page: #F4F6F8;
@@ -16,19 +13,22 @@
   --text-color: #333333;
   --card-background: #ffffff;
   --card-border: #ebf1f6;
-  --input-background: #ffffff;
+  --input-background: #F4F5F7;
   --input-border: #d1d5db;
-  --button-background: #1A365D; /* Use primary color for buttons */
+  --button-background: #1A365D;
   --button-text: #ffffff;
   --scrollbar-track: #f4f4f4;
   --scrollbar-thumb: #DEE0E1;
   --scrollbar-thumb-hover: #BDC1C6;
   --font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+  --header-bg: var(--brand-primary);
+  --sidenav-bg: #1A365D; /* Fixed background, no theme change */
 }
 
-[data-theme="dark"] {
-  --brand-primary: #3B5A8C; /* Lighter shade for dark mode visibility */
+[data-theme='dark'] {
+  --brand-primary: #3B5A8C;
   --brand-primary-700: #2A456F;
+  --brand-primary-dark: #2A456F; /* Darker shade of default brand-primary */
   --brand-green: #17A589;
   --text-muted: #a0aec0;
   --bg-page: #1a202c;
@@ -38,14 +38,35 @@
   --card-border: #4a5568;
   --input-background: #2d3748;
   --input-border: #4a5568;
-  --button-background: #3B5A8C; /* Adjusted primary for dark mode */
+  --button-background: #3B5A8C;
   --button-text: #e2e8f0;
   --scrollbar-track: #2d3748;
   --scrollbar-thumb: #4a5568;
   --scrollbar-thumb-hover: #718096;
+  --header-bg: var(--brand-primary);
+  --sidenav-bg: #2A456F; /* Fixed background, no theme change */
 }
 
-// Apply Poppins font globally
+// Dynamic color adjustments based on selected header color
+[data-brand-color='#1A365D'] {
+  --brand-primary-dark: #14294A;
+}
+[data-brand-color='#3B5A8C'] {
+  --brand-primary-dark: #2A456F;
+}
+[data-brand-color='#2A69A6'] {
+  --brand-primary-dark: #1F4F7D;
+}
+[data-brand-color='#8A4A9F'] {
+  --brand-primary-dark: #6A3678;
+}
+[data-brand-color='#28A745'] {
+  --brand-primary-dark: #1E7E34;
+}
+[data-brand-color='#F39C12'] {
+  --brand-primary-dark: #B3730A;
+}
+
 html,
 body {
   height: 100%;
@@ -55,13 +76,12 @@ body {
   color: var(--text-color);
 }
 
-// Angular Material theme configuration
 $eat-now-primary-palette: (
-  100: #E0E7F5, /* Lighter shade */
+  100: #E0E7F5,
   300: #8BA4D0,
   500: #4A6B9E,
   700: #2A456F,
-  900: #1A365D, /* Primary color */
+  900: #1A365D,
   contrast: (
     100: #1A365D,
     300: #1A1A1A,
@@ -76,7 +96,7 @@ $eat-now-accent-palette: (
   300: #376DAA,
   500: #2D5A90,
   700: #234876,
-  900: #1A365D, /* Align accent with primary */
+  900: #1A365D,
   contrast: (
     100: #001B3D,
     300: #ffffff,
@@ -104,7 +124,6 @@ $eat-now-theme: mat.define-light-theme((
   density: 0
 ));
 
-// Include Angular Material theme styles
 @include mat.all-component-themes($eat-now-theme);
 @include mat.all-component-densities(-3);
 @include mat.button-density(-1);
@@ -297,6 +316,12 @@ h6 {
   color: var(--text-color) !important;
 }
 
+/* Header styles */
+app-header {
+  background: var(--header-bg); /* Unified header background */
+  color: var(--button-text);
+}
+
 /* Dialog animations */
 .custom-dialog-animation {
   animation: slide-in-from-right 0.5s ease forwards;
@@ -484,6 +509,7 @@ h6 {
 /* Sidenav styles */
 .primarySideNav {
   transition: width ease 0.5s;
+  background: #1A365D; /* Fixed background, no theme change */
 }
 
 .primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator {
@@ -494,7 +520,7 @@ h6 {
 .primarySideNav .mat-expansion-panel-header.mat-expanded .mat-mdc-list-item-title,
 .primarySideNav .mat-expansion-panel-header.mat-expanded .mat-icon,
 .primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after {
-  color: var(--brand-primary-700);
+  color: var(--button-text);
 }
 
 .primarySideNav .mdc-list-item,

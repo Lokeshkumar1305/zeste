@@ -1,41 +1,148 @@
-<div class="sidenav-container">
-  <nav class="primary-sidenav">
-    <ul>
-      <li [class.active]="selectedMenu === 'dashboard'" (click)="selectMenu('dashboard')" title="Dashboard">
-        <i class="fas fa-chart-line"></i>
+<div class="sidenav-wrapper">
+  <!-- Hamburger Menu for Mobile -->
+  <button mat-icon-button class="hamburger-menu" *ngIf="isMobile" (click)="toggleCollapse()">
+    <mat-icon>{{ isCollapsed ? 'menu' : 'close' }}</mat-icon>
+  </button>
+
+  <!-- Primary Sidenav (Icon Sidebar) -->
+  <nav class="primary-sidenav" [ngClass]="{ 'mobile-active': !isCollapsed && isMobile }">
+    <!-- Logo Section -->
+    <div class="sidenav-logo">
+      <img src="assets/images/keka-logo.png" alt="Logo" class="logo-img" />
+    </div>
+
+    <!-- Navigation Menu -->
+    <ul class="sidenav-menu">
+      <li 
+        class="sidenav-item" 
+        [class.active]="selectedMenu === 'home'" 
+        (mouseenter)="onMenuHover('home', $event)"
+        (mouseleave)="onMenuLeave()"
+        (click)="selectMenu('home')" 
+        title="Home">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-house-door"></i>
+        </div>
       </li>
-      <li *ngIf="filteredMenuConfig['uam']" [class.active]="selectedMenu === 'uam'" (click)="selectMenu('uam')" title="User Access Management">
-        <i class="fas fa-users"></i>
+
+      <li 
+        class="sidenav-item" 
+        [class.active]="selectedMenu === 'admin_panel_settings'" 
+        (mouseenter)="onMenuHover('admin_panel_settings', $event)"
+        (mouseleave)="onMenuLeave()"
+        (click)="selectMenu('admin_panel_settings')" 
+        title="IAM">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-person-circle"></i>
+        </div>
       </li>
-      <li *ngIf="filteredMenuConfig['caseManagement']" [class.active]="selectedMenu === 'caseManagement'" (click)="selectMenu('caseManagement')" title="Case Management">
-        <i class="fas fa-briefcase"></i>
+
+      <li 
+        class="sidenav-item" 
+        [class.active]="selectedMenu === 'groups'" 
+        (mouseenter)="onMenuHover('groups', $event)"
+        (mouseleave)="onMenuLeave()"
+        (click)="selectMenu('groups')" 
+        title="Onboarding">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-person-plus"></i>
+        </div>
       </li>
-      <li *ngIf="filteredMenuConfig['administration']" [class.active]="selectedMenu === 'administration'" (click)="selectMenu('administration')" title="Administration">
-        <i class="fas fa-cogs"></i>
+
+      <li 
+        class="sidenav-item" 
+        [class.active]="selectedMenu === 'list_alt'" 
+        (mouseenter)="onMenuHover('list_alt', $event)"
+        (mouseleave)="onMenuLeave()"
+        (click)="selectMenu('list_alt')" 
+        title="Menu">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-list-ul"></i>
+        </div>
+      </li>
+
+      <li 
+        class="sidenav-item" 
+        [class.active]="selectedMenu === 'table_restaurant'" 
+        (mouseenter)="onMenuHover('table_restaurant', $event)"
+        (mouseleave)="onMenuLeave()"
+        (click)="selectMenu('table_restaurant')" 
+        title="Table">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-table"></i>
+        </div>
+      </li>
+
+      <li 
+        class="sidenav-item" 
+        [class.active]="selectedMenu === 'inventory'" 
+        (mouseenter)="onMenuHover('inventory', $event)"
+        (mouseleave)="onMenuLeave()"
+        (click)="selectMenu('inventory')" 
+        title="Inventory">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-box-seam"></i>
+        </div>
+      </li>
+
+      <li 
+        class="sidenav-item" 
+        [class.active]="selectedMenu === 'room_service'" 
+        (mouseenter)="onMenuHover('room_service', $event)"
+        (mouseleave)="onMenuLeave()"
+        (click)="selectMenu('room_service')" 
+        title="Orders">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-cart"></i>
+        </div>
+      </li>
+
+      <li 
+        class="sidenav-item" 
+        [class.active]="selectedMenu === 'chef_hat'" 
+        (mouseenter)="onMenuHover('chef_hat', $event)"
+        (mouseleave)="onMenuLeave()"
+        (click)="selectMenu('chef_hat')" 
+        title="Kitchen">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-egg-fried"></i>
+        </div>
       </li>
     </ul>
+
+    <!-- Bottom Menu Items -->
+    <div class="sidenav-bottom">
+      <button mat-icon-button class="bottom-menu-item" title="Settings">
+        <i class="bi bi-gear"></i>
+      </button>
+    </div>
   </nav>
 
-  <nav class="secondary-sidenav" *ngIf="selectedMenu !== 'dashboard' && hasMenuItems(selectedMenu)">
-    <div class="sidenav-heading">{{ getSidenavHeading() }}</div>
-    <ul>
-      <ng-container [ngSwitch]="selectedMenu">
-        <ng-container *ngSwitchCase="'uam'">
-          <li *ngFor="let item of filteredMenuConfig['uam']?.items">
-            <a [routerLink]="item.route" routerLinkActive="active">{{ item.title }}</a>
-          </li>
-        </ng-container>
-        <ng-container *ngSwitchCase="'caseManagement'">
-          <li *ngFor="let item of filteredMenuConfig['caseManagement']?.items">
-            <a [routerLink]="item.route" routerLinkActive="active">{{ item.title }}</a>
-          </li>
-        </ng-container>
-        <ng-container *ngSwitchCase="'administration'">
-          <li *ngFor="let item of filteredMenuConfig['administration']?.items">
-            <a [routerLink]="item.route" routerLinkActive="active">{{ item.title }}</a>
-          </li>
-        </ng-container>
-      </ng-container>
+  <!-- Hoverable Submenu Card (Content-based Height) -->
+  <div 
+    class="submenu-card" 
+    *ngIf="hoveredMenu && hasMenuItems(hoveredMenu) && !isMobile"
+    [style.left.px]="submenuPosition.left"
+    [style.top.px]="submenuPosition.top"
+    (mouseenter)="keepSubmenuOpen()"
+    (mouseleave)="onMenuLeave()"
+    [@slideIn]>
+    <div class="submenu-header">
+      <h3 class="submenu-title">{{ getSubmenuTitle() }}</h3>
+    </div>
+    <ul class="submenu-list">
+      <li *ngFor="let item of getSubmenuItems()" class="submenu-item">
+        <a 
+          [routerLink]="item.route" 
+          routerLinkActive="active" 
+          class="submenu-link"
+          (click)="navigateToSubmenu(item)">
+          {{ item.title }}
+        </a>
+      </li>
     </ul>
-  </nav>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" *ngIf="!isCollapsed && isMobile" (click)="toggleCollapse()"></div>
 </div>

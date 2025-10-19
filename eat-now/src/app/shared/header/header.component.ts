@@ -1,72 +1,138 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ApiService } from '../../common-library/services/api.service';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { ThemeService } from '../services/theme.service';
+
+interface Notification {
+  icon: string;
+  color: string;
+  title: string;
+  description: string;
+  time: string;
+}
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
-
+  styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-  constructor(private router: Router, public dialog: MatDialog, public postService: ApiService) { }
-  loggedInUser: any;
-  userName!: string;
-  pwdExpiry: any;
-  // notifyList: Array<notification> = [];
-  noOfNotifications: any;
-  clear: boolean = false;
-  isHovered: any = null;
-  isSticky: boolean = false;
-  expiryNotification: any;
-  text: any;
-  @Output() emitSideMenu = new EventEmitter();
-  ngOninIt() {
-    // this.loggedInUser = sessionStorage.getItem('loggedInUser')!;
-    this.loggedInUser = "eatnow@gmail.com"
-    let lu: any = this.loggedInUser;
-    if (lu) {
-      lu = lu.split('@');
-      lu = lu[0].replace('.', ' ');
-      this.userName = lu;
+export class HeaderComponent implements OnInit {
+  @ViewChild('searchInput') private searchInput!: ElementRef<HTMLInputElement>;
+
+  loggedInUser = '';
+  userName = '';
+  searchQuery = '';
+  notificationCount = 0;
+  profileCompletionPercentage = 76;
+
+  // Theme state
+  isDarkMode = false;
+  themeColors: string[] = ['#1A365D', '#3B5A8C', '#2A69A6', '#8A4A9F', '#28A745', '#F39C12'];
+  selectedColor = this.themeColors[0];
+
+  notificationsList: Notification[] = [];
+
+  constructor(
+    private readonly router: Router,
+    private readonly themeService: ThemeService
+  ) {}
+
+  ngOnInit(): void {
+    this.loggedInUser = sessionStorage.getItem('loggedInUser') || 'eatnow@gmail.com';
+    this.extractUserName();
+    this.loadNotifications();
+
+    // Initialize theme from persisted state or system preference
+    const state = this.themeService.getState();
+    if (!state._initialized) {
+      const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false;
+      this.themeService.setMode(prefersDark ? 'dark' : 'light', { silent: true });
+    }
+    this.themeService.apply();
+
+    const current = this.themeService.getState();
+    this.isDarkMode = current.mode === 'dark';
+    this.selectedColor = current.color;
+
+    // Apply selected color to document data attribute for dynamic styling
+    document.documentElement.setAttribute('data-brand-color', this.selectedColor);
+  }
+
+  // Alt + K focuses the search input
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(e: KeyboardEvent): void {
+    if (e.altKey && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      this.searchInput?.nativeElement?.focus();
     }
   }
-  psdChange() {
-    this.router.navigate(['/core/change-password'])
+
+  onSearch(): void {
+    const term = (this.searchQuery || '').trim();
+    if (!term) return;
+    // Implement your search navigation or service call
+    console.log('Searching for:', term);
   }
-  goToProfile() {
-    this.router.navigate(['/uam/user-profile/' + 1])
+
+  psdChange(): void {
+    this.router.navigate(['/core/change-password']);
   }
-  /* method enhances user interface interaction by managing the side navigation state.*/
-  toggleSideNav() {
-    this.emitSideMenu.emit();
+
+  goToProfile(): void {
+    this.router.navigate(['/uam/user-profile/1']);
   }
-  logout() {
-    // this.postService.refreshToken(APIPath.USER_LOGOUT).subscribe(
-    //   (response) => {
-    //     if (response.success) {
-    //       sessionStorage.clear();
-    //       this.router.navigate(['/']);
-    //       this.idleService.disableIdleDetection();
-    //       this.postService.closeNotification();
-    //     }
-    //     else {
-    //       this.postService.openSnackBar(response?.message, 'ERROR');
-    //     }
-    //   },
-    //   // Error handler when an HTTP error occurs
-    //   (error: HttpErrorResponse) => {
-    //     if (error?.error.error) {
-    //       this.postService.openSnackBar(error?.error.error, 'ERROR');
-    //     } else {
-    //       this.postService.openSnackBar(error?.error.message, 'ERROR');
-    //     }
-    //   });
+
+  logout(): void {
     sessionStorage.clear();
-    // this.router.navigate(['/']);
-    // this.idleService.disableIdleDetection();
-    // this.postService.closeNotification();
+    this.router.navigate(['/']);
+  }
+
+  markAllRead(): void {
+    this.notificationCount = 0;
+  }
+
+  private extractUserName(): void {
+    const lu = this.loggedInUser;
+    if (lu) {
+      this.userName = lu.split('@')[0].replace('.', ' ');
+    }
+  }
+
+  private loadNotifications(): void {
+    this.notificationsList = [
+      {
+        icon: 'check_circle',
+        color: '#20C997',
+        title: 'Leave Approved',
+        description: 'Your leave request for Dec 20-22 has been approved',
+        time: '2 hours ago'
+      },
+      {
+        icon: 'event',
+        color: '#5B4A9F',
+        title: 'Meeting Reminder',
+        description: 'Team sync scheduled at 3:00 PM today',
+        time: '5 hours ago'
+      },
+      {
+        icon: 'campaign',
+        color: '#FF9800',
+        title: 'New Announcement',
+        description: 'Company holiday list for 2026 is now available',
+        time: '1 day ago'
+      }
+    ];
+    this.notificationCount = this.notificationsList.length;
+  }
+
+  // Theme actions
+  onColorPick(color: string): void {
+    this.selectedColor = color;
+    this.themeService.setBrandColor(color);
+    document.documentElement.setAttribute('data-brand-color', color); // Update data attribute on color change
+  }
+
+  onModeToggle(event: { checked: boolean }): void {
+    this.isDarkMode = event.checked;
+    this.themeService.setMode(this.isDarkMode ? 'dark' : 'light');
   }
 }
