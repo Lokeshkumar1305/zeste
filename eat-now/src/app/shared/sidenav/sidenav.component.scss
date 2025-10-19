@@ -8,8 +8,8 @@
 
 // Primary Sidenav - Dark Sidebar
 .primary-sidenav {
-  width: 90px;
-  min-width: 80px;
+  width: 100px; // Increased slightly to accommodate text
+  min-width: 90px;
   height: 100vh;
   background: #1A2A44; 
   position: fixed;
@@ -75,28 +75,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
+  min-height: 70px; // Increased to accommodate text
 
-  // Hover state - keep background when hovering icon OR when submenu is open
+  // Hover state
   &:hover,
   &.hovered {
     background: #2c3e50;
     color: #ffffff;
 
-    &::after {
-      content: attr(title);
-      position: absolute;
-      left: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      white-space: nowrap;
-      padding: 4px 8px;
-      background: #2c3e50;
+    .menu-text {
       color: #ffffff;
-      font-size: 14px;
-      border-radius: 4px;
-      margin-left: 8px;
-      z-index: 1;
     }
   }
 
@@ -121,40 +109,44 @@
       i {
         color: #ffffff !important;
       }
-    }
 
-    &::after {
-      content: attr(title);
-      position: absolute;
-      left: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      white-space: nowrap;
-      padding: 4px 8px;
-      background: #5B4A9F;
-      color: #ffffff;
-      font-size: 14px;
-      border-radius: 4px;
-      margin-left: 8px;
-      z-index: 1;
+      .menu-text {
+        color: #ffffff;
+        font-weight: 500;
+      }
     }
   }
 }
 
 .menu-icon-wrapper {
-  width: 40px;
-  height: 40px;
+  width: 80px; // Increased to fit text
+  height: 60px; // Adjusted for text
   border-radius: 10px;
   display: flex;
+  flex-direction: column; // Stack icon and text
   align-items: center;
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: transparent;
+  padding: 8px 0;
 
   i {
     font-size: 20px;
     color: #ffffff;
     transition: color 0.2s ease;
+    margin-bottom: 4px; // Space between icon and text
+  }
+
+  .menu-text {
+    font-size: 12px;
+    color: #d1d5db; // Light gray for readability
+    font-family: var(--font-family);
+    text-align: center;
+    line-height: 1.2;
+    max-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -172,9 +164,10 @@
 
 .bottom-menu-item {
   color: #ffffff;
-  width: 40px;
-  height: 40px;
+  width: 80px; // Match menu-icon-wrapper
+  height: 60px; // Match menu-icon-wrapper
   display: flex;
+  flex-direction: column; // Stack icon and text
   align-items: center;
   justify-content: center;
   border-radius: 10px;
@@ -182,15 +175,33 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  padding: 8px 0;
 
   &:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
+
+    .menu-text {
+      color: #ffffff;
+    }
   }
 
   i {
     font-size: 20px;
     color: #ffffff;
+    margin-bottom: 4px; // Space between icon and text
+  }
+
+  .menu-text {
+    font-size: 12px;
+    color: #d1d5db;
+    font-family: var(--font-family);
+    text-align: center;
+    line-height: 1.2;
+    max-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -331,6 +342,7 @@
 @media (max-width: 768px) {
   .primary-sidenav {
     transform: translateX(-100%);
+    width: 120px; // Slightly wider for mobile to accommodate text
 
     &.mobile-active {
       transform: translateX(0);
@@ -339,5 +351,14 @@
 
   .submenu-card {
     display: none;
+  }
+
+  .menu-icon-wrapper,
+  .bottom-menu-item {
+    width: 100px; // Wider for mobile
+  }
+
+  .menu-text {
+    font-size: 13px; // Slightly larger for mobile readability
   }
 }
