@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from './common-library/services/api.service';
 import { LoginService } from './auth/login.service';
+import { ThemeService } from './shared/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { LoginService } from './auth/login.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'eat-now';
+  title = 'zeste';
 
   activeIndex: number = 0;
   activeListItemIndex: number | null = null;
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit {
     public loginService: LoginService,
     private router: Router,
     public snackbar: MatSnackBar,
-    public postService: ApiService
+    public postService: ApiService,
+    private theme: ThemeService
   ) { }
 
   ngOnInit() {
@@ -34,7 +36,7 @@ export class AppComponent implements OnInit {
     this.loggedInUser = "eatnow@gmail.com";
     const lu = this.loggedInUser.split('@')[0].replace('.', ' ');
     this.userName = lu
-  
+     this.theme.init();
   }
 
   logout() {

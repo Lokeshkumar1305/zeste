@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 interface Notification {
   icon: string;
@@ -33,7 +34,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly themeService: ThemeService
+    private readonly theme: ThemeService
   ) {}
 
   ngOnInit(): void {
@@ -42,19 +43,17 @@ export class HeaderComponent implements OnInit {
     this.loadNotifications();
 
     // Initialize theme from persisted state or system preference
-    const state = this.themeService.getState();
-    if (!state._initialized) {
-      const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false;
-      this.themeService.setMode(prefersDark ? 'dark' : 'light', { silent: true });
-    }
-    this.themeService.apply();
-
-    const current = this.themeService.getState();
-    this.isDarkMode = current.mode === 'dark';
-    this.selectedColor = current.color;
+     const state = this.theme.getState();
+    this.isDarkMode = state.mode === 'dark';
+    this.selectedColor = state.color;
+    this.theme.init(); 
 
     // Apply selected color to document data attribute for dynamic styling
     document.documentElement.setAttribute('data-brand-color', this.selectedColor);
+
+
+    const mode = document.documentElement.getAttribute('data-theme');
+    this.isDarkMode = mode === 'dark';
   }
 
   // Alt + K focuses the search input
@@ -127,12 +126,19 @@ export class HeaderComponent implements OnInit {
   // Theme actions
   onColorPick(color: string): void {
     this.selectedColor = color;
-    this.themeService.setBrandColor(color);
+    this.theme.setBrandColor(color);
     document.documentElement.setAttribute('data-brand-color', color); // Update data attribute on color change
   }
 
-  onModeToggle(event: { checked: boolean }): void {
-    this.isDarkMode = event.checked;
-    this.themeService.setMode(this.isDarkMode ? 'dark' : 'light');
+  // onModeToggle(event: { checked: boolean }): void {
+  //   this.isDarkMode = event.checked;
+  //   this.theme.setMode(this.isDarkMode ? 'dark' : 'light');
+  // }
+
+
+  onModeToggle(ev: MatSlideToggleChange) {
+    this.isDarkMode = ev.checked;
+    this.theme.setMode(this.isDarkMode ? 'dark' : 'light');
   }
+
 }

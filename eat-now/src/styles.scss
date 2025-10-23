@@ -1,74 +1,92 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
 
+/* Google font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/* =========================
+   1) Theme tokens (light)
+   ========================= */
 :root {
   --brand-primary: #1A365D;
   --brand-primary-700: #14294A;
-  --brand-primary-dark: #14294A; /* Darker shade of default brand-primary */
+  --brand-primary-dark: #14294A;
+  --brand-primary-light: #E0E7F5;
   --brand-green: #20C997;
+
   --text-muted: #6c757d;
-  --bg-page: #F4F6F8;
-  --background: #ffffff;
+
+  /* Page and surfaces (light) */
+  --bg-page: #F4F6F8;      /* full page background */
+  --background: #ffffff;   /* generic surface */
   --text-color: #333333;
+
   --card-background: #ffffff;
   --card-border: #ebf1f6;
+
   --input-background: #F4F5F7;
-  --input-border: #d1d5db;
-  --button-background: #1A365D;
+  --input-border: var(--brand-primary);
+
+  --button-background: var(--brand-primary);
   --button-text: #ffffff;
+
   --scrollbar-track: #f4f4f4;
   --scrollbar-thumb: #DEE0E1;
   --scrollbar-thumb-hover: #BDC1C6;
+
   --font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+
   --header-bg: var(--brand-primary);
-  --sidenav-bg: #1A365D; /* Fixed background, no theme change */
+  --sidenav-bg: #1A365D;
 }
 
+/* =========================
+   2) Theme tokens (dark)
+   ========================= */
 [data-theme='dark'] {
   --brand-primary: #3B5A8C;
   --brand-primary-700: #2A456F;
-  --brand-primary-dark: #2A456F; /* Darker shade of default brand-primary */
-  --brand-green: #17A589;
-  --text-muted: #a0aec0;
-  --bg-page: #1a202c;
-  --background: #2d3748;
-  --text-color: #e2e8f0;
-  --card-background: #2d3748;
-  --card-border: #4a5568;
-  --input-background: #2d3748;
-  --input-border: #4a5568;
-  --button-background: #3B5A8C;
-  --button-text: #e2e8f0;
-  --scrollbar-track: #2d3748;
-  --scrollbar-thumb: #4a5568;
-  --scrollbar-thumb-hover: #718096;
-  --header-bg: var(--brand-primary);
-  --sidenav-bg: #2A456F; /* Fixed background, no theme change */
-}
-
-// Dynamic color adjustments based on selected header color
-[data-brand-color='#1A365D'] {
-  --brand-primary-dark: #14294A;
-}
-[data-brand-color='#3B5A8C'] {
   --brand-primary-dark: #2A456F;
-}
-[data-brand-color='#2A69A6'] {
-  --brand-primary-dark: #1F4F7D;
-}
-[data-brand-color='#8A4A9F'] {
-  --brand-primary-dark: #6A3678;
-}
-[data-brand-color='#28A745'] {
-  --brand-primary-dark: #1E7E34;
-}
-[data-brand-color='#F39C12'] {
-  --brand-primary-dark: #B3730A;
+  --brand-primary-light: #8BA4D0;
+  --brand-green: #17A589;
+
+  --text-muted: #a0aec0;
+
+  /* DARKER backgrounds (no white anywhere) */
+  --bg-page: #0f172a;          /* full canvas */
+  --background: #1e293b;       /* generic surface */
+  --card-background: #1f2937;  /* cards/menus/tables */
+  --card-border: #374151;
+  --input-background: #111827;
+
+  --text-color: #e2e8f0;
+
+  --input-border: var(--brand-primary);
+  --button-background: var(--brand-primary);
+  --button-text: #e2e8f0;
+
+  --scrollbar-track: #1e293b;
+  --scrollbar-thumb: #334155;
+  --scrollbar-thumb-hover: #475569;
+
+  --header-bg: var(--brand-primary);
+  --sidenav-bg: #2A456F;
 }
 
-html,
-body {
+/* =========================
+   3) Dynamic brand color
+   ========================= */
+[data-brand-color='#1A365D'] { --brand-primary-dark: #14294A; --brand-primary-light: #E0E7F5; --input-border: #1A365D; --button-background: #1A365D; }
+[data-brand-color='#3B5A8C'] { --brand-primary-dark: #2A456F; --brand-primary-light: #8BA4D0; --input-border: #3B5A8C; --button-background: #3B5A8C; }
+[data-brand-color='#2A69A6'] { --brand-primary-dark: #1F4F7D; --brand-primary-light: #A8CDE6; --input-border: #2A69A6; --button-background: #2A69A6; }
+[data-brand-color='#8A4A9F'] { --brand-primary-dark: #6A3678; --brand-primary-light: #D4A8D9; --input-border: #8A4A9F; --button-background: #8A4A9F; }
+[data-brand-color='#28A745'] { --brand-primary-dark: #1E7E34; --brand-primary-light: #C8E6C9; --input-border: #28A745; --button-background: #28A745; }
+[data-brand-color='#F39C12'] { --brand-primary-dark: #B3730A; --brand-primary-light: #FADFA6; --input-border: #F39C12; --button-background: #F39C12; }
+
+/* =========================
+   4) App/page base
+   ========================= */
+html, body {
   height: 100%;
   margin: 0;
   font-family: var(--font-family);
@@ -76,19 +94,31 @@ body {
   color: var(--text-color);
 }
 
+/* FORCE the entire app canvas to use page background (kills white) */
+app-root,
+app-layout,
+.mat-drawer-container,
+.mat-drawer-content,
+.mat-sidenav-content,
+.page-wrap,
+.content,
+.content-wrapper,
+main,
+.router-outlet + * {
+  background: var(--bg-page) !important;
+  background-color: var(--bg-page) !important;
+}
+
+/* =========================
+   5) Angular Material theme
+   ========================= */
 $eat-now-primary-palette: (
   100: #E0E7F5,
   300: #8BA4D0,
   500: #4A6B9E,
   700: #2A456F,
   900: #1A365D,
-  contrast: (
-    100: #1A365D,
-    300: #1A1A1A,
-    500: #ffffff,
-    700: #ffffff,
-    900: #ffffff,
-  )
+  contrast: (100: #1A365D, 300: #1A1A1A, 500: #ffffff, 700: #ffffff, 900: #ffffff)
 );
 
 $eat-now-accent-palette: (
@@ -97,44 +127,170 @@ $eat-now-accent-palette: (
   500: #2D5A90,
   700: #234876,
   900: #1A365D,
-  contrast: (
-    100: #001B3D,
-    300: #ffffff,
-    500: #ffffff,
-    700: #F2F2F2,
-    900: #F2F2F2,
-  )
+  contrast: (100: #001B3D, 300: #ffffff, 500: #ffffff, 700: #F2F2F2, 900: #F2F2F2)
 );
 
 $eat-now-primary: mat.define-palette($eat-now-primary-palette, 900);
 $eat-now-accent: mat.define-palette($eat-now-accent-palette, 900);
 $eat-now-warn: mat.define-palette(mat.$red-palette);
 
-$eat-now-typography: mat.define-typography-config(
-  $font-family: var(--font-family)
-);
+$eat-now-typography: mat.define-typography-config($font-family: var(--font-family));
 
-$eat-now-theme: mat.define-light-theme((
-  color: (
-    primary: $eat-now-primary,
-    accent: $eat-now-accent,
-    warn: $eat-now-warn,
-  ),
+$eat-now-theme-light: mat.define-light-theme((
+  color: (primary: $eat-now-primary, accent: $eat-now-accent, warn: $eat-now-warn),
   typography: $eat-now-typography,
   density: 0
 ));
 
-@include mat.all-component-themes($eat-now-theme);
-@include mat.all-component-densities(-3);
-@include mat.button-density(-1);
-@include mat.form-field-density(-3);
+$eat-now-theme-dark: mat.define-dark-theme((
+  color: (primary: $eat-now-primary, accent: $eat-now-accent, warn: $eat-now-warn),
+  typography: $eat-now-typography,
+  density: 0
+));
 
-// Login screen styles
-.login-screen {
-  background: var(--bg-page);
-  min-height: 100vh;
-  display: flex;
+:root {
+  @include mat.all-component-colors($eat-now-theme-light);
+  @include mat.all-component-typographies($eat-now-theme-light);
+  @include mat.all-component-densities(-3);
+  @include mat.button-density(-1);
+  @include mat.form-field-density(-3);
 }
+[data-theme='dark'] {
+  @include mat.all-component-colors($eat-now-theme-dark);
+}
+
+/* =========================
+   6) Surfaces (cards/menus/tables/dialogs)
+   ========================= */
+.mat-mdc-card,
+.mat-mdc-menu-panel,
+.mat-mdc-select-panel,
+.mat-mdc-autocomplete-panel,
+.mdc-menu-surface,
+.mdc-dialog__surface,
+.mat-mdc-tooltip .mdc-tooltip__surface,
+.mat-mdc-paginator,
+.mat-mdc-table,
+.mdc-data-table__table,
+.mdc-data-table__content {
+  background: var(--card-background) !important;
+  color: var(--text-color) !important;
+  border-color: var(--card-border) !important;
+}
+
+.mat-mdc-card {
+  border: 1px solid var(--card-border) !important;
+  box-shadow: none !important;
+}
+.topbar-card.mat-mdc-card {
+  background: var(--card-background);
+  border-color: var(--card-border);
+}
+
+/* Drawer/shell */
+.mat-drawer-container { background-color: var(--bg-page) !important; }
+.mat-drawer-side { border-right: 1px solid var(--card-border) !important; }
+.mat-mdc-dialog-container .mdc-dialog__content { color: var(--text-color) !important; }
+
+/* =========================
+   7) Header + Search (no hard-coded white)
+   ========================= */
+app-header { background: var(--header-bg); color: var(--button-text); }
+
+.primary-header .header-search .search-container {
+  background: var(--card-background);
+  border: 1px solid var(--card-border);
+}
+.primary-header .header-search .search-container .search-input { color: var(--text-color); }
+.primary-header .header-search .search-container .search-input::placeholder,
+.primary-header .header-search .search-container .search-icon,
+.primary-header .header-search .search-container .search-shortcut { color: var(--text-muted); }
+.primary-header .header-search .search-container .search-shortcut {
+  background: var(--background);
+  border: 1px solid var(--card-border);
+}
+
+/* =========================
+   8) Expansion panels & form fields
+   ========================= */
+.feature-accordion .mat-expansion-panel {
+  border: 1px solid var(--card-border);
+  border-radius: 8px !important;
+  margin-bottom: 12px;
+  background: var(--card-background);
+}
+.feature-accordion .mat-expansion-panel.mat-expanded .mat-expansion-panel-header {
+  background: var(--brand-primary-light) !important;
+  color: var(--brand-primary) !important;
+}
+.feature-accordion .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header {
+  background: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+.feature-accordion .mat-expansion-panel:not(.mat-expanded):hover .mat-expansion-panel-header {
+  background: var(--input-background) !important;
+}
+.feature-accordion .mat-expansion-indicator::after { color: var(--text-muted) !important; }
+.feature-accordion .mat-expanded .mat-expansion-indicator::after { color: var(--brand-primary) !important; }
+
+/* Outlined inputs */
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-outline-color: var(--input-border);
+  --mdc-outlined-text-field-hover-outline-color: var(--input-border);
+  --mdc-outlined-text-field-focus-outline-color: var(--input-border);
+  --mdc-outlined-text-field-disabled-outline-color: #6c757d;
+
+  --mdc-outlined-text-field-label-text-color: var(--text-color);
+  --mdc-outlined-text-field-focus-label-text-color: var(--input-border);
+  --mdc-outlined-text-field-caret-color: var(--input-border);
+}
+.mat-mdc-form-field .mdc-text-field__input { caret-color: var(--input-border); }
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline__leading,
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline__trailing,
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline__notch { border-color: var(--input-border) !important; }
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-text-field--outlined:hover .mdc-notched-outline__leading,
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-text-field--outlined:hover .mdc-notched-outline__trailing,
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-text-field--outlined:hover .mdc-notched-outline__notch { border-color: var(--input-border) !important; }
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-text-field--focused .mdc-notched-outline__leading,
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-text-field--focused .mdc-notched-outline__trailing,
+.mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-text-field--focused .mdc-notched-outline__notch {
+  border-color: var(--input-border) !important;
+  border-width: 2px !important;
+}
+.mat-mdc-form-field .mdc-text-field--disabled .mdc-notched-outline__leading,
+.mat-mdc-form-field .mdc-text-field--disabled .mdc-notched-outline__trailing,
+.mat-mdc-form-field .mdc-text-field--disabled .mdc-notched-outline__notch { border-color: #6c757d !important; }
+.mat-mdc-form-field.mat-focused .mdc-floating-label { color: var(--input-border) !important; }
+
+/* =========================
+   9) Extras you had
+   ========================= */
+.login-screen { background: var(--bg-page); min-height: 100vh; display: flex; }
+.right-pane { background: var(--background); }
+.btn-login.mdc-button.mdc-button--raised { background: var(--button-background) !important; color: var(--button-text) !important; border-radius: 8px !important; height: 44px; letter-spacing: 0.2px; }
+.btn-login.mdc-button.mdc-button--raised:disabled { opacity: 0.6; }
+
+::-webkit-scrollbar { width: 8px; scroll-behavior: smooth; }
+::-webkit-scrollbar-track { border-radius: 4px; background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { border-radius: 4px; background-color: var(--scrollbar-thumb); }
+::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
+
+.mat-mdc-raised-button.mat-primary,
+.btn-create { background-color: var(--button-background) !important; color: #fff !important; }
+.mat-mdc-button.text-accent { color: var(--brand-primary) !important; }
+
+
+/* Sidenav */
+.primarySideNav { transition: width ease 0.5s; background: #1A365D; }
+.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator { transform: rotate(0deg) !important; }
+.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-panel-header-title,
+.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-mdc-list-item-title,
+.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-icon,
+.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after { color: var(--button-text); }
+.primarySideNav .mdc-list-item:hover,
+.primarySideNav .mat-accordion .mat-expansion-panel:not(.mat-expanded):hover { background: var(--input-background); }
+
+
 
 /* Left panel */
 .left-pane {
@@ -305,12 +461,6 @@ h6 {
   border-right: 1px solid var(--card-border) !important;
 }
 
-.mat-mdc-card {
-  border: 1px solid var(--card-border) !important;
-  // border-radius: 7px !important;
-  box-shadow: none;
-  background: var(--card-background);
-}
 
 .mat-mdc-dialog-container .mdc-dialog__content {
   color: var(--text-color) !important;
@@ -643,4 +793,46 @@ app-header {
   filter: blur(8px);
   -webkit-filter: blur(25px);
   backdrop-filter: blur(15px);
+}
+
+/* Feature Header Styles */
+.feature-header {
+  background: transparent !important;
+  padding: 16px 20px !important;
+  
+  .module-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+  }
+}
+
+.permission-card {
+  background: var(--card-background);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 16px;
+  
+  .resource-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 12px;
+  }
+}
+
+
+
+.mat-mdc-raised-button.mat-primary {
+  background-color: var(--button-background) !important; 
+  color:var(--button-text) !important;
+}
+
+.btn-create {
+  background-color: var(--button-background) !important; 
+   color:var(--button-text) !important;
+}
+
+.mat-mdc-button.text-accent {
+  color: var(--brand-primary) !important; 
 }

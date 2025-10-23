@@ -1,6 +1,5 @@
 :host {
   --breadcrumb-height: 48px;
-  --text-color: #212121;
   --text-muted: #757575;
 }
 
@@ -11,7 +10,7 @@
   right: 0;
   height: var(--breadcrumb-height);
   z-index: 997;
-  background: #fff;
+  background: var(--card-background) !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 0 24px;
   display: flex;

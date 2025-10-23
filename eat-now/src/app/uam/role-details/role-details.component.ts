@@ -99,7 +99,7 @@ export class RoleDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       roleTitle: ['', [Validators.required, Validators.maxLength(60)]],
-      roleDescription: ['', [Validators.required, Validators.maxLength(160)]]
+      roleDescription: ['', [ Validators.maxLength(160)]]
     });
 
     // Breadcrumbs: IAM / Roles / Create New Role

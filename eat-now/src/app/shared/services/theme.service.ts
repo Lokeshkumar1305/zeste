@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 type ThemeMode = 'light' | 'dark';
+
 interface ThemeState {
   mode: ThemeMode;
   color: string;
@@ -9,48 +10,76 @@ interface ThemeState {
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private readonly storageKey = 'app-theme';
+  private readonly MODE_KEY = 'app-mode';
+  private readonly BRAND_KEY = 'app-brand';
+  private readonly STORAGE_KEY = 'app-theme';
+
   private state: ThemeState = {
     mode: 'light',
-    color: '#8A4A9F', // default close to screenshot family
+    color: '#8A4A9F',
     _initialized: false
   };
 
   constructor() {
-    const saved = localStorage.getItem(this.storageKey);
+    // Load combined theme state if present
+    const saved = localStorage.getItem(this.STORAGE_KEY);
     if (saved) {
       try {
-        const parsed = JSON.parse(saved) as ThemeState;
-        if (parsed?.mode) this.state.mode = parsed.mode;
-        if (parsed?.color) this.state.color = parsed.color;
+        const parsed = JSON.parse(saved) as Partial<ThemeState>;
+        if (parsed.mode === 'light' || parsed.mode === 'dark') this.state.mode = parsed.mode;
+        if (typeof parsed.color === 'string' && parsed.color) this.state.color = parsed.color;
         this.state._initialized = true;
       } catch {
-        // ignore
+        // ignore malformed storage
       }
+    } else {
+      // Fallback to legacy keys if they exist
+      const m = localStorage.getItem(this.MODE_KEY);
+      const b = localStorage.getItem(this.BRAND_KEY);
+      if (m === 'light' || m === 'dark') this.state.mode = m;
+      if (b) this.state.color = b;
     }
+
+    // Apply on service creation so app looks correct before user toggles
+    this.apply();
   }
 
   getState(): ThemeState {
     return { ...this.state };
   }
 
+  init(): void {
+    // If no mode persisted, use system preference once
+    if (!this.state._initialized) {
+      this.state.mode = this.getSystemPref();
+      this.state._initialized = true;
+      this.persist();
+      this.apply();
+    }
+  }
+
   setMode(mode: ThemeMode, opts?: { silent?: boolean }): void {
+    if (mode !== 'light' && mode !== 'dark') return;
     this.state.mode = mode;
     this.state._initialized = true;
     if (!opts?.silent) this.persist();
     this.apply();
   }
 
-  setBrandColor(color: string): void {
-    this.state.color = color;
-    this.state._initialized = true;
-    this.persist();
+  setBrandColor(hex: string, opts?: { silent?: boolean }): void {
+    if (!hex) return;
+    this.state.color = hex;
+    if (!opts?.silent) this.persist();
     this.apply();
   }
 
-  apply(): void {
+  // Applies CSS variables + data attributes so your SCSS picks them up
+  private apply(): void {
     const { color, mode } = this.state;
     const root = document.documentElement;
+
+    root.setAttribute('data-theme', mode);
+    root.setAttribute('data-brand-color', color);
 
     // Accent color + derived shades
     root.style.setProperty('--brand-primary', color);
@@ -59,31 +88,33 @@ export class ThemeService {
     root.style.setProperty('--header-background', color);
 
     if (mode === 'dark') {
-      root.setAttribute('data-theme', 'dark');
-      root.style.setProperty('--card-background', '#1F2937');
-      root.style.setProperty('--card-border', '#2A3646');
-      root.style.setProperty('--input-background', '#111827');
-      root.style.setProperty('--text-color', '#E5E7EB');
-      root.style.setProperty('--text-muted', '#9CA3AF');
-      root.style.setProperty('--button-text', '#FFFFFF');
-      root.style.setProperty('--app-background', '#0B1020');
+      root.style.setProperty('--card-background', '#2d3748');
+      root.style.setProperty('--card-border', '#4a5568');
+      root.style.setProperty('--input-background', '#2d3748');
+      root.style.setProperty('--text-color', '#e2e8f0');
+      root.style.setProperty('--text-muted', '#a0aec0');
+      root.style.setProperty('--button-text', '#ffffff');
+      root.style.setProperty('--app-background', '#1a202c');
     } else {
-      root.setAttribute('data-theme', 'light');
-      root.style.setProperty('--card-background', '#FFFFFF');
-      root.style.setProperty('--card-border', '#E6E8EB');
-      root.style.setProperty('--input-background', '#F3F4F6');
-      root.style.setProperty('--text-color', '#1F2937');
-      root.style.setProperty('--text-muted', '#6B7280');
-      root.style.setProperty('--button-text', '#FFFFFF');
-      root.style.setProperty('--app-background', '#F5F7FB');
+      root.style.setProperty('--card-background', '#ffffff');
+      root.style.setProperty('--card-border', '#ebf1f6');
+      root.style.setProperty('--input-background', '#F4F5F7');
+      root.style.setProperty('--text-color', '#333333');
+      root.style.setProperty('--text-muted', '#6c757d');
+      root.style.setProperty('--button-text', '#ffffff');
+      root.style.setProperty('--app-background', '#F4F6F8');
     }
+
+    // Also keep legacy keys in sync if other parts read them
+    localStorage.setItem(this.MODE_KEY, mode);
+    localStorage.setItem(this.BRAND_KEY, color);
   }
 
   private persist(): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.state));
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
   }
 
-  // Simple hex shade util
+  // Simple hex lighten/darken
   private shade(hex: string, percent: number): string {
     const f = hex.startsWith('#') ? hex.slice(1) : hex;
     const num = parseInt(f, 16);
@@ -95,6 +126,12 @@ export class ThemeService {
     g = Math.min(255, Math.max(0, Math.round(g + (percent / 100) * 255)));
     b = Math.min(255, Math.max(0, Math.round(b + (percent / 100) * 255)));
 
-    return `#${(r << 16 | g << 8 | b).toString(16).padStart(6, '0').toUpperCase()}`;
+    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0').toUpperCase()}`;
+  }
+
+  private getSystemPref(): ThemeMode {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
   }
 }
