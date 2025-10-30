@@ -15,6 +15,11 @@ import { PurchaseOrderDetailsComponent } from './purchase-order-details/purchase
 import { MenuComponent } from './menu/menu.component';
 import { CategoryComponent } from './category/category.component';
 import { BillingComponent } from './billing/billing.component';
+import { RoomManagementComponent } from './room-management/room-management.component';
+import { TenantManagementComponent } from './tenant-management/tenant-management.component';
+import { PaymentManagementComponent } from './payment-management/payment-management.component';
+import { MaintenanceManagementComponent } from './maintenance-management/maintenance-management.component';
+import { ExpensesManagementComponent } from './expenses-management/expenses-management.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -22,16 +27,22 @@ const routes: Routes = [
   { path: 'staff-onboarding', component: StaffOnboardingComponent },
   { path: 'staff-onboarding-getAll', component: StaffOnboardingGetAllComponent },
   { path: 'outlet-getAll', component: OutletsComponent },
-  { path: 'area', component:AreaComponent },
+  { path: 'area', component: AreaComponent },
   { path: 'table', component: TableComponent },
-  { path: 'category', component: CategoryComponent},
+  { path: 'category', component: CategoryComponent },
   { path: 'menu', component: MenuComponent },
   { path: 'items', component: ItemsComponent },
-  { path: 'billing', component:BillingComponent },
+  { path: 'billing', component: BillingComponent },
   { path: 'purchase-order', component: PurchaseOrdersComponent },
   { path: 'supplier', component: SuppliersComponent },
   { path: 'stock-moment', component: StockMomentComponent },
   { path: 'purchase-order-details', component: PurchaseOrderDetailsComponent },
+  { path: 'room-management', component: RoomManagementComponent },
+  { path: 'tenant-management', component: TenantManagementComponent },
+  { path: 'payment-management', component: PaymentManagementComponent },
+  { path: 'maintenance-management', component: MaintenanceManagementComponent },
+  { path: 'expenses-management', component: ExpensesManagementComponent },
+
 ];
 
 @NgModule({

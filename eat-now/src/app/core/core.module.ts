@@ -35,6 +35,19 @@ import { CategoryComponent } from './category/category.component';
 import { CategoryModalComponent } from './category-modal/category-modal.component';
 import { BillingComponent } from './billing/billing.component';
 import { BillSlipComponent } from './bill-slip/bill-slip.component';
+import { RoomManagementComponent } from './room-management/room-management.component';
+import { RoomManagementModalComponent } from './room-management-modal/room-management-modal.component';
+import { TenantManagementComponent } from './tenant-management/tenant-management.component';
+import { TenantManagementModalComponent } from './tenant-management-modal/tenant-management-modal.component';
+import { PaymentManagementComponent } from './payment-management/payment-management.component';
+import { PaymentManagementModalComponent } from './payment-management-modal/payment-management-modal.component';
+import { MaintenanceManagementComponent } from './maintenance-management/maintenance-management.component';
+import { MaintenanceManagementModalComponent } from './maintenance-management-modal/maintenance-management-modal.component';
+import { ExpensesManagementComponent } from './expenses-management/expenses-management.component';
+import { ExpensesManagementModalComponent } from './expenses-management-modal/expenses-management-modal.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
 @NgModule({
   declarations: [
     OutletOnboardingComponent,
@@ -59,6 +72,16 @@ import { BillSlipComponent } from './bill-slip/bill-slip.component';
     CategoryModalComponent,
     BillingComponent,
     BillSlipComponent,
+    RoomManagementComponent,
+    RoomManagementModalComponent,
+    TenantManagementComponent,
+    TenantManagementModalComponent,
+    PaymentManagementComponent,
+    PaymentManagementModalComponent,
+    MaintenanceManagementComponent,
+    MaintenanceManagementModalComponent,
+    ExpensesManagementComponent,
+    ExpensesManagementModalComponent,
   ],
   imports: [
     CommonModule,
@@ -75,7 +98,9 @@ import { BillSlipComponent } from './bill-slip/bill-slip.component';
     MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,
-   
+    MatDatepickerModule,
+    MatNativeDateModule,
+
   ],
 
   providers: [],

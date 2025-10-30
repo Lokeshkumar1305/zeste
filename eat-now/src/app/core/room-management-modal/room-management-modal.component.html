@@ -1,0 +1,108 @@
+<div class="modal-slide-in">
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <p class="f-18-m mb-0">Room Details</p>
+    <button mat-icon-button (click)="onCancel()" class="text-muted">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form>
+      <div class="row ">
+        <!-- Room ID -->
+        <div class="col-md-6">
+          <mat-label class="required">Room ID</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input matInput [(ngModel)]="room.id" name="id" placeholder="Unique identifier for the room" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Room Owner -->
+        <div class="col-md-6">
+          <mat-label class="required">Room Owner</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="room.owner" name="owner" required>
+              <mat-option value="">Select owner</mat-option>
+              <mat-option value="John Doe">John Doe</mat-option>
+              <mat-option value="Jane Smith">Jane Smith</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Room Status -->
+        <div class="col-md-6">
+          <mat-label class="required">Room Status</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="room.status" name="status" required>
+              <mat-option *ngFor="let s of statuses" [value]="s">
+                <span class="status-pill" [ngClass]="'status-' + s.toLowerCase().replace(' ', '-')">
+                  <span class="status-dot"></span> {{ s }}
+                </span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Room Type -->
+        <div class="col-md-6">
+          <mat-label class="required">Room Type</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="room.type" name="type" required>
+              <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Room Sub-Type -->
+        <div class="col-md-6">
+          <mat-label>Room Sub-Type</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input matInput [(ngModel)]="room.subType" name="subType" />
+          </mat-form-field>
+        </div>
+
+        <!-- Room Priority -->
+        <div class="col-md-6">
+          <mat-label class="required">Room Priority</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="room.priority" name="priority" required>
+              <mat-option *ngFor="let p of priorities" [value]="p">{{ p }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Created Date -->
+        <div class="col-md-6">
+          <mat-label>Created Date</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input matInput [(ngModel)]="room.createdDate" name="createdDate" />
+          </mat-form-field>
+        </div>
+
+        <!-- Description -->
+        <div class="col-12">
+          <mat-label>Description</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <textarea
+              matInput
+              rows="4"
+              [(ngModel)]="room.description"
+              name="description"
+              placeholder="Detailed description of the room.">
+            </textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
+      <i class="bi bi-check2 me-1"></i> Create Room
+    </button>
+
+  </div>
+</div>

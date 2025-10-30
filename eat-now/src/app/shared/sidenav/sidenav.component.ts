@@ -78,45 +78,37 @@ export class SidenavComponent implements OnInit, OnDestroy {
         { title: 'IAM', route: '/uam/users' }
       ]
     },
-    list_alt: {
-      title: 'Menu',
+   rooms: {
+      title: 'Rooms',
       items: [
-        { title: 'View Menu', route: '/core/menu' },
-        { title: 'Add Item', route: '/core/menu/add' },
-        { title: 'Categories', route: '/core/menu/categories' }
+        { title: 'Room Management', route: '/core/room-management' }
       ]
     },
-    table_restaurant: {
-      title: 'Table',
+    tenants: {
+      title: 'Tenants',
       items: [
-        { title: 'Area', route: '/core/area' },
-        { title: 'Table', route: '/core/table' },
-        { title: 'Floor Plan', route: '/core/floor-plan' }
+        { title: 'Tenant Management', route: '/core/tenant-management' }
       ]
     },
-    inventory: {
-      title: 'Inventory',
+    payments: {
+      title: 'Payments',
       items: [
-        { title: 'Stock', route: '/core/stock' },
-        { title: 'Order Supplies', route: '/core/supplies' },
-        { title: 'Vendors', route: '/core/vendors' }
+        { title: 'Payment Management', route: '/core/payment-management' }
       ]
     },
-    room_service: {
-      title: 'Orders',
+    maintenance: {
+      title: 'Maintenance',
       items: [
-        { title: 'Current Orders', route: '/core/orders' },
-        { title: 'Order History', route: '/core/order-history' },
-        { title: 'Analytics', route: '/core/order-analytics' }
+        { title: 'Maintenance Management', route: '/core/maintenance-management' }
       ]
     },
-    chef_hat: {
-      title: 'Kitchen',
+    expenses: {
+      title: 'Expenses',
       items: [
-        { title: 'Current Dishes', route: '/core/kitchen' },
-        { title: 'Prep Schedule', route: '/core/prep-schedule' }
+        { title: 'Expenses Management', route: '/core/expenses-management' }
       ]
     }
+  
   };
 
   isCollapsed: boolean = true;
@@ -170,16 +162,16 @@ export class SidenavComponent implements OnInit, OnDestroy {
       this.selectedMenu = 'admin_panel_settings';
     } else if (url.startsWith('/core/staff') || url.includes('onboarding')) {
       this.selectedMenu = 'groups';
-    } else if (url.startsWith('/core/menu')) {
-      this.selectedMenu = 'list_alt';
-    } else if (url.startsWith('/core/area') || url.startsWith('/core/table')) {
-      this.selectedMenu = 'table_restaurant';
-    } else if (url.startsWith('/core/stock') || url.startsWith('/core/inventory')) {
-      this.selectedMenu = 'inventory';
-    } else if (url.startsWith('/core/order')) {
-      this.selectedMenu = 'room_service';
-    } else if (url.startsWith('/core/kitchen') || url.startsWith('/core/prep')) {
-      this.selectedMenu = 'chef_hat';
+    }else if (url.startsWith('/room-management')) {
+      this.selectedMenu = 'rooms';
+    } else if (url.startsWith('/tenant-management')) {
+      this.selectedMenu = 'tenants';
+    } else if (url.startsWith('/payment-management')) {
+      this.selectedMenu = 'payments';
+    } else if (url.startsWith('/maintenance-management')) {
+      this.selectedMenu = 'maintenance';
+    } else if (url.startsWith('/expenses-management')) {
+      this.selectedMenu = 'expenses';
     } else {
       this.selectedMenu = 'home';
     }

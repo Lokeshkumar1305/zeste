@@ -56,73 +56,73 @@
         </div>
       </li>
 
-      <li 
+        <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'list_alt'"
-        [class.hovered]="hoveredMenu === 'list_alt'"
-        (mouseenter)="onMenuHover('list_alt', $event)"
+        [class.active]="selectedMenu === 'rooms'"
+        [class.hovered]="hoveredMenu === 'rooms'"
+        (mouseenter)="onMenuHover('rooms', $event)"
         (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('list_alt')" 
-        title="Menu">
+        (click)="selectMenu('rooms')" 
+        title="Rooms">
         <div class="menu-icon-wrapper">
-          <i class="bi bi-list-ul"></i>
-          <span class="menu-text">Menu</span>
+          <i class="bi bi-door-closed"></i>
+          <span class="menu-text">Rooms</span>
         </div>
       </li>
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'table_restaurant'"
-        [class.hovered]="hoveredMenu === 'table_restaurant'"
-        (mouseenter)="onMenuHover('table_restaurant', $event)"
+        [class.active]="selectedMenu === 'tenants'"
+        [class.hovered]="hoveredMenu === 'tenants'"
+        (mouseenter)="onMenuHover('tenants', $event)"
         (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('table_restaurant')" 
-        title="Table">
+        (click)="selectMenu('tenants')" 
+        title="Tenants">
         <div class="menu-icon-wrapper">
-          <i class="bi bi-table"></i>
-          <span class="menu-text">Table</span>
+          <i class="bi bi-people"></i>
+          <span class="menu-text">Tenants</span>
         </div>
       </li>
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'inventory'"
-        [class.hovered]="hoveredMenu === 'inventory'"
-        (mouseenter)="onMenuHover('inventory', $event)"
+        [class.active]="selectedMenu === 'payments'"
+        [class.hovered]="hoveredMenu === 'payments'"
+        (mouseenter)="onMenuHover('payments', $event)"
         (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('inventory')" 
-        title="Inventory">
+        (click)="selectMenu('payments')" 
+        title="Payments">
         <div class="menu-icon-wrapper">
-          <i class="bi bi-box-seam"></i>
-          <span class="menu-text">Inventory</span>
+          <i class="bi bi-cash-coin"></i>
+          <span class="menu-text">Payments</span>
         </div>
       </li>
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'room_service'"
-        [class.hovered]="hoveredMenu === 'room_service'"
-        (mouseenter)="onMenuHover('room_service', $event)"
+        [class.active]="selectedMenu === 'maintenance'"
+        [class.hovered]="hoveredMenu === 'maintenance'"
+        (mouseenter)="onMenuHover('maintenance', $event)"
         (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('room_service')" 
-        title="Orders">
+        (click)="selectMenu('maintenance')" 
+        title="Maintenance">
         <div class="menu-icon-wrapper">
-          <i class="bi bi-cart"></i>
-          <span class="menu-text">Orders</span>
+          <i class="bi bi-tools"></i>
+          <span class="menu-text">Maintenance</span>
         </div>
       </li>
 
       <li 
         class="sidenav-item" 
-        [class.active]="selectedMenu === 'chef_hat'"
-        [class.hovered]="hoveredMenu === 'chef_hat'"
-        (mouseenter)="onMenuHover('chef_hat', $event)"
+        [class.active]="selectedMenu === 'expenses'"
+        [class.hovered]="hoveredMenu === 'expenses'"
+        (mouseenter)="onMenuHover('expenses', $event)"
         (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('chef_hat')" 
-        title="Kitchen">
+        (click)="selectMenu('expenses')" 
+        title="Expenses">
         <div class="menu-icon-wrapper">
-          <i class="bi bi-egg-fried"></i>
-          <span class="menu-text">Kitchen</span>
+          <i class="bi bi-receipt"></i>
+          <span class="menu-text">Expenses</span>
         </div>
       </li>
     </ul>
