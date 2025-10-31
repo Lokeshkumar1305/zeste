@@ -8,118 +8,109 @@
   <nav class="primary-sidenav" [ngClass]="{ 'mobile-active': !isCollapsed && isMobile }">
     <!-- Logo Section -->
     <div class="sidenav-logo">
-      <!-- <img src="assets/images/keka-logo.png" alt="Logo" class="logo-img" /> -->
-        <span class="brand-name">ZESTE</span>
+      <span class="brand-name">ZESTE</span>
     </div>
 
     <!-- Navigation Menu -->
     <ul class="sidenav-menu">
-      <li 
-        class="sidenav-item" 
-        [class.active]="selectedMenu === 'home'"
-        [class.hovered]="hoveredMenu === 'home'"
-        (mouseenter)="onMenuHover('home', $event)"
-        (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('home')" 
-        title="Home">
+      <li class="sidenav-item"
+          [class.active]="selectedMenu === 'home'"
+          [class.hovered]="hoveredMenu === 'home'"
+          (mouseenter)="onMenuHover('home', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('home')"
+          title="Home">
         <div class="menu-icon-wrapper">
           <i class="bi bi-house-door"></i>
           <span class="menu-text">Home</span>
         </div>
       </li>
 
-      <li 
-        class="sidenav-item" 
-        [class.active]="selectedMenu === 'admin_panel_settings'"
-        [class.hovered]="hoveredMenu === 'admin_panel_settings'"
-        (mouseenter)="onMenuHover('admin_panel_settings', $event)"
-        (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('admin_panel_settings')" 
-        title="IAM">
+      <li class="sidenav-item"
+          [class.active]="selectedMenu === 'admin_panel_settings'"
+          [class.hovered]="hoveredMenu === 'admin_panel_settings'"
+          (mouseenter)="onMenuHover('admin_panel_settings', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('admin_panel_settings')"
+          title="IAM">
         <div class="menu-icon-wrapper">
           <i class="bi bi-person-circle"></i>
           <span class="menu-text">IAM</span>
         </div>
       </li>
 
-      <li 
-        class="sidenav-item" 
-        [class.active]="selectedMenu === 'groups'"
-        [class.hovered]="hoveredMenu === 'groups'"
-        (mouseenter)="onMenuHover('groups', $event)"
-        (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('groups')" 
-        title="Onboarding">
+      <li class="sidenav-item"
+          [class.active]="selectedMenu === 'groups'"
+          [class.hovered]="hoveredMenu === 'groups'"
+          (mouseenter)="onMenuHover('groups', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('groups')"
+          title="Onboarding">
         <div class="menu-icon-wrapper">
           <i class="bi bi-person-plus"></i>
           <span class="menu-text">Onboarding</span>
         </div>
       </li>
 
-        <li 
-        class="sidenav-item" 
-        [class.active]="selectedMenu === 'rooms'"
-        [class.hovered]="hoveredMenu === 'rooms'"
-        (mouseenter)="onMenuHover('rooms', $event)"
-        (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('rooms')" 
-        title="Rooms">
+      <li class="sidenav-item"
+          [class.active]="selectedMenu === 'rooms'"
+          [class.hovered]="hoveredMenu === 'rooms'"
+          (mouseenter)="onMenuHover('rooms', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('rooms')"
+          title="Rooms">
         <div class="menu-icon-wrapper">
           <i class="bi bi-door-closed"></i>
           <span class="menu-text">Rooms</span>
         </div>
       </li>
 
-      <li 
-        class="sidenav-item" 
-        [class.active]="selectedMenu === 'tenants'"
-        [class.hovered]="hoveredMenu === 'tenants'"
-        (mouseenter)="onMenuHover('tenants', $event)"
-        (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('tenants')" 
-        title="Tenants">
+      <li class="sidenav-item"
+          [class.active]="selectedMenu === 'tenants'"
+          [class.hovered]="hoveredMenu === 'tenants'"
+          (mouseenter)="onMenuHover('tenants', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('tenants')"
+          title="Tenants">
         <div class="menu-icon-wrapper">
           <i class="bi bi-people"></i>
           <span class="menu-text">Tenants</span>
         </div>
       </li>
 
-      <li 
-        class="sidenav-item" 
-        [class.active]="selectedMenu === 'payments'"
-        [class.hovered]="hoveredMenu === 'payments'"
-        (mouseenter)="onMenuHover('payments', $event)"
-        (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('payments')" 
-        title="Payments">
+      <li class="sidenav-item"
+          [class.active]="selectedMenu === 'payments'"
+          [class.hovered]="hoveredMenu === 'payments'"
+          (mouseenter)="onMenuHover('payments', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('payments')"
+          title="Payments">
         <div class="menu-icon-wrapper">
           <i class="bi bi-cash-coin"></i>
           <span class="menu-text">Payments</span>
         </div>
       </li>
 
-      <li 
-        class="sidenav-item" 
-        [class.active]="selectedMenu === 'maintenance'"
-        [class.hovered]="hoveredMenu === 'maintenance'"
-        (mouseenter)="onMenuHover('maintenance', $event)"
-        (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('maintenance')" 
-        title="Maintenance">
+      <li class="sidenav-item"
+          [class.active]="selectedMenu === 'maintenance'"
+          [class.hovered]="hoveredMenu === 'maintenance'"
+          (mouseenter)="onMenuHover('maintenance', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('maintenance')"
+          title="Maintenance">
         <div class="menu-icon-wrapper">
           <i class="bi bi-tools"></i>
           <span class="menu-text">Maintenance</span>
         </div>
       </li>
 
-      <li 
-        class="sidenav-item" 
-        [class.active]="selectedMenu === 'expenses'"
-        [class.hovered]="hoveredMenu === 'expenses'"
-        (mouseenter)="onMenuHover('expenses', $event)"
-        (mouseleave)="onMenuLeave()"
-        (click)="selectMenu('expenses')" 
-        title="Expenses">
+      <li class="sidenav-item"
+          [class.active]="selectedMenu === 'expenses'"
+          [class.hovered]="hoveredMenu === 'expenses'"
+          (mouseenter)="onMenuHover('expenses', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('expenses')"
+          title="Expenses">
         <div class="menu-icon-wrapper">
           <i class="bi bi-receipt"></i>
           <span class="menu-text">Expenses</span>
@@ -137,24 +128,19 @@
   </nav>
 
   <!-- Hoverable Submenu Card (Content-based Height) -->
-  <div 
-    class="submenu-card" 
-    *ngIf="hoveredMenu && hasMenuItems(hoveredMenu) && !isMobile"
-    [style.left.px]="submenuPosition.left"
-    [style.top.px]="submenuPosition.top"
-    (mouseenter)="keepSubmenuOpen()"
-    (mouseleave)="closeSubmenu()"
-    [@slideIn]>
-    <div class="submenu-header">
-      <h3 class="submenu-title">{{ getSubmenuTitle() }}</h3>
-    </div>
+  <div class="submenu-card"
+       *ngIf="hoveredMenu && hasMenuItems(hoveredMenu) && !isMobile"
+       [style.left.px]="submenuPosition.left"
+       [style.top.px]="submenuPosition.top"
+       (mouseenter)="keepSubmenuOpen()"
+       (mouseleave)="closeSubmenu()"
+       [@slideIn]>
     <ul class="submenu-list">
       <li *ngFor="let item of getSubmenuItems()" class="submenu-item">
-        <a 
-          [routerLink]="item.route" 
-          routerLinkActive="active" 
-          class="submenu-link"
-          (click)="navigateToSubmenu(item)">
+        <a [routerLink]="item.route"
+           routerLinkActive="active"
+           class="submenu-link"
+           (click)="navigateToSubmenu(item)">
           {{ item.title }}
         </a>
       </li>
