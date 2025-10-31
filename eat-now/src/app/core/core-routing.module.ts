@@ -20,6 +20,9 @@ import { TenantManagementComponent } from './tenant-management/tenant-management
 import { PaymentManagementComponent } from './payment-management/payment-management.component';
 import { MaintenanceManagementComponent } from './maintenance-management/maintenance-management.component';
 import { ExpensesManagementComponent } from './expenses-management/expenses-management.component';
+import { RoomTypeManagementComponent } from './room-type-management/room-type-management.component';
+import { FloorsManagementComponent } from './floors-management/floors-management.component';
+import { BedsManagementComponent } from './beds-management/beds-management.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -42,6 +45,9 @@ const routes: Routes = [
   { path: 'payment-management', component: PaymentManagementComponent },
   { path: 'maintenance-management', component: MaintenanceManagementComponent },
   { path: 'expenses-management', component: ExpensesManagementComponent },
+  { path: 'room-type-management', component: RoomTypeManagementComponent },
+  { path: 'floors-management', component: FloorsManagementComponent },
+  { path: 'beds-management', component: BedsManagementComponent },
 
 ];
 

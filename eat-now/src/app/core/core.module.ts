@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoreRoutingModule } from './core-routing.module';
-import { OutletOnboardingComponent } from './outlet-onboarding/outlet-onboarding.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from '../app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { SharedModule } from '../shared/shared.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '../material/material.module';
-import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
+
+import { CoreRoutingModule } from './core-routing.module';
 import { SharedRoutingModule } from '../shared/shared-routing.module';
+import { SharedModule } from '../shared/shared.module';
+import { MaterialModule } from '../material/material.module';
+
+import { OutletOnboardingComponent } from './outlet-onboarding/outlet-onboarding.component';
+import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
 import { OutletsComponent } from './outlets/outlets.component';
 import { StaffOnboardingComponent } from './staff-onboarding/staff-onboarding.component';
 import { StaffOnboardingGetAllComponent } from './staff-onboarding-get-all/staff-onboarding-get-all.component';
@@ -25,12 +24,8 @@ import { ItemsModalComponent } from './items-modal/items-modal.component';
 import { PurchaseOrderDetailsComponent } from './purchase-order-details/purchase-order-details.component';
 import { SupplierModalComponent } from './supplier-modal/supplier-modal.component';
 import { StockModalComponent } from './stock-modal/stock-modal.component';
-import { MatCardModule } from '@angular/material/card';
 import { MenuComponent } from './menu/menu.component';
 import { MenuModalComponent } from './menu-modal/menu-modal.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { CategoryComponent } from './category/category.component';
 import { CategoryModalComponent } from './category-modal/category-modal.component';
 import { BillingComponent } from './billing/billing.component';
@@ -45,8 +40,27 @@ import { MaintenanceManagementComponent } from './maintenance-management/mainten
 import { MaintenanceManagementModalComponent } from './maintenance-management-modal/maintenance-management-modal.component';
 import { ExpensesManagementComponent } from './expenses-management/expenses-management.component';
 import { ExpensesManagementModalComponent } from './expenses-management-modal/expenses-management-modal.component';
+import { RoomTypeManagementComponent } from './room-type-management/room-type-management.component';
+import { RoomTypeManagementModalComponent } from './room-type-management-modal/room-type-management-modal.component';
+import { BedsManagementComponent } from './beds-management/beds-management.component';
+import { BedsManagementModalComponent } from './beds-management-modal/beds-management-modal.component';
+import { FloorsManagementComponent } from './floors-management/floors-management.component';
+import { FloorsManagementModalComponent } from './floors-management-modal/floors-management-modal.component';
+
+/* ---------- NEW COMPONENT ---------- */
+import { AmenitiesManagementModalComponent } from './amenities-management-modal/amenities-management-modal.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
+
 
 @NgModule({
   declarations: [
@@ -82,28 +96,41 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MaintenanceManagementModalComponent,
     ExpensesManagementComponent,
     ExpensesManagementModalComponent,
+    RoomTypeManagementComponent,
+    RoomTypeManagementModalComponent,
+    BedsManagementComponent,
+    BedsManagementModalComponent,
+    FloorsManagementComponent,
+    FloorsManagementModalComponent,
+
+    /* <-- ADD THE MISSING MODAL --> */
+    AmenitiesManagementModalComponent,
   ],
   imports: [
     CommonModule,
     CoreRoutingModule,
-    // BrowserModule,
-    // AppRoutingModule,
+    SharedRoutingModule,
     FormsModule,
-    // BrowserAnimationsModule,
+    ReactiveFormsModule,   // optional but useful for mat-form-field
     HttpClientModule,
     SharedModule,
-    MaterialModule,
-    SharedRoutingModule,
+    MaterialModule,        // your custom material wrapper (keep if you have one)
+
+    /* ---- Material modules (keep only once) ---- */
     MatCardModule,
     MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    MatChipsModule,
   ],
-
-  providers: [],
-
+  exports: [
+    /* Export the modal so it can be used as an entryComponent from other modules */
+    AmenitiesManagementModalComponent,
+  ],
 })
-export class CoreModule { }
+export class CoreModule {}
