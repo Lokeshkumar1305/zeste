@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
-import { CaseItem } from '../room-management/room-management.component';
 import { FloorsManagementModalComponent } from '../floors-management-modal/floors-management-modal.component';
+
+export interface Floor {
+  floorNo: string;
+  description: string;
+  status: 'Active' | 'Inactive';
+}
 
 @Component({
   selector: 'app-floors-management',
@@ -11,141 +15,58 @@ import { FloorsManagementModalComponent } from '../floors-management-modal/floor
 })
 export class FloorsManagementComponent implements OnInit {
 
-  // Toolbar filters
-  public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
+  /* ---------- Toolbar & Pagination ---------- */
+  public selectedStatusFilter: 'All' | 'Active' | 'Inactive' = 'All';
 
-  // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
   public pageSize = 5;
   public currentPage = 1;
 
-  // Data
-  private allCases: CaseItem[] = [];
-  public filteredCases: CaseItem[] = [];
-  public pagedCases: CaseItem[] = [];
+  /* ---------- Data ---------- */
+  private allFloors: Floor[] = [];
+  public filteredFloors: Floor[] = [];
+  public pagedFloors: Floor[] = [];
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample data (replicates look from screenshot)
-    this.allCases = [
-      {
-        id: 'DIS296190110587',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24) // Oct 24, 2025
-      },
-      {
-        id: 'DIS296190110537',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24)
-      },
-      // extra rows to demonstrate pagination
-      {
-        id: 'DIS296190110530',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Closed',
-        priority: 'Low',
-        owner: 'aarav nair',
-        date: new Date(2025, 9, 22)
-      },
-      {
-        id: 'DIS296190110531',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'On Hold',
-        priority: 'High',
-        owner: 'jaya reddy',
-        date: new Date(2025, 9, 21)
-      },
-      {
-        id: 'DIS296190110532',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'High',
-        owner: 'kiran kumar',
-        date: new Date(2025, 9, 20)
-      },
-      {
-        id: 'DIS296190110533',
-        type: 'Chargeback',
-        subtype: 'VISA',
-        status: 'Closed',
-        priority: 'Medium',
-        owner: 'mike doe',
-        date: new Date(2025, 9, 19)
-      },
-      {
-        id: 'DIS296190110534',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Low',
-        owner: 'priya sharma',
-        date: new Date(2025, 9, 18)
-      },
-      {
-        id: 'DIS296190110535',
-        type: 'Chargeback',
-        subtype: 'AMEX',
-        status: 'On Hold',
-        priority: 'Medium',
-        owner: 'sara lee',
-        date: new Date(2025, 9, 17)
-      }
+    /* Seed sample floors – you can replace with a real API call */
+    this.allFloors = [
+      { floorNo: 'F-01', description: 'Ground floor – lobby & reception', status: 'Active' },
+      { floorNo: 'F-02', description: 'First floor – meeting rooms', status: 'Active' },
+      { floorNo: 'F-03', description: 'Second floor – offices', status: 'Inactive' },
+      { floorNo: 'F-04', description: 'Third floor – cafeteria', status: 'Active' },
+      { floorNo: 'F-05', description: 'Basement parking', status: 'Active' },
+      { floorNo: 'F-06', description: 'Rooftop terrace', status: 'Inactive' },
+      { floorNo: 'F-07', description: 'Utility floor', status: 'Active' },
+      { floorNo: 'F-08', description: 'Guest suites', status: 'Active' }
     ];
 
     this.applyAllFilters();
   }
 
-  // Derived getters for "Showing X to Y of Z entries"
-  get totalItems(): number {
-    return this.filteredCases.length;
-  }
+  /* ---------- Pagination getters ---------- */
+  get totalItems(): number { return this.filteredFloors.length; }
+  get totalPages(): number { return Math.max(1, Math.ceil(this.totalItems / this.pageSize)); }
+  get showingFrom(): number { return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1; }
+  get showingTo(): number { return Math.min(this.currentPage * this.pageSize, this.totalItems); }
+  get pageNumbers(): number[] { return Array.from({ length: this.totalPages }, (_, i) => i + 1); }
 
-  get totalPages(): number {
-    return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
-  }
-
-  get showingFrom(): number {
-    if (this.totalItems === 0) return 0;
-    return (this.currentPage - 1) * this.pageSize + 1;
-  }
-
-  get showingTo(): number {
-    return Math.min(this.currentPage * this.pageSize, this.totalItems);
-  }
-
-  get pageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-  // UI Actions
-  onSelectCasesChange(value: 'All' | 'Open' | 'Closed' | 'On Hold'): void {
-    this.selectedCaseFilter = value;
+  /* ---------- UI Actions ---------- */
+  onSelectStatusChange(value: 'All' | 'Active' | 'Inactive'): void {
+    this.selectedStatusFilter = value;
     this.currentPage = 1;
     this.applyAllFilters();
   }
 
   onFilter(): void {
-    // In a real app, open filter panel or popover here.
-    // For now, toggle a sample filter: cycle through status quickly.
-    const order: Array<'All' | 'Open' | 'Closed' | 'On Hold'> = ['All', 'Open', 'Closed', 'On Hold'];
-    const idx = order.indexOf(this.selectedCaseFilter);
-    this.onSelectCasesChange(order[(idx + 1) % order.length]);
+    const order: Array<'All' | 'Active' | 'Inactive'> = ['All', 'Active', 'Inactive'];
+    const idx = order.indexOf(this.selectedStatusFilter);
+    this.onSelectStatusChange(order[(idx + 1) % order.length]);
   }
 
   onReset(): void {
-    this.selectedCaseFilter = 'All';
+    this.selectedStatusFilter = 'All';
     this.pageSize = this.pageSizeOptions[0];
     this.currentPage = 1;
     this.applyAllFilters();
@@ -154,51 +75,54 @@ export class FloorsManagementComponent implements OnInit {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedCases();
+    this.updatePagedFloors();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedCases();
+    this.updatePagedFloors();
   }
 
   prevPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePagedCases();
-    }
+    if (this.currentPage > 1) { this.currentPage--; this.updatePagedFloors(); }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updatePagedCases();
-    }
+    if (this.currentPage < this.totalPages) { this.currentPage++; this.updatePagedFloors(); }
   }
 
-  trackById(_: number, item: CaseItem): string {
-    return item.id;
+  trackByFloorNo(_: number, floor: Floor): string {
+    return floor.floorNo;
   }
 
-  // Core filtering + pagination
+  /* ---------- Core filtering + pagination ---------- */
   private applyAllFilters(): void {
-    this.filteredCases = this.applyStatusFilter(this.allCases, this.selectedCaseFilter);
-    this.updatePagedCases();
+    this.filteredFloors = this.applyStatusFilter(this.allFloors, this.selectedStatusFilter);
+    this.updatePagedFloors();
   }
 
-  private applyStatusFilter(list: CaseItem[], selected: 'All' | 'Open' | 'Closed' | 'On Hold'): CaseItem[] {
+  private applyStatusFilter(list: Floor[], selected: 'All' | 'Active' | 'Inactive'): Floor[] {
     if (selected === 'All') return [...list];
-    return list.filter(c => c.status === selected);
+    return list.filter(f => f.status === selected);
   }
 
-  private updatePagedCases(): void {
+  private updatePagedFloors(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedCases = this.filteredCases.slice(start, end);
+    this.pagedFloors = this.filteredFloors.slice(start, end);
   }
 
-onAddNewRoom(): void {
+  /* ---------- Modal handling ---------- */
+  onAddNewFloor(): void {
+    this.openFloorModal();
+  }
+
+  openEditModal(floor: Floor): void {
+    this.openFloorModal(floor);
+  }
+
+  private openFloorModal(floor?: Floor): void {
     const dialogRef = this.dialog.open(FloorsManagementModalComponent, {
       width: '480px',
       height: '100vh',
@@ -208,22 +132,31 @@ onAddNewRoom(): void {
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
       autoFocus: false,
+      data: { floor }                     // pass existing floor for edit
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: Floor | undefined) => {
       if (result) {
-        console.log('New Room Created:', result);
-        // Handle save logic
+        // ---- EDIT ----
+        if (floor) {
+          const idx = this.allFloors.findIndex(f => f.floorNo === floor.floorNo);
+          if (idx > -1) {
+            this.allFloors[idx] = { ...result, status: this.allFloors[idx].status };
+          }
+        }
+        // ---- CREATE ----
+        else {
+          this.allFloors.push({ ...result, status: 'Active' });
+        }
+        this.applyAllFilters();
       }
     });
   }
 
-
-  
-
+  deleteFloor(floorNo: string): void {
+    if (confirm(`Delete floor ${floorNo}?`)) {
+      this.allFloors = this.allFloors.filter(f => f.floorNo !== floorNo);
+      this.applyAllFilters();
+    }
+  }
 }
-
-
-
-
-

@@ -22,6 +22,20 @@
           </mat-form-field>
         </div>
 
+
+         <!-- Floor -->
+        <div class="col-md-6">
+          <mat-label>Floor</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="room.floor" name="floor">
+              <mat-option *ngFor="let f of floors" [value]="f">{{ f }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="f-12-m text-muted mt-1" *ngIf="floors.length === 0">
+            No floors configured. Please configure floors first.
+          </div>
+        </div>
+
         <!-- Room Type -->
         <div class="col-md-6">
           <mat-label class="required">Room Type</mat-label>
@@ -29,6 +43,22 @@
             <mat-select [(ngModel)]="room.type" name="type" required>
               <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
             </mat-select>
+          </mat-form-field>
+          <div class="f-12-m text-muted mt-1" *ngIf="types.length === 0">
+            No room types configured. Please configure room types first.
+          </div>
+        </div>
+
+        <!-- Beds -->
+        <div class="col-md-6">
+          <mat-label>Beds</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="room.beds"
+              name="beds"
+              placeholder="e.g. 1" />
           </mat-form-field>
         </div>
 
@@ -59,19 +89,7 @@
           </mat-form-field>
         </div>
 
-        <!-- Floor -->
-        <div class="col-md-6">
-          <mat-label>Floor</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input
-              matInput
-              type="number"
-              [(ngModel)]="room.floor"
-              name="floor"
-              placeholder="e.g. 1" />
-          </mat-form-field>
-        </div>
-
+    
         <!-- Status -->
         <div class="col-md-6">
           <mat-label class="required">Status</mat-label>

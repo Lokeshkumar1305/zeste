@@ -23,6 +23,7 @@ import { ExpensesManagementComponent } from './expenses-management/expenses-mana
 import { RoomTypeManagementComponent } from './room-type-management/room-type-management.component';
 import { FloorsManagementComponent } from './floors-management/floors-management.component';
 import { BedsManagementComponent } from './beds-management/beds-management.component';
+import { AmenitiesManagementComponent } from './amenities-management/amenities-management.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -48,6 +49,7 @@ const routes: Routes = [
   { path: 'room-type-management', component: RoomTypeManagementComponent },
   { path: 'floors-management', component: FloorsManagementComponent },
   { path: 'beds-management', component: BedsManagementComponent },
+  { path: 'amenities-management', component: AmenitiesManagementComponent },
 
 ];
 

@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { RoomConfigService } from '../../shared/services/room-config.service';
+
 
 @Component({
   selector: 'app-floors-management-modal',
@@ -7,27 +9,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrl: './floors-management-modal.component.scss'
 })
 export class FloorsManagementModalComponent {
-room = {
-    id: '',
-    owner: '',
-    status: 'Open',
-    type: 'Dispute',
-    subType: '',
-    priority: 'Medium',
-    createdDate: new Date().toISOString().slice(0, 16),
+  floor = {
+    floorNo: '',
     description: '',
   };
 
-  statuses = ['Open', 'Closed', 'On Hold'];
-  types = ['Dispute', 'Inquiry', 'Escalation'];
-  priorities = ['Low', 'Medium', 'High'];
-
   constructor(
     public dialogRef: MatDialogRef<FloorsManagementModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private roomConfigService: RoomConfigService
   ) {
-    if (data?.room) {
-      this.room = { ...data.room };
+    if (data?.floor) {
+      this.floor = { ...data.floor };
     }
   }
 
@@ -36,6 +29,9 @@ room = {
   }
 
   onSave(): void {
-    this.dialogRef.close(this.room);
+    if (this.floor.floorNo) {
+      this.roomConfigService.addFloor(this.floor.floorNo);
+      this.dialogRef.close(this.floor);
+    }
   }
 }

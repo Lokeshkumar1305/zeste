@@ -1,17 +1,17 @@
-import { Component, Inject } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef,} from '@angular/material/dialog';
 import { AmenitiesManagementModalComponent } from '../amenities-management-modal/amenities-management-modal.component';
+
+import { Subscription } from 'rxjs';
+import { RoomConfigService } from '../../shared/services/room-config.service';
 
 export interface RoomDetails {
   roomNumber: string;
   type: string;
   monthlyRent: number | null;
   securityDeposit: number | null;
-  floor: number | null;
+  floor: string | null;
+  beds: number | null;
   status: string;
   description: string;
   amenities: string[];
@@ -22,26 +22,31 @@ export interface RoomDetails {
   templateUrl: './room-management-modal.component.html',
   styleUrls: ['./room-management-modal.component.scss'],
 })
-export class RoomManagementModalComponent {
+export class RoomManagementModalComponent implements OnInit, OnDestroy {
   room: RoomDetails = {
     roomNumber: '',
-    type: 'Single',
+    type: '',
     monthlyRent: null,
     securityDeposit: null,
     floor: null,
+    beds: null,
     status: 'Available',
     description: '',
     amenities: [],
   };
 
-  types = ['Single', 'Double', 'Suite'];
+  types: string[] = [];
+  floors: string[] = [];
   statuses = ['Available', 'Occupied', 'Maintenance'];
   amenityOptions: string[] = [];
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<RoomManagementModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private roomConfigService: RoomConfigService
   ) {
     if (data?.room) {
       this.room = { ...this.room, ...data.room };
@@ -49,6 +54,28 @@ export class RoomManagementModalComponent {
     if (data?.amenityOptions?.length) {
       this.amenityOptions = [...data.amenityOptions];
     }
+  }
+
+  ngOnInit(): void {
+    const roomTypeSub = this.roomConfigService.roomTypes$.subscribe(types => {
+      this.types = types;
+      if (this.types.length > 0 && !this.room.type) {
+        this.room.type = this.types[0];
+      }
+    });
+
+    const floorsSub = this.roomConfigService.floors$.subscribe(floors => {
+      this.floors = floors;
+      if (this.floors.length > 0 && !this.room.floor) {
+        this.room.floor = this.floors[0];
+      }
+    });
+
+    this.subscriptions.push(roomTypeSub, floorsSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   openAmenityConfig(): void {
@@ -78,7 +105,7 @@ export class RoomManagementModalComponent {
   }
 
   onSave(): void {
-    if (!this.room.roomNumber || this.room.monthlyRent === null) {
+    if (!this.room.roomNumber || this.room.monthlyRent === null || !this.room.type) {
       return;
     }
     this.dialogRef.close(this.room);

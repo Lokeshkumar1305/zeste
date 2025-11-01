@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { RoomConfigService } from '../../shared/services/room-config.service';
+
 
 @Component({
   selector: 'app-room-type-management-modal',
@@ -8,24 +10,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class RoomTypeManagementModalComponent {
 
-room = {
-    id: '',
-    owner: '',
-    status: 'Open',
-    type: 'Dispute',
-    subType: '',
-    priority: 'Medium',
-    createdDate: new Date().toISOString().slice(0, 16),
+  room = {
+    roomType: '',
+    beds: '',
     description: '',
   };
 
-  statuses = ['Open', 'Closed', 'On Hold'];
-  types = ['Dispute', 'Inquiry', 'Escalation'];
-  priorities = ['Low', 'Medium', 'High'];
-
   constructor(
     public dialogRef: MatDialogRef<RoomTypeManagementModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private roomConfigService: RoomConfigService
   ) {
     if (data?.room) {
       this.room = { ...data.room };
@@ -37,6 +31,9 @@ room = {
   }
 
   onSave(): void {
-    this.dialogRef.close(this.room);
+    if (this.room.roomType && this.room.beds) {
+      this.roomConfigService.addRoomType(this.room.roomType);
+      this.dialogRef.close(this.room);
+    }
   }
 }

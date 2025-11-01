@@ -145,20 +145,20 @@
 }
 
 /* Open */
-.status-open {
+.status-active {
   background: rgba(32, 201, 151, 0.2);
   color: #20C997;
 }
-.status-open .status-dot {
+.status-active .status-dot {
   background: #20C997;
 }
 
 /* Closed */
-.status-closed {
+.status-inactive {
   background: rgba(100, 116, 139, 0.2);
   color: #94a3b8;
 }
-.status-closed .status-dot {
+.status-inactive .status-dot {
   background: #94a3b8;
 }
 

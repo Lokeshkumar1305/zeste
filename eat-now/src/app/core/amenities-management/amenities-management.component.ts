@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ExpensesManagementModalComponent } from '../expenses-management-modal/expenses-management-modal.component';
 import { CaseItem } from '../room-management/room-management.component';
 import { AmenitiesManagementModalComponent } from '../amenities-management-modal/amenities-management-modal.component';
+
+export interface AmenityGroup {
+  id: string;
+  name: string;
+  items: string[];
+  createdAt: Date;
+}
 
 @Component({
   selector: 'app-amenities-management',
@@ -10,15 +16,15 @@ import { AmenitiesManagementModalComponent } from '../amenities-management-modal
   styleUrl: './amenities-management.component.scss'
 })
 export class AmenitiesManagementComponent {
-// Toolbar filters
+  public amenitiesList: AmenityGroup[] = [];
+  public showRoomsTable = false;
+  
   public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
-
-  // Pagination
+  
   public pageSizeOptions: number[] = [5, 10, 25];
   public pageSize = 5;
   public currentPage = 1;
-
-  // Data
+  
   private allCases: CaseItem[] = [];
   public filteredCases: CaseItem[] = [];
   public pagedCases: CaseItem[] = [];
@@ -26,7 +32,107 @@ export class AmenitiesManagementComponent {
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample data (replicates look from screenshot)
+    this.loadAmenitiesFromStorage();
+    this.seedSampleData();
+  }
+
+  private loadAmenitiesFromStorage(): void {
+    const stored = localStorage.getItem('amenitiesList');
+    if (stored) {
+      this.amenitiesList = JSON.parse(stored);
+    } else {
+      this.amenitiesList = [
+        {
+          id: this.generateId(),
+          name: 'Premium Amenities',
+          items: ['Wifi', 'Air Conditioning', 'TV', 'Mini Bar', 'Room Service'],
+          createdAt: new Date()
+        },
+        {
+          id: this.generateId(),
+          name: 'Basic Amenities',
+          items: ['Wifi', 'Fan', 'Desk'],
+          createdAt: new Date()
+        }
+      ];
+      this.saveAmenitiesToStorage();
+    }
+  }
+
+  private saveAmenitiesToStorage(): void {
+    localStorage.setItem('amenitiesList', JSON.stringify(this.amenitiesList));
+  }
+
+  private generateId(): string {
+    return 'AMN' + Date.now() + Math.random().toString(36).substr(2, 9);
+  }
+
+  onAddNewAmenity(): void {
+    const dialogRef = this.dialog.open(AmenitiesManagementModalComponent, {
+      width: '480px',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false,
+      data: { amenities: [] }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.length > 0) {
+        const newAmenity: AmenityGroup = {
+          id: this.generateId(),
+          name: 'Amenity Group ' + (this.amenitiesList.length + 1),
+          items: result,
+          createdAt: new Date()
+        };
+        this.amenitiesList.push(newAmenity);
+        this.saveAmenitiesToStorage();
+        console.log('New Amenity Group Created:', newAmenity);
+      }
+    });
+  }
+
+  onEditAmenity(amenity: AmenityGroup): void {
+    const dialogRef = this.dialog.open(AmenitiesManagementModalComponent, {
+      width: '480px',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false,
+      data: { amenities: [...amenity.items] }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.length > 0) {
+        const index = this.amenitiesList.findIndex(a => a.id === amenity.id);
+        if (index !== -1) {
+          this.amenitiesList[index].items = result;
+          this.saveAmenitiesToStorage();
+          console.log('Amenity Group Updated:', this.amenitiesList[index]);
+        }
+      }
+    });
+  }
+
+  onDeleteAmenity(amenityId: string): void {
+    if (confirm('Are you sure you want to delete this amenity group?')) {
+      this.amenitiesList = this.amenitiesList.filter(a => a.id !== amenityId);
+      this.saveAmenitiesToStorage();
+      console.log('Amenity Group Deleted:', amenityId);
+    }
+  }
+
+  trackByAmenityId(_: number, item: AmenityGroup): string {
+    return item.id;
+  }
+
+  private seedSampleData(): void {
     this.allCases = [
       {
         id: 'DIS296190110587',
@@ -35,7 +141,7 @@ export class AmenitiesManagementComponent {
         status: 'Open',
         priority: 'Medium',
         owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24) // Oct 24, 2025
+        date: new Date(2025, 9, 24)
       },
       {
         id: 'DIS296190110537',
@@ -46,7 +152,6 @@ export class AmenitiesManagementComponent {
         owner: 'ramya kichagari kichagari',
         date: new Date(2025, 9, 24)
       },
-      // extra rows to demonstrate pagination
       {
         id: 'DIS296190110530',
         type: 'Dispute',
@@ -106,7 +211,6 @@ export class AmenitiesManagementComponent {
     this.applyAllFilters();
   }
 
-  // Derived getters for "Showing X to Y of Z entries"
   get totalItems(): number {
     return this.filteredCases.length;
   }
@@ -128,7 +232,6 @@ export class AmenitiesManagementComponent {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // UI Actions
   onSelectCasesChange(value: 'All' | 'Open' | 'Closed' | 'On Hold'): void {
     this.selectedCaseFilter = value;
     this.currentPage = 1;
@@ -136,8 +239,6 @@ export class AmenitiesManagementComponent {
   }
 
   onFilter(): void {
-    // In a real app, open filter panel or popover here.
-    // For now, toggle a sample filter: cycle through status quickly.
     const order: Array<'All' | 'Open' | 'Closed' | 'On Hold'> = ['All', 'Open', 'Closed', 'On Hold'];
     const idx = order.indexOf(this.selectedCaseFilter);
     this.onSelectCasesChange(order[(idx + 1) % order.length]);
@@ -180,7 +281,6 @@ export class AmenitiesManagementComponent {
     return item.id;
   }
 
-  // Core filtering + pagination
   private applyAllFilters(): void {
     this.filteredCases = this.applyStatusFilter(this.allCases, this.selectedCaseFilter);
     this.updatePagedCases();
@@ -196,33 +296,4 @@ export class AmenitiesManagementComponent {
     const end = start + this.pageSize;
     this.pagedCases = this.filteredCases.slice(start, end);
   }
-
-onAddNewExpenses(): void {
-    const dialogRef = this.dialog.open(AmenitiesManagementModalComponent, {
-      width: '480px',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-dark-backdrop',
-      disableClose: false,
-      autoFocus: false,
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('New Room Created:', result);
-        // Handle save logic
-      }
-    });
-  }
-
-
-  
-
 }
-
-
-
-
-

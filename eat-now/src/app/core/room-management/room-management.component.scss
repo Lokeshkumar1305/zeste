@@ -145,29 +145,29 @@
 }
 
 /* Open */
-.status-open {
+.status-available {
   background: rgba(32, 201, 151, 0.2);
   color: #20C997;
 }
-.status-open .status-dot {
+.status-available .status-dot {
   background: #20C997;
 }
 
 /* Closed */
-.status-closed {
+.status-maintenance {
   background: rgba(100, 116, 139, 0.2);
   color: #94a3b8;
 }
-.status-closed .status-dot {
+.status-maintenance .status-dot {
   background: #94a3b8;
 }
 
 /* On Hold */
-.status-hold {
+.status-occupied {
   background: rgba(245, 158, 11, 0.2);
   color: #f59e0b;
 }
-.status-hold .status-dot {
+.status-occupied .status-dot {
   background: #f59e0b;
 }
 

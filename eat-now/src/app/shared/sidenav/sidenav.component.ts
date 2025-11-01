@@ -64,8 +64,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
     rooms: { title: 'Rooms', items: [
       { title: 'Rooms', route: '/core/room-management' }, 
       { title: 'Floor', route: '/core/floors-management' },
+      { title: 'Room Type', route: '/core/room-type-management' },
        { title: 'Beds', route: '/core/beds-management' },
-       { title: 'Room Type', route: '/core/room-type-management' }
+       { title: 'Amenities', route: '/core/amenities-management' },
+      
       ] },
     tenants: { title: 'Tenants', items: [
       { title: 'Tenants', route: '/core/tenant-management' }

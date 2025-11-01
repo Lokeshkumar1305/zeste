@@ -59,6 +59,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AmenitiesManagementComponent } from './amenities-management/amenities-management.component';
 
 
 
@@ -102,9 +103,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     BedsManagementModalComponent,
     FloorsManagementComponent,
     FloorsManagementModalComponent,
-
-    /* <-- ADD THE MISSING MODAL --> */
     AmenitiesManagementModalComponent,
+    AmenitiesManagementComponent
+
+
   ],
   imports: [
     CommonModule,
