@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
-import { CaseItem } from '../room-management/room-management.component';
 import { RoomTypeManagementModalComponent } from '../room-type-management-modal/room-type-management-modal.component';
+
+export interface RoomType {
+  roomType: string;
+  beds: string;
+  description: string;
+}
 
 @Component({
   selector: 'app-room-type-management',
@@ -12,7 +16,7 @@ import { RoomTypeManagementModalComponent } from '../room-type-management-modal/
 export class RoomTypeManagementComponent implements OnInit {
 
   // Toolbar filters
-  public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
+  public selectedCaseFilter: 'All' | 'Active' | 'Inactive' = 'All'; // placeholder
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
@@ -20,96 +24,48 @@ export class RoomTypeManagementComponent implements OnInit {
   public currentPage = 1;
 
   // Data
-  private allCases: CaseItem[] = [];
-  public filteredCases: CaseItem[] = [];
-  public pagedCases: CaseItem[] = [];
+  private allRoomTypes: RoomType[] = [];
+  public filteredRoomTypes: RoomType[] = [];
+  public pagedRoomTypes: RoomType[] = [];
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample data (replicates look from screenshot)
-    this.allCases = [
+    // Seed sample Room Type data
+    this.allRoomTypes = [
       {
-        id: 'DIS296190110587',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24) // Oct 24, 2025
+        roomType: 'Deluxe Suite',
+        beds: '2',
+        description: 'Spacious suite with king bed and private balcony.'
       },
       {
-        id: 'DIS296190110537',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24)
-      },
-      // extra rows to demonstrate pagination
-      {
-        id: 'DIS296190110530',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Closed',
-        priority: 'Low',
-        owner: 'aarav nair',
-        date: new Date(2025, 9, 22)
+        roomType: 'Standard Single',
+        beds: '1',
+        description: 'Compact room ideal for solo travelers.'
       },
       {
-        id: 'DIS296190110531',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'On Hold',
-        priority: 'High',
-        owner: 'jaya reddy',
-        date: new Date(2025, 9, 21)
+        roomType: 'Family Room',
+        beds: '4',
+        description: 'Two double beds, suitable for families.'
       },
       {
-        id: 'DIS296190110532',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'High',
-        owner: 'kiran kumar',
-        date: new Date(2025, 9, 20)
+        roomType: 'Executive Twin',
+        beds: '2',
+        description: 'Twin beds with work desk and city view.'
       },
       {
-        id: 'DIS296190110533',
-        type: 'Chargeback',
-        subtype: 'VISA',
-        status: 'Closed',
-        priority: 'Medium',
-        owner: 'mike doe',
-        date: new Date(2025, 9, 19)
-      },
-      {
-        id: 'DIS296190110534',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Low',
-        owner: 'priya sharma',
-        date: new Date(2025, 9, 18)
-      },
-      {
-        id: 'DIS296190110535',
-        type: 'Chargeback',
-        subtype: 'AMEX',
-        status: 'On Hold',
-        priority: 'Medium',
-        owner: 'sara lee',
-        date: new Date(2025, 9, 17)
+        roomType: 'Premium Suite',
+        beds: '3',
+        description: 'Luxury suite with living area and jacuzzi.'
       }
     ];
 
     this.applyAllFilters();
   }
 
-  // Derived getters for "Showing X to Y of Z entries"
+  // --- Pagination Getters ---
   get totalItems(): number {
-    return this.filteredCases.length;
+    return this.filteredRoomTypes.length;
   }
 
   get totalPages(): number {
@@ -129,19 +85,14 @@ export class RoomTypeManagementComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // UI Actions
-  onSelectCasesChange(value: 'All' | 'Open' | 'Closed' | 'On Hold'): void {
-    this.selectedCaseFilter = value;
+  // --- UI Actions ---
+  onFilter(): void {
+    // Placeholder: cycle filter
+    const order: Array<'All' | 'Active' | 'Inactive'> = ['All', 'Active', 'Inactive'];
+    const idx = order.indexOf(this.selectedCaseFilter);
+    this.selectedCaseFilter = order[(idx + 1) % order.length];
     this.currentPage = 1;
     this.applyAllFilters();
-  }
-
-  onFilter(): void {
-    // In a real app, open filter panel or popover here.
-    // For now, toggle a sample filter: cycle through status quickly.
-    const order: Array<'All' | 'Open' | 'Closed' | 'On Hold'> = ['All', 'Open', 'Closed', 'On Hold'];
-    const idx = order.indexOf(this.selectedCaseFilter);
-    this.onSelectCasesChange(order[(idx + 1) % order.length]);
   }
 
   onReset(): void {
@@ -154,51 +105,35 @@ export class RoomTypeManagementComponent implements OnInit {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedCases();
+    this.updatePagedRoomTypes();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedCases();
+    this.updatePagedRoomTypes();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagedCases();
+      this.updatePagedRoomTypes();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagedCases();
+      this.updatePagedRoomTypes();
     }
   }
 
-  trackById(_: number, item: CaseItem): string {
-    return item.id;
+  trackByRoomType(_: number, item: RoomType): string {
+    return item.roomType;
   }
 
-  // Core filtering + pagination
-  private applyAllFilters(): void {
-    this.filteredCases = this.applyStatusFilter(this.allCases, this.selectedCaseFilter);
-    this.updatePagedCases();
-  }
-
-  private applyStatusFilter(list: CaseItem[], selected: 'All' | 'Open' | 'Closed' | 'On Hold'): CaseItem[] {
-    if (selected === 'All') return [...list];
-    return list.filter(c => c.status === selected);
-  }
-
-  private updatePagedCases(): void {
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.pagedCases = this.filteredCases.slice(start, end);
-  }
-
-onAddNewRoom(): void {
+  // --- CRUD Operations ---
+  onAddNewRoom(): void {
     const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
       width: '480px',
       height: '100vh',
@@ -212,18 +147,53 @@ onAddNewRoom(): void {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('New Room Created:', result);
-        // Handle save logic
+        this.allRoomTypes.push({ ...result });
+        this.applyAllFilters();
       }
     });
   }
 
+  onEdit(room: RoomType): void {
+    const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
+      width: '480px',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false,
+      data: { room: { ...room } }
+    });
 
-  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.allRoomTypes.findIndex(r => r.roomType === room.roomType);
+        if (index !== -1) {
+          this.allRoomTypes[index] = { ...result };
+          this.applyAllFilters();
+        }
+      }
+    });
+  }
 
+  onDelete(room: RoomType): void {
+    if (confirm(`Are you sure you want to delete room type "${room.roomType}"?`)) {
+      this.allRoomTypes = this.allRoomTypes.filter(r => r.roomType !== room.roomType);
+      this.applyAllFilters();
+    }
+  }
+
+  // --- Core filtering + pagination ---
+  private applyAllFilters(): void {
+    // Currently only supports status-like filter; can be extended
+    this.filteredRoomTypes = [...this.allRoomTypes];
+    this.updatePagedRoomTypes();
+  }
+
+  private updatePagedRoomTypes(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedRoomTypes = this.filteredRoomTypes.slice(start, end);
+  }
 }
-
-
-
-
-

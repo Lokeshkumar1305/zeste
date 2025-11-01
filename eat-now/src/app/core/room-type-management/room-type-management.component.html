@@ -3,7 +3,7 @@
   <section class="case-card">
     <!-- Header & Toolbar -->
     <div class="d-flex align-items-center justify-content-between mb-3">
-    <p class="mb-0 f-18-m text-high-contrast">Room Type Details</p>
+      <p class="mb-0 f-18-m text-high-contrast">Room Type Management</p>
 
       <div class="d-flex align-items-center gap-2">
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
@@ -25,50 +25,37 @@
 
     <!-- Table -->
     <div class="table-container">
-      <table class="case-table" role="table" aria-label="Rooms">
+      <table class="case-table" role="table" aria-label="Room Types">
         <thead>
           <tr>
-            <th scope="col">Room No</th>
             <th scope="col">Room Type</th>
-            <th scope="col">Floor</th>
-            <th scope="col">Rent</th>
-            <th scope="col">Amenities</th>
-            <th scope="col">Status</th>
+            <th scope="col">No. of Beds</th>
+            <th scope="col">Description</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr *ngFor="let c of pagedCases; trackBy: trackById" class="table-row-hover">
-            <td class="f-14-m">{{ c.id }}</td>
-            <td class="f-14-r">{{ c.type }} - {{ c.subtype }}</td>
-            <td>
-              <span class="status-pill" [ngClass]="{
-                'status-open': c.status === 'Open',
-                'status-closed': c.status === 'Closed',
-                'status-hold': c.status === 'On Hold'
-              }">
-                <span class="status-dot"></span>
-                {{ c.status }}
-              </span>
+          <tr *ngFor="let room of pagedRoomTypes; trackBy: trackByRoomType" class="table-row-hover">
+            <td class="f-14-m">{{ room.roomType }}</td>
+            <td class="f-14-r">{{ room.beds }}</td>
+            <td class="f-14-r text-truncate" style="max-width: 300px;" [title]="room.description">
+              {{ room.description || '-' }}
             </td>
-            <td class="f-14-r">{{ c.priority }}</td>
-            <td class="f-14-r text-capitalize">{{ c.owner }}</td>
-            <td class="f-14-r">{{ c.date | date:'MMM d, y' }}</td>
             <td class="text-center">
               <div class="d-inline-flex align-items-center gap-3 action-icons">
-                <button type="button" class="icon-btn" title="Edit">
+                <button type="button" class="icon-btn" title="Edit" (click)="onEdit(room)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button type="button" class="icon-btn" title="Delete">
+                <button type="button" class="icon-btn" title="Delete" (click)="onDelete(room)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </div>
             </td>
           </tr>
 
-          <tr *ngIf="pagedCases.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">No rooms found.</td>
+          <tr *ngIf="pagedRoomTypes.length === 0">
+            <td colspan="4" class="text-center py-4 text-muted">No room types found.</td>
           </tr>
         </tbody>
       </table>
