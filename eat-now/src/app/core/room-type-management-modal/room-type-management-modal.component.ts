@@ -32,7 +32,7 @@ export class RoomTypeManagementModalComponent {
 
   onSave(): void {
     if (this.room.roomType && this.room.beds) {
-      this.roomConfigService.addRoomType(this.room.roomType);
+
       this.dialogRef.close(this.room);
     }
   }

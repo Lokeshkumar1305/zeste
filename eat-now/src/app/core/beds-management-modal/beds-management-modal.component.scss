@@ -80,6 +80,24 @@ mat-label.required::after {
 .status-closed .status-dot { background: #6c757d; }
 .status-on-hold .status-dot { background: #FFC107; }
 
+
+.amenity-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  margin: 4px;
+  background: #E6F4FF;
+  color: #0066CC;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.amenities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
 /* Animation */
 @keyframes slideIn {
   from {

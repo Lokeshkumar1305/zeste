@@ -1,96 +1,156 @@
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">Beds Details</p>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <p class="f-18-m mb-0">{{ isEditMode ? 'Edit' : 'Add' }} Bed Details</p>
+    <button mat-icon-button (click)="onCancel()">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
 
   <div class="modal-body">
     <form>
-      <div class="row ">
-        <!-- Room ID -->
-        <div class="col-md-6">
-          <mat-label class="required">Room ID</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.id" name="id" placeholder="Unique identifier for the room" required />
-          </mat-form-field>
-        </div>
-
-        <!-- Room Owner -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Owner</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.owner" name="owner" required>
-              <mat-option value="">Select owner</mat-option>
-              <mat-option value="John Doe">John Doe</mat-option>
-              <mat-option value="Jane Smith">Jane Smith</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Room Status -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Status</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.status" name="status" required>
-              <mat-option *ngFor="let s of statuses" [value]="s">
-                <span class="status-pill" [ngClass]="'status-' + s.toLowerCase().replace(' ', '-')">
-                  <span class="status-dot"></span> {{ s }}
-                </span>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Room Type -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Type</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.type" name="type" required>
-              <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Room Sub-Type -->
-        <div class="col-md-6">
-          <mat-label>Room Sub-Type</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.subType" name="subType" />
-          </mat-form-field>
-        </div>
-
-        <!-- Room Priority -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Priority</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.priority" name="priority" required>
-              <mat-option *ngFor="let p of priorities" [value]="p">{{ p }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Created Date -->
-        <div class="col-md-6">
-          <mat-label>Created Date</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.createdDate" name="createdDate" />
-          </mat-form-field>
-        </div>
-
-        <!-- Description -->
+      <div class="row">
         <div class="col-12">
-          <mat-label>Description</mat-label>
+          <div class="d-flex align-items-center gap-3 p-3 mb-3" style="background: #F7FAFC; border-radius: 8px;">
+            <i class="bi bi-hospital-bed" style="font-size: 32px; color: #4A5568;"></i>
+            <div>
+              <p class="f-16-m mb-1">{{ bed.id || 'New Bed' }}</p>
+              <p class="f-12-r text-muted mb-0">Room {{ bed.roomNumber }} - {{ bed.floor }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="!isEditMode">
+          <mat-label class="required">Bed ID</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <textarea
+            <input
               matInput
-              rows="4"
-              [(ngModel)]="room.description"
-              name="description"
-              placeholder="Detailed description of the room.">
-            </textarea>
+              [(ngModel)]="bed.id"
+              name="bedId"
+              placeholder="e.g. F101-1"
+              required />
           </mat-form-field>
+        </div>
+
+        <div class="col-md-6" *ngIf="!isEditMode">
+          <mat-label class="required">Room Number</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="bed.roomNumber"
+              name="roomNumber"
+              placeholder="e.g. 101"
+              required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6" *ngIf="isEditMode">
+          <mat-label>Bed ID</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="bed.id"
+              name="bedId"
+              readonly />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6" *ngIf="isEditMode">
+          <mat-label>Room Number</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="bed.roomNumber"
+              name="roomNumber"
+              readonly />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-label>Floor</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="bed.floor"
+              name="floor"
+              [readonly]="isEditMode"
+              placeholder="e.g. Floor 1" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-label>Room Type</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="bed.roomType"
+              name="roomType"
+              [readonly]="isEditMode"
+              placeholder="e.g. 3 Share" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-label class="required">Monthly Rent</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="bed.rent"
+              name="rent"
+              placeholder="e.g. 8000"
+              required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-label class="required">Status</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="bed.status" name="status" required>
+              <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12" *ngIf="bed.status === 'Occupied'">
+          <div class="occupant-section p-3 mb-3" style="background: #FFF5E6; border-radius: 8px; border: 1px solid #FFD580;">
+            <p class="f-14-m mb-2">Occupant Details</p>
+
+            <div class="row">
+              <div class="col-md-6">
+                <mat-label>Occupant Name</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <input
+                    matInput
+                    name="occupantName"
+                    placeholder="e.g. John Doe" />
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6">
+                <mat-label>Contact Number</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <input
+                    matInput
+                    name="occupantContact"
+                    placeholder="e.g. +91 98765 43210" />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <mat-label>Amenities</mat-label>
+          <div class="mt-2">
+            <div class="amenities-list" *ngIf="bed.amenities.length > 0">
+              <span class="amenity-tag" *ngFor="let amenity of bed.amenities">
+                {{ amenity }}
+              </span>
+            </div>
+            <p class="f-12-r text-muted mb-0" *ngIf="bed.amenities.length === 0">
+              No amenities configured for this bed
+            </p>
+          </div>
         </div>
       </div>
     </form>
@@ -101,8 +161,7 @@
       Cancel
     </button>
     <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
-      <i class="bi bi-check2 me-1"></i> Create Beds
+      <i class="bi bi-check2 me-1"></i> {{ isEditMode ? 'Update' : 'Create' }} Bed
     </button>
-
   </div>
 </div>

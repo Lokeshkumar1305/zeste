@@ -1,115 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
-import { CaseItem } from '../room-management/room-management.component';
 import { BedsManagementModalComponent } from '../beds-management-modal/beds-management-modal.component';
+import { Subscription } from 'rxjs';
+import { Bed, BedsService } from '../../shared/services/beds.service';
 
 @Component({
   selector: 'app-beds-management',
   templateUrl: './beds-management.component.html',
-  styleUrl: './beds-management.component.scss'
+  styleUrls: ['./beds-management.component.scss']
 })
-export class BedsManagementComponent implements OnInit {
+export class BedsManagementComponent implements OnInit, OnDestroy {
+  public selectedStatusFilter: 'All' | 'Available' | 'Occupied' | 'Maintenance' = 'All';
 
-  // Toolbar filters
-  public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
-
-  // Pagination
-  public pageSizeOptions: number[] = [5, 10, 25];
-  public pageSize = 5;
+  public pageSizeOptions: number[] = [6, 12, 24];
+  public pageSize = 6;
   public currentPage = 1;
 
-  // Data
-  private allCases: CaseItem[] = [];
-  public filteredCases: CaseItem[] = [];
-  public pagedCases: CaseItem[] = [];
+  private allBeds: Bed[] = [];
+  public filteredBeds: Bed[] = [];
+  public pagedBeds: Bed[] = [];
 
-  constructor(private dialog: MatDialog) {}
+  private subscription: Subscription | null = null;
+
+  constructor(
+    private dialog: MatDialog,
+    private bedsService: BedsService
+  ) {}
 
   ngOnInit(): void {
-    // Seed sample data (replicates look from screenshot)
-    this.allCases = [
-      {
-        id: 'DIS296190110587',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24) // Oct 24, 2025
-      },
-      {
-        id: 'DIS296190110537',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24)
-      },
-      // extra rows to demonstrate pagination
-      {
-        id: 'DIS296190110530',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Closed',
-        priority: 'Low',
-        owner: 'aarav nair',
-        date: new Date(2025, 9, 22)
-      },
-      {
-        id: 'DIS296190110531',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'On Hold',
-        priority: 'High',
-        owner: 'jaya reddy',
-        date: new Date(2025, 9, 21)
-      },
-      {
-        id: 'DIS296190110532',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'High',
-        owner: 'kiran kumar',
-        date: new Date(2025, 9, 20)
-      },
-      {
-        id: 'DIS296190110533',
-        type: 'Chargeback',
-        subtype: 'VISA',
-        status: 'Closed',
-        priority: 'Medium',
-        owner: 'mike doe',
-        date: new Date(2025, 9, 19)
-      },
-      {
-        id: 'DIS296190110534',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Low',
-        owner: 'priya sharma',
-        date: new Date(2025, 9, 18)
-      },
-      {
-        id: 'DIS296190110535',
-        type: 'Chargeback',
-        subtype: 'AMEX',
-        status: 'On Hold',
-        priority: 'Medium',
-        owner: 'sara lee',
-        date: new Date(2025, 9, 17)
-      }
-    ];
-
-    this.applyAllFilters();
+    this.subscription = this.bedsService.beds$.subscribe(beds => {
+      this.allBeds = beds;
+      this.applyAllFilters();
+    });
   }
 
-  // Derived getters for "Showing X to Y of Z entries"
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   get totalItems(): number {
-    return this.filteredCases.length;
+    return this.filteredBeds.length;
   }
 
   get totalPages(): number {
@@ -129,23 +61,20 @@ export class BedsManagementComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // UI Actions
-  onSelectCasesChange(value: 'All' | 'Open' | 'Closed' | 'On Hold'): void {
-    this.selectedCaseFilter = value;
+  onSelectStatusChange(value: 'All' | 'Available' | 'Occupied' | 'Maintenance'): void {
+    this.selectedStatusFilter = value;
     this.currentPage = 1;
     this.applyAllFilters();
   }
 
   onFilter(): void {
-    // In a real app, open filter panel or popover here.
-    // For now, toggle a sample filter: cycle through status quickly.
-    const order: Array<'All' | 'Open' | 'Closed' | 'On Hold'> = ['All', 'Open', 'Closed', 'On Hold'];
-    const idx = order.indexOf(this.selectedCaseFilter);
-    this.onSelectCasesChange(order[(idx + 1) % order.length]);
+    const order: Array<'All' | 'Available' | 'Occupied' | 'Maintenance'> = ['All', 'Available', 'Occupied', 'Maintenance'];
+    const idx = order.indexOf(this.selectedStatusFilter);
+    this.onSelectStatusChange(order[(idx + 1) % order.length]);
   }
 
   onReset(): void {
-    this.selectedCaseFilter = 'All';
+    this.selectedStatusFilter = 'All';
     this.pageSize = this.pageSizeOptions[0];
     this.currentPage = 1;
     this.applyAllFilters();
@@ -154,51 +83,50 @@ export class BedsManagementComponent implements OnInit {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedCases();
+    this.updatePagedBeds();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedCases();
+    this.updatePagedBeds();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagedCases();
+      this.updatePagedBeds();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagedCases();
+      this.updatePagedBeds();
     }
   }
 
-  trackById(_: number, item: CaseItem): string {
+  trackById(_: number, item: Bed): string {
     return item.id;
   }
 
-  // Core filtering + pagination
   private applyAllFilters(): void {
-    this.filteredCases = this.applyStatusFilter(this.allCases, this.selectedCaseFilter);
-    this.updatePagedCases();
+    this.filteredBeds = this.applyStatusFilter(this.allBeds, this.selectedStatusFilter);
+    this.updatePagedBeds();
   }
 
-  private applyStatusFilter(list: CaseItem[], selected: 'All' | 'Open' | 'Closed' | 'On Hold'): CaseItem[] {
+  private applyStatusFilter(list: Bed[], selected: 'All' | 'Available' | 'Occupied' | 'Maintenance'): Bed[] {
     if (selected === 'All') return [...list];
-    return list.filter(c => c.status === selected);
+    return list.filter(b => b.status === selected);
   }
 
-  private updatePagedCases(): void {
+  private updatePagedBeds(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedCases = this.filteredCases.slice(start, end);
+    this.pagedBeds = this.filteredBeds.slice(start, end);
   }
 
-onAddNewRoom(): void {
+  onAddNewBed(): void {
     const dialogRef = this.dialog.open(BedsManagementModalComponent, {
       width: '480px',
       height: '100vh',
@@ -212,18 +140,34 @@ onAddNewRoom(): void {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('New Room Created:', result);
-        // Handle save logic
+        console.log('Bed Added:', result);
       }
     });
   }
 
+  onEditBed(bed: Bed): void {
+    const dialogRef = this.dialog.open(BedsManagementModalComponent, {
+      width: '480px',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false,
+      data: { bed }
+    });
 
-  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.bedsService.updateBed(result);
+      }
+    });
+  }
 
+  onDeleteBed(bed: Bed): void {
+    if (confirm(`Are you sure you want to delete bed ${bed.id}?`)) {
+      this.bedsService.deleteBed(bed.id);
+    }
+  }
 }
-
-
-
-
-

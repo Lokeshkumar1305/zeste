@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoomTypeManagementModalComponent } from '../room-type-management-modal/room-type-management-modal.component';
 
 export interface RoomType {
+  [x: string]: string;
   roomType: string;
   beds: string;
   description: string;

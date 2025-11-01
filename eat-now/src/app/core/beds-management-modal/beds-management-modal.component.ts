@@ -1,41 +1,48 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Bed } from '../../shared/services/beds.service';
+
 
 @Component({
   selector: 'app-beds-management-modal',
   templateUrl: './beds-management-modal.component.html',
-  styleUrl: './beds-management-modal.component.scss'
+  styleUrls: ['./beds-management-modal.component.scss'],
 })
-export class BedsManagementModalComponent {
-room = {
+export class BedsManagementModalComponent implements OnInit {
+  bed: Bed = {
     id: '',
-    owner: '',
-    status: 'Open',
-    type: 'Dispute',
-    subType: '',
-    priority: 'Medium',
-    createdDate: new Date().toISOString().slice(0, 16),
-    description: '',
+    roomNumber: '',
+    floor: '',
+    bedNumber: '',
+    roomType: '',
+    rent: 0,
+    status: 'Available',
+    amenities: [],
   };
 
-  statuses = ['Open', 'Closed', 'On Hold'];
-  types = ['Dispute', 'Inquiry', 'Escalation'];
-  priorities = ['Low', 'Medium', 'High'];
+  statuses: Array<'Available' | 'Occupied' | 'Maintenance'> = ['Available', 'Occupied', 'Maintenance'];
+  isEditMode = false;
 
   constructor(
     public dialogRef: MatDialogRef<BedsManagementModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    if (data?.room) {
-      this.room = { ...data.room };
+    if (data?.bed) {
+      this.bed = { ...data.bed };
+      this.isEditMode = true;
     }
   }
+
+  ngOnInit(): void {}
 
   onCancel(): void {
     this.dialogRef.close();
   }
 
   onSave(): void {
-    this.dialogRef.close(this.room);
+    if (!this.bed.id || !this.bed.roomNumber) {
+      return;
+    }
+    this.dialogRef.close(this.bed);
   }
 }

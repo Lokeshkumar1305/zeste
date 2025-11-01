@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef,} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AmenitiesManagementModalComponent } from '../amenities-management-modal/amenities-management-modal.component';
-
 import { Subscription } from 'rxjs';
-import { RoomConfigService } from '../../shared/services/room-config.service';
+
+import { RoomConfigService, RoomType } from '../../shared/services/room-config.service';
+import { BedsService } from '../../shared/services/beds.service';
 
 export interface RoomDetails {
   roomNumber: string;
@@ -35,7 +36,7 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
     amenities: [],
   };
 
-  types: string[] = [];
+  roomTypes: RoomType[] = [];
   floors: string[] = [];
   statuses = ['Available', 'Occupied', 'Maintenance'];
   amenityOptions: string[] = [];
@@ -46,7 +47,8 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<RoomManagementModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
-    private roomConfigService: RoomConfigService
+    private roomConfigService: RoomConfigService,
+    private bedsService: BedsService
   ) {
     if (data?.room) {
       this.room = { ...this.room, ...data.room };
@@ -58,9 +60,10 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const roomTypeSub = this.roomConfigService.roomTypes$.subscribe(types => {
-      this.types = types;
-      if (this.types.length > 0 && !this.room.type) {
-        this.room.type = this.types[0];
+      this.roomTypes = types;
+      if (this.roomTypes.length > 0 && !this.room.type) {
+        this.room.type = this.roomTypes[0].name;
+        this.onRoomTypeChange(this.room.type);
       }
     });
 
@@ -76,6 +79,11 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  onRoomTypeChange(roomTypeName: string): void {
+    const bedCount = this.roomConfigService.getBedCountForRoomType(roomTypeName);
+    this.room.beds = bedCount;
   }
 
   openAmenityConfig(): void {
@@ -106,8 +114,24 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     if (!this.room.roomNumber || this.room.monthlyRent === null || !this.room.type) {
+      alert('Please fill in all required fields');
       return;
     }
+
+    if (!this.room.floor || this.room.beds === null || this.room.beds <= 0) {
+      alert('Please select a valid floor and ensure beds count is valid');
+      return;
+    }
+
+    this.bedsService.addBedsForRoom(
+      this.room.roomNumber,
+      this.room.floor,
+      this.room.type,
+      this.room.beds,
+      this.room.monthlyRent,
+      this.room.amenities
+    );
+
     this.dialogRef.close(this.room);
   }
 }
