@@ -76,7 +76,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
       { title: 'Payments', route: '/core/payment-management' }
     ] },
     maintenance: { title: 'Maintenance', items: [
-      { title: 'Maintenance', route: '/core/maintenance-management' }
+      { title: 'Maintenance', route: '/core/maintenance-management' },
+      { title: 'Category', route: '/core/maintenance-category' }
     ] },
     expenses: { title: 'Expenses', items: [
       { title: 'Expenses', route: '/core/expenses-management' }

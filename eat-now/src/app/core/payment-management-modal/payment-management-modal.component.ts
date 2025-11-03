@@ -4,30 +4,30 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-payment-management-modal',
   templateUrl: './payment-management-modal.component.html',
-  styleUrl: './payment-management-modal.component.scss'
+  styleUrls: ['./payment-management-modal.component.scss']
 })
 export class PaymentManagementModalComponent {
-room = {
-    id: '',
-    owner: '',
-    status: 'Open',
-    type: 'Dispute',
-    subType: '',
-    priority: 'Medium',
-    createdDate: new Date().toISOString().slice(0, 16),
-    description: '',
+  payment = {
+    tenantName: '',
+    roomNumber: '',
+    amount: null,
+    paymentType: 'Rent',
+    dueDate: new Date(),
+    status: 'Pending',
+    paymentMethod: '',
+    notes: ''
   };
-
-  statuses = ['Open', 'Closed', 'On Hold'];
-  types = ['Dispute', 'Inquiry', 'Escalation'];
-  priorities = ['Low', 'Medium', 'High'];
 
   constructor(
     public dialogRef: MatDialogRef<PaymentManagementModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    if (data?.room) {
-      this.room = { ...data.room };
+    if (data?.payment) {
+      this.payment = { ...data.payment };
+      // Ensure dueDate is a Date object
+      if (this.payment.dueDate && !(this.payment.dueDate instanceof Date)) {
+        this.payment.dueDate = new Date(this.payment.dueDate);
+      }
     }
   }
 
@@ -36,6 +36,11 @@ room = {
   }
 
   onSave(): void {
-    this.dialogRef.close(this.room);
+    // Optional: Convert dueDate to ISO string or format as needed
+    const result = {
+      ...this.payment,
+      dueDate: this.payment.dueDate ? new Date(this.payment.dueDate).toISOString().split('T')[0] : null
+    };
+    this.dialogRef.close(result);
   }
 }

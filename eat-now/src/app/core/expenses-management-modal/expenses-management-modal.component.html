@@ -1,108 +1,189 @@
 <div class="modal-slide-in">
-  <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">Expenses Details</p>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
-      <i class="bi bi-x-lg"></i>
-    </button>
-  </div>
+    <div class="modal-header d-flex align-items-center justify-content-between">
+        <p class="f-18-m mb-0">Expense Details</p>
+        <button mat-icon-button (click)="onCancel()" class="text-muted">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
 
-  <div class="modal-body">
-    <form>
-      <div class="row ">
-        <!-- Room ID -->
-        <div class="col-md-6">
-          <mat-label class="required">Room ID</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.id" name="id" placeholder="Unique identifier for the room" required />
-          </mat-form-field>
-        </div>
+    <div class="modal-body">
+        <form #expenseForm="ngForm">
+            <div class="row">
 
-        <!-- Room Owner -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Owner</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.owner" name="owner" required>
-              <mat-option value="">Select owner</mat-option>
-              <mat-option value="John Doe">John Doe</mat-option>
-              <mat-option value="Jane Smith">Jane Smith</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+                <!-- Expense Title -->
+                <div class="col-md-6">
+                    <mat-label class="required">Expense Title</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="expense.title" name="title" placeholder="e.g. Electricity Bill"
+                            required />
+                        <mat-error *ngIf="expenseForm.controls['title']?.invalid">
+                            Title is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Status -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Status</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.status" name="status" required>
-              <mat-option *ngFor="let s of statuses" [value]="s">
-                <span class="status-pill" [ngClass]="'status-' + s.toLowerCase().replace(' ', '-')">
-                  <span class="status-dot"></span> {{ s }}
-                </span>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+                <!-- Category -->
+                <div class="col-md-6">
+                    <mat-label class="required">Category</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <mat-select [(ngModel)]="expense.category" name="category" required>
+                            <mat-option *ngFor="let cat of categories" [value]="cat">
+                                {{ cat }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="expenseForm.controls['category']?.invalid">
+                            Category is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Type -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Type</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.type" name="type" required>
-              <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+                <!-- Amount -->
+                <div class="col-md-6">
+                    <mat-label class="required">Amount</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput type="number" [(ngModel)]="expense.amount" name="amount" placeholder="0.00"
+                            required />
+                        <span matTextSuffix>{{ expense.currency }}</span>
+                        <mat-error *ngIf="expenseForm.controls['amount']?.invalid">
+                            Amount is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Sub-Type -->
-        <div class="col-md-6">
-          <mat-label>Room Sub-Type</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.subType" name="subType" />
-          </mat-form-field>
-        </div>
+                <!-- Currency (optional) -->
+                <div class="col-md-6">
+                    <mat-label>Currency</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <mat-select [(ngModel)]="expense.currency" name="currency">
+                            <mat-option *ngFor="let cur of currencies" [value]="cur.code">
+                                {{ cur.code }} – {{ cur.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Priority -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Priority</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.priority" name="priority" required>
-              <mat-option *ngFor="let p of priorities" [value]="p">{{ p }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+                <!-- Date -->
+                <div class="col-md-6">
+                    <mat-label class="required">Date</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [matDatepicker]="datePicker" [(ngModel)]="expense.date" name="date" required />
+                        <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datePicker></mat-datepicker>
+                        <mat-error *ngIf="expenseForm.controls['date']?.invalid">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
-        <!-- Created Date -->
-        <div class="col-md-6">
-          <mat-label>Created Date</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.createdDate" name="createdDate" />
-          </mat-form-field>
-        </div>
+                <!-- Payment Method -->
+                <div class="col-md-6">
+                    <mat-label class="required">Payment Method</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <mat-select [(ngModel)]="expense.paymentMethod" name="paymentMethod" required>
+                            <mat-option *ngFor="let pm of paymentMethods" [value]="pm">
+                                {{ pm }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="expenseForm.controls['paymentMethod']?.invalid">
+                            Payment method is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
-        <!-- Description -->
-        <div class="col-12">
-          <mat-label>Description</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <textarea
-              matInput
-              rows="4"
-              [(ngModel)]="room.description"
-              name="description"
-              placeholder="Detailed description of the room.">
+                <!-- Vendor / Payee -->
+                <div class="col-md-6">
+                    <mat-label class="required">Vendor / Payee</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="expense.vendor" name="vendor"
+                            placeholder="e.g. State Electricity Board" required />
+                        <mat-error *ngIf="expenseForm.controls['vendor']?.invalid">
+                            Vendor is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Cost Center / Project (optional) -->
+                <div class="col-md-6">
+                    <mat-label>Cost Center / Project</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <mat-select [(ngModel)]="expense.costCenter" name="costCenter">
+                            <mat-option *ngFor="let cc of costCenters" [value]="cc">
+                                {{ cc }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Tax Amount (optional) -->
+                <div class="col-md-6">
+                    <mat-label>Tax Amount</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput type="number" [(ngModel)]="expense.taxAmount" name="taxAmount"
+                            placeholder="0.00" />
+                        <span matTextSuffix>{{ expense.currency }}</span>
+                    </mat-form-field>
+                </div>
+
+                <!-- Recurring -->
+                <div class="col-md-6 d-flex align-items-center">
+                    <mat-checkbox [(ngModel)]="expense.isRecurring" name="isRecurring">
+                        Recurring Expense
+                    </mat-checkbox>
+                </div>
+
+                <!-- Receipt / Attachment -->
+
+                <div class="col-12">
+                    <mat-label>Receipt / Attachment</mat-label>
+                    <div class="mt-1">
+                        <input type="file" class="form-control" (change)="onFileSelected($event)"
+                            accept="image/*,.pdf" />
+
+                        <!-- File Name -->
+                        <small *ngIf="expense.receiptFileName" class="text-muted d-block mt-1">
+                            {{ expense.receiptFileName }}
+                        </small>
+
+                        <!-- Image Preview -->
+                        <div *ngIf="imagePreviewUrl" class="mt-2">
+                            <img [src]="imagePreviewUrl" alt="Receipt Preview" class="img-thumbnail"
+                                style="max-height: 200px; max-width: 100%;" />
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Description -->
+                <div class="col-12 mt-3">
+                    <mat-label>Description</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <textarea matInput rows="4" [(ngModel)]="expense.description" name="description"
+                            placeholder="Monthly electricity bill for the building...">
             </textarea>
-          </mat-form-field>
-        </div>
-      </div>
-    </form>
-  </div>
+                    </mat-form-field>
+                </div>
 
-  <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
-    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
-      Cancel
-    </button>
-    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
-      <i class="bi bi-check2 me-1"></i> Create Expenses
-    </button>
+                <!-- Notes (optional) -->
+                <div class="col-12 mt-3">
+                    <mat-label>Notes</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <textarea matInput rows="3" [(ngModel)]="expense.notes" name="notes"
+                            placeholder="Any extra information...">
+            </textarea>
+                    </mat-form-field>
+                </div>
 
-  </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
+            Cancel
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" [disabled]="!expenseForm.valid" (click)="onSave()">
+            <i class="bi bi-check2 me-1"></i> Save Expense
+        </button>
+    </div>
 </div>

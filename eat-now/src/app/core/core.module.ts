@@ -37,7 +37,6 @@ import { TenantManagementModalComponent } from './tenant-management-modal/tenant
 import { PaymentManagementComponent } from './payment-management/payment-management.component';
 import { PaymentManagementModalComponent } from './payment-management-modal/payment-management-modal.component';
 import { MaintenanceManagementComponent } from './maintenance-management/maintenance-management.component';
-import { MaintenanceManagementModalComponent } from './maintenance-management-modal/maintenance-management-modal.component';
 import { ExpensesManagementComponent } from './expenses-management/expenses-management.component';
 import { ExpensesManagementModalComponent } from './expenses-management-modal/expenses-management-modal.component';
 import { RoomTypeManagementComponent } from './room-type-management/room-type-management.component';
@@ -60,6 +59,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AmenitiesManagementComponent } from './amenities-management/amenities-management.component';
+import { MaintenanceCategoryComponent } from './maintenance-category/maintenance-category.component';
+import { MaintenanceManagementModalComponent } from './maintenance-management-modal/maintenance-management-modal.component';
+import { MaintenanceCategoryModalComponent } from './maintenance-category-modal/maintenance-category-modal.component';
+
+
 
 
 
@@ -94,7 +98,6 @@ import { AmenitiesManagementComponent } from './amenities-management/amenities-m
     PaymentManagementComponent,
     PaymentManagementModalComponent,
     MaintenanceManagementComponent,
-    MaintenanceManagementModalComponent,
     ExpensesManagementComponent,
     ExpensesManagementModalComponent,
     RoomTypeManagementComponent,
@@ -104,7 +107,13 @@ import { AmenitiesManagementComponent } from './amenities-management/amenities-m
     FloorsManagementComponent,
     FloorsManagementModalComponent,
     AmenitiesManagementModalComponent,
-    AmenitiesManagementComponent
+    AmenitiesManagementComponent,
+    MaintenanceCategoryComponent,
+ MaintenanceManagementModalComponent,
+ MaintenanceCategoryModalComponent
+ 
+ 
+ 
 
 
   ],

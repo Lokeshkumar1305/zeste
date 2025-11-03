@@ -1,108 +1,182 @@
 <div class="modal-slide-in">
-  <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">Tenant Details</p>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
-      <i class="bi bi-x-lg"></i>
-    </button>
-  </div>
+    <div class="modal-header d-flex align-items-center justify-content-between">
+        <p class="f-18-m mb-0">Tenant Onboarding</p>
+        <button mat-icon-button (click)="onCancel()" class="text-muted">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
 
-  <div class="modal-body">
-    <form>
-      <div class="row ">
-        <!-- Room ID -->
-        <div class="col-md-6">
-          <mat-label class="required">Room ID</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.id" name="id" placeholder="Unique identifier for the room" required />
-          </mat-form-field>
-        </div>
+    <div class="modal-body">
+        <form #tenantForm="ngForm">
+            <div class="row">
+                <!-- Full Name -->
+                <div class="col-md-6">
+                    <mat-label class="required">Full Name</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="tenant.fullName" name="fullName" required
+                            placeholder="e.g. John Doe">
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Owner -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Owner</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.owner" name="owner" required>
-              <mat-option value="">Select owner</mat-option>
-              <mat-option value="John Doe">John Doe</mat-option>
-              <mat-option value="Jane Smith">Jane Smith</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+                <!-- Email -->
+                <div class="col-md-6">
+                    <mat-label class="required">Email</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="tenant.email" name="email" type="email" required
+                            placeholder="john.doe@email.com">
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Status -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Status</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.status" name="status" required>
-              <mat-option *ngFor="let s of statuses" [value]="s">
-                <span class="status-pill" [ngClass]="'status-' + s.toLowerCase().replace(' ', '-')">
-                  <span class="status-dot"></span> {{ s }}
-                </span>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+                <!-- Phone Number -->
+                <div class="col-md-6">
+                    <mat-label class="required">Phone Number</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="tenant.phone" name="phone" required placeholder="+91 9876543210">
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Type -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Type</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.type" name="type" required>
-              <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+                <!-- Room Number -->
+                <div class="col-md-6">
+                    <mat-label class="required">Room Number</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="tenant.roomNumber" name="roomNumber" required placeholder="101">
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Sub-Type -->
-        <div class="col-md-6">
-          <mat-label>Room Sub-Type</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.subType" name="subType" />
-          </mat-form-field>
-        </div>
+                <!-- Check-in Date -->
+                <div class="col-md-6">
+                    <mat-label class="required">Check-in Date</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [matDatepicker]="checkinPicker" [(ngModel)]="tenant.checkinDate"
+                            name="checkinDate" required>
+                        <mat-datepicker-toggle matIconSuffix [for]="checkinPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #checkinPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
 
-        <!-- Room Priority -->
-        <div class="col-md-6">
-          <mat-label class="required">Room Priority</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="room.priority" name="priority" required>
-              <mat-option *ngFor="let p of priorities" [value]="p">{{ p }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+                <!-- Status -->
+                <div class="col-md-6">
+                    <mat-label class="required">Status</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <mat-select [(ngModel)]="tenant.status" name="status" required>
+                            <mat-option value="Active">Active</mat-option>
+                            <mat-option value="Inactive">Inactive</mat-option>
+                            <mat-option value="Pending">Pending</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-        <!-- Created Date -->
-        <div class="col-md-6">
-          <mat-label>Created Date</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="room.createdDate" name="createdDate" />
-          </mat-form-field>
-        </div>
+                <!-- Monthly Rent -->
+                <div class="col-md-6">
+                    <mat-label class="required">Monthly Rent</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <span matTextPrefix>₹&nbsp;</span>
+                        <input matInput [(ngModel)]="tenant.monthlyRent" name="monthlyRent" type="number" required
+                            placeholder="8000">
+                    </mat-form-field>
+                </div>
 
-        <!-- Description -->
-        <div class="col-12">
-          <mat-label>Description</mat-label>
-          <mat-form-field appearance="outline" class="w-100 mt-1">
-            <textarea
-              matInput
-              rows="4"
-              [(ngModel)]="room.description"
-              name="description"
-              placeholder="Detailed description of the room.">
-            </textarea>
-          </mat-form-field>
-        </div>
-      </div>
-    </form>
-  </div>
+                <!-- Security Deposit -->
+                <div class="col-md-6">
+                    <mat-label class="required">Security Deposit</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <span matTextPrefix>₹&nbsp;</span>
+                        <input matInput [(ngModel)]="tenant.securityDeposit" name="securityDeposit" type="number"
+                            required placeholder="16000">
+                    </mat-form-field>
+                </div>
 
-  <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
-    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
-      Cancel
-    </button>
-    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
-      <i class="bi bi-check2 me-1"></i> Create Tenant
-    </button>
+                <!-- Emergency Contact -->
+                <div class="col-md-6">
+                    <mat-label>Emergency Contact</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="tenant.emergencyContact" name="emergencyContact"
+                            placeholder="+91 9876543211">
+                    </mat-form-field>
+                </div>
 
-  </div>
+                <!-- Occupation -->
+                <div class="col-md-6">
+                    <mat-label>Occupation</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="tenant.occupation" name="occupation"
+                            placeholder="Software Engineer">
+                    </mat-form-field>
+                </div>
+
+                <!-- ID Proof Type -->
+                <div class="col-md-6">
+                    <mat-label class="required">ID Proof Type</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <mat-select [(ngModel)]="tenant.idProofType" name="idProofType" required
+                            (selectionChange)="onIdProofTypeChange()">
+                            <mat-option value="">Select ID Type</mat-option>
+                            <mat-option value="Aadhar Card">Aadhar Card</mat-option>
+                            <mat-option value="Passport">Passport</mat-option>
+                            <mat-option value="Driving License">Driving License</mat-option>
+                            <mat-option value="Voter ID">Voter ID</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Dynamic ID Upload (Only after selection) -->
+                <div class="col-12" *ngIf="tenant.idProofType">
+                    <mat-label class="required d-block mb-1">{{ tenant.idProofType }} Upload</mat-label>
+                    <div class="upload-container p-3 border rounded d-flex align-items-center justify-content-between">
+                        <div *ngIf="!tenant.idProofFile; else filePreview">
+                            <input #idFileInput type="file" (change)="onIdFileSelected($event)"
+                                accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+                            <button mat-stroked-button color="primary" (click)="idFileInput.click()" class="me-2">
+                                <i class="bi bi-upload me-1 icon-sm"></i> Choose File
+                            </button>
+                            <small class="text-muted">PDF, JPG, PNG (Max 5MB)</small>
+                        </div>
+
+                        <ng-template #filePreview>
+                            <div class="d-flex align-items-center justify-content-between w-100 gap-2 flex-wrap">
+                                <!-- File Info (left) -->
+                                <div class="d-flex align-items-center gap-2 flex-grow-1">
+                                    <i class="bi bi-file-earmark-check text-success icon-sm"></i>
+                                    <span class="fw-medium text-truncate" style="max-width: 180px;">{{
+                                        tenant.idProofFile.name }}</span>
+                                    <small class="text-muted">({{ formatFileSize(tenant.idProofFile.size) }})</small>
+                                </div>
+
+                                <!-- Action Icons (right) -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <button mat-icon-button color="primary" (click)="downloadFile(tenant.idProofFile)"
+                                        title="Download" class="icon-btn-sm">
+                                        <i class="bi bi-download"></i>
+                                    </button>
+                                    <button mat-icon-button color="warn" (click)="removeIdProof()" title="Remove"
+                                        class="icon-btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="col-12 mt-2">
+                    <mat-label>Address</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <textarea matInput rows="2" [(ngModel)]="tenant.address" name="address"
+                            placeholder="123 Main St, City"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
+            Cancel
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="onSave()"
+            [disabled]="!tenantForm.valid || (tenant.idProofType && !tenant.idProofFile)">
+            <i class="bi bi-check2 me-1"></i> Onboard Tenant
+        </button>
+    </div>
 </div>

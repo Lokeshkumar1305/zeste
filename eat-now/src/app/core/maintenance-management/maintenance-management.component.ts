@@ -1,17 +1,27 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
-import { CaseItem } from '../room-management/room-management.component';
 import { MaintenanceManagementModalComponent } from '../maintenance-management-modal/maintenance-management-modal.component';
 
+
+export interface MaintenanceIssue {
+  tenantName: string;
+  roomNumber: string;
+  category: string;
+  priority: string;
+  title: string;
+  description: string;
+  status:string;
+  imageFile?: File;         // Actual file
+  imagePreview?: string;    // Base64 for preview
+  imageName?: string;       // Original filename
+}
 @Component({
   selector: 'app-maintenance-management',
   templateUrl: './maintenance-management.component.html',
   styleUrl: './maintenance-management.component.scss'
 })
 export class MaintenanceManagementComponent {
-// Toolbar filters
-  public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
+public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
@@ -19,114 +29,86 @@ export class MaintenanceManagementComponent {
   public currentPage = 1;
 
   // Data
-  private allCases: CaseItem[] = [];
-  public filteredCases: CaseItem[] = [];
-  public pagedCases: CaseItem[] = [];
+  private allCases: MaintenanceIssue[] = [];
+  public filteredCases: MaintenanceIssue[] = [];
+  public pagedCases: MaintenanceIssue[] = [];
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample data (replicates look from screenshot)
+    // Seed sample maintenance data
     this.allCases = [
       {
-        id: 'DIS296190110587',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24) // Oct 24, 2025
-      },
-      {
-        id: 'DIS296190110537',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24)
-      },
-      // extra rows to demonstrate pagination
-      {
-        id: 'DIS296190110530',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Closed',
-        priority: 'Low',
-        owner: 'aarav nair',
-        date: new Date(2025, 9, 22)
-      },
-      {
-        id: 'DIS296190110531',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'On Hold',
+        tenantName: 'Ramya Kichagari',
+        roomNumber: '101',
+        title: 'AC not cooling properly',
+        category: 'Electrical',
         priority: 'High',
-        owner: 'jaya reddy',
-        date: new Date(2025, 9, 21)
-      },
-      {
-        id: 'DIS296190110532',
-        type: 'Dispute',
-        subtype: 'MC',
+        description: 'The AC in room 101 is blowing warm air even after setting to 18°C.',
         status: 'Open',
-        priority: 'High',
-        owner: 'kiran kumar',
-        date: new Date(2025, 9, 20)
+        imageFile: undefined,
+        imagePreview: '',
+        imageName: ''
       },
       {
-        id: 'DIS296190110533',
-        type: 'Chargeback',
-        subtype: 'VISA',
-        status: 'Closed',
+        tenantName: 'Aarav Nair',
+        roomNumber: '205',
+        title: 'Leaking faucet in bathroom',
+        category: 'Plumbing',
         priority: 'Medium',
-        owner: 'mike doe',
-        date: new Date(2025, 9, 19)
+        description: 'Bathroom sink faucet drips continuously. Water wastage observed.',
+        status: 'Open',
+        imageFile: undefined,
+        imagePreview: '',
+        imageName: ''
       },
       {
-        id: 'DIS296190110534',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
+        tenantName: 'Priya Sharma',
+        roomNumber: '308',
+        title: 'Broken window latch',
+        category: 'Carpentry',
         priority: 'Low',
-        owner: 'priya sharma',
-        date: new Date(2025, 9, 18)
+        description: 'Window in bedroom does not lock properly. Security concern.',
+        status: 'On Hold',
+        imageFile: undefined,
+        imagePreview: '',
+        imageName: ''
       },
       {
-        id: 'DIS296190110535',
-        type: 'Chargeback',
-        subtype: 'AMEX',
-        status: 'On Hold',
+        tenantName: 'Kiran Kumar',
+        roomNumber: '402',
+        title: 'WiFi not working',
+        category: 'Network',
+        priority: 'High',
+        description: 'No internet connection in room since yesterday.',
+        status: 'Closed',
+        imageFile: undefined,
+        imagePreview: '',
+        imageName: ''
+      },
+      {
+        tenantName: 'Sara Lee',
+        roomNumber: '115',
+        title: 'Flickering light in hallway',
+        category: 'Electrical',
         priority: 'Medium',
-        owner: 'sara lee',
-        date: new Date(2025, 9, 17)
+        description: 'Hallway light flickers when switched on.',
+        status: 'Open',
+        imageFile: undefined,
+        imagePreview: '',
+        imageName: ''
       }
     ];
 
     this.applyAllFilters();
   }
 
-  // Derived getters for "Showing X to Y of Z entries"
-  get totalItems(): number {
-    return this.filteredCases.length;
-  }
-
-  get totalPages(): number {
-    return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
-  }
-
-  get showingFrom(): number {
-    if (this.totalItems === 0) return 0;
-    return (this.currentPage - 1) * this.pageSize + 1;
-  }
-
-  get showingTo(): number {
-    return Math.min(this.currentPage * this.pageSize, this.totalItems);
-  }
-
-  get pageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
+  // Pagination Getters
+  get totalItems(): number { return this.filteredCases.length; }
+  get totalPages(): number { return Math.max(1, Math.ceil(this.totalItems / this.pageSize)); }
+  get showingFrom(): number { return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1; }
+  get showingTo(): number { return Math.min(this.currentPage * this.pageSize, this.totalItems); }
+  get pageNumbers(): number[] { return Array.from({ length: this.totalPages }, (_, i) => i + 1); }
 
   // UI Actions
   onSelectCasesChange(value: 'All' | 'Open' | 'Closed' | 'On Hold'): void {
@@ -136,8 +118,6 @@ export class MaintenanceManagementComponent {
   }
 
   onFilter(): void {
-    // In a real app, open filter panel or popover here.
-    // For now, toggle a sample filter: cycle through status quickly.
     const order: Array<'All' | 'Open' | 'Closed' | 'On Hold'> = ['All', 'Open', 'Closed', 'On Hold'];
     const idx = order.indexOf(this.selectedCaseFilter);
     this.onSelectCasesChange(order[(idx + 1) % order.length]);
@@ -163,30 +143,24 @@ export class MaintenanceManagementComponent {
   }
 
   prevPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePagedCases();
-    }
+    if (this.currentPage > 1) { this.currentPage--; this.updatePagedCases(); }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updatePagedCases();
-    }
+    if (this.currentPage < this.totalPages) { this.currentPage++; this.updatePagedCases(); }
   }
 
-  trackById(_: number, item: CaseItem): string {
-    return item.id;
+  trackById(_: number, item: MaintenanceIssue): string {
+    return item.roomNumber + item.title; // Unique key
   }
 
-  // Core filtering + pagination
+  // Filtering & Pagination
   private applyAllFilters(): void {
     this.filteredCases = this.applyStatusFilter(this.allCases, this.selectedCaseFilter);
     this.updatePagedCases();
   }
 
-  private applyStatusFilter(list: CaseItem[], selected: 'All' | 'Open' | 'Closed' | 'On Hold'): CaseItem[] {
+  private applyStatusFilter(list: MaintenanceIssue[], selected: 'All' | 'Open' | 'Closed' | 'On Hold'): MaintenanceIssue[] {
     if (selected === 'All') return [...list];
     return list.filter(c => c.status === selected);
   }
@@ -197,9 +171,10 @@ export class MaintenanceManagementComponent {
     this.pagedCases = this.filteredCases.slice(start, end);
   }
 
-onAddNewMaintenance(): void {
+  // Action Handlers
+  onAddNewMaintenance(): void {
     const dialogRef = this.dialog.open(MaintenanceManagementModalComponent, {
-      width: '480px',
+      width: '520px',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -209,12 +184,52 @@ onAddNewMaintenance(): void {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: MaintenanceIssue) => {
       if (result) {
-        console.log('New Room Created:', result);
-        // Handle save logic
+        result.status = 'Open'; // Default status
+        this.allCases.unshift(result);
+        this.applyAllFilters();
+        console.log('New Maintenance Added:', result);
       }
     });
+  }
+
+  onEdit(issue: MaintenanceIssue): void {
+    const dialogRef = this.dialog.open(MaintenanceManagementModalComponent, {
+      width: '520px',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      data: { issue: { ...issue } }
+    });
+
+    dialogRef.afterClosed().subscribe((updated: MaintenanceIssue) => {
+      if (updated) {
+        const idx = this.allCases.findIndex(i => i.roomNumber === issue.roomNumber && i.title === issue.title);
+        if (idx !== -1) {
+          this.allCases[idx] = { ...updated, status: this.allCases[idx].status };
+          this.applyAllFilters();
+        }
+      }
+    });
+  }
+
+  onDelete(issue: MaintenanceIssue): void {
+    if (confirm(`Delete maintenance issue for Room ${issue.roomNumber}?`)) {
+      this.allCases = this.allCases.filter(i => !(i.roomNumber === issue.roomNumber && i.title === issue.title));
+      this.applyAllFilters();
+    }
+  }
+
+  // Helper
+  getPriorityClass(priority: string): string {
+    return {
+      'High': 'priority-high',
+      'Medium': 'priority-medium',
+      'Low': 'priority-low'
+    }[priority] || '';
   }
 
 

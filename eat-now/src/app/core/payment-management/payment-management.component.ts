@@ -1,17 +1,27 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
-import { CaseItem } from '../room-management/room-management.component';
 import { PaymentManagementModalComponent } from '../payment-management-modal/payment-management-modal.component';
+
+export interface PaymentItem {
+  id?: string;               // optional internal id (auto-generated)
+  tenantName: string;
+  roomNumber: string;
+  amount: number;
+  paymentType: string;
+  dueDate: Date | string;
+  status: 'Pending' | 'Paid' | 'Overdue' | 'Waived';
+  paymentMethod: string;
+  notes?: string;
+}
 
 @Component({
   selector: 'app-payment-management',
   templateUrl: './payment-management.component.html',
-  styleUrl: './payment-management.component.scss'
+  styleUrls: ['./payment-management.component.scss']
 })
 export class PaymentManagementComponent {
-// Toolbar filters
-  public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
+  // Toolbar filters
+  public selectedStatusFilter: 'All' | 'Pending' | 'Paid' | 'Overdue' | 'Waived' = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
@@ -19,132 +29,131 @@ export class PaymentManagementComponent {
   public currentPage = 1;
 
   // Data
-  private allCases: CaseItem[] = [];
-  public filteredCases: CaseItem[] = [];
-  public pagedCases: CaseItem[] = [];
+  private allPayments: PaymentItem[] = [];
+  public filteredPayments: PaymentItem[] = [];
+  public pagedPayments: PaymentItem[] = [];
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample data (replicates look from screenshot)
-    this.allCases = [
+    // Sample data – matches the fields from the modal
+    this.allPayments = [
       {
-        id: 'DIS296190110587',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24) // Oct 24, 2025
+        id: 'PAY001',
+        tenantName: 'John Doe',
+        roomNumber: '101',
+        amount: 8000,
+        paymentType: 'Rent',
+        dueDate: new Date(2025, 10, 1),   // Nov 1, 2025
+        status: 'Pending',
+        paymentMethod: '',
+        notes: ''
       },
       {
-        id: 'DIS296190110537',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24)
-      },
-      // extra rows to demonstrate pagination
-      {
-        id: 'DIS296190110530',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Closed',
-        priority: 'Low',
-        owner: 'aarav nair',
-        date: new Date(2025, 9, 22)
+        id: 'PAY002',
+        tenantName: 'Jane Smith',
+        roomNumber: '102',
+        amount: 7500,
+        paymentType: 'Rent',
+        dueDate: new Date(2025, 10, 5),
+        status: 'Paid',
+        paymentMethod: 'Bank Transfer',
+        notes: ''
       },
       {
-        id: 'DIS296190110531',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'On Hold',
-        priority: 'High',
-        owner: 'jaya reddy',
-        date: new Date(2025, 9, 21)
+        id: 'PAY003',
+        tenantName: 'Ramya Kichagari',
+        roomNumber: '103',
+        amount: 8200,
+        paymentType: 'Deposit',
+        dueDate: new Date(2025, 9, 28),
+        status: 'Overdue',
+        paymentMethod: '',
+        notes: 'Late notice sent'
       },
       {
-        id: 'DIS296190110532',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'High',
-        owner: 'kiran kumar',
-        date: new Date(2025, 9, 20)
+        id: 'PAY004',
+        tenantName: 'Aarav Nair',
+        roomNumber: '104',
+        amount: 500,
+        paymentType: 'Utility',
+        dueDate: new Date(2025, 10, 10),
+        status: 'Pending',
+        paymentMethod: '',
+        notes: ''
       },
       {
-        id: 'DIS296190110533',
-        type: 'Chargeback',
-        subtype: 'VISA',
-        status: 'Closed',
-        priority: 'Medium',
-        owner: 'mike doe',
-        date: new Date(2025, 9, 19)
+        id: 'PAY005',
+        tenantName: 'Jaya Reddy',
+        roomNumber: '105',
+        amount: 2000,
+        paymentType: 'Maintenance',
+        dueDate: new Date(2025, 10, 15),
+        status: 'Paid',
+        paymentMethod: 'Credit Card',
+        notes: ''
       },
       {
-        id: 'DIS296190110534',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Low',
-        owner: 'priya sharma',
-        date: new Date(2025, 9, 18)
+        id: 'PAY006',
+        tenantName: 'Kiran Kumar',
+        roomNumber: '201',
+        amount: 8000,
+        paymentType: 'Rent',
+        dueDate: new Date(2025, 10, 1),
+        status: 'Waived',
+        paymentMethod: '',
+        notes: 'Waived due to renovation'
       },
       {
-        id: 'DIS296190110535',
-        type: 'Chargeback',
-        subtype: 'AMEX',
-        status: 'On Hold',
-        priority: 'Medium',
-        owner: 'sara lee',
-        date: new Date(2025, 9, 17)
+        id: 'PAY007',
+        tenantName: 'Mike Doe',
+        roomNumber: '202',
+        amount: 7800,
+        paymentType: 'Rent',
+        dueDate: new Date(2025, 10, 3),
+        status: 'Pending',
+        paymentMethod: '',
+        notes: ''
+      },
+      {
+        id: 'PAY008',
+        tenantName: 'Priya Sharma',
+        roomNumber: '203',
+        amount: 600,
+        paymentType: 'Utility',
+        dueDate: new Date(2025, 10, 12),
+        status: 'Paid',
+        paymentMethod: 'Online Payment',
+        notes: ''
       }
     ];
 
     this.applyAllFilters();
   }
 
-  // Derived getters for "Showing X to Y of Z entries"
-  get totalItems(): number {
-    return this.filteredCases.length;
-  }
+  /* ------------------- Pagination Getters ------------------- */
+  get totalItems(): number { return this.filteredPayments.length; }
+  get totalPages(): number { return Math.max(1, Math.ceil(this.totalItems / this.pageSize)); }
+  get showingFrom(): number { return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1; }
+  get showingTo(): number { return Math.min(this.currentPage * this.pageSize, this.totalItems); }
+  get pageNumbers(): number[] { return Array.from({ length: this.totalPages }, (_, i) => i + 1); }
 
-  get totalPages(): number {
-    return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
-  }
-
-  get showingFrom(): number {
-    if (this.totalItems === 0) return 0;
-    return (this.currentPage - 1) * this.pageSize + 1;
-  }
-
-  get showingTo(): number {
-    return Math.min(this.currentPage * this.pageSize, this.totalItems);
-  }
-
-  get pageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-  // UI Actions
-  onSelectCasesChange(value: 'All' | 'Open' | 'Closed' | 'On Hold'): void {
-    this.selectedCaseFilter = value;
+  /* ------------------- UI Actions ------------------- */
+  onSelectStatusChange(value: 'All' | 'Pending' | 'Paid' | 'Overdue' | 'Waived'): void {
+    this.selectedStatusFilter = value;
     this.currentPage = 1;
     this.applyAllFilters();
   }
 
   onFilter(): void {
-    // In a real app, open filter panel or popover here.
-    // For now, toggle a sample filter: cycle through status quickly.
-    const order: Array<'All' | 'Open' | 'Closed' | 'On Hold'> = ['All', 'Open', 'Closed', 'On Hold'];
-    const idx = order.indexOf(this.selectedCaseFilter);
-    this.onSelectCasesChange(order[(idx + 1) % order.length]);
+    const order: Array<'All' | 'Pending' | 'Paid' | 'Overdue' | 'Waived'> =
+      ['All', 'Pending', 'Paid', 'Overdue', 'Waived'];
+    const idx = order.indexOf(this.selectedStatusFilter);
+    this.onSelectStatusChange(order[(idx + 1) % order.length]);
   }
 
   onReset(): void {
-    this.selectedCaseFilter = 'All';
+    this.selectedStatusFilter = 'All';
     this.pageSize = this.pageSizeOptions[0];
     this.currentPage = 1;
     this.applyAllFilters();
@@ -153,51 +162,46 @@ export class PaymentManagementComponent {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedCases();
+    this.updatePagedPayments();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedCases();
+    this.updatePagedPayments();
   }
 
   prevPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePagedCases();
-    }
+    if (this.currentPage > 1) { this.currentPage--; this.updatePagedPayments(); }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updatePagedCases();
-    }
+    if (this.currentPage < this.totalPages) { this.currentPage++; this.updatePagedPayments(); }
   }
 
-  trackById(_: number, item: CaseItem): string {
-    return item.id;
+  trackById(_: number, item: PaymentItem): string {
+    return item.id!;
   }
 
-  // Core filtering + pagination
+  /* ------------------- Core Logic ------------------- */
   private applyAllFilters(): void {
-    this.filteredCases = this.applyStatusFilter(this.allCases, this.selectedCaseFilter);
-    this.updatePagedCases();
+    this.filteredPayments = this.applyStatusFilter(this.allPayments, this.selectedStatusFilter);
+    this.updatePagedPayments();
   }
 
-  private applyStatusFilter(list: CaseItem[], selected: 'All' | 'Open' | 'Closed' | 'On Hold'): CaseItem[] {
+  private applyStatusFilter(list: PaymentItem[], selected: typeof this.selectedStatusFilter): PaymentItem[] {
     if (selected === 'All') return [...list];
-    return list.filter(c => c.status === selected);
+    return list.filter(p => p.status === selected);
   }
 
-  private updatePagedCases(): void {
+  private updatePagedPayments(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedCases = this.filteredCases.slice(start, end);
+    this.pagedPayments = this.filteredPayments.slice(start, end);
   }
 
-onAddNewPayment(): void {
+  /* ------------------- Modal Interactions ------------------- */
+  onAddNewPayment(): void {
     const dialogRef = this.dialog.open(PaymentManagementModalComponent, {
       width: '480px',
       height: '100vh',
@@ -207,21 +211,45 @@ onAddNewPayment(): void {
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
       autoFocus: false,
+      data: {}   // empty for "create"
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: PaymentItem) => {
       if (result) {
-        console.log('New Room Created:', result);
-        // Handle save logic
+        // Give it a unique ID
+        result.id = 'PAY' + String(this.allPayments.length + 1).padStart(3, '0');
+        this.allPayments.unshift(result);
+        this.applyAllFilters();
       }
     });
   }
 
+  onEditPayment(payment: PaymentItem): void {
+    const dialogRef = this.dialog.open(PaymentManagementModalComponent, {
+      width: '480px',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      data: { payment: { ...payment } }
+    });
 
-  
+    dialogRef.afterClosed().subscribe((updated: PaymentItem) => {
+      if (updated) {
+        const idx = this.allPayments.findIndex(p => p.id === payment.id);
+        if (idx > -1) {
+          this.allPayments[idx] = { ...updated, id: payment.id };
+          this.applyAllFilters();
+        }
+      }
+    });
+  }
 
+  onDeletePayment(payment: PaymentItem): void {
+    if (confirm(`Delete payment for ${payment.tenantName} (Room ${payment.roomNumber})?`)) {
+      this.allPayments = this.allPayments.filter(p => p.id !== payment.id);
+      this.applyAllFilters();
+    }
+  }
 }
-
-
-
-

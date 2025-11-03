@@ -24,6 +24,7 @@ import { RoomTypeManagementComponent } from './room-type-management/room-type-ma
 import { FloorsManagementComponent } from './floors-management/floors-management.component';
 import { BedsManagementComponent } from './beds-management/beds-management.component';
 import { AmenitiesManagementComponent } from './amenities-management/amenities-management.component';
+import { MaintenanceCategoryComponent } from './maintenance-category/maintenance-category.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -50,6 +51,7 @@ const routes: Routes = [
   { path: 'floors-management', component: FloorsManagementComponent },
   { path: 'beds-management', component: BedsManagementComponent },
   { path: 'amenities-management', component: AmenitiesManagementComponent },
+  { path: 'maintenance-category', component: MaintenanceCategoryComponent },
 
 ];
 

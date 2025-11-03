@@ -19,9 +19,9 @@
 .modal-body {
   flex: 1;
   padding: 16px 24px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-footer {

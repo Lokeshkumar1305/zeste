@@ -145,11 +145,11 @@
 }
 
 /* Open */
-.status-open {
+.status-paid {
   background: rgba(32, 201, 151, 0.2);
   color: #20C997;
 }
-.status-open .status-dot {
+.status-paid .status-dot {
   background: #20C997;
 }
 
@@ -163,12 +163,20 @@
 }
 
 /* On Hold */
-.status-hold {
+.status-pending {
   background: rgba(245, 158, 11, 0.2);
   color: #f59e0b;
 }
-.status-hold .status-dot {
+.status-pending .status-dot {
   background: #f59e0b;
+}
+
+.status-overdue {
+ background:  #f8bcbc;
+  color: #ef4444;
+}
+.status-overdue .status-dot {
+  background: #ef4444;
 }
 
 /* ========================================

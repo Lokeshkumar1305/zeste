@@ -1,8 +1,23 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
-import { CaseItem } from '../room-management/room-management.component';
 import { TenantManagementModalComponent } from '../tenant-management-modal/tenant-management-modal.component';
+
+export interface Tenant {
+  id?: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  roomNumber: string;
+  checkinDate: Date;
+  status: 'Active' | 'Inactive' | 'Pending';
+  monthlyRent: number;
+  securityDeposit?: number;
+  emergencyContact?: string;
+  occupation?: string;
+  idProofType?: string;
+  idProofFile?: File;
+  address?: string;
+}
 
 @Component({
   selector: 'app-tenant-management',
@@ -10,105 +25,91 @@ import { TenantManagementModalComponent } from '../tenant-management-modal/tenan
   styleUrl: './tenant-management.component.scss'
 })
 export class TenantManagementComponent {
-// Toolbar filters
-  public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
+  // Data
+  private allTenants: Tenant[] = [];
+  public filteredTenants: Tenant[] = [];
+  public pagedTenants: Tenant[] = [];
+
+  // Filter: Fixed typo — "Inactive Chine" → "Inactive"
+  public selectedCaseFilter: 'All' | 'Active' | 'Inactive' | 'Pending' = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
   public pageSize = 5;
   public currentPage = 1;
 
-  // Data
-  private allCases: CaseItem[] = [];
-  public filteredCases: CaseItem[] = [];
-  public pagedCases: CaseItem[] = [];
-
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample data (replicates look from screenshot)
-    this.allCases = [
+    this.allTenants = [
       {
-        id: 'DIS296190110587',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24) // Oct 24, 2025
+        id: 'T1',
+        fullName: 'John Doe',
+        email: 'john.doe@email.com',
+        phone: '+91 9876543210',
+        roomNumber: '101',
+        checkinDate: new Date(2025, 9, 1),
+        status: 'Active',
+        monthlyRent: 8000
       },
       {
-        id: 'DIS296190110537',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24)
-      },
-      // extra rows to demonstrate pagination
-      {
-        id: 'DIS296190110530',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Closed',
-        priority: 'Low',
-        owner: 'aarav nair',
-        date: new Date(2025, 9, 22)
+        id: 'T2',
+        fullName: 'Priya Sharma',
+        email: 'priya.sharma@email.com',
+        phone: '+91 9876543211',
+        roomNumber: '102',
+        checkinDate: new Date(2025, 9, 5),
+        status: 'Pending',
+        monthlyRent: 7500
       },
       {
-        id: 'DIS296190110531',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'On Hold',
-        priority: 'High',
-        owner: 'jaya reddy',
-        date: new Date(2025, 9, 21)
+        id: 'T3',
+        fullName: 'Aarav Nair',
+        email: 'aarav.nair@email.com',
+        phone: '+91 9876543212',
+        roomNumber: '103',
+        checkinDate: new Date(2025, 9, 10),
+        status: 'Active',
+        monthlyRent: 8500
       },
       {
-        id: 'DIS296190110532',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'High',
-        owner: 'kiran kumar',
-        date: new Date(2025, 9, 20)
+        id: 'T4',
+        fullName: 'Jaya Reddy',
+        email: 'jaya.reddy@email.com',
+        phone: '+91 9876543213',
+        roomNumber: '104',
+        checkinDate: new Date(2025, 9, 12),
+        status: 'Inactive',
+        monthlyRent: 7000
       },
       {
-        id: 'DIS296190110533',
-        type: 'Chargeback',
-        subtype: 'VISA',
-        status: 'Closed',
-        priority: 'Medium',
-        owner: 'mike doe',
-        date: new Date(2025, 9, 19)
+        id: 'T5',
+        fullName: 'Kiran Kumar',
+        email: 'kiran.kumar@email.com',
+        phone: '+91 9876543214',
+        roomNumber: '201',
+        checkinDate: new Date(2025, 9, 15),
+        status: 'Active',
+        monthlyRent: 9000
       },
       {
-        id: 'DIS296190110534',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Low',
-        owner: 'priya sharma',
-        date: new Date(2025, 9, 18)
-      },
-      {
-        id: 'DIS296190110535',
-        type: 'Chargeback',
-        subtype: 'AMEX',
-        status: 'On Hold',
-        priority: 'Medium',
-        owner: 'sara lee',
-        date: new Date(2025, 9, 17)
+        id: 'T6',
+        fullName: 'Mike Doe',
+        email: 'mike.doe@email.com',
+        phone: '+91 9876543215',
+        roomNumber: '202',
+        checkinDate: new Date(2025, 9, 18),
+        status: 'Pending',
+        monthlyRent: 8200
       }
     ];
 
     this.applyAllFilters();
   }
 
-  // Derived getters for "Showing X to Y of Z entries"
+  // Pagination Getters
   get totalItems(): number {
-    return this.filteredCases.length;
+    return this.filteredTenants.length;
   }
 
   get totalPages(): number {
@@ -128,19 +129,33 @@ export class TenantManagementComponent {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // UI Actions
-  onSelectCasesChange(value: 'All' | 'Open' | 'Closed' | 'On Hold'): void {
-    this.selectedCaseFilter = value;
-    this.currentPage = 1;
-    this.applyAllFilters();
+  // Filter & Pagination Logic
+  private applyAllFilters(): void {
+    this.filteredTenants = this.applyStatusFilter(this.allTenants, this.selectedCaseFilter);
+    this.updatePagedTenants();
   }
 
+  private applyStatusFilter(
+    list: Tenant[],
+    selected: 'All' | 'Active' | 'Inactive' | 'Pending'
+  ): Tenant[] {
+    if (selected === 'All') return [...list];
+    return list.filter(t => t.status === selected);
+  }
+
+  private updatePagedTenants(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedTenants = this.filteredTenants.slice(start, end);
+  }
+
+  // UI Actions
   onFilter(): void {
-    // In a real app, open filter panel or popover here.
-    // For now, toggle a sample filter: cycle through status quickly.
-    const order: Array<'All' | 'Open' | 'Closed' | 'On Hold'> = ['All', 'Open', 'Closed', 'On Hold'];
+    const order: Array<'All' | 'Active' | 'Inactive' | 'Pending'> = ['All', 'Active', 'Inactive', 'Pending'];
     const idx = order.indexOf(this.selectedCaseFilter);
-    this.onSelectCasesChange(order[(idx + 1) % order.length]);
+    this.selectedCaseFilter = order[(idx + 1) % order.length];
+    this.currentPage = 1;
+    this.applyAllFilters();
   }
 
   onReset(): void {
@@ -153,51 +168,35 @@ export class TenantManagementComponent {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedCases();
+    this.updatePagedTenants();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedCases();
+    this.updatePagedTenants();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagedCases();
+      this.updatePagedTenants();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagedCases();
+      this.updatePagedTenants();
     }
   }
 
-  trackById(_: number, item: CaseItem): string {
-    return item.id;
+  trackByTenantId(_: number, item: Tenant): string {
+    return item.id ?? item.roomNumber;
   }
 
-  // Core filtering + pagination
-  private applyAllFilters(): void {
-    this.filteredCases = this.applyStatusFilter(this.allCases, this.selectedCaseFilter);
-    this.updatePagedCases();
-  }
-
-  private applyStatusFilter(list: CaseItem[], selected: 'All' | 'Open' | 'Closed' | 'On Hold'): CaseItem[] {
-    if (selected === 'All') return [...list];
-    return list.filter(c => c.status === selected);
-  }
-
-  private updatePagedCases(): void {
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.pagedCases = this.filteredCases.slice(start, end);
-  }
-
-onAddNewTenant(): void {
+  // Tenant Actions
+  onAddNewTenant(): void {
     const dialogRef = this.dialog.open(TenantManagementModalComponent, {
       width: '480px',
       height: '100vh',
@@ -207,21 +206,47 @@ onAddNewTenant(): void {
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
       autoFocus: false,
+      data: { tenant: null }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('New Room Created:', result);
-        // Handle save logic
+        const newTenant: Tenant = {
+          ...result,
+          id: 'T' + (this.allTenants.length + 1).toString().padStart(3, '0')
+        };
+        this.allTenants.push(newTenant);
+        this.applyAllFilters();
       }
     });
   }
 
+  onEditTenant(tenant: Tenant): void {
+    const dialogRef = this.dialog.open(TenantManagementModalComponent, {
+      width: '480px',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      data: { tenant }
+    });
 
-  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const idx = this.allTenants.findIndex(t => t.id === result.id);
+        if (idx > -1) {
+          this.allTenants[idx] = result;
+          this.applyAllFilters();
+        }
+      }
+    });
+  }
 
+  onDeleteTenant(tenant: Tenant): void {
+    if (confirm(`Are you sure you want to delete tenant "${tenant.fullName}"?`)) {
+      this.allTenants = this.allTenants.filter(t => t.id !== tenant.id);
+      this.applyAllFilters();
+    }
+  }
 }
-
-
-
-

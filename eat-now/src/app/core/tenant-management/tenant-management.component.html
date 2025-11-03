@@ -1,80 +1,81 @@
 <!-- Page container ensures fixed L/R space and max width -->
 <div class="page-container">
-    <section class="case-card">
-        <!-- Header & Toolbar: Title and buttons are now on the same line and vertically aligned -->
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <!-- Left Side: Title -->
-            <p class="mb-0 f-18-m text-high-contrast">Tenant Details</p>
+  <section class="case-card">
+    <!-- Header & Toolbar -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <p class="mb-0 f-18-m text-high-contrast">Tenant Details</p>
 
-            <!-- Right Side: All Buttons -->
-            <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                    (click)="onFilter()">
-                    <i class="bi bi-funnel"></i>
-                    <span class="f-12-m">Filter</span>
-                </button>
-                <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                    (click)="onReset()">
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                    <span class="f-12-m">Reset</span>
-                </button>
-                <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-                    (click)="onAddNewTenant()">
-                    <i class="bi bi-plus-circle"></i>
-                    <span class="f-14-m">Add New Tenant</span>
-                </button>
-            </div>
-        </div>
+      <div class="d-flex align-items-center gap-2">
+        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+                (click)="onFilter()">
+          <i class="bi bi-funnel"></i>
+          <span class="f-12-m">Filter</span>
+        </button>
+        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+                (click)="onReset()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+          <span class="f-12-m">Reset</span>
+        </button>
+        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
+                (click)="onAddNewTenant()">
+          <i class="bi bi-plus-circle"></i>
+          <span class="f-14-m">Add New Tenant</span>
+        </button>
+      </div>
+    </div>
 
-        <!-- Divider Line -->
-        <div class="toolbar-divider"></div>
+    <!-- Divider Line -->
+    <div class="toolbar-divider"></div>
 
-         <!-- Table -->
+    <!-- Table -->
     <div class="table-container">
-      <table class="case-table" role="table" aria-label="Rooms">
+      <table class="case-table" role="table" aria-label="Tenants">
         <thead>
           <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
             <th scope="col">Room No</th>
-            <th scope="col">Room Type</th>
-            <th scope="col">Floor</th>
-            <th scope="col">Rent</th>
-            <th scope="col">Amenities</th>
-            <th scope="col">Status</th>
+            <th scope="col">Check-in</th>
+            <th scope="col">Rent (INR)</th>
+             <th scope="col">Status</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr *ngFor="let c of pagedCases; trackBy: trackById" class="table-row-hover">
-            <td class="f-14-m">{{ c.id }}</td>
-            <td class="f-14-r">{{ c.type }} - {{ c.subtype }}</td>
-            <td>
-              <span class="status-pill" [ngClass]="{
-                'status-open': c.status === 'Open',
-                'status-closed': c.status === 'Closed',
-                'status-hold': c.status === 'On Hold'
-              }">
+          <tr *ngFor="let t of pagedTenants; trackBy: trackByTenantId" class="table-row-hover">
+            <td class="f-14-m">{{ t.fullName }}</td>
+            <td class="f-14-r">{{ t.email }}</td>
+            <td class="f-14-r">{{ t.phone }}</td>
+            <td class="f-14-r">{{ t.roomNumber }}</td>
+            <td class="f-14-r">{{ t.checkinDate | date:'MMM d, y' }}</td>
+            <td class="f-14-r">{{ t.monthlyRent | number }}</td>
+             <td>
+              <span class="status-pill"
+                    [ngClass]="{
+                      'status-active': t.status === 'Active',
+                      'status-inactive': t.status === 'Inactive',
+                      'status-pending': t.status === 'Pending'
+                    }">
                 <span class="status-dot"></span>
-                {{ c.status }}
+                {{ t.status }}
               </span>
             </td>
-            <td class="f-14-r">{{ c.priority }}</td>
-            <td class="f-14-r text-capitalize">{{ c.owner }}</td>
-            <td class="f-14-r">{{ c.date | date:'MMM d, y' }}</td>
             <td class="text-center">
               <div class="d-inline-flex align-items-center gap-3 action-icons">
-                <button type="button" class="icon-btn" title="Edit">
+                <button type="button" class="icon-btn" title="Edit" (click)="onEditTenant(t)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button type="button" class="icon-btn" title="Delete">
+                <button type="button" class="icon-btn" title="Delete" (click)="onDeleteTenant(t)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </div>
             </td>
           </tr>
 
-          <tr *ngIf="pagedCases.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">No rooms found.</td>
+          <tr *ngIf="pagedTenants.length === 0">
+            <td colspan="8" class="text-center py-4 text-muted">No tenants found.</td>
           </tr>
         </tbody>
       </table>
@@ -117,6 +118,5 @@
         </ul>
       </nav>
     </div>
-    </section>
+  </section>
 </div>
-
