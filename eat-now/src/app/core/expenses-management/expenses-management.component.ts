@@ -1,8 +1,19 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
-import { CaseItem } from '../room-management/room-management.component';
 import { ExpensesManagementModalComponent } from '../expenses-management-modal/expenses-management-modal.component';
+
+export interface ExpenseItem {
+  id: string;
+  title: string;
+  category: string;
+  amount: number;
+  date: Date;
+  paymentMethod: string;
+  vendor: string;
+  description?: string;
+  notes?: string;
+  attachment?: string; // URL or base64
+}
 
 @Component({
   selector: 'app-expenses-management',
@@ -10,8 +21,8 @@ import { ExpensesManagementModalComponent } from '../expenses-management-modal/e
   styleUrl: './expenses-management.component.scss'
 })
 export class ExpensesManagementComponent {
-// Toolbar filters
-  public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
+  // Toolbar filters
+  public selectedCategoryFilter: string = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
@@ -19,96 +30,84 @@ export class ExpensesManagementComponent {
   public currentPage = 1;
 
   // Data
-  private allCases: CaseItem[] = [];
-  public filteredCases: CaseItem[] = [];
-  public pagedCases: CaseItem[] = [];
+  private allExpenses: ExpenseItem[] = [];
+  public filteredExpenses: ExpenseItem[] = [];
+  public pagedExpenses: ExpenseItem[] = [];
+
+  // Categories & Payment Methods (for filtering & modal)
+  public categories: string[] = ['Utilities', 'Maintenance', 'Supplies', 'Rent', 'Salaries', 'Others'];
+  public paymentMethods: string[] = ['Cash', 'Bank Transfer', 'Credit Card', 'UPI', 'Cheque'];
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample data (replicates look from screenshot)
-    this.allCases = [
+    this.allExpenses = [
       {
-        id: 'DIS296190110587',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24) // Oct 24, 2025
+        id: 'EXP001',
+        title: 'Electricity Bill',
+        category: 'Utilities',
+        amount: 1250.00,
+        date: new Date(2025, 9, 15),
+        paymentMethod: 'Bank Transfer',
+        vendor: 'State Electricity Board',
+        description: 'Monthly electricity bill for October',
+        notes: 'Paid on time'
       },
       {
-        id: 'DIS296190110537',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Medium',
-        owner: 'ramya kichagari kichagari',
-        date: new Date(2025, 9, 24)
-      },
-      // extra rows to demonstrate pagination
-      {
-        id: 'DIS296190110530',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Closed',
-        priority: 'Low',
-        owner: 'aarav nair',
-        date: new Date(2025, 9, 22)
+        id: 'EXP002',
+        title: 'Office Rent',
+        category: 'Rent',
+        amount: 15000.00,
+        date: new Date(2025, 9, 1),
+        paymentMethod: 'Cheque',
+        vendor: 'ABC Realty',
+        description: 'Monthly office rent'
       },
       {
-        id: 'DIS296190110531',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'On Hold',
-        priority: 'High',
-        owner: 'jaya reddy',
-        date: new Date(2025, 9, 21)
+        id: 'EXP003',
+        title: 'Printer Paper & Ink',
+        category: 'Supplies',
+        amount: 850.50,
+        date: new Date(2025, 9, 20),
+        paymentMethod: 'Credit Card',
+        vendor: 'Office Depot',
+        notes: 'Bulk purchase'
       },
       {
-        id: 'DIS296190110532',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'High',
-        owner: 'kiran kumar',
-        date: new Date(2025, 9, 20)
+        id: 'EXP004',
+        title: 'Building Maintenance',
+        category: 'Maintenance',
+        amount: 3200.00,
+        date: new Date(2025, 9, 18),
+        paymentMethod: 'Cash',
+        vendor: 'Local Contractor'
       },
       {
-        id: 'DIS296190110533',
-        type: 'Chargeback',
-        subtype: 'VISA',
-        status: 'Closed',
-        priority: 'Medium',
-        owner: 'mike doe',
-        date: new Date(2025, 9, 19)
+        id: 'EXP005',
+        title: 'Internet Bill',
+        category: 'Utilities',
+        amount: 999.00,
+        date: new Date(2025, 9, 10),
+        paymentMethod: 'UPI',
+        vendor: 'Jio Fiber'
       },
       {
-        id: 'DIS296190110534',
-        type: 'Dispute',
-        subtype: 'MC',
-        status: 'Open',
-        priority: 'Low',
-        owner: 'priya sharma',
-        date: new Date(2025, 9, 18)
-      },
-      {
-        id: 'DIS296190110535',
-        type: 'Chargeback',
-        subtype: 'AMEX',
-        status: 'On Hold',
-        priority: 'Medium',
-        owner: 'sara lee',
-        date: new Date(2025, 9, 17)
+        id: 'EXP006',
+        title: 'Staff Salaries',
+        category: 'Salaries',
+        amount: 45000.00,
+        date: new Date(2025, 9, 30),
+        paymentMethod: 'Bank Transfer',
+        vendor: 'HR Department'
       }
     ];
 
     this.applyAllFilters();
   }
 
-  // Derived getters for "Showing X to Y of Z entries"
+  // --- Pagination Getters ---
   get totalItems(): number {
-    return this.filteredCases.length;
+    return this.filteredExpenses.length;
   }
 
   get totalPages(): number {
@@ -116,8 +115,7 @@ export class ExpensesManagementComponent {
   }
 
   get showingFrom(): number {
-    if (this.totalItems === 0) return 0;
-    return (this.currentPage - 1) * this.pageSize + 1;
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get showingTo(): number {
@@ -128,23 +126,17 @@ export class ExpensesManagementComponent {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // UI Actions
-  onSelectCasesChange(value: 'All' | 'Open' | 'Closed' | 'On Hold'): void {
-    this.selectedCaseFilter = value;
+  // --- UI Actions ---
+  onFilter(): void {
+    const order = ['All', ...this.categories];
+    const idx = order.indexOf(this.selectedCategoryFilter);
+    this.selectedCategoryFilter = order[(idx + 1) % order.length];
     this.currentPage = 1;
     this.applyAllFilters();
   }
 
-  onFilter(): void {
-    // In a real app, open filter panel or popover here.
-    // For now, toggle a sample filter: cycle through status quickly.
-    const order: Array<'All' | 'Open' | 'Closed' | 'On Hold'> = ['All', 'Open', 'Closed', 'On Hold'];
-    const idx = order.indexOf(this.selectedCaseFilter);
-    this.onSelectCasesChange(order[(idx + 1) % order.length]);
-  }
-
   onReset(): void {
-    this.selectedCaseFilter = 'All';
+    this.selectedCategoryFilter = 'All';
     this.pageSize = this.pageSizeOptions[0];
     this.currentPage = 1;
     this.applyAllFilters();
@@ -153,75 +145,101 @@ export class ExpensesManagementComponent {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedCases();
+    this.updatePagedExpenses();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedCases();
+    this.updatePagedExpenses();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagedCases();
+      this.updatePagedExpenses();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagedCases();
+      this.updatePagedExpenses();
     }
   }
 
-  trackById(_: number, item: CaseItem): string {
+  trackById(_: number, item: ExpenseItem): string {
     return item.id;
   }
 
-  // Core filtering + pagination
+  // --- Core Logic ---
   private applyAllFilters(): void {
-    this.filteredCases = this.applyStatusFilter(this.allCases, this.selectedCaseFilter);
-    this.updatePagedCases();
+    this.filteredExpenses = this.applyCategoryFilter(this.allExpenses, this.selectedCategoryFilter);
+    this.updatePagedExpenses();
   }
 
-  private applyStatusFilter(list: CaseItem[], selected: 'All' | 'Open' | 'Closed' | 'On Hold'): CaseItem[] {
-    if (selected === 'All') return [...list];
-    return list.filter(c => c.status === selected);
+  private applyCategoryFilter(list: ExpenseItem[], filter: string): ExpenseItem[] {
+    if (filter === 'All') return [...list];
+    return list.filter(e => e.category === filter);
   }
 
-  private updatePagedCases(): void {
+  private updatePagedExpenses(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedCases = this.filteredCases.slice(start, end);
+    this.pagedExpenses = this.filteredExpenses.slice(start, end);
   }
 
-onAddNewExpenses(): void {
+  // --- CRUD Actions ---
+  onAddNewExpenses(): void {
     const dialogRef = this.dialog.open(ExpensesManagementModalComponent, {
-      width: '480px',
+      width: '560px',
+      maxWidth: '90vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
+      data: { expense: null, categories: this.categories, paymentMethods: this.paymentMethods },
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: ExpenseItem) => {
       if (result) {
-        console.log('New Room Created:', result);
-        // Handle save logic
+        result.id = 'EXP' + String(this.allExpenses.length + 1).padStart(3, '0');
+        this.allExpenses.push(result);
+        this.applyAllFilters();
       }
     });
   }
 
+  onEditExpense(expense: ExpenseItem): void {
+    const dialogRef = this.dialog.open(ExpensesManagementModalComponent, {
+      width: '560px',
+      maxWidth: '90vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      data: { expense: { ...expense }, categories: this.categories, paymentMethods: this.paymentMethods },
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+    });
 
-  
+    dialogRef.afterClosed().subscribe((result: ExpenseItem) => {
+      if (result) {
+        const index = this.allExpenses.findIndex(e => e.id === expense.id);
+        if (index !== -1) {
+          this.allExpenses[index] = result;
+          this.applyAllFilters();
+        }
+      }
+    });
+  }
 
+  onDeleteExpense(id: string): void {
+    if (confirm('Are you sure you want to delete this expense?')) {
+      this.allExpenses = this.allExpenses.filter(e => e.id !== id);
+      this.applyAllFilters();
+    }
+  }
 }
-
-
-
-

@@ -1,110 +1,144 @@
-import { Component, Inject, ViewChild } from '@angular/core';
-import { Area, Menu, Table, Variation } from '../../common-library/model';
-import { MatTableDataSource } from '@angular/material/table';
-import { NgForm } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AreaTableModalComponent } from '../area-table-modal/area-table-modal.component';
-import { Router } from '@angular/router';
-import { EncryptionService } from '../../shared/services/encryption.service';
-import { ApiService } from '../../common-library/services/api.service';
-import { APIPath } from '../../common-library/api-enum';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
+const VEG = 'VEG';
+const NON_VEG = 'NON_VEG';
+const EGG = 'EGG';
+
+interface MenuItem {
+  itemName: string;
+  description: string;
+  mealType: string;
+  itemTypes: string[];        // e.g. ["Spicy", "Jain"]
+  itemType: typeof VEG | typeof NON_VEG | typeof EGG;  // <-- changed to single value
+  isAvailable: boolean;
+  imageFile?: File;
+  imageUrl?: string;
+}
 
 @Component({
   selector: 'app-menu-modal',
   templateUrl: './menu-modal.component.html',
-  styleUrl: './menu-modal.component.scss'
+  styleUrls: ['./menu-modal.component.scss']
 })
 export class MenuModalComponent {
- dataSource = new MatTableDataSource<any>();
-  variants = new MatTableDataSource<any>();
-  hasVariation = false;
-  dataObj = new Menu();
-  displayedColumns: string[] = ['variant'];
-  @ViewChild('MenuForm')
-  AreaForm!: NgForm;
-  @ViewChild('TableForm') TableForm!: NgForm;
-  constructor(private dialogRef: MatDialogRef<MenuModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-private router: Router, public encryptservice: EncryptionService, public postService: ApiService) {
+  @ViewChild('itemImageInput') itemImageInput!: ElementRef<HTMLInputElement>;
 
-  }
-  ngOnInit() {
-    this.addRow();
-   
-  }
-  dialogClose() {
-    this.dialogRef.removePanelClass('custom-dialog-animation');
-    this.dialogRef.addPanelClass('custom-dialog-close-animation');
-    setTimeout(() => {
-      this.dialogRef.close();
-    }, 250);
+  // Constants exposed to template
+  VEG = VEG;
+  NON_VEG = NON_VEG;
+  EGG = EGG;
 
-  }
+  newMealType: string = '';
 
-    uploadedImage: string | ArrayBuffer | null = null;
-
- uploadFile(event: any) {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      this.uploadedImage = e.target?.result || null;  
-    };
-
-    reader.readAsDataURL(file);
-  }
-}
-
-addRow() {
-  if (this.data.type == 'Menu') {
-    const newRow = new Variation();
-    this.variants.data.push(newRow);
-    this.variants.data = [...this.variants.data];
-  }
-}
-
-
-
-removeVariant(index: number): void {
-  const updatedData = [...this.variants.data]; 
-  updatedData.splice(index, 1);                
-  this.variants.data = updatedData;            
-}
-
-createMenu() {
- 
-  const payload: any = {
-    ...this.dataObj,
-    image: this.uploadedImage,
-    variations: this.hasVariation ? this.variants.data.map(variant => ({
-      variationName: variant.variantName,
-      price: variant.variantCode   
-    })) : []
+  menu: MenuItem = {
+    itemName: '',
+    description: '',
+    mealType: '',
+    itemTypes: [],
+    itemType: VEG,           // default value
+    isAvailable: true
   };
 
-  this.postService.doPost(APIPath.CREATE_MENU, payload).subscribe({
-    next: (response) => {
-      console.log('Menu created successfully:', response);
-      this.dialogRef.close(true); 
-    },
-    error: (error) => {
-      console.error('Error creating menu:', error);
-    }
-  });
-}
+  imagePreviewUrl: SafeUrl | null = null;
 
+  // Meal Type Configuration (unchanged)
+  allMealTypes = ['Breakfast', 'Lunch', 'Dinner'];
+  enabledMealTypes: { [key: string]: boolean } = {
+    Breakfast: true,
+    Lunch: true,
+    Dinner: true
+  };
+  availableMealTypes: string[] = ['Breakfast', 'Lunch', 'Dinner'];
+  showMealConfig = false;
 
-
-  CreateUpdate() {
-
+  constructor(
+    public dialogRef: MatDialogRef<MenuModalComponent>,
+    private sanitizer: DomSanitizer
+  ) {
+    this.updateAvailableMealTypes();
   }
 
-
-
-
-
+ openMealTypeConfig() {
+    this.showMealConfig = true;
+  }
 
  
+  updateAvailableMealTypes() {
+    this.availableMealTypes = this.allMealTypes.filter(type => this.enabledMealTypes[type]);
+    if (this.menu.mealType && !this.availableMealTypes.includes(this.menu.mealType)) {
+      this.menu.mealType = '';
+    }
+  }
+
+  toggleItemType(type: string) {
+    const idx = this.menu.itemTypes.indexOf(type);
+    if (idx > -1) {
+      this.menu.itemTypes.splice(idx, 1);
+    } else {
+      this.menu.itemTypes.push(type);
+    }
+  }
+
+  // ... other methods (image, meal config, save, cancel) unchanged ...
+
+  onImageSelected(event: any) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/') && file.size <= 2 * 1024 * 1024) {
+      this.menu.imageFile = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else if (file) {
+      alert('Please select a valid image under 2MB');
+    }
+  }
+
+  addMealType() {
+    const trimmed = this.newMealType.trim();
+    if (trimmed && !this.availableMealTypes.includes(trimmed)) {
+      this.availableMealTypes.push(trimmed);
+      this.newMealType = '';
+    }
+  }
+
+  removeMealType(type: string) {
+    if (this.availableMealTypes.length === 1) return;
+
+    this.availableMealTypes = this.availableMealTypes.filter(t => t !== type);
+
+    // If deleted type was selected, clear selection
+    if (this.menu.mealType === type) {
+      this.menu.mealType = '';
+    }
+  }
+
+  removeImage() {
+    this.menu.imageFile = undefined;
+    this.imagePreviewUrl = null;
+    if (this.itemImageInput) {
+      this.itemImageInput.nativeElement.value = '';
+    }
+  }
+
+  onCancel() {
+    this.dialogRef.close();
+  }
+
+  closeConfig() {
+    this.showMealConfig = false;
+  }
+
+  onSave() {
+    const payload = {
+      ...this.menu,
+      enabledMealTypes: this.enabledMealTypes
+    };
+    this.dialogRef.close(payload);
+  }
 
 
 }

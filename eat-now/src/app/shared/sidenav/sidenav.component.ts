@@ -72,6 +72,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
     tenants: { title: 'Tenants', items: [
       { title: 'Tenants', route: '/core/tenant-management' }
     ] },
+
+      menu: { title: 'Menu', items: [
+      { title: 'Menu', route: '/core/menu' }
+    ] },
     payments: { title: 'Payments', items: [
       { title: 'Payments', route: '/core/payment-management' }
     ] },
@@ -80,7 +84,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
       { title: 'Category', route: '/core/maintenance-category' }
     ] },
     expenses: { title: 'Expenses', items: [
-      { title: 'Expenses', route: '/core/expenses-management' }
+      { title: 'Expenses', route: '/core/expenses-management' },
+       { title: 'Category', route: '/core/expenses-category' }
     ] }
   };
 

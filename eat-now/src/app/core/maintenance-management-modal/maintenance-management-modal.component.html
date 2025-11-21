@@ -1,7 +1,7 @@
 <!-- src/app/maintenance/maintenance-modal/maintenance-modal.component.html -->
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">Maintenance Details</p>
+    <p class="f-18-m mb-0">Complaints Details</p>
     <button mat-icon-button (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
@@ -118,7 +118,7 @@
     <button type="button" class="btn btn-primary btn-sm" (click)="onSave()"
             [disabled]="!f.valid || isSubmitting">
       <i class="bi bi-check2 me-1"></i>
-      <span *ngIf="!isSubmitting">Create Maintenance</span>
+      <span *ngIf="!isSubmitting">Create Complaints</span>
       <span *ngIf="isSubmitting">Saving...</span>
     </button>
   </div>

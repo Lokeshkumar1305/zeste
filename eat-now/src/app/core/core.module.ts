@@ -62,6 +62,8 @@ import { AmenitiesManagementComponent } from './amenities-management/amenities-m
 import { MaintenanceCategoryComponent } from './maintenance-category/maintenance-category.component';
 import { MaintenanceManagementModalComponent } from './maintenance-management-modal/maintenance-management-modal.component';
 import { MaintenanceCategoryModalComponent } from './maintenance-category-modal/maintenance-category-modal.component';
+import { ExpensesCategoryComponent } from './expenses-category/expenses-category.component';
+import { ExpensesCategoryModalComponent } from './expenses-category-modal/expenses-category-modal.component';
 
 
 
@@ -110,7 +112,9 @@ import { MaintenanceCategoryModalComponent } from './maintenance-category-modal/
     AmenitiesManagementComponent,
     MaintenanceCategoryComponent,
  MaintenanceManagementModalComponent,
- MaintenanceCategoryModalComponent
+ MaintenanceCategoryModalComponent,
+ ExpensesCategoryComponent,
+ ExpensesCategoryModalComponent
  
  
  

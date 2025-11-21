@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
@@ -6,15 +6,12 @@ interface Expense {
   title: string;
   category: string;
   amount: number;
-  currency: string;
   date: Date | null;
   paymentMethod: string;
   vendor: string;
-  costCenter?: string;
-  taxAmount?: number;
-  isRecurring: boolean;
   receiptFile?: File;
   receiptFileName?: string;
+  receiptUrl?: string;
   description: string;
   notes?: string;
 }
@@ -25,38 +22,22 @@ interface Expense {
   styleUrls: ['./expenses-management-modal.component.scss']
 })
 export class ExpensesManagementModalComponent {
-  // Dropdown options
-  categories = [
-    'Utilities', 'Rent', 'Supplies', 'Travel', 'Meals', 'Equipment',
-    'Marketing', 'Insurance', 'Taxes', 'Other'
-  ];
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
+  categories = ['Utilities', 'Rent', 'Supplies', 'Travel', 'Meals', 'Equipment', 'Marketing', 'Insurance', 'Taxes', 'Other'];
   paymentMethods = ['Bank Transfer', 'Cash', 'Credit Card', 'Debit Card', 'UPI', 'Cheque'];
 
-  currencies = [
-    { code: 'USD', name: 'US Dollar' },
-    { code: 'EUR', name: 'Euro' },
-    { code: 'INR', name: 'Indian Rupee' },
-    { code: 'GBP', name: 'British Pound' }
-  ];
-
-  costCenters = ['Admin', 'IT', 'Marketing', 'Operations', 'HR', 'Sales'];
-
-  // Model
   expense: Expense = {
     title: '',
     category: '',
     amount: 0,
-    currency: 'USD',
     date: new Date(),
     paymentMethod: '',
     vendor: '',
-    isRecurring: false,
     description: '',
     notes: ''
   };
 
-  // Image preview URL
   imagePreviewUrl: SafeUrl | null = null;
 
   constructor(
@@ -69,45 +50,69 @@ export class ExpensesManagementModalComponent {
       if (typeof this.expense.date === 'string') {
         this.expense.date = new Date(this.expense.date);
       }
-
-      // If editing and there's an existing image URL (from server), show preview
       if (data.expense.receiptUrl) {
         this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(data.expense.receiptUrl);
       }
     }
   }
 
-  // File handling with preview
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
       this.expense.receiptFile = file;
       this.expense.receiptFileName = file.name;
-
-      // Generate preview only for images
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        // For non-image files (like PDF), clear preview
-        this.imagePreviewUrl = null;
-      }
+      this.updatePreview(file);
     }
   }
 
-  // Dialog actions
+  private updatePreview(file: File): void {
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.imagePreviewUrl = null;
+    }
+  }
+
+  removeFile(): void {
+    this.expense.receiptFile = undefined;
+    this.expense.receiptFileName = undefined;
+    this.imagePreviewUrl = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+
+  downloadFile(): void {
+    if (this.expense.receiptFile) {
+      const url = window.URL.createObjectURL(this.expense.receiptFile);
+      this.triggerDownload(url, this.expense.receiptFileName!);
+    } else if (this.expense.receiptUrl) {
+      this.triggerDownload(this.expense.receiptUrl, this.expense.receiptFileName || 'receipt');
+    }
+  }
+
+  private triggerDownload(url: string, filename: string): void {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    if (this.expense.receiptFile) {
+      window.URL.revokeObjectURL(url);
+    }
+  }
+
   onCancel(): void {
     this.dialogRef.close();
   }
 
   onSave(): void {
     const payload = { ...this.expense };
-    if (payload.receiptFile) {
-      payload['receiptFile'] = payload.receiptFile;
-    }
     this.dialogRef.close(payload);
   }
 }

@@ -78,6 +78,19 @@
         </div>
       </li>
 
+        <li class="sidenav-item"
+          [class.active]="selectedMenu === 'menu'"
+          [class.hovered]="hoveredMenu === 'menu'"
+          (mouseenter)="onMenuHover('menu', $event)"
+          (mouseleave)="onMenuLeave()"
+          (click)="selectMenu('menu')"
+          title="Menu">
+        <div class="menu-icon-wrapper">
+          <i class="bi bi-list-ul"></i>
+          <span class="menu-text">Menu</span>
+        </div>
+      </li>
+
       <li class="sidenav-item"
           [class.active]="selectedMenu === 'payments'"
           [class.hovered]="hoveredMenu === 'payments'"
