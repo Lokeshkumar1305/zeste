@@ -40,20 +40,24 @@ $hover-bg: #f0fdfa;
   padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid #f3f4f6;
+  gap: 14px;
+  background: white !important;           /* Force white */
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
 
   .logo-img {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: contain;
   }
 
   .logo-text {
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 800;
+    font-size: 20px;
     color: #1e40af;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
   }
 }
 
@@ -244,7 +248,6 @@ $hover-bg: #f0fdfa;
     }
 
     &.active {
-      background: #ecfdf5;
 
       .line {
         width: 32px;

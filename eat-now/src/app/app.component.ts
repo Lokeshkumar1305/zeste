@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from './common-library/services/api.service';
@@ -31,22 +31,16 @@ export class AppComponent implements OnInit {
     public snackbar: MatSnackBar,
     public postService: ApiService,
     private theme: ThemeService,
-    public layout: LayoutService
+    public layout: LayoutService,
+    private renderer: Renderer2  // Add Renderer2
   ) { }
 
   ngOnInit() {
-
-    this.layout.collapsed$.subscribe(collapsed => {
-    document.body.classList.toggle('sidenav-collapsed', collapsed);
-  });
-    // Example: fetch user info from session or service
     this.loggedInUser = "eatnow@gmail.com";
     const lu = this.loggedInUser.split('@')[0].replace('.', ' ');
-    this.userName = lu
-     this.theme.init();
+    this.userName = lu;
+    this.theme.init();
   }
-
-
 
   toggleSidebar() {
     this.sidebarCollapsed = !this.sidebarCollapsed;

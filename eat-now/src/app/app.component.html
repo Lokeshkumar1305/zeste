@@ -1,16 +1,18 @@
-<!-- <div style="padding: 0; margin: 0;">
-  <router-outlet></router-outlet>
-  <div class="gap" *ngIf="loginService.isUserLoggedIn()"></div>
-</div> -->
-
-
-<div class="app-container">
-  <app-sidenav [isCollapsed]="sidebarCollapsed" (toggle)="toggleSidebar()">
+<div class="app-container" [class.sidenav-collapsed]="sidebarCollapsed">
+  <app-sidenav
+    [isCollapsed]="sidebarCollapsed"
+    (toggle)="toggleSidebar()">
   </app-sidenav>
+
   <div class="main-content">
-    <app-header [sidebarCollapsed]="sidebarCollapsed" (sidebarToggle)="toggleSidebar()">
+    <app-header
+      [sidebarCollapsed]="sidebarCollapsed"
+      (sidebarToggle)="toggleSidebar()">
     </app-header>
-    <app-breadcrumb></app-breadcrumb>
+
+    <!-- Pass the same state here -->
+    <app-breadcrumb [sidebarCollapsed]="sidebarCollapsed"></app-breadcrumb>
+
     <main class="content-wrapper">
       <router-outlet></router-outlet>
     </main>

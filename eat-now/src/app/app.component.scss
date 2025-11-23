@@ -1,13 +1,7 @@
 :host {
-  --sidenav-width: 64px;
+  --sidenav-width-expanded: 250px;
+  --sidenav-width-collapsed: 78px;
   --header-height: 64px;
-  --breadcrumb-height: 48px;
-  /* Base colors (adjust to your theme) */
-  // --bg-page: #f5f6fb;
-}
-
-body.sidenav-collapsed .main-content {
-  margin-left: 78px;
 }
 
 .app-container {
@@ -15,26 +9,26 @@ body.sidenav-collapsed .main-content {
   min-height: 100vh;
 }
 
-.app-container { display: flex; }
 .main-content {
   flex: 1;
-  margin-left: 250px;           
+  margin-left: var(--sidenav-width-expanded);   // 250px
   transition: margin-left 0.3s ease;
-  padding-top: 64px;          
+  padding-top: 100px;
 }
 
-body.sidenav-collapsed .main-content {
-  margin-left: 78px;
+.app-container.sidenav-collapsed .main-content {
+  margin-left: var(--sidenav-width-collapsed);  // 78px ← now works!
 }
 
+/* Content area padding */
 .content-wrapper {
   padding: 24px;
   min-height: calc(100vh - 64px);
 }
 
-
+/* Mobile: sidebar overlays, main content full width */
 @media (max-width: 768px) {
-  .main-content { margin-left: 0 !important; }
+  .main-content {
+    margin-left: 0 !important;
+  }
 }
-
-
