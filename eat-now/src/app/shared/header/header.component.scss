@@ -5,21 +5,19 @@
   right: 0;
   height: 64px;
   background-color: #ffffff !important;
-  color: #333 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  color: #111827 !important;
   border-bottom: 1px solid #e5e7eb;
   display: flex !important;
   align-items: center !important;
-  justify-content: space-between !important; // Added
-  z-index: 1000 !important;
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1); // Added width transition
   padding: 0 24px !important;
-  width: calc(100% - 250px) !important; // Added explicit width
-  overflow: hidden; // Prevent overflow
+  z-index: 1000 !important;
+  box-shadow: none !important;
+  width: calc(100% - 250px) !important;
+  transition: left 0.3s ease, width 0.3s ease;
 
   &.collapsed {
     left: 78px;
-    width: calc(100% - 78px) !important; // Updated width for collapsed state
+    width: calc(100% - 78px) !important;
   }
 
   @media (max-width: 768px) {
@@ -29,35 +27,133 @@
   }
 }
 
+/* Left menu icon (no circle, blue color) */
 .menu-toggle {
-  color: #374151 !important;
-  min-width: 48px !important;
-  width: 48px !important;
-  height: 48px !important;
-  flex-shrink: 0; // Prevent shrinking
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.04) !important;
-  }
+ color: #374151 !important;
+  width: 40px !important;
+  height: 40px !important;
 
   mat-icon {
-    font-size: 24px !important;
-    width: 24px !important;
-    height: 24px !important;
+    font-size: 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  &:hover {
+    background: transparent !important;
   }
 }
 
 .spacer {
   flex: 1 1 auto;
-  min-width: 16px; // Minimum spacing
 }
 
 .header-actions {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
-  flex-shrink: 0; // Prevent shrinking
-  margin-left: auto; // Keep it on the right
+  gap: 12px !important;
+}
+
+/* Thin vertical divider between icons and profile */
+.header-divider {
+  height: 28px;
+  margin: 0 4px;
+  border-color: #e5e7eb;
+}
+
+/* Round icon buttons on the right */
+.circle-icon-btn.mat-mdc-icon-button {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 9999px !important;
+  background-color: #f2f4f7 !important;  // light grey/blue circle
+  color: #344054 !important;
+  padding: 0 !important;
+
+  .mat-mdc-button-touch-target {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  mat-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  &:hover {
+    background-color: #e5e7eb !important;
+  }
+}
+
+/* Button itself */
+.profile-chip {
+  padding: 0 !important;
+   min-height: 50px !important;
+  min-width: 150px !important;
+  background: transparent !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+
+/* Our own wrapper inside the button */
+.profile-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;  /* keeps everything on one line */
+}
+
+/* Avatar circle on the left */
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #2563eb;
+}
+
+/* Name over role */
+.profile-text-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+
+.profile-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.profile-role {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Arrow on the right */
+.chevron-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: #9ca3af;
+  margin-left: 4px;
+}
+
+
+
+.spacer {
+  flex: 1 1 auto;
+  min-width: 16px; // Minimum spacing
 }
 
 .notification-btn,

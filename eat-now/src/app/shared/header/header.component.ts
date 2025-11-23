@@ -81,6 +81,14 @@ onResize() {
     this.layout.collapsed$.subscribe(val => this.isSidenavCollapsed = val);
   }
 
+get userInitials(): string {
+  return this.userName
+    .split(' ')
+    .filter(p => !!p)
+    .map(p => p[0])
+    .join('')
+    .toUpperCase();
+}
 
 
  toggleSidebar() {

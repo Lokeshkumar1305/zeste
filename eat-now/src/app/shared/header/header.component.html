@@ -1,29 +1,45 @@
 <mat-toolbar class="toucan-header" [class.collapsed]="sidebarCollapsed">
-  <div class="header-left">
-    <button mat-icon-button (click)="toggleSidebar()" class="menu-toggle">
-      <mat-icon>menu</mat-icon>
-    </button>
-  </div>
+  <!-- Left: menu / sidebar toggle -->
+  <button mat-icon-button (click)="toggleSidebar()" class="menu-toggle">
+    <mat-icon>menu</mat-icon>
+  </button>
 
   <span class="spacer"></span>
 
+  <!-- Right: icons + profile -->
   <div class="header-actions">
-    <button mat-icon-button class="notification-btn" [matMenuTriggerFor]="notificationMenu">
-      <mat-icon [matBadge]="notificationCount > 0 ? notificationCount : null" matBadgeColor="warn">notifications</mat-icon>
+    <!-- Example extra icon (screen / layout) -->
+    <button mat-icon-button class="circle-icon-btn">
+      <mat-icon>crop_free</mat-icon>
     </button>
 
-    <button mat-icon-button class="profile-btn" [matMenuTriggerFor]="profileMenu">
-      <div class="user-profile">
-        <img [src]="userAvatar" alt="User Avatar" class="avatar-img" />
-        <div class="user-text">
-          <div class="user-name">{{ userName }}</div>
-          <div class="user-role">{{ userRole }}</div>
+    <!-- Notifications -->
+    <button mat-icon-button class="circle-icon-btn" [matMenuTriggerFor]="notificationMenu">
+      <mat-icon>notifications_none</mat-icon>
+    </button>
+
+    <mat-divider class="header-divider" vertical></mat-divider>
+
+    <!-- Profile -->
+    <button mat-button class="profile-chip" [matMenuTriggerFor]="profileMenu">
+      <!-- FLEX wrapper that we control -->
+      <div class="profile-wrapper">
+        <div class="avatar-circle">
+          {{ userInitials }}
         </div>
-        <mat-icon class="chevron">expand_more</mat-icon>
+
+        <div class="profile-text-block">
+          <div class="profile-name">{{ userName }}</div>
+          <div class="profile-role">{{ userRole }}</div>
+        </div>
+
+        <mat-icon class="chevron-icon">expand_more</mat-icon>
       </div>
     </button>
   </div>
 </mat-toolbar>
+
+<!-- keep your existing notificationMenu and profileMenu code as‑is -->
 
 <mat-menu #notificationMenu="matMenu" xPosition="before">
   <div class="notification-menu-header">
@@ -72,11 +88,8 @@
   <div class="theme-selector">
     <span>Theme</span>
     <div class="color-swatches">
-      <button *ngFor="let color of themeColors" 
-              class="swatch" 
-              [style.background-color]="color"
-              [class.active]="color === selectedTheme"
-              (click)="selectTheme(color)">
+      <button *ngFor="let color of themeColors" class="swatch" [style.background-color]="color"
+        [class.active]="color === selectedTheme" (click)="selectTheme(color)">
       </button>
     </div>
   </div>
