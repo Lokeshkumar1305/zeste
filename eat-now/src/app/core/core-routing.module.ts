@@ -33,8 +33,6 @@ const routes: Routes = [
   { path: 'staff-onboarding', component: StaffOnboardingComponent },
   { path: 'staff-onboarding-getAll', component: StaffOnboardingGetAllComponent },
   { path: 'outlet-getAll', component: OutletsComponent },
-  { path: 'area', component: AreaComponent },
-  { path: 'table', component: TableComponent },
   { path: 'category', component: CategoryComponent },
   { path: 'menu', component: MenuComponent },
   { path: 'items', component: ItemsComponent },

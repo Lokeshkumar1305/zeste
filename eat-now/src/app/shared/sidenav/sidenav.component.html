@@ -1,83 +1,56 @@
 <div class="sidenav-wrapper">
-  <!-- Mobile Hamburger -->
   <button mat-icon-button class="mobile-hamburger" *ngIf="isMobile && isCollapsed" (click)="toggleSidenav()">
     <i class="bi bi-list"></i>
   </button>
 
-  <!-- Main Sidenav -->
   <nav class="sidenav" [class.collapsed]="isCollapsed" [class.mobile-open]="!isCollapsed && isMobile">
     <!-- Logo -->
     <div class="logo-section">
-      <img src="../../../assets/Images/Zeste Logo White Text 1.jpg" alt="Toucan" class="logo-img" />
-      <span class="logo-text" *ngIf="!isCollapsed">Zeste</span>
+      <img src="../../../assets/Images/zeste logo.png" alt="Zeste" class="logo-img" />
+      <span class="logo-text" *ngIf="!isCollapsed">ZESTE</span>
     </div>
 
-    <!-- Menu Container -->
     <div class="menu-container">
       <!-- GENERAL -->
-      <div class="menu-group">
-        <span class="group-label" *ngIf="!isCollapsed">GENERAL</span>
-        <ul class="menu-list">
-          <li class="menu-item" [class.active]="selectedMenu === 'dashboard'" (click)="selectMenu('dashboard')">
-            <i class="bi bi-speedometer2"></i>
-            <span *ngIf="!isCollapsed">Dashboard</span>
-          </li>
-          <li class="menu-item" (click)="selectMenu('institution')">
-            <i class="bi bi-building"></i>
-            <span *ngIf="!isCollapsed">Institution</span>
-          </li>
-          <li class="menu-item has-submenu" [class.active]="selectedMenu === 'iam'" (click)="toggleSubmenu('iam')">
-            <i class="bi bi-shield-lock"></i>
-            <span *ngIf="!isCollapsed">IAM</span>
-            <i class="bi bi-chevron-right submenu-arrow" *ngIf="!isCollapsed"></i>
-          </li>
-        </ul>
-      </div>
+      <div class="section">
+        <span class="section-title" *ngIf="!isCollapsed">GENERAL</span>
 
-      <!-- APPLICATION -->
-      <div class="menu-group">
-        <span class="group-label" *ngIf="!isCollapsed">APPLICATION</span>
-        <ul class="menu-list">
-          <li class="menu-item" (click)="selectMenu('configurations')">
-            <i class="bi bi-gear"></i>
-            <span *ngIf="!isCollapsed">Configurations</span>
-          </li>
-          <li class="menu-item" (click)="selectMenu('accounting')">
-            <i class="bi bi-calculator"></i>
-            <span *ngIf="!isCollapsed">Accounting</span>
-          </li>
-          <li class="menu-item" (click)="selectMenu('inventory')">
-            <i class="bi bi-box"></i>
-            <span *ngIf="!isCollapsed">Inventory</span>
-          </li>
-          <li class="menu-item" (click)="selectMenu('crm')">
-            <i class="bi bi-people"></i>
-            <span *ngIf="!isCollapsed">CRM</span>
-          </li>
-          <li class="menu-item" (click)="selectMenu('card-balance')">
-            <i class="bi bi-credit-card"></i>
-            <span *ngIf="!isCollapsed">Card Balance</span>
-          </li>
-          <li class="menu-item" (click)="selectMenu('card-closure')">
-            <i class="bi bi-x-circle"></i>
-            <span *ngIf="!isCollapsed">Card Closure</span>
-          </li>
-          <li class="menu-item" (click)="selectMenu('reports')">
-            <i class="bi bi-file-earmark-text"></i>
-            <span *ngIf="!isCollapsed">Reports</span>
-          </li>
-        </ul>
+        <!-- Dashboard - Now matches group headers perfectly -->
+        <div class="menu-item dashboard-item" [class.active]="selectedMenu === 'dashboard'"
+          (click)="navigateTo('/core/outlet-onboarding')" [class.rounded-item]="true">
+          <i class="bi bi-speedometer2"></i>
+          <span *ngIf="!isCollapsed">Dashboard</span>
+        </div>
+
+        <!-- Collapsible Groups -->
+        <div class="collapsible-group" *ngFor="let group of collapsibleGroups">
+          <!-- Group Header -->
+          <div class="group-header" (click)="toggleGroup(group.key)" [class.open]="openedGroup === group.key">
+            <div class="header-left">
+              <i class="bi" [class]="'bi-' + group.icon"></i>
+              <span *ngIf="!isCollapsed">{{ group.title }}</span>
+            </div>
+            <i class="bi bi-chevron-down chevron" [class.rotated]="openedGroup === group.key" *ngIf="!isCollapsed"></i>
+          </div>
+
+          <!-- Submenu -->
+          <ul class="submenu" [class.open]="openedGroup === group.key">
+            <li *ngFor="let item of group.items" class="submenu-item" [class.active]="isRouteActive(item.route)"
+              (click)="navigateTo(item.route)">
+              <span class="line"></span>
+              <span class="label">{{ item.title }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <!-- MISCELLANEOUS -->
-      <div class="menu-group">
-        <span class="group-label" *ngIf="!isCollapsed">MISCELLANEOUS</span>
-        <ul class="menu-list">
-          <li class="menu-item" (click)="selectMenu('audit-logs')">
-            <i class="bi bi-journal-text"></i>
-            <span *ngIf="!isCollapsed">Audit Logs</span>
-          </li>
-        </ul>
+      <div class="section misc-section">
+        <span class="section-title" *ngIf="!isCollapsed">MISCELLANEOUS</span>
+        <div class="menu-item" (click)="navigateTo('/core/audit-logs')">
+          <i class="bi bi-journal-text"></i>
+          <span *ngIf="!isCollapsed">Audit Logs</span>
+        </div>
       </div>
     </div>
 
@@ -87,6 +60,5 @@
     </div>
   </nav>
 
-  <!-- Overlay -->
   <div class="overlay" *ngIf="isMobile && !isCollapsed" (click)="toggleSidenav()"></div>
 </div>
