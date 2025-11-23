@@ -1,165 +1,92 @@
 <div class="sidenav-wrapper">
-  <!-- Hamburger Menu for Mobile -->
-  <button mat-icon-button class="hamburger-menu" *ngIf="isMobile" (click)="toggleCollapse()">
-    <mat-icon>{{ isCollapsed ? 'menu' : 'close' }}</mat-icon>
+  <!-- Mobile Hamburger -->
+  <button mat-icon-button class="mobile-hamburger" *ngIf="isMobile && isCollapsed" (click)="toggleSidenav()">
+    <i class="bi bi-list"></i>
   </button>
 
-  <!-- Primary Sidenav (Icon Sidebar) -->
-  <nav class="primary-sidenav" [ngClass]="{ 'mobile-active': !isCollapsed && isMobile }">
-    <!-- Logo Section -->
-    <div class="sidenav-logo">
-      <span class="brand-name">ZESTE</span>
+  <!-- Main Sidenav -->
+  <nav class="sidenav" [class.collapsed]="isCollapsed" [class.mobile-open]="!isCollapsed && isMobile">
+    <!-- Logo -->
+    <div class="logo-section">
+      <img src="../../../assets/Images/Zeste Logo White Text 1.jpg" alt="Toucan" class="logo-img" />
+      <span class="logo-text" *ngIf="!isCollapsed">Zeste</span>
     </div>
 
-    <!-- Navigation Menu -->
-    <ul class="sidenav-menu">
-      <li class="sidenav-item"
-          [class.active]="selectedMenu === 'home'"
-          [class.hovered]="hoveredMenu === 'home'"
-          (mouseenter)="onMenuHover('home', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('home')"
-          title="Home">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-house-door"></i>
-          <span class="menu-text">Home</span>
-        </div>
-      </li>
+    <!-- Menu Container -->
+    <div class="menu-container">
+      <!-- GENERAL -->
+      <div class="menu-group">
+        <span class="group-label" *ngIf="!isCollapsed">GENERAL</span>
+        <ul class="menu-list">
+          <li class="menu-item" [class.active]="selectedMenu === 'dashboard'" (click)="selectMenu('dashboard')">
+            <i class="bi bi-speedometer2"></i>
+            <span *ngIf="!isCollapsed">Dashboard</span>
+          </li>
+          <li class="menu-item" (click)="selectMenu('institution')">
+            <i class="bi bi-building"></i>
+            <span *ngIf="!isCollapsed">Institution</span>
+          </li>
+          <li class="menu-item has-submenu" [class.active]="selectedMenu === 'iam'" (click)="toggleSubmenu('iam')">
+            <i class="bi bi-shield-lock"></i>
+            <span *ngIf="!isCollapsed">IAM</span>
+            <i class="bi bi-chevron-right submenu-arrow" *ngIf="!isCollapsed"></i>
+          </li>
+        </ul>
+      </div>
 
-      <li class="sidenav-item"
-          [class.active]="selectedMenu === 'admin_panel_settings'"
-          [class.hovered]="hoveredMenu === 'admin_panel_settings'"
-          (mouseenter)="onMenuHover('admin_panel_settings', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('admin_panel_settings')"
-          title="IAM">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-person-circle"></i>
-          <span class="menu-text">IAM</span>
-        </div>
-      </li>
+      <!-- APPLICATION -->
+      <div class="menu-group">
+        <span class="group-label" *ngIf="!isCollapsed">APPLICATION</span>
+        <ul class="menu-list">
+          <li class="menu-item" (click)="selectMenu('configurations')">
+            <i class="bi bi-gear"></i>
+            <span *ngIf="!isCollapsed">Configurations</span>
+          </li>
+          <li class="menu-item" (click)="selectMenu('accounting')">
+            <i class="bi bi-calculator"></i>
+            <span *ngIf="!isCollapsed">Accounting</span>
+          </li>
+          <li class="menu-item" (click)="selectMenu('inventory')">
+            <i class="bi bi-box"></i>
+            <span *ngIf="!isCollapsed">Inventory</span>
+          </li>
+          <li class="menu-item" (click)="selectMenu('crm')">
+            <i class="bi bi-people"></i>
+            <span *ngIf="!isCollapsed">CRM</span>
+          </li>
+          <li class="menu-item" (click)="selectMenu('card-balance')">
+            <i class="bi bi-credit-card"></i>
+            <span *ngIf="!isCollapsed">Card Balance</span>
+          </li>
+          <li class="menu-item" (click)="selectMenu('card-closure')">
+            <i class="bi bi-x-circle"></i>
+            <span *ngIf="!isCollapsed">Card Closure</span>
+          </li>
+          <li class="menu-item" (click)="selectMenu('reports')">
+            <i class="bi bi-file-earmark-text"></i>
+            <span *ngIf="!isCollapsed">Reports</span>
+          </li>
+        </ul>
+      </div>
 
-      <li class="sidenav-item"
-          [class.active]="selectedMenu === 'groups'"
-          [class.hovered]="hoveredMenu === 'groups'"
-          (mouseenter)="onMenuHover('groups', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('groups')"
-          title="Onboarding">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-person-plus"></i>
-          <span class="menu-text">Onboarding</span>
-        </div>
-      </li>
+      <!-- MISCELLANEOUS -->
+      <div class="menu-group">
+        <span class="group-label" *ngIf="!isCollapsed">MISCELLANEOUS</span>
+        <ul class="menu-list">
+          <li class="menu-item" (click)="selectMenu('audit-logs')">
+            <i class="bi bi-journal-text"></i>
+            <span *ngIf="!isCollapsed">Audit Logs</span>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-      <li class="sidenav-item"
-          [class.active]="selectedMenu === 'rooms'"
-          [class.hovered]="hoveredMenu === 'rooms'"
-          (mouseenter)="onMenuHover('rooms', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('rooms')"
-          title="Rooms">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-door-closed"></i>
-          <span class="menu-text">Rooms</span>
-        </div>
-      </li>
-
-      <li class="sidenav-item"
-          [class.active]="selectedMenu === 'tenants'"
-          [class.hovered]="hoveredMenu === 'tenants'"
-          (mouseenter)="onMenuHover('tenants', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('tenants')"
-          title="Tenants">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-people"></i>
-          <span class="menu-text">Tenants</span>
-        </div>
-      </li>
-
-        <li class="sidenav-item"
-          [class.active]="selectedMenu === 'menu'"
-          [class.hovered]="hoveredMenu === 'menu'"
-          (mouseenter)="onMenuHover('menu', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('menu')"
-          title="Menu">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-list-ul"></i>
-          <span class="menu-text">Menu</span>
-        </div>
-      </li>
-
-      <li class="sidenav-item"
-          [class.active]="selectedMenu === 'payments'"
-          [class.hovered]="hoveredMenu === 'payments'"
-          (mouseenter)="onMenuHover('payments', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('payments')"
-          title="Payments">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-cash-coin"></i>
-          <span class="menu-text">Payments</span>
-        </div>
-      </li>
-
-      <li class="sidenav-item"
-          [class.active]="selectedMenu === 'maintenance'"
-          [class.hovered]="hoveredMenu === 'maintenance'"
-          (mouseenter)="onMenuHover('maintenance', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('maintenance')"
-          title="Maintenance">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-tools"></i>
-          <span class="menu-text">Maintenance</span>
-        </div>
-      </li>
-
-      <li class="sidenav-item"
-          [class.active]="selectedMenu === 'expenses'"
-          [class.hovered]="hoveredMenu === 'expenses'"
-          (mouseenter)="onMenuHover('expenses', $event)"
-          (mouseleave)="onMenuLeave()"
-          (click)="selectMenu('expenses')"
-          title="Expenses">
-        <div class="menu-icon-wrapper">
-          <i class="bi bi-receipt"></i>
-          <span class="menu-text">Expenses</span>
-        </div>
-      </li>
-    </ul>
-
-    <!-- Bottom Menu Items -->
-    <div class="sidenav-bottom">
-      <button mat-icon-button class="bottom-menu-item" title="Settings">
-        <i class="bi bi-gear"></i>
-        <span class="menu-text">Settings</span>
-      </button>
+    <!-- Collapse Toggle -->
+    <div class="collapse-toggle" (click)="toggleSidenav()">
+      <i class="bi" [class.bi-chevron-left]="!isCollapsed" [class.bi-chevron-right]="isCollapsed"></i>
     </div>
   </nav>
 
-  <!-- Hoverable Submenu Card (Content-based Height) -->
-  <div class="submenu-card"
-       *ngIf="hoveredMenu && hasMenuItems(hoveredMenu) && !isMobile"
-       [style.left.px]="submenuPosition.left"
-       [style.top.px]="submenuPosition.top"
-       (mouseenter)="keepSubmenuOpen()"
-       (mouseleave)="closeSubmenu()"
-       [@slideIn]>
-    <ul class="submenu-list">
-      <li *ngFor="let item of getSubmenuItems()" class="submenu-item">
-        <a [routerLink]="item.route"
-           routerLinkActive="active"
-           class="submenu-link"
-           (click)="navigateToSubmenu(item)">
-          {{ item.title }}
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <!-- Mobile Overlay -->
-  <div class="mobile-overlay" *ngIf="!isCollapsed && isMobile" (click)="toggleCollapse()"></div>
+  <!-- Overlay -->
+  <div class="overlay" *ngIf="isMobile && !isCollapsed" (click)="toggleSidenav()"></div>
 </div>

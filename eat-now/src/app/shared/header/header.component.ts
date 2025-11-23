@@ -1,7 +1,8 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { LayoutService } from '../services/layout.service';
 
 interface Notification {
   icon: string;
@@ -18,24 +19,81 @@ interface Notification {
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('searchInput') private searchInput!: ElementRef<HTMLInputElement>;
+   @Input() sidebarCollapsed = false;
+  @Output() sidebarToggle = new EventEmitter<void>();
+
+
+  
+
 
   loggedInUser = '';
-  userName = '';
   searchQuery = '';
   notificationCount = 0;
   profileCompletionPercentage = 76;
+
+  isSidenavCollapsed = true;
+isMobile = false;
+ userName = 'Lokesh Kumar';
+  userRole = 'Admin';
+  userEmail = 'lokesh.kanuboina@zeste.com';
+  userAvatar =
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop';
+
+  notifications = [
+    {
+      icon: 'check_circle',
+      title: 'User Created',
+      description: 'New user account has been created',
+      time: '2 minutes ago',
+    },
+    {
+      icon: 'warning',
+      title: 'System Alert',
+      description: 'Scheduled maintenance at 2 PM',
+      time: '1 hour ago',
+    },
+    {
+      icon: 'info',
+      title: 'Update Available',
+      description: 'New version is available for download',
+      time: '3 hours ago',
+    },
+  ];
 
   // Theme state
   isDarkMode = false;
   themeColors: string[] = ['#1A365D', '#3B5A8C', '#2A69A6', '#8A4A9F', '#28A745', '#F39C12'];
   selectedColor = this.themeColors[0];
-
+ selectedTheme = this.themeColors[0];
   notificationsList: Notification[] = [];
+
+  // Optional: Listen to screen size
+@HostListener('window:resize')
+onResize() {
+  this.isMobile = window.innerWidth < 768;
+}
 
   constructor(
     private readonly router: Router,
-    private readonly theme: ThemeService
-  ) {}
+    private readonly theme: ThemeService,
+    public layout: LayoutService
+  ) {
+    this.layout.collapsed$.subscribe(val => this.isSidenavCollapsed = val);
+  }
+
+
+
+ toggleSidebar() {
+    this.sidebarToggle.emit();
+  }
+
+    markAllAsRead() {
+    this.notificationCount = 0;
+  }
+
+  selectTheme(color: string) {
+    this.selectedTheme = color;
+  }
 
   ngOnInit(): void {
     this.loggedInUser = sessionStorage.getItem('loggedInUser') || 'eatnow@gmail.com';

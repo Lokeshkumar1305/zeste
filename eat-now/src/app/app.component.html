@@ -5,13 +5,14 @@
 
 
 <div class="app-container">
-  <app-sidenav></app-sidenav>
+  <app-sidenav [isCollapsed]="sidebarCollapsed" (toggle)="toggleSidebar()">
+  </app-sidenav>
   <div class="main-content">
-    <app-header></app-header>
+    <app-header [sidebarCollapsed]="sidebarCollapsed" (sidebarToggle)="toggleSidebar()">
+    </app-header>
     <app-breadcrumb></app-breadcrumb>
-    <div class="content-wrapper">
+    <main class="content-wrapper">
       <router-outlet></router-outlet>
-    </div>
+    </main>
   </div>
 </div>
-

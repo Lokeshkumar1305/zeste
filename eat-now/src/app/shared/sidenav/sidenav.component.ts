@@ -1,7 +1,8 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, Output, Input, EventEmitter } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { LayoutService } from '../services/layout.service';
 
 interface MenuItem {
   title: string;
@@ -32,12 +33,13 @@ interface MenuConfig {
   ]
 })
 export class SidenavComponent implements OnInit, OnDestroy {
-  /* ------------------------------------------------------------------ */
-  /*  Variables                                                         */
-  /* ------------------------------------------------------------------ */
-  private closeTimeout: any;
-  private isSubmenuHovered = false;
-  selectedMenu = 'home'; // Will be driven by URL
+  @Input() isCollapsed = true;
+@Output() toggle = new EventEmitter<void>();
+
+
+  public closeTimeout: any;
+  public isSubmenuHovered = false;
+
   hoveredMenu: string | null = null;
   submenuPosition = { left: 0, top: 0 };
   private hoverTimeout: any;
@@ -89,24 +91,47 @@ export class SidenavComponent implements OnInit, OnDestroy {
     ] }
   };
 
-  isCollapsed = true;
-  isMobile = false;
+  isSidenavCollapsed = true;
   private destroy$ = new Subject<void>();
 
   /* ------------------------------------------------------------------ */
   /*  Lifecycle                                                         */
   /* ------------------------------------------------------------------ */
-  @HostListener('window:resize') onResize(): void { this.checkScreenSize(); }
 
-  constructor(private router: Router) {
+
+
+
+
+
+  isMobile = false;
+  selectedMenu = 'dashboard';  // default active
+
+  @HostListener('window:resize')
+  onResize() {
+    this.isMobile = window.innerWidth < 768;
+    if (!this.isMobile) {
+      // On desktop, keep current collapsed state
+    } else {
+      // On mobile, force collapsed until opened
+      this.isCollapsed = true;
+    }
+  }
+
+  constructor(private router: Router,public layout: LayoutService) {
     this.filterMenuByPrivileges();
     this.subscribeToRouterEvents();
   }
+
+
+
+
+
 
   ngOnInit(): void {
     this.checkScreenSize();
     // Initialize selectedMenu based on current URL
     this.updateSelectedMenuFromUrl(this.router.url);
+    this.onResize();
   }
 
   ngOnDestroy(): void {
@@ -119,6 +144,29 @@ export class SidenavComponent implements OnInit, OnDestroy {
   /* ------------------------------------------------------------------ */
   /*  Helpers                                                           */
   /* ------------------------------------------------------------------ */
+
+
+
+toggleSidenav() {
+  this.toggle.emit();
+}
+
+  // Optional: handle menu click
+  selectMenu(menu: string): void {
+    this.selectedMenu = menu;
+    // Add your routing logic here if needed
+    if (this.isMobile) {
+      this.isCollapsed = true;
+    }
+  }
+
+// Track which submenu is open (only one at a time)
+openSubmenu: string | null = null;
+
+toggleSubmenu(menu: string): void {
+  this.openSubmenu = this.openSubmenu === menu ? null : menu;
+}
+
   private subscribeToRouterEvents(): void {
     this.router.events
       .pipe(
@@ -193,22 +241,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.closeTimeout = setTimeout(() => this.hoveredMenu = null, 100);
   }
 
-  /* ------------------------------------------------------------------ */
-  /*  Selection / navigation                                            */
-  /* ------------------------------------------------------------------ */
-  selectMenu(menu: string): void {
-    // DO NOT set selectedMenu here — let router update it
-    const route = this.filteredMenuConfig[menu]?.items[0]?.route;
-    if (route) {
-      this.router.navigate([route]).then(() => {
-        // Optional: force update if navigation is same URL
-        this.updateSelectedMenuFromUrl(this.router.url);
-      });
-    }
-    if (this.isMobile) {
-      this.isCollapsed = true;
-    }
-  }
+
+  
 
   navigateToSubmenu(item: MenuItem): void {
     this.router.navigate([item.route]).then(() => {

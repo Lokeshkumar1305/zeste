@@ -1,26 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
-import { AreaTableModalComponent } from '../area-table-modal/area-table-modal.component';
-import { OPSMenu } from '../../shared/en-common-table/en-common-table.component';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuModalComponent } from '../menu-modal/menu-modal.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { Router } from '@angular/router';
-import { ApiService } from '../../common-library/services/api.service';
-import { HttpClient } from '@angular/common/http';
 
-
-export interface ExpenseItem {
+export interface MenuItem {
   id: string;
-  title: string;
-  category: string;
-  amount: number;
-  date: Date;
-  paymentMethod: string;
-  vendor: string;
+  itemName: string;
   description?: string;
-  notes?: string;
-  attachment?: string; // URL or base64
+  mealType: string;        // e.g., Breakfast, Lunch, Snacks
+  itemType: 'VEG' | 'NON_VEG' | 'EGG';
+  isAvailable: boolean;
+  imageUrl?: string;
 }
 
 @Component({
@@ -29,227 +18,184 @@ export interface ExpenseItem {
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent {
-   // Toolbar filters
-    public selectedCategoryFilter: string = 'All';
-  
-    // Pagination
-    public pageSizeOptions: number[] = [5, 10, 25];
-    public pageSize = 5;
-    public currentPage = 1;
-  
-    // Data
-    private allExpenses: ExpenseItem[] = [];
-    public filteredExpenses: ExpenseItem[] = [];
-    public pagedExpenses: ExpenseItem[] = [];
-  
-    // Categories & Payment Methods (for filtering & modal)
-    public categories: string[] = ['Utilities', 'Maintenance', 'Supplies', 'Rent', 'Salaries', 'Others'];
-    public paymentMethods: string[] = ['Cash', 'Bank Transfer', 'Credit Card', 'UPI', 'Cheque'];
-  
-    constructor(private dialog: MatDialog) {}
-  
-    ngOnInit(): void {
-      this.allExpenses = [
-        {
-          id: 'EXP001',
-          title: 'Electricity Bill',
-          category: 'Utilities',
-          amount: 1250.00,
-          date: new Date(2025, 9, 15),
-          paymentMethod: 'Bank Transfer',
-          vendor: 'State Electricity Board',
-          description: 'Monthly electricity bill for October',
-          notes: 'Paid on time'
-        },
-        {
-          id: 'EXP002',
-          title: 'Office Rent',
-          category: 'Rent',
-          amount: 15000.00,
-          date: new Date(2025, 9, 1),
-          paymentMethod: 'Cheque',
-          vendor: 'ABC Realty',
-          description: 'Monthly office rent'
-        },
-        {
-          id: 'EXP003',
-          title: 'Printer Paper & Ink',
-          category: 'Supplies',
-          amount: 850.50,
-          date: new Date(2025, 9, 20),
-          paymentMethod: 'Credit Card',
-          vendor: 'Office Depot',
-          notes: 'Bulk purchase'
-        },
-        {
-          id: 'EXP004',
-          title: 'Building Maintenance',
-          category: 'Maintenance',
-          amount: 3200.00,
-          date: new Date(2025, 9, 18),
-          paymentMethod: 'Cash',
-          vendor: 'Local Contractor'
-        },
-        {
-          id: 'EXP005',
-          title: 'Internet Bill',
-          category: 'Utilities',
-          amount: 999.00,
-          date: new Date(2025, 9, 10),
-          paymentMethod: 'UPI',
-          vendor: 'Jio Fiber'
-        },
-        {
-          id: 'EXP006',
-          title: 'Staff Salaries',
-          category: 'Salaries',
-          amount: 45000.00,
-          date: new Date(2025, 9, 30),
-          paymentMethod: 'Bank Transfer',
-          vendor: 'HR Department'
-        }
-      ];
-  
-      this.applyAllFilters();
+  // Real menu data
+  public allMenuItems: MenuItem[] = [
+    {
+      id: 'M001',
+      itemName: 'Margherita Pizza',
+      description: 'Classic pizza with fresh mozzarella and basil',
+      mealType: 'Lunch',
+      itemType: 'VEG',
+      isAvailable: true
+    },
+    {
+      id: 'M002',
+      itemName: 'Butter Chicken',
+      description: 'Creamy tomato-based curry with tender chicken',
+      mealType: 'Dinner',
+      itemType: 'NON_VEG',
+      isAvailable: true
+    },
+    {
+      id: 'M003',
+      itemName: 'Masala Dosa',
+      description: 'Crispy crepe with spicy potato filling',
+      mealType: 'Breakfast',
+      itemType: 'VEG',
+      isAvailable: true
+    },
+    {
+      id: 'M004',
+      itemName: 'Egg Bhurji',
+      description: 'Spicy scrambled eggs with onions and spices',
+      mealType: 'Breakfast',
+      itemType: 'EGG',
+      isAvailable: false
     }
-  
-    // --- Pagination Getters ---
-    get totalItems(): number {
-      return this.filteredExpenses.length;
-    }
-  
-    get totalPages(): number {
-      return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
-    }
-  
-    get showingFrom(): number {
-      return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
-    }
-  
-    get showingTo(): number {
-      return Math.min(this.currentPage * this.pageSize, this.totalItems);
-    }
-  
-    get pageNumbers(): number[] {
-      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    }
-  
-    // --- UI Actions ---
-    onFilter(): void {
-      const order = ['All', ...this.categories];
-      const idx = order.indexOf(this.selectedCategoryFilter);
-      this.selectedCategoryFilter = order[(idx + 1) % order.length];
-      this.currentPage = 1;
-      this.applyAllFilters();
-    }
-  
-    onReset(): void {
-      this.selectedCategoryFilter = 'All';
-      this.pageSize = this.pageSizeOptions[0];
-      this.currentPage = 1;
-      this.applyAllFilters();
-    }
-  
-    onPageSizeChange(size: number): void {
-      this.pageSize = +size;
-      this.currentPage = 1;
-      this.updatePagedExpenses();
-    }
-  
-    goToPage(page: number): void {
-      if (page < 1 || page > this.totalPages) return;
-      this.currentPage = page;
-      this.updatePagedExpenses();
-    }
-  
-    prevPage(): void {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.updatePagedExpenses();
-      }
-    }
-  
-    nextPage(): void {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.updatePagedExpenses();
-      }
-    }
-  
-    trackById(_: number, item: ExpenseItem): string {
-      return item.id;
-    }
-  
-    // --- Core Logic ---
-    private applyAllFilters(): void {
-      this.filteredExpenses = this.applyCategoryFilter(this.allExpenses, this.selectedCategoryFilter);
-      this.updatePagedExpenses();
-    }
-  
-    private applyCategoryFilter(list: ExpenseItem[], filter: string): ExpenseItem[] {
-      if (filter === 'All') return [...list];
-      return list.filter(e => e.category === filter);
-    }
-  
-    private updatePagedExpenses(): void {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      this.pagedExpenses = this.filteredExpenses.slice(start, end);
-    }
-  
-    // --- CRUD Actions ---
-    onAddNewExpenses(): void {
-      const dialogRef = this.dialog.open(MenuModalComponent, {
-        width: '560px',
-        maxWidth: '90vw',
-        height: '100vh',
-        position: { right: '0', top: '0' },
-        panelClass: 'custom-dialog-container',
-        data: { expense: null, categories: this.categories, paymentMethods: this.paymentMethods },
-        hasBackdrop: true,
-        backdropClass: 'cdk-overlay-dark-backdrop',
-        disableClose: false,
-        autoFocus: false,
-      });
-  
-      dialogRef.afterClosed().subscribe((result: ExpenseItem) => {
-        if (result) {
-          result.id = 'EXP' + String(this.allExpenses.length + 1).padStart(3, '0');
-          this.allExpenses.push(result);
-          this.applyAllFilters();
-        }
-      });
-    }
-  
-    onEditExpense(expense: ExpenseItem): void {
-      const dialogRef = this.dialog.open(MenuModalComponent, {
-        width: '560px',
-        maxWidth: '90vw',
-        height: '100vh',
-        position: { right: '0', top: '0' },
-        panelClass: 'custom-dialog-container',
-        data: { expense: { ...expense }, categories: this.categories, paymentMethods: this.paymentMethods },
-        hasBackdrop: true,
-        backdropClass: 'cdk-overlay-dark-backdrop',
-      });
-  
-      dialogRef.afterClosed().subscribe((result: ExpenseItem) => {
-        if (result) {
-          const index = this.allExpenses.findIndex(e => e.id === expense.id);
-          if (index !== -1) {
-            this.allExpenses[index] = result;
-            this.applyAllFilters();
-          }
-        }
-      });
-    }
-  
-    onDeleteExpense(id: string): void {
-      if (confirm('Are you sure you want to delete this expense?')) {
-        this.allExpenses = this.allExpenses.filter(e => e.id !== id);
-        this.applyAllFilters();
-      }
+  ];
+
+  // For filtering
+  public selectedMealTypeFilter: string = 'All';
+  public availableMealTypes: string[] = ['Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Beverages'];
+
+  // Pagination
+  public pageSizeOptions = [5, 10, 25];
+  public pageSize = 5;
+  public currentPage = 1;
+
+  public filteredMenuItems: MenuItem[] = [];
+  public pagedMenuItems: MenuItem[] = [];
+
+  constructor(private dialog: MatDialog) {}
+
+  ngOnInit(): void {
+    this.applyFilters();
+  }
+
+  // --- Pagination Getters ---
+  get totalItems() { return this.filteredMenuItems.length; }
+  get totalPages() { return Math.max(1, Math.ceil(this.totalItems / this.pageSize)); }
+  get showingFrom() { return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1; }
+  get showingTo() { return Math.min(this.currentPage * this.pageSize, this.totalItems); }
+  get pageNumbers() { return Array.from({ length: this.totalPages }, (_, i) => i + 1); }
+
+  // --- Filter & Pagination
+  applyFilters() {
+    let filtered = this.allMenuItems;
+
+    if (this.selectedMealTypeFilter !== 'All') {
+      filtered = filtered.filter(item => item.mealType === this.selectedMealTypeFilter);
     }
 
-    
+    this.filteredMenuItems = filtered;
+    this.currentPage = 1;
+    this.updatePagedItems();
+  }
+
+  updatePagedItems() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedMenuItems = this.filteredMenuItems.slice(start, end);
+  }
+
+  onPageSizeChange(size: number) {
+    this.pageSize = size;
+    this.currentPage = 1;
+    this.updatePagedItems();
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagedItems();
+    }
+  }
+
+  prevPage() { if (this.currentPage > 1) { this.currentPage--; this.updatePagedItems(); } }
+  nextPage() { if (this.currentPage < this.totalPages) { this.currentPage++; this.updatePagedItems(); } }
+
+  // --- CRUD ---
+  onAddNewMenu() {
+    const dialogRef = this.dialog.open(MenuModalComponent, {
+      width: '560px',
+      maxWidth: '90vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      data: {
+        menu: null,
+        availableMealTypes: this.availableMealTypes  // passed to modal
+      },
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe((result: MenuItem) => {
+      if (result) {
+        result.id = 'M' + String(this.allMenuItems.length + 1).padStart(3, '0');
+        this.allMenuItems.push(result);
+
+        // If new meal type was added in popup, update filter list
+        if (!this.availableMealTypes.includes(result.mealType)) {
+          this.availableMealTypes.push(result.mealType);
+          this.availableMealTypes.sort();
+        }
+
+        this.applyFilters();
+      }
+    });
+  }
+
+  onEditMenu(item: MenuItem) {
+    const dialogRef = this.dialog.open(MenuModalComponent, {
+      width: '560px',
+      maxWidth: '90vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      data: {
+        menu: { ...item },
+        availableMealTypes: this.availableMealTypes
+      },
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop'
+    });
+
+    dialogRef.afterClosed().subscribe((result: MenuItem) => {
+      if (result) {
+        const index = this.allMenuItems.findIndex(m => m.id === item.id);
+        if (index > -1) {
+          this.allMenuItems[index] = result;
+          this.applyFilters();
+        }
+      }
+    });
+  }
+
+  onDeleteMenu(id: string) {
+    if (confirm('Delete this menu item permanently?')) {
+      this.allMenuItems = this.allMenuItems.filter(m => m.id !== id);
+      this.applyFilters();
+    }
+  }
+
+  onFilter() {
+    const order = ['All', ...this.availableMealTypes];
+    const idx = order.indexOf(this.selectedMealTypeFilter);
+    this.selectedMealTypeFilter = order[(idx + 1) % order.length];
+    this.applyFilters();
+  }
+
+  onReset() {
+    this.selectedMealTypeFilter = 'All';
+    this.pageSize = this.pageSizeOptions[0];
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  trackById(_: number, item: MenuItem) {
+    return item.id;
+  }
 }

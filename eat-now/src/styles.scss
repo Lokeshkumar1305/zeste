@@ -250,6 +250,24 @@ $eat-now-theme-dark: mat.define-dark-theme((
    ------------------------------------------------------------------ */
 app-header { background: var(--header-bg); color: var(--button-text); }
 
+
+
+:root {
+  --header-height: 64px;
+  --breadcrumb-height: 48px;
+}
+
+.app-layout.collapsed {
+  --header-height: 56px; /* or 48px if you want tighter */
+}
+
+/* Your breadcrumb already uses this */
+.secondary-header {
+  top: var(--header-height) !important; /* already has it */
+  transition: top 0.2s ease; /* optional smooth animation */
+}
+
+
 .primary-header .header-search .search-container {
   background: var(--card-background);
   border: 1px solid var(--card-border);

@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from './common-library/services/api.service';
 import { LoginService } from './auth/login.service';
 import { ThemeService } from './shared/services/theme.service';
+import { LayoutService } from './shared/services/layout.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
   loggedInUser: string = '';
   userName: string = '';
 
+  sidebarCollapsed = false;
  
 
   constructor(
@@ -28,15 +30,26 @@ export class AppComponent implements OnInit {
     private router: Router,
     public snackbar: MatSnackBar,
     public postService: ApiService,
-    private theme: ThemeService
+    private theme: ThemeService,
+    public layout: LayoutService
   ) { }
 
   ngOnInit() {
+
+    this.layout.collapsed$.subscribe(collapsed => {
+    document.body.classList.toggle('sidenav-collapsed', collapsed);
+  });
     // Example: fetch user info from session or service
     this.loggedInUser = "eatnow@gmail.com";
     const lu = this.loggedInUser.split('@')[0].replace('.', ' ');
     this.userName = lu
      this.theme.init();
+  }
+
+
+
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 
   logout() {
