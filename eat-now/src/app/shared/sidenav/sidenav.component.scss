@@ -64,6 +64,7 @@ $hover-bg: #f0fdfa;
 .menu-container {
   flex: 1;
   overflow-y: auto;
+  overflow-x: visible; /* ✅ Important for floating cards */
   padding: 16px 0;
   
   &::-webkit-scrollbar {
@@ -200,22 +201,16 @@ $hover-bg: #f0fdfa;
   }
 }
 
-/* Submenu Wrapper & Submenu */
-.submenu-wrapper {
-  &.floating {
-    position: absolute;
-    left: 100%;
-    top: 0;
-    margin-left: 12px;
-    z-index: 9999;
-    pointer-events: none;
-
-    &.open {
-      pointer-events: all;
-    }
+/* Collapsible Group Container */
+.collapsible-group {
+  position: relative;
+  
+  &.has-floating-card {
+    overflow: visible;
   }
 }
 
+/* Regular Submenu (Expanded State) */
 .submenu {
   max-height: 0;
   overflow: hidden;
@@ -280,6 +275,110 @@ $hover-bg: #f0fdfa;
   }
 }
 
+/* ================================================ */
+/*            FLOATING CARD (COLLAPSED MODE)        */
+/* ================================================ */
+
+.floating-card {
+  position: absolute;
+  left: calc(100% + 12px); /* ✅ Position right beside the icon */
+  top: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 
+              0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  z-index: 9999;
+  overflow: hidden;
+  animation: slideInCard 0.25s ease-out;
+
+  /* Arrow pointing to icon */
+  &::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 18px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    transform: rotate(45deg);
+    border-left: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.floating-card-header {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #1e3a8a;
+}
+
+.floating-card-menu {
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+}
+
+.floating-card-item {
+  padding: 10px 16px;
+  font-size: 13.5px;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: transparent;
+    transition: background 0.2s ease;
+  }
+
+  &:hover {
+    background: #f3f4f6;
+    color: #1e40af;
+    padding-left: 20px;
+
+    &::before {
+      background: #1e40af;
+    }
+  }
+
+  &.active {
+    background: #dbeafe;
+    color: #1e40af;
+    font-weight: 700;
+
+    &::before {
+      background: #1e40af;
+    }
+  }
+}
+
+/* Animation */
+@keyframes slideInCard {
+  from {
+    opacity: 0;
+    transform: translateX(-15px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
 /* Miscellaneous Section */
 .misc-section {
   margin-top: 32px;
@@ -319,7 +418,7 @@ $hover-bg: #f0fdfa;
   height: 48px;
 }
 
-/* Overlay */
+/* Overlay - ONLY for mobile */
 .overlay {
   position: fixed;
   inset: 0;
@@ -342,11 +441,12 @@ $hover-bg: #f0fdfa;
 }
 
 /* ================================================ */
-/*         COLLAPSED STATE - FLOATING CARD          */
+/*         COLLAPSED STATE - CENTERED ICONS         */
 /* ================================================ */
 
 .sidenav.collapsed {
-  // Hide text elements
+  overflow: visible; /* ✅ Allow floating cards to show */
+
   .logo-text,
   .section-title,
   .menu-item span,
@@ -355,7 +455,6 @@ $hover-bg: #f0fdfa;
     display: none !important;
   }
 
-  // Center icons
   .menu-item,
   .dashboard-item,
   .group-header {
@@ -373,94 +472,11 @@ $hover-bg: #f0fdfa;
     margin-bottom: 12px !important;
   }
 
-  // Collapsible group positioning
   .collapsible-group {
-    position: relative;
-    margin-bottom: 8px;
+    overflow: visible;
   }
 
-  // Floating Card Styles
-  .submenu-wrapper.floating.open {
-    .submenu {
-      display: block !important;
-      position: relative;
-      max-height: none;
-      background: #ffffff;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 
-                  0 2px 8px rgba(0, 0, 0, 0.08);
-      border-radius: 10px;
-      padding: 8px 0;
-      margin: 0;
-      min-width: 200px;
-      border: 1px solid #e5e7eb;
-      animation: slideIn 0.2s ease-out;
-
-      // Optional arrow pointing to icon
-      &::before {
-        content: '';
-        position: absolute;
-        left: -6px;
-        top: 16px;
-        width: 12px;
-        height: 12px;
-        background: white;
-        transform: rotate(45deg);
-        border-left: 1px solid #e5e7eb;
-        border-bottom: 1px solid #e5e7eb;
-        box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.04);
-      }
-
-      // Submenu items in floating card
-      .submenu-item {
-        height: 38px;
-        padding: 0 16px;
-        margin: 2px 8px;
-        border-radius: 6px;
-        
-        .line {
-          display: none;
-        }
-
-        .label {
-          margin-left: 0;
-          font-size: 13.5px;
-          color: #374151;
-          font-weight: 500;
-          transition: all 0.2s ease;
-        }
-
-        &:hover {
-          background-color: #f3f4f6;
-          
-          .label {
-            margin-left: 8px;
-            color: #1e40af;
-            font-weight: 600;
-          }
-        }
-
-        &.active {
-          background-color: #dbeafe;
-          
-          .label {
-            margin-left: 0;
-            color: #1e40af;
-            font-weight: 700;
-          }
-        }
-      }
-    }
-  }
-}
-
-// Slide-in animation for floating card
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+  .menu-container {
+    overflow-x: visible;
   }
 }

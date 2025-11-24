@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 interface MenuItem {
   title: string;
@@ -17,11 +18,22 @@ interface MenuGroup {
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+  styleUrls: ['./sidenav.component.scss'],
+  animations: [
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(-15px) scale(0.95)' }),
+        animate('250ms ease-out', style({ opacity: 1, transform: 'translateX(0) scale(1)' }))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ opacity: 0, transform: 'translateX(-10px) scale(0.95)' }))
+      ])
+    ])
+  ]
 })
 export class SidenavComponent implements OnInit, OnDestroy {
-  @Input() isCollapsed = false;  // ✅ Added @Input decorator
-  @Output() toggle = new EventEmitter<void>();  // ✅ Added @Output decorator
+  @Input() isCollapsed = false;
+  @Output() toggle = new EventEmitter<void>();
 
   isMobile = window.innerWidth < 768;
   selectedMenu = 'dashboard';
@@ -125,48 +137,55 @@ export class SidenavComponent implements OnInit, OnDestroy {
     const wasMobile = this.isMobile;
     this.isMobile = window.innerWidth < 768;
     
-    // Auto-expand on desktop, auto-collapse on mobile
     if (!this.isMobile && wasMobile) {
       this.isCollapsed = false;
-      this.toggle.emit();  // ✅ Emit to parent
+      this.toggle.emit();
+    }
+  }
+
+  // ✅ Click outside to close floating card
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const clickedInsideSidenav = target.closest('.sidenav');
+    const clickedInsideFloatingCard = target.closest('.floating-card');
+    
+    // If clicked outside and floating card is open, close it
+    if (this.isCollapsed && this.openedGroup && !clickedInsideSidenav && !clickedInsideFloatingCard) {
+      this.openedGroup = null;
     }
   }
 
   toggleSidenav() {
     this.isCollapsed = !this.isCollapsed;
-    this.toggle.emit();  // ✅ Emit to parent
+    this.toggle.emit();
     
-    // Close all groups when collapsing
     if (this.isCollapsed) {
       this.openedGroup = null;
     }
   }
 
   toggleGroup(groupKey: string) {
-    // If collapsed, show floating menu; if expanded, toggle inline submenu
+    // Toggle the floating card
     if (this.openedGroup === groupKey) {
       this.openedGroup = null;
     } else {
       this.openedGroup = groupKey;
     }
 
-    // On mobile, close sidenav after selection
+    // Close mobile sidenav after selection (only if not collapsed)
     if (this.isMobile && !this.isCollapsed) {
       setTimeout(() => {
         this.isCollapsed = true;
-        this.toggle.emit();  // ✅ Emit to parent
+        this.toggle.emit();
       }, 300);
     }
-  }
-
-  closeFloatingMenu() {
-    this.openedGroup = null;
   }
 
   navigateTo(route: string) {
     this.router.navigate([route]);
     
-    // Close floating menu after navigation
+    // Close floating card after navigation
     if (this.isCollapsed) {
       this.openedGroup = null;
     }
@@ -174,7 +193,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     // Close mobile menu
     if (this.isMobile) {
       this.isCollapsed = true;
-      this.toggle.emit();  // ✅ Emit to parent
+      this.toggle.emit();
     }
   }
 
@@ -199,7 +218,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   private updateActiveMenu(url: string) {
-    // Check if dashboard
     if (url.includes('/core/outlet-onboarding') || url === '/core' || url === '/') {
       this.selectedMenu = 'dashboard';
       if (!this.isCollapsed) {
@@ -208,7 +226,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Find which group and item matches current route
     let foundGroup: string | null = null;
 
     for (const group of this.collapsibleGroups) {
@@ -222,7 +239,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
       if (foundGroup) break;
     }
 
-    // Auto-open the group containing active route (only when expanded)
     if (!this.isCollapsed) {
       this.openedGroup = foundGroup;
     }
