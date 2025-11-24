@@ -65,9 +65,17 @@ $hover-bg: #f0fdfa;
   flex: 1;
   overflow-y: auto;
   padding: 16px 0;
+  
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 10px;
+  }
 }
 
-/* Section Title (GENERAL / MISCELLANEOUS) */
+/* Section Title */
 .section-title {
   display: block;
   padding: 0 20px;
@@ -79,7 +87,7 @@ $hover-bg: #f0fdfa;
   letter-spacing: 1px;
 }
 
-/* Base Styles for Menu Items & Group Headers */
+/* Base Menu Item Styles */
 .menu-item,
 .dashboard-item,
 .group-header {
@@ -99,14 +107,16 @@ $hover-bg: #f0fdfa;
   }
 }
 
-/* Dashboard Item & Regular Menu Items */
+/* Dashboard & Menu Items */
 .menu-item,
 .dashboard-item {
   padding: 0 20px;
   gap: 14px;
   color: #4b5563;
 
-  i { color: #9ca3af; }
+  i {
+    color: #9ca3af;
+  }
 
   span {
     font-size: 14px;
@@ -116,15 +126,18 @@ $hover-bg: #f0fdfa;
   &:hover {
     background: $hover-bg;
     color: $primary-color;
-    i { color: $primary-color; }
+    i {
+      color: $primary-color;
+    }
   }
 
-  &.active,
-  &.dashboard-item.active {
+  &.active {
     background: $active-bg !important;
     color: $active-text;
     font-weight: 600;
-    i { color: $active-text; }
+    i {
+      color: $active-text;
+    }
   }
 }
 
@@ -133,6 +146,7 @@ $hover-bg: #f0fdfa;
   padding: 0 20px;
   justify-content: space-between;
   background: transparent;
+  position: relative;
 
   .header-left {
     display: flex;
@@ -156,7 +170,10 @@ $hover-bg: #f0fdfa;
     font-size: 16px;
     color: #94a3b8;
     transition: transform 0.25s ease;
-    &.rotated { transform: rotate(180deg); }
+    
+    &.rotated {
+      transform: rotate(180deg);
+    }
   }
 
   &:hover {
@@ -166,11 +183,39 @@ $hover-bg: #f0fdfa;
   &.open {
     background: $active-bg;
     border-radius: 8px;
-    span, i:first-child, .chevron { color: #0d9488; }
+    
+    span,
+    i:first-child,
+    .chevron {
+      color: #0d9488;
+    }
+  }
+
+  &.has-floating-menu {
+    background: #eff6ff;
+    
+    i:first-child {
+      color: #1e40af;
+    }
   }
 }
 
-/* Submenu */
+/* Submenu Wrapper & Submenu */
+.submenu-wrapper {
+  &.floating {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    margin-left: 12px;
+    z-index: 9999;
+    pointer-events: none;
+
+    &.open {
+      pointer-events: all;
+    }
+  }
+}
+
 .submenu {
   max-height: 0;
   overflow: hidden;
@@ -240,7 +285,7 @@ $hover-bg: #f0fdfa;
   margin-top: 32px;
 }
 
-/* Collapse Toggle Button */
+/* Collapse Toggle */
 .collapse-toggle {
   height: 56px;
   display: flex;
@@ -274,29 +319,34 @@ $hover-bg: #f0fdfa;
   height: 48px;
 }
 
-/* Overlay when mobile menu open */
+/* Overlay */
 .overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 999;
+  z-index: 998;
+  backdrop-filter: blur(2px);
 }
 
-/* Mobile Behavior */
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .sidenav {
     transform: translateX(-100%);
     width: 280px;
     transition: transform 0.3s ease;
   }
+  
   .sidenav.mobile-open {
     transform: translateX(0);
   }
 }
 
-/* COLLAPSED STATE — THE MOST IMPORTANT PART */
+/* ================================================ */
+/*         COLLAPSED STATE - FLOATING CARD          */
+/* ================================================ */
+
 .sidenav.collapsed {
-  /* Center icons perfectly */
+  // Hide text elements
   .logo-text,
   .section-title,
   .menu-item span,
@@ -305,16 +355,13 @@ $hover-bg: #f0fdfa;
     display: none !important;
   }
 
-  .submenu {
-    display: none !important; /* This completely hides submenu when collapsed */
-  }
-
+  // Center icons
   .menu-item,
   .dashboard-item,
   .group-header {
     justify-content: center;
     padding: 0;
-    margin: 0 12px 4px 12px;
+    margin: 0 12px 8px 12px;
 
     .header-left {
       gap: 0;
@@ -322,8 +369,98 @@ $hover-bg: #f0fdfa;
     }
   }
 
-  /* Ensure dashboard item spacing */
   .dashboard-item {
     margin-bottom: 12px !important;
+  }
+
+  // Collapsible group positioning
+  .collapsible-group {
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  // Floating Card Styles
+  .submenu-wrapper.floating.open {
+    .submenu {
+      display: block !important;
+      position: relative;
+      max-height: none;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 
+                  0 2px 8px rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      padding: 8px 0;
+      margin: 0;
+      min-width: 200px;
+      border: 1px solid #e5e7eb;
+      animation: slideIn 0.2s ease-out;
+
+      // Optional arrow pointing to icon
+      &::before {
+        content: '';
+        position: absolute;
+        left: -6px;
+        top: 16px;
+        width: 12px;
+        height: 12px;
+        background: white;
+        transform: rotate(45deg);
+        border-left: 1px solid #e5e7eb;
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      // Submenu items in floating card
+      .submenu-item {
+        height: 38px;
+        padding: 0 16px;
+        margin: 2px 8px;
+        border-radius: 6px;
+        
+        .line {
+          display: none;
+        }
+
+        .label {
+          margin-left: 0;
+          font-size: 13.5px;
+          color: #374151;
+          font-weight: 500;
+          transition: all 0.2s ease;
+        }
+
+        &:hover {
+          background-color: #f3f4f6;
+          
+          .label {
+            margin-left: 8px;
+            color: #1e40af;
+            font-weight: 600;
+          }
+        }
+
+        &.active {
+          background-color: #dbeafe;
+          
+          .label {
+            margin-left: 0;
+            color: #1e40af;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Slide-in animation for floating card
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
