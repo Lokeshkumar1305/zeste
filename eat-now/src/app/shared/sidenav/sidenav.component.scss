@@ -270,7 +270,7 @@ $hover-bg: #f0fdfa;
 /* FLOATING CARD – fixed to viewport so it can't be clipped */
 .floating-card {
   position: fixed;
-  left: $collapsed-width + 16px; // a bit to the right of collapsed bar
+  left: $collapsed-width ; // a bit to the right of collapsed bar
   min-width: 220px;
   background: #ffffff;
   border-radius: 6px;
