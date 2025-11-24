@@ -1,7 +1,14 @@
 :host {
-  --sidenav-width-expanded: 250px;
+  --sidenav-width-expanded: 260px; 
   --sidenav-width-collapsed: 78px;
   --header-height: 64px;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: var(--sidenav-width-expanded); 
+  transition: margin-left 0.3s ease;
+  padding-top: 100px;
 }
 
 .app-container {
@@ -9,12 +16,6 @@
   min-height: 100vh;
 }
 
-.main-content {
-  flex: 1;
-  margin-left: var(--sidenav-width-expanded);   // 250px
-  transition: margin-left 0.3s ease;
-  padding-top: 100px;
-}
 
 .app-container.sidenav-collapsed .main-content {
   margin-left: var(--sidenav-width-collapsed);  // 78px ← now works!

@@ -43,7 +43,7 @@ $hover-bg: #f0fdfa;
   align-items: center;
   gap: 14px;
   background: white;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: none; 
   flex-shrink: 0;
 
   .logo-img {
@@ -61,19 +61,18 @@ $hover-bg: #f0fdfa;
   }
 }
 
+
+
 /* Menu Container */
 .menu-container {
   flex: 1;
   overflow-y: auto;
   overflow-x: visible;
   padding: 16px 0;
-
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
   &::-webkit-scrollbar {
-    width: 5px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 10px;
+    display: none;
   }
 }
 
