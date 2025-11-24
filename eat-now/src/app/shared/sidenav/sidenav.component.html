@@ -1,12 +1,26 @@
 <div class="sidenav-wrapper">
-  <button mat-icon-button class="mobile-hamburger" *ngIf="isMobile && isCollapsed" (click)="toggleSidenav()">
+  <!-- Mobile hamburger -->
+  <button
+    mat-icon-button
+    class="mobile-hamburger"
+    *ngIf="isMobile && isCollapsed"
+    (click)="toggleSidenav()"
+  >
     <i class="bi bi-list"></i>
   </button>
-  
-  <nav class="sidenav" [class.collapsed]="isCollapsed" [class.mobile-open]="!isCollapsed && isMobile">
+
+  <nav
+    class="sidenav"
+    [class.collapsed]="isCollapsed"
+    [class.mobile-open]="!isCollapsed && isMobile"
+  >
     <!-- Logo -->
     <div class="logo-section">
-      <img src="../../../assets/Images/zeste logo.png" alt="Zeste" class="logo-img" />
+      <img
+        src="../../../assets/Images/zeste logo.png"
+        alt="Zeste"
+        class="logo-img"
+      />
       <span class="logo-text" *ngIf="!isCollapsed">ZESTE</span>
     </div>
 
@@ -16,57 +30,68 @@
         <span class="section-title" *ngIf="!isCollapsed">GENERAL</span>
 
         <!-- Dashboard -->
-        <div class="menu-item dashboard-item" 
-             [class.active]="selectedMenu === 'dashboard'"
-             (click)="navigateTo('/core/outlet-onboarding')">
+        <div
+          class="menu-item dashboard-item"
+          [class.active]="selectedMenu === 'dashboard'"
+          (click)="navigateTo('/core/outlet-onboarding')"
+        >
           <i class="bi bi-speedometer2"></i>
           <span *ngIf="!isCollapsed">Dashboard</span>
         </div>
 
         <!-- Collapsible Groups -->
-        <div class="collapsible-group" 
-             *ngFor="let group of collapsibleGroups"
-             [class.has-floating-card]="isCollapsed && openedGroup === group.key">
-          
+        <div
+          class="collapsible-group"
+          *ngFor="let group of collapsibleGroups"
+        >
           <!-- Group Header -->
-          <div class="group-header" 
-               (click)="toggleGroup(group.key)"
-               [class.open]="openedGroup === group.key"
-               [class.has-floating-menu]="isCollapsed && openedGroup === group.key">
+          <div
+            class="group-header"
+            (click)="onGroupHeaderClick($event, group.key)"
+            [class.open]="openedGroup === group.key"
+          >
             <div class="header-left">
               <i class="bi" [class]="'bi-' + group.icon"></i>
               <span *ngIf="!isCollapsed">{{ group.title }}</span>
             </div>
-            <i class="bi bi-chevron-down chevron" 
-               [class.rotated]="openedGroup === group.key" 
-               *ngIf="!isCollapsed"></i>
+            <i
+              class="bi bi-chevron-down chevron"
+              [class.rotated]="openedGroup === group.key"
+              *ngIf="!isCollapsed"
+            ></i>
           </div>
 
-          <!-- Floating Card (Only shown when collapsed) -->
-          <div class="floating-card" 
-               *ngIf="isCollapsed && openedGroup === group.key"
-               [@slideIn]>
-            <div class="floating-card-header">
-              {{ group.title }}
-            </div>
+          <!-- FLOATING CARD (aligned with clicked icon) -->
+          <div
+            class="floating-card"
+            *ngIf="openedGroup === group.key"
+            [style.top.px]="floatingCardTop"
+            (click)="$event.stopPropagation()"
+          >
             <ul class="floating-card-menu">
-              <li *ngFor="let item of group.items" 
-                  class="floating-card-item" 
-                  [class.active]="isRouteActive(item.route)"
-                  (click)="navigateTo(item.route)">
+              <li
+                *ngFor="let item of group.items"
+                class="floating-card-item"
+                [class.active]="isRouteActive(item.route)"
+                (click)="navigateTo(item.route, $event)"
+              >
                 {{ item.title }}
               </li>
             </ul>
           </div>
 
-          <!-- Regular Submenu (Only shown when expanded) -->
-          <ul class="submenu" 
-              *ngIf="!isCollapsed"
-              [class.open]="openedGroup === group.key">
-            <li *ngFor="let item of group.items" 
-                class="submenu-item" 
-                [class.active]="isRouteActive(item.route)"
-                (click)="navigateTo(item.route)">
+          <!-- Regular submenu (expanded mode) -->
+          <ul
+            class="submenu"
+            *ngIf="!isCollapsed"
+            [class.open]="openedGroup === group.key"
+          >
+            <li
+              *ngFor="let item of group.items"
+              class="submenu-item"
+              [class.active]="isRouteActive(item.route)"
+              (click)="navigateTo(item.route, $event)"
+            >
               <span class="line"></span>
               <span class="label">{{ item.title }}</span>
             </li>
@@ -86,12 +111,18 @@
 
     <!-- Collapse Toggle -->
     <div class="collapse-toggle" (click)="toggleSidenav()">
-      <i class="bi" [class.bi-chevron-left]="!isCollapsed" [class.bi-chevron-right]="isCollapsed"></i>
+      <i
+        class="bi"
+        [class.bi-chevron-left]="!isCollapsed"
+        [class.bi-chevron-right]="isCollapsed"
+      ></i>
     </div>
   </nav>
-  
+
   <!-- Overlay ONLY for mobile -->
-  <div class="overlay" 
-       *ngIf="isMobile && !isCollapsed" 
-       (click)="toggleSidenav()"></div>
+  <div
+    class="overlay"
+    *ngIf="isMobile && !isCollapsed"
+    (click)="toggleSidenav()"
+  ></div>
 </div>

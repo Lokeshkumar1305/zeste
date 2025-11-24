@@ -1,7 +1,18 @@
-import { Component, HostListener, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter
+} from '@angular/core';
+import {
+  Router,
+  NavigationEnd,
+  Event as RouterEvent
+} from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 interface MenuItem {
   title: string;
@@ -18,18 +29,7 @@ interface MenuGroup {
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss'],
-  animations: [
-    trigger('slideIn', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateX(-15px) scale(0.95)' }),
-        animate('250ms ease-out', style({ opacity: 1, transform: 'translateX(0) scale(1)' }))
-      ]),
-      transition(':leave', [
-        animate('200ms ease-in', style({ opacity: 0, transform: 'translateX(-10px) scale(0.95)' }))
-      ])
-    ])
-  ]
+  styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit, OnDestroy {
   @Input() isCollapsed = false;
@@ -38,6 +38,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
   isMobile = window.innerWidth < 768;
   selectedMenu = 'dashboard';
   openedGroup: string | null = null;
+
+  // vertical position for floating card (in px from top of viewport)
+  floatingCardTop = 80;
 
   private destroy$ = new Subject<void>();
 
@@ -76,17 +79,13 @@ export class SidenavComponent implements OnInit, OnDestroy {
       key: 'tenants',
       title: 'TENANTS',
       icon: 'people',
-      items: [
-        { title: 'Tenants', route: '/core/tenant-management' }
-      ]
+      items: [{ title: 'Tenants', route: '/core/tenant-management' }]
     },
     {
       key: 'payments',
       title: 'PAYMENTS',
       icon: 'credit-card',
-      items: [
-        { title: 'Payments', route: '/core/payment-management' }
-      ]
+      items: [{ title: 'Payments', route: '/core/payment-management' }]
     },
     {
       key: 'maintenance',
@@ -136,22 +135,21 @@ export class SidenavComponent implements OnInit, OnDestroy {
   onResize() {
     const wasMobile = this.isMobile;
     this.isMobile = window.innerWidth < 768;
-    
+
     if (!this.isMobile && wasMobile) {
       this.isCollapsed = false;
       this.toggle.emit();
     }
   }
 
-  // ✅ Click outside to close floating card
+  // Click outside sidenav/floating card closes card
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    const clickedInsideSidenav = target.closest('.sidenav');
-    const clickedInsideFloatingCard = target.closest('.floating-card');
-    
-    // If clicked outside and floating card is open, close it
-    if (this.isCollapsed && this.openedGroup && !clickedInsideSidenav && !clickedInsideFloatingCard) {
+    const insideSidenav = target.closest('.sidenav');
+    const insideCard = target.closest('.floating-card');
+
+    if (!insideSidenav && !insideCard) {
       this.openedGroup = null;
     }
   }
@@ -159,38 +157,41 @@ export class SidenavComponent implements OnInit, OnDestroy {
   toggleSidenav() {
     this.isCollapsed = !this.isCollapsed;
     this.toggle.emit();
-    
-    if (this.isCollapsed) {
+
+    if (!this.isCollapsed) {
       this.openedGroup = null;
     }
   }
 
-  toggleGroup(groupKey: string) {
-    // Toggle the floating card
-    if (this.openedGroup === groupKey) {
-      this.openedGroup = null;
-    } else {
-      this.openedGroup = groupKey;
-    }
+  onGroupHeaderClick(event: MouseEvent, groupKey: string) {
+    event.stopPropagation();
 
-    // Close mobile sidenav after selection (only if not collapsed)
-    if (this.isMobile && !this.isCollapsed) {
-      setTimeout(() => {
-        this.isCollapsed = true;
-        this.toggle.emit();
-      }, 300);
-    }
+    // position floating card aligned with clicked icon
+    const el = event.currentTarget as HTMLElement;
+    const rect = el.getBoundingClientRect();
+    this.floatingCardTop = rect.top;
+
+    this.openedGroup = groupKey;
+    console.log(
+      'clicked groupKey =',
+      groupKey,
+      'openedGroup now =',
+      this.openedGroup,
+      'isCollapsed =',
+      this.isCollapsed,
+      'floatingCardTop =',
+      this.floatingCardTop
+    );
   }
 
-  navigateTo(route: string) {
+  navigateTo(route: string, event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
+
     this.router.navigate([route]);
-    
-    // Close floating card after navigation
-    if (this.isCollapsed) {
-      this.openedGroup = null;
-    }
-    
-    // Close mobile menu
+    this.openedGroup = null;
+
     if (this.isMobile) {
       this.isCollapsed = true;
       this.toggle.emit();
@@ -209,38 +210,33 @@ export class SidenavComponent implements OnInit, OnDestroy {
   private subscribeToRouterEvents() {
     this.router.events
       .pipe(
-        filter((e: RouterEvent): e is NavigationEnd => e instanceof NavigationEnd),
+        filter(
+          (e: RouterEvent): e is NavigationEnd => e instanceof NavigationEnd
+        ),
         takeUntil(this.destroy$)
       )
-      .subscribe((event) => {
+      .subscribe(event => {
         this.updateActiveMenu(event.urlAfterRedirects);
       });
   }
 
   private updateActiveMenu(url: string) {
-    if (url.includes('/core/outlet-onboarding') || url === '/core' || url === '/') {
+    if (
+      url.includes('/core/outlet-onboarding') ||
+      url === '/core' ||
+      url === '/'
+    ) {
       this.selectedMenu = 'dashboard';
-      if (!this.isCollapsed) {
-        this.openedGroup = null;
-      }
       return;
     }
-
-    let foundGroup: string | null = null;
 
     for (const group of this.collapsibleGroups) {
       for (const item of group.items) {
         if (url.includes(item.route)) {
           this.selectedMenu = item.route;
-          foundGroup = group.key;
-          break;
+          return;
         }
       }
-      if (foundGroup) break;
-    }
-
-    if (!this.isCollapsed) {
-      this.openedGroup = foundGroup;
     }
   }
 }
