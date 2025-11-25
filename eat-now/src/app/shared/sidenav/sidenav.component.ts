@@ -158,6 +158,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.isCollapsed = !this.isCollapsed;
     this.toggle.emit();
 
+    // When expanding to full sidenav, close any open group
     if (!this.isCollapsed) {
       this.openedGroup = null;
     }
@@ -166,12 +167,19 @@ export class SidenavComponent implements OnInit, OnDestroy {
   onGroupHeaderClick(event: MouseEvent, groupKey: string) {
     event.stopPropagation();
 
-    // position floating card aligned with clicked icon
+    // TOGGLE: if the same group is already open, close it
+    if (this.openedGroup === groupKey) {
+      this.openedGroup = null;
+      return;
+    }
+
+    // Otherwise, open this group and position the floating card
     const el = event.currentTarget as HTMLElement;
     const rect = el.getBoundingClientRect();
     this.floatingCardTop = rect.top;
 
     this.openedGroup = groupKey;
+
     console.log(
       'clicked groupKey =',
       groupKey,
@@ -189,11 +197,13 @@ export class SidenavComponent implements OnInit, OnDestroy {
       event.stopPropagation();
     }
 
+    // Navigate but DO NOT close the dropdown on desktop
     this.router.navigate([route]);
-    this.openedGroup = null;
 
+    // On mobile, close sidenav + dropdown after selection
     if (this.isMobile) {
       this.isCollapsed = true;
+      this.openedGroup = null;
       this.toggle.emit();
     }
   }
