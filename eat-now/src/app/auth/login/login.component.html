@@ -1,81 +1,92 @@
-<div class="container-fluid login-screen min-vh-100 d-flex">
-  <!-- Left (What’s New) -->
-  <div class="col-md-6 col-lg-6 col-xl-5 d-none d-md-flex left-pane text-white">
-    <div class="left-content text-center mx-auto">
-      <h2 class="f-28-b mb-4">What’s New</h2>
-      <div class="mb-4">
-        <img src="assets/images/whatsnew-puzzle.svg" alt="Unified Billing Software" class="illustration">
-      </div>
-      <p class="f-18-m mb-2">Advanced Billing Software</p>
-      <p class="left-desc f-14-r mx-auto">
-        Streamline invoicing, track payments, and manage subscriptions effortlessly with our intuitive, scalable, and
-        secure billing software solution.
+<div class="login-screen">
+  <!-- LEFT HERO (diagonal blue area) -->
+  <div class="hero-wrapper d-none d-lg-flex">
+    <div class="hero-content">
+      <!-- Zeste logo (light/white version) -->
+      <img src="assets/images/zeste-logo-light.svg" alt="Zeste Hostel Management" class="hero-logo" />
+
+      <h1 class="hero-title">
+        Manage any hostel,<br />
+        anywhere!
+      </h1>
+
+      <p class="hero-subtitle">
+        The most powerful platform, tailored for modern hostels and PGs.
       </p>
-      <div class="dots my-4">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-      </div>
-      <div class="help-divider d-flex align-items-center justify-content-center my-4">
-        <div class="line"></div>
-        <div class="mx-3 f-16-m ">Need help? Contact us</div>
-        <div class="line"></div>
-      </div>
-      <div class="contact d-flex justify-content-center gap-4 small">
-        <div>
-          <i class="bi bi-telephone-fill me-2 f-14-m"></i> +91 7975499056
-        </div>
-        <div>
-          <i class="bi bi-envelope-fill me-2 f-14-m"></i> support&#64;zeste.com
-        </div>
+
+      <p class="hero-description">
+        Streamline student check‑ins, room allocation, fee collection, visitors
+        and complaints — all from a single, secure Zeste dashboard.
+      </p>
+
+      <!-- Hostel‑themed illustration -->
+      <div class="hero-illustration">
+        <img src="assets/images/hostel-hero-illustration.svg" alt="Hostel Management Illustration" />
       </div>
     </div>
   </div>
 
-  <!-- Right (Login) -->
-  <div class="col-12 col-md-6 col-lg-6 col-xl-7 right-pane d-flex flex-column align-items-center">
-    <div class="login-wrap w-100">
-      <div class="text-center mb-4">
-        <img src="assets/images/zeste-logo.svg" alt="Zeste Logo" class="zeste-logo mb-3">
-        <p class="login-title f-32-m mb-2">Login</p>
-        <p class="text-muted f-16-r mb-0">Use your zeste credentials to login.</p>
+  <!-- RIGHT LOGIN CARD -->
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header mb-4">
+        <h2 class="login-heading mb-1">Let’s Get Started</h2>
+        <p class="login-subtitle text-muted mb-0">
+          Your Zeste admin dashboard
+        </p>
       </div>
-      <div class="mx-auto">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-          <!-- Email -->
-          <div class="mb-3">
-            <label class="form-label d-block f-16-r mb-1">Email ID<span class="text-danger">*</span></label>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput formControlName="email" autocomplete="email" required>
-              <mat-error *ngIf="f.email?.hasError('required')">Email is required</mat-error>
-              <mat-error *ngIf="f.email?.hasError('email')">Please enter a valid email</mat-error>
-            </mat-form-field>
-          </div>
-          <!-- Password -->
-          <div class="mb-1">
-            <div class="d-flex align-items-center justify-content-between mb-1">
-              <label class="form-label f-16-r mb-0">Password<span class="text-danger ms-1">*</span></label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
-                autocomplete="current-password" required>
-              <button mat-button type="button" matSuffix class="toggle-show f-14-m" (click)="togglePassword()">
-                {{ hide ? 'show' : 'hide' }}
-              </button>
-              <mat-error *ngIf="f.password?.hasError('required')">Password is required</mat-error>
-              <mat-error *ngIf="f.password?.hasError('minlength')">Password must be at least 6 characters</mat-error>
-            </mat-form-field>
-          </div>
-          <div class="text-end mb-3">
-            <a href="#" class="forgot-link f-16-m" (click)="onForgotPassword($event)">Forgot Password?</a>
-          </div>
-          <button mat-raised-button color="primary" class="w-100 btn-login" [disabled]="loginForm.invalid">
-            Login
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Username / Email -->
+        <div class="mb-3">
+          <label class="form-label mb-1">User name</label>
+          <mat-form-field appearance="outline" class="login-form-field w-100">
+            <input matInput formControlName="email" autocomplete="email" required />
+            <mat-error *ngIf="f.email?.hasError('required')">
+              User name is required
+            </mat-error>
+            <mat-error *ngIf="f.email?.hasError('email')">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-1">
+          <label class="form-label mb-1">Password</label>
+          <mat-form-field appearance="outline" class="login-form-field w-100">
+            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
+              autocomplete="current-password" required />
+            <button mat-icon-button type="button" matSuffix class="visibility-btn" (click)="togglePassword()">
+              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+
+            <mat-error *ngIf="f.password?.hasError('required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="f.password?.hasError('minlength')">
+              Password must be at least 6 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Forgot password -->
+        <div class="d-flex justify-content-end mb-4">
+          <button type="button" class="btn btn-link p-0 forgot-link" (click)="onForgotPassword($event)">
+            Forgot Password?
           </button>
-        </form>
-      </div>
-      <div class="text-center mt-4">
-        <!-- <img src="assets/images/pci-badge.svg" alt="PCI DSS" class="pci-badge"> -->
+        </div>
+
+        <!-- Sign In button -->
+        <button mat-raised-button color="primary" class="w-100 btn-signin" [disabled]="loginForm.invalid">
+          Sign In
+        </button>
+      </form>
+
+      <!-- Powered by -->
+      <div class="powered-by text-center mt-4 text-muted small">
+        Powered by
+        <img src="assets/images/zeste-logo.svg" alt="Zeste Hostel Management" class="powered-logo ms-1" />
       </div>
     </div>
   </div>

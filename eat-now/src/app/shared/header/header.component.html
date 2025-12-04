@@ -83,20 +83,20 @@
     <mat-icon>lock</mat-icon>
     <span>Change Password</span>
   </button>
+
+  <button mat-menu-item >
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </button>
   <mat-divider></mat-divider>
 
-  <div class="theme-selector">
+  <!-- <div class="theme-selector">
     <span>Theme</span>
     <div class="color-swatches">
       <button *ngFor="let color of themeColors" class="swatch" [style.background-color]="color"
         [class.active]="color === selectedTheme" (click)="selectTheme(color)">
       </button>
     </div>
-  </div>
-  <mat-divider></mat-divider>
+  </div> -->
 
-  <button mat-menu-item class="logout-btn">
-    <mat-icon>logout</mat-icon>
-    <span>Logout</span>
-  </button>
 </mat-menu>

@@ -360,8 +360,6 @@
   display: flex;
   gap: 16px;
   padding: 24px 20px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: #ffffff;
   min-width: 280px;
 
   .avatar-large {
@@ -384,7 +382,6 @@
     .profile-name {
       font-size: 16px;
       font-weight: 600;
-      color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -392,7 +389,6 @@
 
     .profile-email {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.9);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

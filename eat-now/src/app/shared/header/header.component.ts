@@ -62,7 +62,7 @@ isMobile = false;
 
   // Theme state
   isDarkMode = false;
-  themeColors: string[] = ['#1A365D', '#3B5A8C', '#2A69A6', '#8A4A9F', '#28A745', '#F39C12'];
+  themeColors: string[] = ['#1A365D', '#3B5A8C', '#2A69A6', '#8A4A9F', '#28A745'];
   selectedColor = this.themeColors[0];
  selectedTheme = this.themeColors[0];
   notificationsList: Notification[] = [];
@@ -206,5 +206,13 @@ get userInitials(): string {
     this.isDarkMode = ev.checked;
     this.theme.setMode(this.isDarkMode ? 'dark' : 'light');
   }
+
+
+toggleDarkMode(enabled: boolean): void {
+  this.isDarkMode = enabled;
+  document.body.classList.toggle('dark-theme', enabled);
+}
+
+
 
 }
