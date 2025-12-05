@@ -198,7 +198,7 @@ export class TenantManagementComponent {
   // Tenant Actions
   onAddNewTenant(): void {
     const dialogRef = this.dialog.open(TenantManagementModalComponent, {
-      width: '480px',
+      width: '600px',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
