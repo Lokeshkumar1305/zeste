@@ -110,9 +110,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
       title: 'MENU & FOOD',
       icon: 'basket',
       items: [
-        { title: 'Menu', route: '/core/menu' },
-        { title: 'Items', route: '/core/items' },
-        { title: 'Categories', route: '/core/category' }
+         { title: 'Menu', route: '/core/menu-list' },
+        { title: 'Menu Config', route: '/core/menu' },
       ]
     }
   ];

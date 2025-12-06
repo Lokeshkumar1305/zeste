@@ -217,7 +217,7 @@ export class RoomManagementComponent implements OnInit {
   /* -------------------  Modal handling  ------------------- */
   onAddNewRoom(): void {
     const dialogRef = this.dialog.open(RoomManagementModalComponent, {
-      width: '480px',
+      width: '600px',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -239,7 +239,7 @@ export class RoomManagementComponent implements OnInit {
 
   onEditRoom(room: RoomDetails): void {
     const dialogRef = this.dialog.open(RoomManagementModalComponent, {
-      width: '480px',
+      width: '600px',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',

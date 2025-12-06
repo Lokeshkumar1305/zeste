@@ -64,6 +64,19 @@ import { MaintenanceManagementModalComponent } from './maintenance-management-mo
 import { MaintenanceCategoryModalComponent } from './maintenance-category-modal/maintenance-category-modal.component';
 import { ExpensesCategoryComponent } from './expenses-category/expenses-category.component';
 import { ExpensesCategoryModalComponent } from './expenses-category-modal/expenses-category-modal.component';
+import { MenuListComponent } from './menu-list/menu-list.component';
+import { InventoryDashboardComponent } from './inventory-dashboard/inventory-dashboard.component';
+import { InventoryUnitsComponent } from './inventory-units/inventory-units.component';
+import { InventoryItemsComponent } from './inventory-items/inventory-items.component';
+import { InventoryItemsCategoriesComponent } from './inventory-items-categories/inventory-items-categories.component';
+import { InventoryStocksComponent } from './inventory-stocks/inventory-stocks.component';
+import { InventoryMovementsComponent } from './inventory-movements/inventory-movements.component';
+import { InventoryPurchaseOrdersComponent } from './inventory-purchase-orders/inventory-purchase-orders.component';
+import { InventorySuppliersComponent } from './inventory-suppliers/inventory-suppliers.component';
+import { InventoryReportsComponent } from './inventory-reports/inventory-reports.component';
+import { InventorySettingsComponent } from './inventory-settings/inventory-settings.component';
+import { SubscriptionPackagesComponent } from './subscription-packages/subscription-packages.component';
+import { SubscriptionPackagesModalComponent } from './subscription-packages-modal/subscription-packages-modal.component';
 
 
 
@@ -114,7 +127,20 @@ import { ExpensesCategoryModalComponent } from './expenses-category-modal/expens
  MaintenanceManagementModalComponent,
  MaintenanceCategoryModalComponent,
  ExpensesCategoryComponent,
- ExpensesCategoryModalComponent
+ ExpensesCategoryModalComponent,
+ MenuListComponent,
+ InventoryDashboardComponent,
+ InventoryUnitsComponent,
+ InventoryItemsComponent,
+ InventoryItemsCategoriesComponent,
+ InventoryStocksComponent,
+ InventoryMovementsComponent,
+ InventoryPurchaseOrdersComponent,
+ InventorySuppliersComponent,
+ InventoryReportsComponent,
+ InventorySettingsComponent,
+ SubscriptionPackagesComponent,
+ SubscriptionPackagesModalComponent
  
  
  

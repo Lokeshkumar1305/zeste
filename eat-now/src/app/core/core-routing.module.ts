@@ -26,6 +26,7 @@ import { BedsManagementComponent } from './beds-management/beds-management.compo
 import { AmenitiesManagementComponent } from './amenities-management/amenities-management.component';
 import { MaintenanceCategoryComponent } from './maintenance-category/maintenance-category.component';
 import { ExpensesCategoryComponent } from './expenses-category/expenses-category.component';
+import { MenuListComponent } from './menu-list/menu-list.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'amenities-management', component: AmenitiesManagementComponent },
   { path: 'maintenance-category', component: MaintenanceCategoryComponent },
   { path: 'expenses-category', component: ExpensesCategoryComponent },
+   { path: 'menu-list', component: MenuListComponent },
 
 ];
 

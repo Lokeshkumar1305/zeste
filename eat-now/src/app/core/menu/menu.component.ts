@@ -18,7 +18,7 @@ export interface MenuItem {
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent {
-  // Real menu data
+  // Real menu data – in real app this will come from API.
   public allMenuItems: MenuItem[] = [
     {
       id: 'M001',
@@ -26,7 +26,8 @@ export class MenuComponent {
       description: 'Classic pizza with fresh mozzarella and basil',
       mealType: 'Lunch',
       itemType: 'VEG',
-      isAvailable: true
+      isAvailable: true,
+      imageUrl: 'assets/images/menu/margherita.jpg'
     },
     {
       id: 'M002',
@@ -34,7 +35,8 @@ export class MenuComponent {
       description: 'Creamy tomato-based curry with tender chicken',
       mealType: 'Dinner',
       itemType: 'NON_VEG',
-      isAvailable: true
+      isAvailable: true,
+      imageUrl: 'assets/images/menu/butter-chicken.jpg'
     },
     {
       id: 'M003',
@@ -42,7 +44,8 @@ export class MenuComponent {
       description: 'Crispy crepe with spicy potato filling',
       mealType: 'Breakfast',
       itemType: 'VEG',
-      isAvailable: true
+      isAvailable: true,
+      imageUrl: 'assets/images/menu/masala-dosa.jpg'
     },
     {
       id: 'M004',
@@ -50,15 +53,14 @@ export class MenuComponent {
       description: 'Spicy scrambled eggs with onions and spices',
       mealType: 'Breakfast',
       itemType: 'EGG',
-      isAvailable: false
+      isAvailable: false,
+      imageUrl: 'assets/images/menu/egg-bhurji.jpg'
     }
   ];
 
-  // For filtering
   public selectedMealTypeFilter: string = 'All';
   public availableMealTypes: string[] = ['Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Beverages'];
 
-  // Pagination
   public pageSizeOptions = [5, 10, 25];
   public pageSize = 5;
   public currentPage = 1;
@@ -111,8 +113,19 @@ export class MenuComponent {
     }
   }
 
-  prevPage() { if (this.currentPage > 1) { this.currentPage--; this.updatePagedItems(); } }
-  nextPage() { if (this.currentPage < this.totalPages) { this.currentPage++; this.updatePagedItems(); } }
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagedItems();
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagedItems();
+    }
+  }
 
   // --- CRUD ---
   onAddNewMenu() {
@@ -124,7 +137,7 @@ export class MenuComponent {
       panelClass: 'custom-dialog-container',
       data: {
         menu: null,
-        availableMealTypes: this.availableMealTypes  // passed to modal
+        availableMealTypes: this.availableMealTypes
       },
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
@@ -137,7 +150,6 @@ export class MenuComponent {
         result.id = 'M' + String(this.allMenuItems.length + 1).padStart(3, '0');
         this.allMenuItems.push(result);
 
-        // If new meal type was added in popup, update filter list
         if (!this.availableMealTypes.includes(result.mealType)) {
           this.availableMealTypes.push(result.mealType);
           this.availableMealTypes.sort();
