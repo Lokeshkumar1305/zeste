@@ -1,0 +1,215 @@
+<div class="modal-slide-in">
+  <!-- Header -->
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <div>
+      <p class="f-18-m mb-0">
+        <i class="bi bi-box-seam me-2"></i>
+        {{ isEditMode ? 'Edit Item' : 'Add New Item' }}
+      </p>
+      <small class="text-muted">Add items you want to track in your inventory</small>
+    </div>
+    <button mat-icon-button (click)="onCancel()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Help Section -->
+    <div class="help-box mb-4">
+      <div class="help-icon">
+        <i class="bi bi-lightbulb"></i>
+      </div>
+      <div class="help-content">
+        <strong>What is an Inventory Item?</strong>
+        <p class="mb-0">An item is anything you want to keep track of, like "Rice", "Soap", "Bedsheets", "Brooms", etc. Add all items you use in your hostel.</p>
+      </div>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator mb-4">
+      <div class="step active">
+        <span class="step-number">1</span>
+        <span class="step-text">Basic Info</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" [class.active]="item.categoryId && item.unitId">
+        <span class="step-number">2</span>
+        <span class="step-text">Category & Unit</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" [class.active]="item.minStockLevel && item.costPrice">
+        <span class="step-number">3</span>
+        <span class="step-text">Stock Details</span>
+      </div>
+    </div>
+
+    <form>
+      <div class="row">
+        <!-- Item Name -->
+        <div class="col-md-8">
+          <mat-label class="required">Item Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="item.name"
+              name="name"
+              placeholder="e.g. Basmati Rice, Toilet Paper, Bed Sheet"
+              required />
+            <mat-hint>Enter a clear name that everyone can understand</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- SKU -->
+        <div class="col-md-4">
+          <mat-label>Item Code (SKU)</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="item.sku"
+              name="sku"
+              placeholder="Auto-generated" />
+            <button mat-icon-button matSuffix type="button" (click)="regenerateSKU()" 
+                    matTooltip="Generate new code">
+              <i class="bi bi-arrow-clockwise"></i>
+            </button>
+            <mat-hint>Unique code for this item</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Category -->
+        <div class="col-md-6 mt-3">
+          <mat-label class="required">Category</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="item.categoryId" name="categoryId" required>
+              <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                {{ cat.name }}
+              </mat-option>
+            </mat-select>
+            <mat-hint>Group similar items together</mat-hint>
+          </mat-form-field>
+          <div class="f-12-m text-warning mt-1" *ngIf="categories.length === 0">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            No categories available. Please add categories first.
+          </div>
+        </div>
+
+        <!-- Unit -->
+        <div class="col-md-6 mt-3">
+          <mat-label class="required">Measuring Unit</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="item.unitId" name="unitId" required>
+              <mat-option *ngFor="let u of units" [value]="u.id">
+                {{ u.name }} ({{ u.shortName }})
+              </mat-option>
+            </mat-select>
+            <mat-hint>How do you count/measure this item?</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Min Stock Level -->
+        <div class="col-md-6 mt-3">
+          <mat-label class="required">Minimum Stock Level</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="item.minStockLevel"
+              name="minStockLevel"
+              min="0"
+              placeholder="e.g. 10"
+              required />
+            <mat-hint>Alert when stock falls below this number</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Cost Price -->
+        <div class="col-md-6 mt-3">
+          <mat-label>Cost Price (per unit)</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <span matPrefix>₹&nbsp;</span>
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="item.costPrice"
+              name="costPrice"
+              min="0"
+              placeholder="e.g. 50" />
+            <mat-hint>How much does one unit cost?</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Description -->
+        <div class="col-12 mt-3">
+          <mat-label>Description</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <textarea
+              matInput
+              rows="3"
+              [(ngModel)]="item.description"
+              name="description"
+              placeholder="Any additional details about this item...">
+            </textarea>
+            <mat-hint>Optional: Add brand name, size, or other details</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Status -->
+        <div class="col-12 mt-3">
+          <mat-checkbox [(ngModel)]="item.isActive" name="isActive" color="primary">
+            <span class="ms-2">Active Item (visible in inventory)</span>
+          </mat-checkbox>
+        </div>
+      </div>
+    </form>
+
+    <!-- Summary Card -->
+    <div class="summary-card mt-4" *ngIf="item.name">
+      <div class="summary-header">
+        <i class="bi bi-eye me-2"></i> Item Preview
+      </div>
+      <div class="summary-body">
+        <div class="summary-row">
+          <span class="label">Name:</span>
+          <span class="value">{{ item.name }}</span>
+        </div>
+        <div class="summary-row" *ngIf="item.categoryId">
+          <span class="label">Category:</span>
+          <span class="value badge-category">
+            {{ getCategoryName(item.categoryId) }}
+          </span>
+        </div>
+        <div class="summary-row" *ngIf="item.unitId">
+          <span class="label">Unit:</span>
+          <span class="value">
+            {{ getUnitName(item.unitId) }}
+          </span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Min Stock:</span>
+          <span class="value">{{ item.minStockLevel || 0 }}</span>
+        </div>
+        <div class="summary-row" *ngIf="item.costPrice">
+          <span class="label">Cost Price:</span>
+          <span class="value">₹{{ item.costPrice }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="modal-footer d-flex justify-content-between mt-4">
+    <div class="footer-hint">
+      <i class="bi bi-info-circle me-1"></i>
+      <small>Current stock will be 0. Add stock using "Stock Movement"</small>
+    </div>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onSave()">
+        <i class="bi bi-check2 me-1"></i> 
+        {{ isEditMode ? 'Update Item' : 'Add Item' }}
+      </button>
+    </div>
+  </div>
+</div>

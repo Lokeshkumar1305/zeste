@@ -77,6 +77,13 @@ import { InventoryReportsComponent } from './inventory-reports/inventory-reports
 import { InventorySettingsComponent } from './inventory-settings/inventory-settings.component';
 import { SubscriptionPackagesComponent } from './subscription-packages/subscription-packages.component';
 import { SubscriptionPackagesModalComponent } from './subscription-packages-modal/subscription-packages-modal.component';
+import { InventoryUnitsPopupComponent } from './inventory-units-popup/inventory-units-popup.component';
+import { InventoryItemsModalComponent } from './inventory-items-modal/inventory-items-modal.component';
+import { InventoryItemsCategoriesModalComponent } from './inventory-items-categories-modal/inventory-items-categories-modal.component';
+import { InventoryStocksModalComponent } from './inventory-stocks-modal/inventory-stocks-modal.component';
+import { InventoryMovementsModalComponent } from './inventory-movements-modal/inventory-movements-modal.component';
+import { InventoryPurchaseOrdersModalComponent } from './inventory-purchase-orders-modal/inventory-purchase-orders-modal.component';
+import { InventorySuppliersModalComponent } from './inventory-suppliers-modal/inventory-suppliers-modal.component';
 
 
 
@@ -140,7 +147,14 @@ import { SubscriptionPackagesModalComponent } from './subscription-packages-moda
  InventoryReportsComponent,
  InventorySettingsComponent,
  SubscriptionPackagesComponent,
- SubscriptionPackagesModalComponent
+ SubscriptionPackagesModalComponent,
+ InventoryUnitsPopupComponent,
+ InventoryItemsModalComponent,
+ InventoryItemsCategoriesModalComponent,
+ InventoryStocksModalComponent,
+ InventoryMovementsModalComponent,
+ InventoryPurchaseOrdersModalComponent,
+ InventorySuppliersModalComponent
  
  
  

@@ -27,6 +27,16 @@ import { AmenitiesManagementComponent } from './amenities-management/amenities-m
 import { MaintenanceCategoryComponent } from './maintenance-category/maintenance-category.component';
 import { ExpensesCategoryComponent } from './expenses-category/expenses-category.component';
 import { MenuListComponent } from './menu-list/menu-list.component';
+import { InventoryUnitsComponent } from './inventory-units/inventory-units.component';
+import { InventoryItemsComponent } from './inventory-items/inventory-items.component';
+import { InventoryItemsCategoriesComponent } from './inventory-items-categories/inventory-items-categories.component';
+import { InventoryStocksComponent } from './inventory-stocks/inventory-stocks.component';
+import { InventoryMovementsComponent } from './inventory-movements/inventory-movements.component';
+import { InventoryPurchaseOrdersComponent } from './inventory-purchase-orders/inventory-purchase-orders.component';
+import { InventorySuppliersComponent } from './inventory-suppliers/inventory-suppliers.component';
+import { InventoryReportsComponent } from './inventory-reports/inventory-reports.component';
+import { InventorySettingsComponent } from './inventory-settings/inventory-settings.component';
+import { InventoryDashboardComponent } from './inventory-dashboard/inventory-dashboard.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -53,7 +63,17 @@ const routes: Routes = [
   { path: 'amenities-management', component: AmenitiesManagementComponent },
   { path: 'maintenance-category', component: MaintenanceCategoryComponent },
   { path: 'expenses-category', component: ExpensesCategoryComponent },
-   { path: 'menu-list', component: MenuListComponent },
+  { path: 'menu-list', component: MenuListComponent },
+   { path: 'inventory-dashboard', component: InventoryDashboardComponent },
+  { path: 'inventory-unit', component: InventoryUnitsComponent },
+  { path: 'inventory-items', component: InventoryItemsComponent },
+  { path: 'inventory-items-categories', component: InventoryItemsCategoriesComponent },
+  { path: 'inventory-stocks', component: InventoryStocksComponent },
+  { path: 'inventory-movements', component: InventoryMovementsComponent },
+  { path: 'inventory-purchase-orders', component: InventoryPurchaseOrdersComponent },
+  { path: 'inventory-suppliers', component: InventorySuppliersComponent },
+  { path: 'inventory-reports', component: InventoryReportsComponent },
+  { path: 'inventory-settings', component: InventorySettingsComponent },
 
 ];
 

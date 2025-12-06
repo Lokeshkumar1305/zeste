@@ -1,0 +1,196 @@
+<!-- inventory-movements-modal.component.html -->
+<div class="modal-slide-in">
+  <!-- Header -->
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <div>
+      <p class="f-18-m mb-0">
+        <i class="bi bi-arrow-left-right me-2"></i>
+        Stock Movement
+      </p>
+      <small class="text-muted">Add stock (IN) or remove stock (OUT)</small>
+    </div>
+    <button mat-icon-button (click)="onCancel()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Help Section -->
+    <div class="help-box mb-4">
+      <div class="help-icon">
+        <i class="bi bi-lightbulb"></i>
+      </div>
+      <div class="help-content">
+        <strong>What is Stock Movement?</strong>
+        <p class="mb-0">
+          <strong>Stock IN:</strong> When you buy or receive items (adds to stock)<br>
+          <strong>Stock OUT:</strong> When you use or give away items (removes from stock)
+        </p>
+      </div>
+    </div>
+
+    <!-- Movement Type Toggle -->
+    <div class="type-toggle mb-4">
+      <button 
+        type="button" 
+        class="toggle-btn in"
+        [class.active]="movement.type === 'IN'"
+        (click)="movement.type = 'IN'; onTypeChange()">
+        <i class="bi bi-arrow-down-circle"></i>
+        <span>Stock IN</span>
+        <small>Add items</small>
+      </button>
+      <button 
+        type="button" 
+        class="toggle-btn out"
+        [class.active]="movement.type === 'OUT'"
+        (click)="movement.type = 'OUT'; onTypeChange()">
+        <i class="bi bi-arrow-up-circle"></i>
+        <span>Stock OUT</span>
+        <small>Remove items</small>
+      </button>
+    </div>
+
+    <form>
+      <div class="row">
+        <!-- Select Item -->
+        <div class="col-12">
+          <mat-label class="required">Select Item</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select 
+              [(ngModel)]="movement.itemId" 
+              name="itemId" 
+              (selectionChange)="onItemChange()"
+              required>
+              <mat-option *ngFor="let item of items" [value]="item.id">
+                {{ item.name }} 
+                <span class="text-muted">(Current: {{ item.currentStock }} {{ item.unitName }})</span>
+              </mat-option>
+            </mat-select>
+            <mat-hint>Choose the item you want to update</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Current Stock Display -->
+        <div class="col-12 mt-2" *ngIf="selectedItem">
+          <div class="current-stock-display">
+            <div class="stock-box current">
+              <span class="label">Current Stock</span>
+              <span class="value">{{ selectedItem.currentStock }} {{ selectedItem.unitName }}</span>
+            </div>
+            <div class="arrow">
+              <i class="bi" [class.bi-arrow-right]="movement.type === 'IN'" 
+                              [class.bi-arrow-left]="movement.type === 'OUT'"></i>
+              <span [class.text-success]="movement.type === 'IN'" 
+                    [class.text-danger]="movement.type === 'OUT'">
+                {{ movement.type === 'IN' ? '+' : '-' }}{{ movement.quantity || 0 }}
+              </span>
+            </div>
+            <div class="stock-box new" 
+                 [class.increased]="movement.type === 'IN'"
+                 [class.decreased]="movement.type === 'OUT'">
+              <span class="label">New Stock</span>
+              <span class="value">{{ getNewStock() }} {{ selectedItem.unitName }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="col-md-6 mt-3">
+          <mat-label class="required">Quantity</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="movement.quantity"
+              name="quantity"
+              min="1"
+              placeholder="How many?"
+              required />
+            <span matSuffix *ngIf="selectedItem">{{ selectedItem.unitName }}</span>
+            <mat-hint>Enter the number of items</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Reference -->
+        <div class="col-md-6 mt-3">
+          <mat-label>Reference Number</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="movement.reference"
+              name="reference"
+              placeholder="Auto-generated"
+              readonly />
+            <mat-hint>Auto-generated for tracking</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Reason -->
+        <div class="col-12 mt-3">
+          <mat-label class="required">Reason</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="movement.reason" name="reason" required>
+              <mat-option 
+                *ngFor="let reason of (movement.type === 'IN' ? movementReasons.IN : movementReasons.OUT)" 
+                [value]="reason">
+                {{ reason }}
+              </mat-option>
+            </mat-select>
+            <mat-hint>Why are you {{ movement.type === 'IN' ? 'adding' : 'removing' }} stock?</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Performed By -->
+        <div class="col-md-6 mt-3">
+          <mat-label>Done By (Your Name)</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="movement.performedBy"
+              name="performedBy"
+              placeholder="Enter your name" />
+            <mat-hint>Who is making this change?</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Notes -->
+        <div class="col-md-6 mt-3">
+          <mat-label>Additional Notes</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="movement.notes"
+              name="notes"
+              placeholder="Any extra details..." />
+            <mat-hint>Optional: Bill number, supplier name, etc.</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="modal-footer d-flex justify-content-between mt-4">
+    <div class="footer-hint">
+      <i class="bi bi-info-circle me-1"></i>
+      <small>This will update the stock immediately</small>
+    </div>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+        Cancel
+      </button>
+      <button 
+        type="button" 
+        class="btn"
+        [class.btn-success]="movement.type === 'IN'"
+        [class.btn-danger]="movement.type === 'OUT'"
+        (click)="onSave()">
+        <i class="bi me-1" 
+           [class.bi-plus-circle]="movement.type === 'IN'"
+           [class.bi-dash-circle]="movement.type === 'OUT'"></i> 
+        {{ movement.type === 'IN' ? 'Add Stock' : 'Remove Stock' }}
+      </button>
+    </div>
+  </div>
+</div>

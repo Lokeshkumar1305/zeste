@@ -1,1 +1,117 @@
-<p>inventory-stocks works!</p>
+<!-- inventory-stocks-modal.component.html -->
+<div class="modal-slide-in stock-view">
+  <!-- Header -->
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <div>
+      <p class="f-18-m mb-0">
+        <i class="bi bi-boxes me-2"></i>
+        Current Stock Overview
+      </p>
+      <small class="text-muted">See how much stock you have for each item</small>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <!-- Summary Cards -->
+    <div class="summary-cards mb-4">
+      <div class="summary-card total">
+        <i class="bi bi-box-seam"></i>
+        <div class="info">
+          <span class="label">Total Items</span>
+        <span class="value">{{ items.length }}</span>
+        </div>
+      </div>
+      <div class="summary-card ok">
+        <i class="bi bi-check-circle"></i>
+        <div class="info">
+          <span class="label">In Stock</span>
+          <span class="value">{{ inStockCount }}</span>
+        </div>
+      </div>
+      <div class="summary-card low">
+        <i class="bi bi-exclamation-triangle"></i>
+        <div class="info">
+          <span class="label">Low Stock</span>
+         <span class="value">{{ lowStockCount }}</span>
+        </div>
+      </div>
+      <div class="summary-card out">
+        <i class="bi bi-x-circle"></i>
+        <div class="info">
+          <span class="label">Out of Stock</span>
+          <span class="value">{{ outOfStockCount }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Box -->
+    <div class="help-box-inline mb-3">
+      <i class="bi bi-info-circle"></i>
+      <span>
+        <strong>🔴 Red</strong> = Out of stock | 
+        <strong>🟡 Yellow</strong> = Low stock (need to buy soon) | 
+        <strong>🟢 Green</strong> = Enough stock
+      </span>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar mb-3">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (ngModelChange)="filterItems()"
+          placeholder="Search items..." />
+      </div>
+      <select [(ngModel)]="filterCategory" (ngModelChange)="filterItems()" class="filter-select">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+      </select>
+      <select [(ngModel)]="filterStatus" (ngModelChange)="filterItems()" class="filter-select">
+        <option value="all">All Status</option>
+        <option value="ok">In Stock</option>
+        <option value="low">Low Stock</option>
+      </select>
+    </div>
+
+    <!-- Stock List -->
+    <div class="stock-list">
+      <div class="stock-item" *ngFor="let item of filteredItems" 
+           [class.status-ok]="getStockStatus(item) === 'ok'"
+           [class.status-low]="getStockStatus(item) === 'low'"
+           [class.status-out]="getStockStatus(item) === 'out'">
+        <div class="item-info">
+          <span class="item-name"></span>
+          <span class="item-category">{{ item.categoryName || 'Uncategorized' }}</span>
+        </div>
+        <div class="stock-info">
+          <div class="current-stock">
+            <span class="stock-number">{{ item.currentStock }}</span>
+            <span class="unit">{{ item.unitName || 'units' }}</span>
+          </div>
+          <div class="stock-meta">
+            <span class="min-level">Min: {{ item.minStockLevel }}</span>
+            <span class="status-badge" [class]="'status-' + getStockStatus(item)">
+              {{ getStockStatusText(item) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-items" *ngIf="filteredItems.length === 0">
+        <i class="bi bi-inbox"></i>
+        <p>No items found</p>
+        <small>Try changing your search or filters</small>
+      </div>
+    </div>
+
+    <!-- Total Value -->
+    <div class="total-value-bar mt-4">
+      <span class="label">Total Stock Value:</span>
+      <span class="value">₹ {{ getTotalValue() | number:'1.2-2' }}</span>
+    </div>
+  </div>
+
+  
+</div>

@@ -1,0 +1,245 @@
+.modal-slide-in {
+  width: 800px;
+  max-width: 100%;
+  background: var(--card-background);
+  border-left: 1px solid var(--card-border);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-background);
+  flex-shrink: 0;
+}
+
+.modal-body {
+  flex: 1;
+  padding: 16px 24px;
+//   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--card-border);
+  background: var(--card-background);
+  flex-shrink: 0;
+}
+
+/* Ensure buttons inherit theme styling */
+.modal-footer .btn {
+  min-width: 80px;
+}
+
+/* Label with red mandatory star */
+mat-label.required::after {
+  content: " *";
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+/* Form field spacing */
+::ng-deep .mat-mdc-form-field {
+  .mdc-notched-outline {
+    border-radius: 6px !important;
+  }
+
+  .mat-mdc-form-field-infix {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+::ng-deep .mat-mdc-select-arrow {
+  color: var(--text-muted);
+}
+
+/* Status Pills */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-open .status-dot { background: #20C997; }
+.status-closed .status-dot { background: #6c757d; }
+.status-on-hold .status-dot { background: #FFC107; }
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+.help-box {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: #e8f4fd;
+  border-radius: 8px;
+  border-left: 4px solid #2196f3;
+
+  .help-icon {
+    font-size: 24px;
+    color: #2196f3;
+  }
+
+  .help-content {
+    strong {
+      color: #1565c0;
+    }
+    p {
+      font-size: 13px;
+      color: #424242;
+      margin-top: 4px;
+    }
+  }
+}
+
+.type-toggle {
+  display: flex;
+  gap: 16px;
+
+  .toggle-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    i {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    span {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    small {
+      color: #666;
+      font-size: 12px;
+    }
+
+    &.in {
+      &:hover, &.active {
+        border-color: #4caf50;
+        background: #e8f5e9;
+        
+        i { color: #4caf50; }
+      }
+    }
+
+    &.out {
+      &:hover, &.active {
+        border-color: #f44336;
+        background: #ffebee;
+        
+        i { color: #f44336; }
+      }
+    }
+  }
+}
+
+.current-stock-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+
+  .stock-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 24px;
+    border-radius: 8px;
+
+    .label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    &.current {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+    }
+
+    &.new {
+      &.increased {
+        background: #e8f5e9;
+        border: 2px solid #4caf50;
+        .value { color: #2e7d32; }
+      }
+
+      &.decreased {
+        background: #ffebee;
+        border: 2px solid #f44336;
+        .value { color: #c62828; }
+      }
+    }
+  }
+
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    i {
+      font-size: 24px;
+      color: #999;
+    }
+
+    span {
+      font-weight: 700;
+      font-size: 16px;
+    }
+  }
+}
+
+.required::after {
+  content: ' *';
+  color: #f44336;
+}
+
+.footer-hint {
+  color: #666;
+  font-size: 12px;
+}

@@ -110,8 +110,25 @@ export class SidenavComponent implements OnInit, OnDestroy {
       title: 'MENU & FOOD',
       icon: 'basket',
       items: [
-         { title: 'Menu', route: '/core/menu-list' },
-        { title: 'Menu Config', route: '/core/menu' },
+        { title: 'Menu', route: '/core/menu-list' },
+        { title: 'Menu Config', route: '/core/menu' }
+      ]
+    },
+    {
+      key: 'inventory',
+      title: 'INVENTORY',
+      icon: 'box-seam', // Valid Bootstrap icon for inventory
+      items: [
+        { title: 'Dashboard', route: '/core/inventory-dashboard' },
+        { title: 'Units', route: '/core/inventory-unit' },
+        { title: 'Inventory Items', route: '/core/inventory-items' },
+        { title: 'Items Categories', route: '/core/inventory-items-categories' },
+        { title: 'Inventory Stocks', route: '/core/inventory-stocks' },
+        { title: 'Inventory Movements', route: '/core/inventory-movements' },
+        { title: 'Purchase Orders', route: '/core/inventory-purchase-orders' },
+        { title: 'Suppliers', route: '/core/inventory-suppliers' },
+        { title: 'Reports', route: '/core/inventory-reports' },
+        { title: 'Settings', route: '/core/inventory-settings' }
       ]
     }
   ];
@@ -141,14 +158,24 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Click outside sidenav/floating card closes card
+  /**
+   * FIX: Only close floating card in collapsed mode when clicking outside.
+   * In expanded mode, submenus should stay open regardless of main content clicks.
+   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
+    // In expanded mode, don't close submenus on outside clicks
+    if (!this.isCollapsed) {
+      return;
+    }
+
+    // In collapsed mode, close floating card when clicking outside sidenav
     const target = event.target as HTMLElement;
     const insideSidenav = target.closest('.sidenav');
     const insideCard = target.closest('.floating-card');
+    const insideHamburger = target.closest('.mobile-hamburger');
 
-    if (!insideSidenav && !insideCard) {
+    if (!insideSidenav && !insideCard && !insideHamburger) {
       this.openedGroup = null;
     }
   }
@@ -157,8 +184,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.isCollapsed = !this.isCollapsed;
     this.toggle.emit();
 
-    // When expanding to full sidenav, close any open group
+    // When expanding to full sidenav, auto-open the group containing active route
     if (!this.isCollapsed) {
+      this.autoOpenActiveGroup();
+    } else {
+      // When collapsing, close any open group
       this.openedGroup = null;
     }
   }
@@ -178,17 +208,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.floatingCardTop = rect.top;
 
     this.openedGroup = groupKey;
-
-    console.log(
-      'clicked groupKey =',
-      groupKey,
-      'openedGroup now =',
-      this.openedGroup,
-      'isCollapsed =',
-      this.isCollapsed,
-      'floatingCardTop =',
-      this.floatingCardTop
-    );
   }
 
   navigateTo(route: string, event?: MouseEvent) {
@@ -196,19 +215,31 @@ export class SidenavComponent implements OnInit, OnDestroy {
       event.stopPropagation();
     }
 
-    // Navigate but DO NOT close the dropdown on desktop
+    // Navigate
     this.router.navigate([route]);
 
-    // On mobile, close sidenav + dropdown after selection
+    // On mobile, close sidenav after selection
     if (this.isMobile) {
       this.isCollapsed = true;
       this.openedGroup = null;
       this.toggle.emit();
     }
+    // On desktop in collapsed mode, close the floating card after selection
+    else if (this.isCollapsed) {
+      this.openedGroup = null;
+    }
+    // On desktop in expanded mode, keep the submenu open (do nothing)
   }
 
   isRouteActive(route: string): boolean {
     return this.router.url.includes(route);
+  }
+
+  /**
+   * Check if any item in a group is currently active
+   */
+  isGroupActive(group: MenuGroup): boolean {
+    return group.items.some(item => this.router.url.includes(item.route));
   }
 
   private checkScreenSize() {
@@ -236,6 +267,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
       url === '/'
     ) {
       this.selectedMenu = 'dashboard';
+      // In expanded mode, keep the active group open
+      if (!this.isCollapsed) {
+        this.autoOpenActiveGroup();
+      }
       return;
     }
 
@@ -243,6 +278,24 @@ export class SidenavComponent implements OnInit, OnDestroy {
       for (const item of group.items) {
         if (url.includes(item.route)) {
           this.selectedMenu = item.route;
+          // In expanded mode, auto-open the group containing the active route
+          if (!this.isCollapsed) {
+            this.openedGroup = group.key;
+          }
+          return;
+        }
+      }
+    }
+  }
+
+  /**
+   * Auto-open the group that contains the currently active route
+   */
+  private autoOpenActiveGroup() {
+    for (const group of this.collapsibleGroups) {
+      for (const item of group.items) {
+        if (this.router.url.includes(item.route)) {
+          this.openedGroup = group.key;
           return;
         }
       }

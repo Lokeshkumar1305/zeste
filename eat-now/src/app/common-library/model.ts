@@ -152,3 +152,271 @@ export class Orders {
 
 
 }
+
+
+
+
+// shared/models/inventory.models.ts
+
+export interface InventoryUnit {
+  id: string;
+  name: string;
+  shortName: string;
+  description?: string;
+  isActive: boolean;
+  createdAt: Date;
+}
+
+export interface InventoryCategory {
+  id: string;
+  name: string;
+  description?: string;
+  icon?: string;
+  color?: string;
+  isActive: boolean;
+  createdAt: Date;
+}
+
+export interface InventoryItem {
+  id: string;
+  name: string;
+  categoryId: string;
+  categoryName?: string;
+  unitId: string;
+  unitName?: string;
+  minStockLevel: number;
+  currentStock: number;
+  unitPrice: number;
+  supplierId?: string;
+  supplierName?: string;
+  description?: string;
+  isActive: boolean;
+  createdAt: Date;
+}
+
+export interface InventoryStock {
+  id: string;
+  itemId: string;
+  itemName?: string;
+  categoryName?: string;
+  quantity: number;
+  minStockLevel: number;
+  location?: string;
+  status: 'In Stock' | 'Low Stock' | 'Out of Stock';
+  lastUpdated: Date;
+}
+
+export interface InventoryMovement {
+  id: string;
+  itemId: string;
+  itemName?: string;
+  movementType: 'Stock In' | 'Stock Out' | 'Adjustment' | 'Damaged' | 'Returned';
+  quantity: number;
+  previousStock: number;
+  newStock: number;
+  reason: string;
+  date: Date;
+  performedBy?: string;
+  notes?: string;
+}
+
+export interface Supplier {
+  id: string;
+  name: string;
+  contactPerson?: string;
+  phone: string;
+  email?: string;
+  address?: string;
+  itemsSupplied?: string[];
+  rating?: number;
+  isActive: boolean;
+  createdAt: Date;
+}
+
+export interface PurchaseOrder {
+  id: string;
+  orderNumber: string;
+  supplierId: string;
+  supplierName?: string;
+  items: PurchaseOrderItem[];
+  status: 'Draft' | 'Sent' | 'Confirmed' | 'Delivered' | 'Cancelled';
+  totalAmount: number;
+  orderDate: Date;
+  expectedDeliveryDate?: Date;
+  deliveredDate?: Date;
+  notes?: string;
+  createdBy?: string;
+}
+
+export interface PurchaseOrderItem {
+  itemId: string;
+  itemName: string;
+  unitName: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+export interface InventorySettings {
+  enableAutoReorder: boolean;
+  autoReorderThreshold: number;
+  defaultOrderQuantity: number;
+  enableEmailAlerts: boolean;
+  alertEmail?: string;
+  enableLowStockWarning: boolean;
+  lowStockWarningDays: number;
+  currency: string;
+  currencySymbol: string;
+}
+
+
+// Inventory Report Models
+export interface StockReport {
+  itemId: number;
+  itemName: string;
+  categoryName: string;
+  unitName: string;
+  currentStock: number;
+  minStock: number;
+  maxStock: number;
+  reorderLevel: number;
+  stockValue: number;
+  status: 'In Stock' | 'Low Stock' | 'Out of Stock' | 'Overstocked';
+  lastUpdated: Date;
+}
+
+export interface MovementReport {
+  id: number;
+  itemName: string;
+  movementType: 'IN' | 'OUT' | 'TRANSFER' | 'ADJUSTMENT';
+  quantity: number;
+  fromLocation: string;
+  toLocation: string;
+  referenceNo: string;
+  performedBy: string;
+  movementDate: Date;
+  remarks: string;
+}
+
+export interface PurchaseOrderReport {
+  id: number;
+  orderNo: string;
+  supplierName: string;
+  orderDate: Date;
+  expectedDelivery: Date;
+  totalItems: number;
+  totalAmount: number;
+  status: 'Pending' | 'Approved' | 'Ordered' | 'Received' | 'Cancelled';
+  receivedDate?: Date;
+}
+
+export interface CategoryWiseReport {
+  categoryId: number;
+  categoryName: string;
+  totalItems: number;
+  totalQuantity: number;
+  totalValue: number;
+  lowStockItems: number;
+  outOfStockItems: number;
+}
+
+export interface SupplierReport {
+  supplierId: number;
+  supplierName: string;
+  totalOrders: number;
+  totalAmount: number;
+  pendingOrders: number;
+  completedOrders: number;
+  avgDeliveryDays: number;
+  lastOrderDate: Date;
+}
+
+export interface ConsumptionReport {
+  itemId: number;
+  itemName: string;
+  categoryName: string;
+  openingStock: number;
+  received: number;
+  consumed: number;
+  closingStock: number;
+  avgDailyConsumption: number;
+  daysRemaining: number;
+}
+
+export interface ReportFilter {
+  dateFrom: Date | null;
+  dateTo: Date | null;
+  categoryId: number | null;
+  supplierId: number | null;
+  itemId: number | null;
+  status: string;
+  reportType: string;
+}
+
+// Inventory Settings Models
+export interface InventorySettings {
+  id: number;
+  hostelId: number;
+  
+  // Auto Purchase Order Settings
+  enableAutoPurchaseOrder: boolean;
+  autoPOTrigger: 'LOW_STOCK' | 'REORDER_LEVEL' | 'SCHEDULE';
+  autoPOSchedule: string; // Cron expression or day of week
+  autoPOApprovalRequired: boolean;
+  defaultSupplierId: number | null;
+  
+  // Stock Alert Settings
+  enableLowStockAlert: boolean;
+  lowStockAlertThreshold: number;
+  enableOutOfStockAlert: boolean;
+  enableOverstockAlert: boolean;
+  alertNotificationEmail: string;
+  alertNotificationSMS: boolean;
+  
+  // General Settings
+  defaultUnitId: number | null;
+  allowNegativeStock: boolean;
+  requireMovementApproval: boolean;
+  stockValuationMethod: 'FIFO' | 'LIFO' | 'WEIGHTED_AVG';
+  enableBarcodeScanning: boolean;
+  enableBatchTracking: boolean;
+  enableExpiryTracking: boolean;
+  expiryAlertDays: number;
+  
+  // Purchase Order Settings
+  poNumberPrefix: string;
+  poNumberStartFrom: number;
+  requirePOApproval: boolean;
+  poApprovalLevels: number;
+  maxPOAmountWithoutApproval: number;
+  
+  // Display Settings
+  showStockValue: boolean;
+  defaultReportPeriod: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+  itemsPerPage: number;
+  enableDarkMode: boolean;
+  
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AlertThreshold {
+  id: number;
+  categoryId: number | null;
+  categoryName: string;
+  lowStockPercentage: number;
+  reorderPercentage: number;
+  overstockPercentage: number;
+  isActive: boolean;
+}
+
+export interface AutoPORule {
+  id: number;
+  name: string;
+  categoryId: number | null;
+  supplierId: number;
+  supplierName: string;
+  triggerType: 'LOW_STOCK' | 'REORDER_LEVEL' | 'SCHEDULE';
+  scheduleDay: string;
+  isActive: boolean;
+}

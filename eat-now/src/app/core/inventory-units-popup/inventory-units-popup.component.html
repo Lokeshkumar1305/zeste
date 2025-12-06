@@ -1,0 +1,128 @@
+<!-- inventory-units-modal.component.html -->
+<div class="modal-slide-in">
+  <!-- Header -->
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <div>
+      <p class="f-18-m mb-0">
+        <i class="bi bi-rulers me-2"></i>
+        {{ isEditMode ? 'Edit Unit' : 'Add New Unit' }}
+      </p>
+      <small class="text-muted">Units help measure your inventory items (like kg, pieces, liters)</small>
+    </div>
+    <button mat-icon-button (click)="onCancel()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Help Section -->
+    <div class="help-box mb-4">
+      <div class="help-icon">
+        <i class="bi bi-lightbulb"></i>
+      </div>
+      <div class="help-content">
+        <strong>What is a Unit?</strong>
+        <p class="mb-0">A unit tells us how to count or measure items. For example: Rice is measured in "Kilograms (kg)", Chairs are counted in "Pieces (pcs)".</p>
+      </div>
+    </div>
+
+    <!-- Quick Select Examples -->
+    <div class="quick-select mb-4">
+      <label class="form-label">
+        <i class="bi bi-lightning me-1"></i> Quick Select (Click to use)
+      </label>
+      <div class="example-chips">
+        <button 
+          *ngFor="let ex of exampleUnits" 
+          type="button" 
+          class="chip-btn"
+          [class.selected]="unit.name === ex.name"
+          (click)="selectExample(ex)">
+          {{ ex.name }} ({{ ex.short }})
+        </button>
+      </div>
+    </div>
+
+    <form>
+      <div class="row">
+        <!-- Unit Name -->
+        <div class="col-md-6">
+          <mat-label class="required">Unit Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="unit.name"
+              name="name"
+              placeholder="e.g. Kilograms, Pieces, Liters"
+              required />
+            <mat-hint>Full name of the unit</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Short Name -->
+        <div class="col-md-6">
+          <mat-label class="required">Short Name / Symbol</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input
+              matInput
+              [(ngModel)]="unit.shortName"
+              name="shortName"
+              placeholder="e.g. kg, pcs, L"
+              maxlength="10"
+              required />
+            <mat-hint>Short form shown in lists (max 10 characters)</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Description -->
+        <div class="col-12 mt-3">
+          <mat-label>Description</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <textarea
+              matInput
+              rows="3"
+              [(ngModel)]="unit.description"
+              name="description"
+              placeholder="Explain what this unit is used for...">
+            </textarea>
+            <mat-hint>Optional: Help others understand when to use this unit</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Status -->
+        <div class="col-12 mt-3">
+          <mat-checkbox [(ngModel)]="unit.isActive" name="isActive" color="primary">
+            <span class="ms-2">Active (can be used for new items)</span>
+          </mat-checkbox>
+        </div>
+      </div>
+    </form>
+
+    <!-- Preview -->
+    <div class="preview-box mt-4" *ngIf="unit.name && unit.shortName">
+      <label class="form-label">Preview</label>
+      <div class="preview-content">
+        <span class="preview-badge">{{ unit.shortName }}</span>
+        <span class="preview-text">{{ unit.name }}</span>
+      </div>
+      <small class="text-muted">This is how your unit will appear</small>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="modal-footer d-flex justify-content-between mt-4">
+    <div class="footer-hint">
+      <i class="bi bi-info-circle me-1"></i>
+      <small>You can add more units later</small>
+    </div>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onSave()">
+        <i class="bi bi-check2 me-1"></i> 
+        {{ isEditMode ? 'Update Unit' : 'Add Unit' }}
+      </button>
+    </div>
+  </div>
+</div>
