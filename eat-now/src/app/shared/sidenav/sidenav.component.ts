@@ -59,7 +59,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
       title: 'IAM',
       icon: 'shield-lock',
       items: [
-        { title: 'User Access', route: '/core/user-access' },
+        { title: 'Users', route: '/uam/users' },
+         { title: 'Roles', route: '/uam/roles' },
         { title: 'User Profile', route: '/core/user-profile' }
       ]
     },
