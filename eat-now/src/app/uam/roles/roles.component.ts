@@ -226,9 +226,9 @@ export class RolesComponent implements OnInit {
   }
 
   /* -------------------  Modal handling  ------------------- */
-  onAddNewRoom(): void {
+  onAddNewRole(): void {
   
-  this.router.navigate(['/recon-directory']);
+  this.router.navigate(['/uam/role-details']);
   }
 
   onEditRoom(room: RoomDetails): void {

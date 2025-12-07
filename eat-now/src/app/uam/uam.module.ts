@@ -9,12 +9,14 @@ import { SharedRoutingModule } from '../shared/shared-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { RoleDetailsComponent } from './role-details/role-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserDetailsComponent } from './user-details/user-details.component';
 
 @NgModule({
   declarations: [
     RolesComponent,
     UsersComponent,
-    RoleDetailsComponent
+    RoleDetailsComponent,
+    UserDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -7,6 +7,7 @@ import { ApiService } from '../../common-library/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { RoomDetails, RoomManagementModalComponent } from '../../core/room-management-modal/room-management-modal.component';
+import { UserDetailsComponent } from '../user-details/user-details.component';
 
 
 
@@ -46,7 +47,7 @@ export class UsersComponent implements OnInit {
   public filteredRooms: RoomDetails[] = [];
   public pagedRooms: RoomDetails[] = [];
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog,private router: Router) {}
 
   ngOnInit(): void {
     // Seed sample room data
@@ -223,50 +224,14 @@ export class UsersComponent implements OnInit {
 
   /* -------------------  Modal handling  ------------------- */
   onAddNewRoom(): void {
-    const dialogRef = this.dialog.open(RoomManagementModalComponent, {
-      width: '600px',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-dark-backdrop',
-      disableClose: false,
-      autoFocus: false,
-      data: { amenityOptions: this.getAllAmenities() }
-    });
-
-    dialogRef.afterClosed().subscribe((newRoom: RoomDetails | undefined) => {
-      if (newRoom) {
-        this.allRooms.push(newRoom);
-        this.applyAllFilters();
-        console.log('New Room Created:', newRoom);
-      }
-    });
+    this.router.navigate(['/uam/user-details']);
   }
 
   onEditRoom(room: RoomDetails): void {
-    const dialogRef = this.dialog.open(RoomManagementModalComponent, {
-      width: '600px',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-dark-backdrop',
-      disableClose: false,
-      autoFocus: false,
-      data: { room: { ...room }, amenityOptions: this.getAllAmenities() }
-    });
-
-    dialogRef.afterClosed().subscribe((updated: RoomDetails | undefined) => {
-      if (updated) {
-        const idx = this.allRooms.findIndex(r => r.roomNumber === room.roomNumber);
-        if (idx > -1) {
-          this.allRooms[idx] = updated;
-          this.applyAllFilters();
-        }
-      }
-    });
+   this.router.navigate(['/uam/user-details']);
   }
+
+  
 
   onDeleteRoom(room: RoomDetails): void {
     if (confirm(`Delete room ${room.roomNumber}?`)) {

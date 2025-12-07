@@ -1,0 +1,381 @@
+.create-user-page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  mat-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Section Styles
+.section {
+  margin-bottom: 32px;
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0 0 24px 0;
+  }
+}
+
+// Form Field Wrapper - For label outside form field
+.form-field-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .field-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+
+    .required {
+      color: #f44336;
+      margin-left: 2px;
+    }
+  }
+
+  .form-field {
+    width: 100%;
+  }
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+// Form Grid
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 24px;
+  margin-top: 30px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+// Phone Input Container
+.phone-input-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+
+  .country-code-wrapper {
+    width: 140px;
+    flex-shrink: 0;
+  }
+
+  .mobile-wrapper {
+    flex: 1;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+
+    .country-code-wrapper {
+      width: 100%;
+    }
+  }
+}
+
+// Mat Form Field Customization
+::ng-deep {
+  .mat-mdc-form-field {
+    width: 100%;
+
+    &.mat-form-field-appearance-outline {
+      .mat-mdc-form-field-outline {
+        color: #e0e0e0;
+      }
+
+      &:hover .mat-mdc-form-field-outline {
+        color: #1976d2;
+      }
+
+      .mat-mdc-form-field-outline-thick {
+        color: #1976d2;
+      }
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: 4px;
+    }
+  }
+
+  .mat-mdc-text-field-wrapper {
+    border-radius: 8px !important;
+  }
+}
+
+// Divider
+.section-divider {
+  margin: 32px 0;
+}
+
+.topbar-card {
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+}
+
+.text-accent {
+  color: var(--brand-primary) !important;
+  font-weight: 600;
+}
+
+// Roles & Permissions Section
+.roles-permissions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+// Roles Column
+.roles-column {
+  .role-table-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .role-table {
+    width: 100%;
+
+    .mat-mdc-header-row {
+      background-color: #f5f5f5;
+    }
+
+    .mat-mdc-header-cell {
+      font-weight: 600;
+      color: #1a1a2e;
+      font-size: 14px;
+    }
+
+    .mat-mdc-row {
+      &.clickable-row {
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #f0f7ff;
+        }
+      }
+
+      &.selected-row {
+        background-color: #e3f2fd;
+
+        &:hover {
+          background-color: #bbdefb;
+        }
+      }
+    }
+
+    .role-name {
+      font-weight: 500;
+      color: #1a1a2e;
+    }
+
+    .role-desc {
+      color: #666;
+      font-size: 13px;
+    }
+  }
+
+  .create-role-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    flex-wrap: wrap;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+// Permissions Column
+.permissions-column {
+  .subtitle {
+    font-size: 14px;
+    color: #666;
+    margin: -16px 0 24px 0;
+  }
+
+  .permission-table-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .permission-table {
+    width: 100%;
+
+    .mat-mdc-header-row {
+      background-color: #f5f5f5;
+    }
+
+    .mat-mdc-header-cell {
+      font-weight: 600;
+      color: #1a1a2e;
+      font-size: 14px;
+    }
+
+    .perm-name {
+      font-weight: 500;
+      color: #1a1a2e;
+    }
+
+    .edit-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .edit-label-chip {
+        font-size: 11px;
+        min-height: 24px;
+        padding: 0 8px;
+      }
+    }
+  }
+}
+
+// ============================================
+// CHECKBOX FIX - Important for tick marks
+// ============================================
+::ng-deep {
+  .mat-mdc-checkbox {
+    // Ensure checkbox is visible
+    .mdc-checkbox {
+      padding: 0;
+      width: 18px;
+      height: 18px;
+
+      .mdc-checkbox__native-control {
+        width: 18px;
+        height: 18px;
+      }
+
+      .mdc-checkbox__background {
+        width: 18px;
+        height: 18px;
+        top: 0;
+        left: 0;
+        border-color: #1976d2;
+        border-width: 2px;
+        border-radius: 3px;
+
+        .mdc-checkbox__checkmark {
+          color: #fff !important;
+          width: 100%;
+          height: 100%;
+        }
+
+        .mdc-checkbox__checkmark-path {
+          stroke: #fff !important;
+          stroke-width: 3px;
+        }
+      }
+
+      // Checked state
+      .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
+      .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+        background-color: #1976d2 !important;
+        border-color: #1976d2 !important;
+      }
+    }
+
+    // Ripple effect
+    .mdc-checkbox__ripple {
+      display: none;
+    }
+
+    // State layer
+    .mat-mdc-checkbox-touch-target {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  // Alternative fix for checkbox visibility
+  .mdc-checkbox__checkmark {
+    opacity: 1 !important;
+  }
+
+  .mdc-checkbox__checkmark-path {
+    stroke-dashoffset: 0 !important;
+    stroke: white !important;
+  }
+}
+
+// Mat Slide Toggle Customization
+::ng-deep {
+  .mat-mdc-slide-toggle {
+    .mdc-switch {
+      width: 36px;
+
+      .mdc-switch__track {
+        height: 14px;
+        border-radius: 7px;
+      }
+
+      .mdc-switch__handle-track {
+        .mdc-switch__handle {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    // Checked state colors
+    &.mat-mdc-slide-toggle-checked {
+      .mdc-switch__track {
+        background-color: rgba(25, 118, 210, 0.5) !important;
+      }
+
+      .mdc-switch__handle {
+        background-color: #1976d2 !important;
+      }
+    }
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 600px) {
+  .create-user-page {
+    padding: 12px;
+  }
+
+  .phone-input-container {
+    flex-direction: column;
+
+    .country-code-wrapper {
+      width: 100%;
+    }
+  }
+}
