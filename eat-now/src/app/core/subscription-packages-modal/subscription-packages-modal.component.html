@@ -1,1 +1,182 @@
-<p>subscription-packages-modal works!</p>
+<div class="page">
+    <div class="page-inner">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="title-block">
+                <div>
+                    <h1>
+                        {{ mode === 'create' ? 'Add Package' : 'Edit Package' }}
+                    </h1>
+                    <p class="subtitle">
+                        Define pricing, visibility and modules for this subscription plan.
+                    </p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button mat-stroked-button color="primary" type="button" (click)="goBack()">
+                    <i class="bi bi-x me-1"></i>
+                    Cancel
+                </button>
+
+                <button mat-flat-button color="primary" type="button" (click)="submit()" [disabled]="form.invalid">
+                    <i class="bi bi-save me-1"></i>
+                    {{ mode === 'create' ? 'Create Package' : 'Save Changes' }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <form class="page-content" [formGroup]="form" (ngSubmit)="submit()">
+            <div class="card">
+                <!-- PLAN TYPE -->
+                <section class="section">
+                    <div class="section-header">
+                        <span class="section-title">Plan Type</span>
+                    </div>
+
+                    <mat-radio-group class="plan-type-group" formControlName="planType">
+                        <mat-radio-button class="plan-type-card" value="paid">
+                            <div class="plan-title">
+                                <i class="bi bi-credit-card-2-front-fill text-primary icon"></i>
+                                <span>Paid Plan</span>
+                            </div>
+                            <p class="plan-desc">
+                                Full access to all selected modules with pricing.
+                            </p>
+                        </mat-radio-button>
+
+                        <mat-radio-button class="plan-type-card" value="free">
+                            <div class="plan-title">
+                                <i class="bi bi-gift-fill text-success icon"></i>
+                                <span>Free Plan</span>
+                            </div>
+                            <p class="plan-desc">
+                                Limited access. No billing for this package.
+                            </p>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </section>
+
+                <!-- BASIC DETAILS -->
+                <section class="section">
+                    <div class="section-header">
+                        <span class="section-title">Basic Details</span>
+                    </div>
+
+                    <div class="grid-2">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Package Name</mat-label>
+                            <input matInput formControlName="name" />
+                            <mat-error *ngIf="form.get('name')?.hasError('required')">
+                                Package name is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Package Type</mat-label>
+                            <mat-select formControlName="packageType">
+                                <mat-option value="standard">Standard</mat-option>
+                                <mat-option value="trial">Trial</mat-option>
+                                <mat-option value="custom">Custom</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="grid-2">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Currency</mat-label>
+                            <mat-select formControlName="currency">
+                                <mat-option value="INR">₹ (INR)</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" *ngIf="form.get('packageType')?.value === 'trial'">
+                            <mat-label>Trial Period (days)</mat-label>
+                            <input matInput type="number" min="1" formControlName="trialDays" />
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description" rows="2"></textarea>
+                    </mat-form-field>
+
+                    <div class="flags-row">
+                        <mat-checkbox formControlName="recommended">
+                            <i class="bi bi-star-fill text-warning icon-small"></i>
+                            Recommended
+                        </mat-checkbox>
+
+                        <mat-checkbox formControlName="isPrivate">
+                            <i class="bi bi-lock-fill icon-small"></i>
+                            Private (not visible to all clients)
+                        </mat-checkbox>
+
+                        <mat-slide-toggle color="primary" formControlName="isActive">
+                            <i class="bi bi-power icon-small"></i>
+                            Active
+                        </mat-slide-toggle>
+                    </div>
+                </section>
+
+                <!-- PRICING -->
+                <section class="section" *ngIf="form.get('planType')?.value === 'paid'">
+                    <div class="section-header">
+                        <span class="section-title">Pricing (₹)</span>
+                    </div>
+
+                    <div class="grid-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Monthly Price</mat-label>
+                            <span matPrefix>₹&nbsp;</span>
+                            <input matInput type="number" min="0" formControlName="monthlyPrice" />
+                            <span matSuffix>/month</span>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Annual Price</mat-label>
+                            <span matPrefix>₹&nbsp;</span>
+                            <input matInput type="number" min="0" formControlName="annualPrice" />
+                            <span matSuffix>/year</span>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Lifetime Price</mat-label>
+                            <span matPrefix>₹&nbsp;</span>
+                            <input matInput type="number" min="0" formControlName="lifetimePrice" />
+                        </mat-form-field>
+                    </div>
+                </section>
+
+                <!-- MODULES -->
+                <section class="section">
+                    <div class="section-header">
+                        <span class="section-title">Modules Included</span>
+
+                        <div class="section-actions">
+                            <button mat-button type="button" (click)="toggleAllModules(true)">
+                                <i class="bi bi-check2-square icon-small"></i>
+                                Select all
+                            </button>
+                            <button mat-button type="button" (click)="toggleAllModules(false)">
+                                <i class="bi bi-x-square icon-small"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="modules-grid" formArrayName="modules">
+                        <ng-container *ngFor="let modCtrl of modulesArray.controls; let i = index">
+                            <div class="module-card" [formGroupName]="i">
+                                <mat-checkbox formControlName="included">
+                                    {{ modCtrl.get('label')?.value }}
+                                </mat-checkbox>
+                            </div>
+                        </ng-container>
+                    </div>
+                </section>
+            </div>
+        </form>
+    </div>
+</div>

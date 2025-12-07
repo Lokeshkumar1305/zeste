@@ -23,7 +23,7 @@ export class StockMomentComponent {
   pageEvent: any;
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private router: Router, private postService: ApiService, public http: HttpClient,public dialog: MatDialog) {
+  constructor(public router: Router, private postService: ApiService, public http: HttpClient,public dialog: MatDialog) {
 
   }
   ngOnInit(): void {

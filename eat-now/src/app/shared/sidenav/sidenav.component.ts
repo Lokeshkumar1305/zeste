@@ -131,6 +131,16 @@ export class SidenavComponent implements OnInit, OnDestroy {
         { title: 'Reports', route: '/core/inventory-reports' },
         { title: 'Settings', route: '/core/inventory-settings' }
       ]
+    },
+    {
+      key: 'subscription',
+      title: 'SUBSCRIPTION',
+      icon: 'calendar-check', // or 'card-checklist', 'bookmark-star', 'patch-check'
+      items: [
+        { title: 'Plans', route: '/core/subscription-packages' },
+        { title: 'My Subscription', route: '/core/subscription-packages' },
+        { title: 'Billing History', route: '/core/subscription-billing-history' }
+      ]
     }
   ];
 

@@ -84,6 +84,7 @@ import { InventoryStocksModalComponent } from './inventory-stocks-modal/inventor
 import { InventoryMovementsModalComponent } from './inventory-movements-modal/inventory-movements-modal.component';
 import { InventoryPurchaseOrdersModalComponent } from './inventory-purchase-orders-modal/inventory-purchase-orders-modal.component';
 import { InventorySuppliersModalComponent } from './inventory-suppliers-modal/inventory-suppliers-modal.component';
+import { SubscriptionBillingHistoryComponent } from './subscription-billing-history/subscription-billing-history.component';
 
 
 
@@ -154,7 +155,8 @@ import { InventorySuppliersModalComponent } from './inventory-suppliers-modal/in
  InventoryStocksModalComponent,
  InventoryMovementsModalComponent,
  InventoryPurchaseOrdersModalComponent,
- InventorySuppliersModalComponent
+ InventorySuppliersModalComponent,
+ SubscriptionBillingHistoryComponent
  
  
  
@@ -182,6 +184,8 @@ import { InventorySuppliersModalComponent } from './inventory-suppliers-modal/in
     MatButtonModule,
     MatIconModule,
     MatChipsModule,
+    MatChipsModule,
+
   ],
   exports: [
     /* Export the modal so it can be used as an entryComponent from other modules */

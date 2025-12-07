@@ -420,3 +420,59 @@ export interface AutoPORule {
   scheduleDay: string;
   isActive: boolean;
 }
+
+
+
+
+export interface OwnerDetails {
+  fullName: string;
+  email: string;
+  phone: string;
+  alternatePhone?: string;
+  aadharNumber?: string;
+  panNumber?: string;
+}
+
+export interface HostelDetails {
+  hostelName: string;
+  hostelType: 'Boys' | 'Girls' | 'Co-ed';
+  
+  // Address
+  addressLine1: string;
+  addressLine2?: string;
+  landmark?: string;
+  city: string;
+  state: string;
+  pincode: string;
+  googleMapsLink?: string;
+  
+  // Property Info
+  totalFloors: number;
+  totalRooms: number;
+  totalBeds: number;
+  
+  // Contact
+  contactPhone: string;
+  contactEmail?: string;
+  
+  // Photos
+  photos?: string[];
+}
+
+export interface LicenseDetails {
+  // Food License (Optional)
+  hasFoodLicense: boolean;
+  fssaiNumber?: string;
+  fssaiDocument?: string;
+  
+  // Property
+  propertyType: 'Owned' | 'Rented' | 'Leased';
+}
+
+export interface HostelOnboardingData {
+  ownerDetails: OwnerDetails;
+  hostelDetails: HostelDetails;
+  licenseDetails: LicenseDetails;
+  termsAccepted: boolean;
+  status: 'Draft' | 'Submitted' | 'Approved' | 'Rejected';
+}

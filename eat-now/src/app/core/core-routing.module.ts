@@ -37,6 +37,9 @@ import { InventorySuppliersComponent } from './inventory-suppliers/inventory-sup
 import { InventoryReportsComponent } from './inventory-reports/inventory-reports.component';
 import { InventorySettingsComponent } from './inventory-settings/inventory-settings.component';
 import { InventoryDashboardComponent } from './inventory-dashboard/inventory-dashboard.component';
+import { SubscriptionPackagesComponent } from './subscription-packages/subscription-packages.component';
+import { SubscriptionPackagesModalComponent } from './subscription-packages-modal/subscription-packages-modal.component';
+import { SubscriptionBillingHistoryComponent } from './subscription-billing-history/subscription-billing-history.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -74,6 +77,9 @@ const routes: Routes = [
   { path: 'inventory-suppliers', component: InventorySuppliersComponent },
   { path: 'inventory-reports', component: InventoryReportsComponent },
   { path: 'inventory-settings', component: InventorySettingsComponent },
+  { path: 'subscription-packages', component: SubscriptionPackagesComponent },
+   { path: 'subscription-packages-modal', component: SubscriptionPackagesModalComponent },
+    { path: 'subscription-billing-history', component: SubscriptionBillingHistoryComponent },
 
 ];
 

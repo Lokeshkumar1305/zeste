@@ -1,0 +1,371 @@
+$page-padding: 24px;
+$border-color: #e5e7eb;
+$bg-surface: #ffffff;
+$bg-soft: #f9fafb;
+$text-main: #111827;
+$text-muted: #6b7280;
+$primary: #4f46e5;
+$primary-soft: rgba(79, 70, 229, 0.08);
+
+.page {
+  padding: $page-padding;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  color: $text-main;
+}
+
+/* Header */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: $text-muted;
+  }
+}
+
+/* Toolbar */
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.search-field {
+  width: 320px;
+  max-width: 100%;
+}
+
+/* Table container */
+
+.table {
+  border-radius: 12px;
+  border: 1px solid $border-color;
+  background-color: $bg-surface;
+  overflow: hidden;
+}
+
+.table-row {
+  display: grid;
+  /* last column made wider, gaps slightly larger */
+  grid-template-columns: 56px minmax(0, 220px) 120px 120px 120px minmax(
+      0,
+      1.6fr
+    ) 200px;
+  gap: 20px;
+  align-items: stretch;
+  padding: 12px 16px;
+  border-bottom: 1px solid $border-color;
+  font-size: 13px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.table-header {
+  background-color: $bg-soft;
+  font-size: 12px;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.package-row {
+  background-color: #fff;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    background-color: #fefefe;
+    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
+  }
+
+  &.inactive {
+    opacity: 0.7;
+  }
+
+  &.recommended {
+    box-shadow: 0 0 0 1px $primary-soft;
+  }
+}
+
+.col {
+  &.col-id {
+    font-weight: 500;
+  }
+
+  &.col-price {
+    color: $text-main;
+    font-weight: 500;
+
+    .billing-text {
+      font-size: 11px;
+      color: $text-muted;
+      margin-left: 2px;
+    }
+  }
+
+  &.col-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: nowrap; /* keep Edit & Delete on same line */
+  }
+}
+
+/* Name / badges */
+
+.pkg-name {
+  font-weight: 600;
+}
+
+.name-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-line {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+  font-size: 11px;
+  color: $text-muted;
+
+  .meta-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: $border-color;
+    margin: 0 6px;
+  }
+}
+
+.description {
+  font-size: 12px;
+  color: $text-muted;
+  margin-top: 4px;
+}
+
+/* Badges */
+
+.badge {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.badge-neutral {
+  background-color: #eef2ff;
+  color: #4f46e5;
+  border-color: rgba(79, 70, 229, 0.2);
+}
+
+.badge-free {
+  background-color: #ecfeff;
+  color: #0e7490;
+  border-color: rgba(14, 116, 144, 0.25);
+}
+
+.badge-paid {
+  background-color: #fef9c3;
+  color: #854d0e;
+  border-color: rgba(202, 138, 4, 0.35);
+}
+
+.badge-recommended {
+  background-color: $primary-soft;
+  color: $primary;
+  border-color: rgba($primary, 0.3);
+}
+
+.badge-trial {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border-color: rgba(3, 105, 161, 0.25);
+}
+
+.badge-active {
+  background-color: #dcfce7;
+  color: #166534;
+  border-color: rgba(22, 101, 52, 0.3);
+}
+
+.badge-inactive {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-color: rgba(185, 28, 28, 0.3);
+}
+
+/* Modules */
+
+.modules-card {
+  background-color: #f9fafb;
+  border-radius: 10px;
+  padding: 8px 10px;
+  border: 1px dashed $border-color;
+}
+
+.modules-summary {
+  font-size: 11px;
+  color: $text-muted;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.drag-icon {
+  font-size: 13px;
+}
+
+/* Chips alignment */
+
+.modules-chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* MDC chip element */
+.modules-chip-set .mat-mdc-chip {
+  border-radius: 999px;
+  padding-inline: 8px;
+  padding-block: 2px;
+  font-size: 11px;
+  line-height: 1.3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: auto;
+  white-space: nowrap;
+}
+
+.chip-label {
+  white-space: nowrap;
+}
+
+.chip-included {
+  background-color: #ecfdf3 !important;
+  color: #166534 !important;
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.chip-excluded {
+  background-color: #fef2f2 !important;
+  color: #b91c1c !important;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.chip-more {
+  background-color: #e5e7eb !important;
+  color: #374151 !important;
+}
+
+.modules-chip-set .mat-mdc-chip .bi {
+  font-size: 12px;
+}
+
+/* ACTION BUTTONS – consistent size & stay inside card */
+
+.action-btn.mat-mdc-button-base {
+  min-width: 84px;      /* 84*2 + 8 gap = 176 < 200px column width */
+  height: 32px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.action-btn .mat-mdc-button-touch-target {
+  height: 32px;
+}
+
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-btn i {
+  font-size: 14px;
+}
+
+/* Empty */
+
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: $text-muted;
+}
+
+/* Responsive */
+
+@media (max-width: 1024px) {
+  .table-row {
+    grid-template-columns: 44px minmax(0, 1.2fr) 96px 96px minmax(0, 1.6fr);
+    grid-template-rows: auto auto;
+    grid-auto-flow: row;
+    grid-template-areas:
+      'id name monthly annual modules'
+      'id name lifetime modules actions';
+  }
+
+  .col-id {
+    grid-area: id;
+  }
+  .col-name {
+    grid-area: name;
+  }
+  .col-price:nth-of-type(3) {
+    grid-area: monthly;
+  }
+  .col-price:nth-of-type(4) {
+    grid-area: annual;
+  }
+  .col-price:nth-of-type(5) {
+    grid-area: lifetime;
+  }
+  .col-modules {
+    grid-area: modules;
+  }
+  .col-actions {
+    grid-area: actions;
+    justify-content: flex-start;
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-row {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'name';
+  }
+
+  .col-id,
+  .col-price,
+  .col-actions {
+    display: none;
+  }
+
+  .col-modules {
+    margin-top: 8px;
+  }
+}
