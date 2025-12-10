@@ -5,6 +5,7 @@ import { MenuItem } from '../menu/menu.component';
 
 export type MenuRecurrence = 'ONE_TIME' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
 export type MenuStatus = 'AVAILABLE' | 'COMPLETED';
+export type MenuMode = 'DATE' | 'DAY_OF_WEEK';
 
 export interface MenuItemInMenu {
   itemId: string;
@@ -12,7 +13,9 @@ export interface MenuItemInMenu {
 }
 
 export interface HostelMenuPayload {
-  startDate: Date;
+  mode: MenuMode;
+  startDate?: Date | null;
+  dayOfWeek?: number | null;
   endDate?: Date | null;
   mealType: string;
   recurrence: MenuRecurrence;
@@ -23,19 +26,39 @@ export interface HostelMenuPayload {
 
 export interface PublishedMenu extends HostelMenuPayload {
   id: number;
-  status: MenuStatus;          // overall meal status
+  status: MenuStatus;
+}
+
+export interface DayOfWeekOption {
+  value: number;
+  label: string;
+  short: string;
 }
 
 @Component({
   selector: 'app-menu-list',
   templateUrl: './menu-list.component.html',
-  styleUrl: './menu-list.component.scss'
+  styleUrls: ['./menu-list.component.scss']
 })
 export class MenuListComponent implements OnInit {
 
   menuForm!: FormGroup;
 
-  // Mock data – hook this to your Menu Config API
+  // Mode toggle
+  menuMode: MenuMode = 'DATE';
+
+  // Days of week options
+  daysOfWeek: DayOfWeekOption[] = [
+    { value: 0, label: 'Sunday', short: 'Sun' },
+    { value: 1, label: 'Monday', short: 'Mon' },
+    { value: 2, label: 'Tuesday', short: 'Tue' },
+    { value: 3, label: 'Wednesday', short: 'Wed' },
+    { value: 4, label: 'Thursday', short: 'Thu' },
+    { value: 5, label: 'Friday', short: 'Fri' },
+    { value: 6, label: 'Saturday', short: 'Sat' }
+  ];
+
+  // Mock data
   allMenuItems: MenuItem[] = [
     {
       id: 'M001',
@@ -72,6 +95,42 @@ export class MenuListComponent implements OnInit {
       itemType: 'EGG',
       isAvailable: true,
       imageUrl: 'assets/images/menu/egg-bhurji.jpg'
+    },
+    {
+      id: 'M005',
+      itemName: 'Paneer Tikka',
+      description: 'Grilled cottage cheese with spices',
+      mealType: 'Dinner',
+      itemType: 'VEG',
+      isAvailable: true,
+      imageUrl: 'assets/images/menu/paneer-tikka.jpg'
+    },
+    {
+      id: 'M006',
+      itemName: 'Idli Sambar',
+      description: 'Steamed rice cakes with lentil soup',
+      mealType: 'Breakfast',
+      itemType: 'VEG',
+      isAvailable: true,
+      imageUrl: 'assets/images/menu/idli.jpg'
+    },
+    {
+      id: 'M007',
+      itemName: 'Chicken Biryani',
+      description: 'Fragrant basmati rice with spiced chicken',
+      mealType: 'Lunch',
+      itemType: 'NON_VEG',
+      isAvailable: true,
+      imageUrl: 'assets/images/menu/biryani.jpg'
+    },
+    {
+      id: 'M008',
+      itemName: 'Samosa',
+      description: 'Crispy pastry with spiced potato filling',
+      mealType: 'Snacks',
+      itemType: 'VEG',
+      isAvailable: true,
+      imageUrl: 'assets/images/menu/samosa.jpg'
     }
   ];
 
@@ -90,10 +149,14 @@ export class MenuListComponent implements OnInit {
 
   defaultImage = 'assets/images/menu/placeholder-food.jpg';
 
-  // Right panel data (cached for UI – avoids heavy recomputation)
+  // Right panel data
   publishedMenus: PublishedMenu[] = [];
   menusForSelectedDate: PublishedMenu[] = [];
+  menusForSelectedDay: PublishedMenu[] = [];
   menuItemsCache: Record<number, { menuItem: MenuItem; status: MenuStatus }[]> = {};
+
+  // For day view - selected day in right panel
+  selectedViewDay: number = 1;
 
   private nextMenuId = 1;
   editingMenuId: number | null = null;
@@ -103,6 +166,7 @@ export class MenuListComponent implements OnInit {
   ngOnInit(): void {
     this.menuForm = this.fb.group({
       date: [new Date(), Validators.required],
+      dayOfWeek: [1],
       mealType: ['Breakfast', Validators.required],
       recurrence: ['ONE_TIME' as MenuRecurrence, Validators.required],
       validTill: [null],
@@ -110,19 +174,49 @@ export class MenuListComponent implements OnInit {
       serveTo: ['09:30']
     });
 
-    // Refresh filters whenever meal type changes
     this.menuForm.get('mealType')!.valueChanges.subscribe(() => {
       this.selectedItemIds.clear();
       this.applyFilters();
     });
 
-    // Refresh right‑panel list whenever date changes
     this.menuForm.get('date')!.valueChanges.subscribe(() => {
-      this.refreshMenusForSelectedDate();
+      if (this.menuMode === 'DATE') {
+        this.refreshMenusForSelectedDate();
+      }
+    });
+
+    this.menuForm.get('dayOfWeek')!.valueChanges.subscribe((day) => {
+      if (this.menuMode === 'DAY_OF_WEEK') {
+        this.selectedViewDay = day;
+        this.refreshMenusForSelectedDay();
+      }
     });
 
     this.applyFilters();
     this.refreshMenusForSelectedDate();
+    this.refreshMenusForSelectedDay();
+  }
+
+  // ---------- MODE SWITCHING ----------
+
+  onModeChange(mode: MenuMode): void {
+    this.menuMode = mode;
+    this.editingMenuId = null;
+    this.selectedItemIds.clear();
+    
+    if (mode === 'DAY_OF_WEEK') {
+      this.menuForm.patchValue({ recurrence: 'WEEKLY' });
+      this.selectedViewDay = this.menuForm.get('dayOfWeek')!.value;
+      this.refreshMenusForSelectedDay();
+    } else {
+      this.menuForm.patchValue({ recurrence: 'ONE_TIME' });
+      this.refreshMenusForSelectedDate();
+    }
+  }
+
+  onViewDayChange(day: number): void {
+    this.selectedViewDay = day;
+    this.refreshMenusForSelectedDay();
   }
 
   // ---------- LEFT PANEL: filtering & card selection ----------
@@ -152,11 +246,21 @@ export class MenuListComponent implements OnInit {
     return this.selectedItemIds.has(item.id);
   }
 
+  // Method for checkbox change event
   toggleSelection(item: MenuItem, event: MatCheckboxChange): void {
     if (event.checked) {
       this.selectedItemIds.add(item.id);
     } else {
       this.selectedItemIds.delete(item.id);
+    }
+  }
+
+  // Method for card click
+  onCardClick(item: MenuItem): void {
+    if (this.selectedItemIds.has(item.id)) {
+      this.selectedItemIds.delete(item.id);
+    } else {
+      this.selectedItemIds.add(item.id);
     }
   }
 
@@ -171,8 +275,10 @@ export class MenuListComponent implements OnInit {
   clearAll(): void {
     const today = new Date();
     this.editingMenuId = null;
+    this.menuMode = 'DATE';
     this.menuForm.reset({
       date: today,
+      dayOfWeek: 1,
       mealType: 'Breakfast',
       recurrence: 'ONE_TIME',
       validTill: null,
@@ -183,9 +289,10 @@ export class MenuListComponent implements OnInit {
     this.selectedItemIds.clear();
     this.applyFilters();
     this.refreshMenusForSelectedDate();
+    this.refreshMenusForSelectedDay();
   }
 
-  // ---------- SAVE / UPDATE MENU (left → right) ----------
+  // ---------- SAVE / UPDATE MENU ----------
 
   onSaveMenu(): void {
     if (this.menuForm.invalid) {
@@ -193,16 +300,9 @@ export class MenuListComponent implements OnInit {
       return;
     }
 
-    const formValue = this.menuForm.value as {
-      date: Date;
-      mealType: string;
-      recurrence: MenuRecurrence;
-      validTill: Date | null;
-      serveFrom: string | null;
-      serveTo: string | null;
-    };
+    const formValue = this.menuForm.value;
 
-    if (formValue.recurrence !== 'ONE_TIME' && !formValue.validTill) {
+    if (this.menuMode === 'DATE' && formValue.recurrence !== 'ONE_TIME' && !formValue.validTill) {
       this.menuForm.get('validTill')?.setErrors({ required: true });
       this.menuForm.get('validTill')?.markAsTouched();
       return;
@@ -219,10 +319,12 @@ export class MenuListComponent implements OnInit {
     }));
 
     const payload: HostelMenuPayload = {
-      startDate: formValue.date,
-      endDate: formValue.recurrence === 'ONE_TIME' ? null : formValue.validTill,
+      mode: this.menuMode,
+      startDate: this.menuMode === 'DATE' ? formValue.date : null,
+      dayOfWeek: this.menuMode === 'DAY_OF_WEEK' ? formValue.dayOfWeek : null,
+      endDate: this.menuMode === 'DATE' && formValue.recurrence !== 'ONE_TIME' ? formValue.validTill : null,
       mealType: formValue.mealType,
-      recurrence: formValue.recurrence,
+      recurrence: this.menuMode === 'DAY_OF_WEEK' ? 'WEEKLY' : formValue.recurrence,
       serveFrom: formValue.serveFrom,
       serveTo: formValue.serveTo,
       items
@@ -243,48 +345,61 @@ export class MenuListComponent implements OnInit {
       this.publishedMenus.push(newMenu);
     }
 
-    // TODO: call backend API here
-
     this.editingMenuId = null;
     this.clearSelection();
     this.searchText = '';
     this.applyFilters();
     this.refreshMenusForSelectedDate();
+    this.refreshMenusForSelectedDay();
   }
 
-  // ---------- RIGHT PANEL: cached menus for selected date ----------
+  // ---------- RIGHT PANEL: DATE MODE ----------
 
   private refreshMenusForSelectedDate(): void {
     const selectedDate: Date | null = this.menuForm.get('date')!.value;
     if (!selectedDate) {
       this.menusForSelectedDate = [];
-      this.menuItemsCache = {};
       return;
     }
 
     const list = this.publishedMenus
-      .filter(m => this.isMenuEffectiveOnDate(m, selectedDate))
+      .filter(m => m.mode === 'DATE' && this.isMenuEffectiveOnDate(m, selectedDate))
       .sort((a, b) => this.mealOrder(a.mealType) - this.mealOrder(b.mealType));
 
     this.menusForSelectedDate = list;
-
-    const cache: Record<number, { menuItem: MenuItem; status: MenuStatus }[]> = {};
-    for (const m of list) {
-      const arr: { menuItem: MenuItem; status: MenuStatus }[] = [];
-      for (const mi of m.items) {
-        const item = this.allMenuItems.find(i => i.id === mi.itemId);
-        if (item) {
-          arr.push({ menuItem: item, status: mi.status });
-        }
-      }
-      cache[m.id] = arr;
-    }
-    this.menuItemsCache = cache;
+    this.buildMenuItemsCache(list);
   }
+
+  // ---------- RIGHT PANEL: DAY OF WEEK MODE ----------
+
+  private refreshMenusForSelectedDay(): void {
+    const list = this.publishedMenus
+      .filter(m => m.mode === 'DAY_OF_WEEK' && m.dayOfWeek === this.selectedViewDay)
+      .sort((a, b) => this.mealOrder(a.mealType) - this.mealOrder(b.mealType));
+
+    this.menusForSelectedDay = list;
+    this.buildMenuItemsCache(list);
+  }
+
+  private buildMenuItemsCache(menus: PublishedMenu[]): void {
+    for (const m of menus) {
+      if (!this.menuItemsCache[m.id]) {
+        const arr: { menuItem: MenuItem; status: MenuStatus }[] = [];
+        for (const mi of m.items) {
+          const item = this.allMenuItems.find(i => i.id === mi.itemId);
+          if (item) {
+            arr.push({ menuItem: item, status: mi.status });
+          }
+        }
+        this.menuItemsCache[m.id] = arr;
+      }
+    }
+  }
+
+  // ---------- STATUS CHANGES ----------
 
   onStatusChange(menu: PublishedMenu, status: MenuStatus): void {
     menu.status = status;
-    // TODO: update in backend
   }
 
   onItemStatusChange(menu: PublishedMenu, itemId: string, status: MenuStatus): void {
@@ -299,38 +414,60 @@ export class MenuListComponent implements OnInit {
         found.status = status;
       }
     }
-    // TODO: update in backend
   }
+
+  // ---------- EDIT / DELETE ----------
 
   onEditPublished(menu: PublishedMenu): void {
     this.editingMenuId = menu.id;
+    this.menuMode = menu.mode;
 
-    this.menuForm.patchValue(
-      {
-        date: new Date(menu.startDate),
-        mealType: menu.mealType,
-        recurrence: menu.recurrence,
-        validTill: menu.endDate ? new Date(menu.endDate) : null,
-        serveFrom: menu.serveFrom || '',
-        serveTo: menu.serveTo || ''
-      },
-      { emitEvent: false } // avoid duplicate refresh
-    );
+    if (menu.mode === 'DATE') {
+      this.menuForm.patchValue(
+        {
+          date: menu.startDate ? new Date(menu.startDate) : new Date(),
+          mealType: menu.mealType,
+          recurrence: menu.recurrence,
+          validTill: menu.endDate ? new Date(menu.endDate) : null,
+          serveFrom: menu.serveFrom || '',
+          serveTo: menu.serveTo || ''
+        },
+        { emitEvent: false }
+      );
+    } else {
+      this.menuForm.patchValue(
+        {
+          dayOfWeek: menu.dayOfWeek,
+          mealType: menu.mealType,
+          recurrence: 'WEEKLY',
+          serveFrom: menu.serveFrom || '',
+          serveTo: menu.serveTo || ''
+        },
+        { emitEvent: false }
+      );
+    }
 
     this.applyFilters();
     this.selectedItemIds = new Set(menu.items.map(i => i.itemId));
-    this.refreshMenusForSelectedDate();
   }
 
   onDeletePublished(id: number): void {
     if (!confirm('Remove this menu from the schedule?')) return;
     this.publishedMenus = this.publishedMenus.filter(m => m.id !== id);
+    delete this.menuItemsCache[id];
     if (this.editingMenuId === id) {
       this.editingMenuId = null;
       this.clearSelection();
     }
     this.refreshMenusForSelectedDate();
-    // TODO: delete from backend
+    this.refreshMenusForSelectedDay();
+  }
+
+  // ---------- HELPERS ----------
+
+  getDayLabel(dayValue: number): string {
+    const day = this.daysOfWeek.find(d => d.value === dayValue);
+    return day ? day.label : '';
   }
 
   getRecurrenceLabel(rec: MenuRecurrence): string {
@@ -342,13 +479,13 @@ export class MenuListComponent implements OnInit {
     }
   }
 
-  // ---------- Helpers ----------
-
   private normalizeDate(d: Date): Date {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
   }
 
   private isMenuEffectiveOnDate(menu: PublishedMenu, day: Date): boolean {
+    if (!menu.startDate) return false;
+    
     const target = this.normalizeDate(day);
     const start = this.normalizeDate(new Date(menu.startDate));
     const end = menu.endDate ? this.normalizeDate(new Date(menu.endDate)) : null;
@@ -382,5 +519,9 @@ export class MenuListComponent implements OnInit {
 
   trackByPublishedId(_: number, m: PublishedMenu): number {
     return m.id;
+  }
+
+  getMenuCountForDay(day: number): number {
+    return this.publishedMenus.filter(m => m.mode === 'DAY_OF_WEEK' && m.dayOfWeek === day).length;
   }
 }

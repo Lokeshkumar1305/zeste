@@ -1,218 +1,394 @@
 <div class="page-container">
-  <!-- HEADER -->
-  <div class="page-header">
-    <div class="title-block">
-      <h2>Create Hostel Menu</h2>
-      <p>Select items from your configured list to show in tenants app.</p>
-      <div class="editing-badge" *ngIf="editingMenuId">
-        Editing an existing menu – changes will be updated.
-      </div>
-    </div>
-
-    <div class="header-actions">
-      <button mat-stroked-button type="button" (click)="clearAll()">Reset</button>
-      <button mat-flat-button color="primary" type="button" (click)="onSaveMenu()">
-        {{ editingMenuId ? 'Update Menu' : 'Publish Menu' }}
-      </button>
-    </div>
-  </div>
-
-  <!-- BODY: two columns -->
-  <div class="layout-grid">
-    <!-- LEFT: builder -->
-    <div class="left-panel">
-      <form [formGroup]="menuForm" class="menu-filters">
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Menu Date</mat-label>
-          <input matInput [matDatepicker]="datePicker" formControlName="date" />
-          <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-          <mat-datepicker #datePicker></mat-datepicker>
-          <mat-error *ngIf="menuForm.get('date')?.hasError('required')">
-            Date is required
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Meal Type</mat-label>
-          <mat-select formControlName="mealType">
-            <mat-option *ngFor="let type of availableMealTypes" [value]="type">
-              {{ type }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Repeat</mat-label>
-          <mat-select formControlName="recurrence">
-            <mat-option *ngFor="let opt of recurrenceOptions" [value]="opt.value">
-              {{ opt.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field
-          appearance="outline"
-          class="filter-field"
-          *ngIf="menuForm.get('recurrence')?.value !== 'ONE_TIME'">
-          <mat-label>Valid Till</mat-label>
-          <input matInput [matDatepicker]="validTillPicker" formControlName="validTill" />
-          <mat-datepicker-toggle matSuffix [for]="validTillPicker"></mat-datepicker-toggle>
-          <mat-datepicker #validTillPicker></mat-datepicker>
-          <mat-error *ngIf="menuForm.get('validTill')?.hasError('required')">
-            End date is required for repeating menu
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter-field time-field">
-          <mat-label>Serve From</mat-label>
-          <input matInput type="time" formControlName="serveFrom" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter-field time-field">
-          <mat-label>Serve Till</mat-label>
-          <input matInput type="time" formControlName="serveTo" />
-        </mat-form-field>
-      </form>
-
-      <!-- Search & selection -->
-      <div class="search-row">
-        <mat-form-field appearance="outline" class="search-field">
-          <mat-icon matPrefix>search</mat-icon>
-          <input
-            matInput
-            placeholder="Search menu item"
-            [value]="searchText"
-            (input)="onSearchChange($any($event.target).value)" />
-        </mat-form-field>
-
-        <div class="selection-summary">
-          <span>{{ selectedItemIds.size }} item(s) selected</span>
-          <button mat-button type="button" (click)="selectAllVisible()" [disabled]="!filteredItems.length">
-            Select All
-          </button>
-          <button mat-button type="button" (click)="clearSelection()" [disabled]="!selectedItemIds.size">
-            Clear Selection
-          </button>
-        </div>
-      </div>
-
-     <mat-divider></mat-divider>
-      <!-- Item cards -->
-      <div class="menu-grid" *ngIf="filteredItems.length; else noItems">
-        <div
-          *ngFor="let item of filteredItems; trackBy: trackById"
-          class="menu-card"
-          [ngClass]="{ 'selected-card': isSelected(item) }">
-
-          <mat-checkbox
-            class="card-checkbox"
-            [checked]="isSelected(item)"
-            (change)="toggleSelection(item, $event)">
-          </mat-checkbox>
-
-          <div class="image-wrapper">
-            <img [src]="item.imageUrl || defaultImage" [alt]="item.itemName" loading="lazy" />
-            <span
-              class="item-type-badge"
-              [ngClass]="{
-                veg: item.itemType === 'VEG',
-                nonveg: item.itemType === 'NON_VEG',
-                egg: item.itemType === 'EGG'
-              }">
-              {{ item.itemType === 'VEG' ? 'VEG' : item.itemType === 'NON_VEG' ? 'NON-VEG' : 'EGG' }}
-            </span>
-          </div>
-
-          <div class="card-body">
-            <div class="title-row">
-              <h3>{{ item.itemName }}</h3>
-              <span class="meal-chip">{{ item.mealType }}</span>
-            </div>
-            <p class="description" *ngIf="item.description">
-              {{ item.description }}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <ng-template #noItems>
-        <div class="empty-state">
-          No configured items found for this meal type.
-          Configure items first in the Menu Config screen.
-        </div>
-      </ng-template>
-    </div>
-
-    <!-- RIGHT: summary & per-item status -->
-    <div class="right-panel">
-      <div class="right-header">
-        <div>
-          <h3>Menus for {{ menuForm.get('date')?.value | date: 'dd MMM, y' }}</h3>
-          <p>Breakfast, Lunch and Dinner as visible to tenants.</p>
-        </div>
-      </div>
-
-      <ng-container *ngIf="menusForSelectedDate.length; else noMenusForDate">
-        <div
-          class="menu-summary"
-          *ngFor="let m of menusForSelectedDate; trackBy: trackByPublishedId">
-
-          <div class="summary-header">
-            <div class="summary-left">
-              <div class="meal-title">{{ m.mealType }}</div>
-              <div class="time-range" *ngIf="m.serveFrom || m.serveTo">
-                {{ m.serveFrom || '--' }} – {{ m.serveTo || '--' }}
-              </div>
-              <div class="repeat-chip" *ngIf="m.recurrence !== 'ONE_TIME'">
-                {{ getRecurrenceLabel(m.recurrence) }}
-                <span *ngIf="m.endDate">
-                  till {{ m.endDate | date: 'dd MMM, y' }}
-                </span>
-              </div>
-            </div>
-
-            <div class="summary-right">
-              <mat-form-field appearance="fill" class="status-field">
-                <mat-label>Status</mat-label>
-                <mat-select [value]="m.status" (selectionChange)="onStatusChange(m, $event.value)">
-                  <mat-option value="AVAILABLE">Available</mat-option>
-                  <mat-option value="COMPLETED">Completed</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <button mat-icon-button type="button" (click)="onEditPublished(m)">
+    <!-- HEADER -->
+    <div class="page-header">
+        <div class="title-block">
+            <h2>Create Hostel Menu</h2>
+            <p>Select items from your configured list to show in tenants app.</p>
+            <div class="editing-badge" *ngIf="editingMenuId">
                 <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button type="button" color="warn" (click)="onDeletePublished(m.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
+                Editing an existing menu – changes will be updated.
             </div>
-          </div>
-
-          <!-- Per-item statuses -->
-          <div class="items-list">
-            <div class="items-header">Items</div>
-            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]">
-              <span class="item-name">{{ it.menuItem.itemName }}</span>
-              <mat-form-field appearance="fill" class="item-status-field">
-                <mat-select
-                  [value]="it.status"
-                  (selectionChange)="onItemStatusChange(m, it.menuItem.id, $event.value)">
-                  <mat-option value="AVAILABLE">Available</mat-option>
-                  <mat-option value="COMPLETED">Completed</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
         </div>
-      </ng-container>
 
-      <ng-template #noMenusForDate>
-        <div class="empty-right">
-          No menus configured yet for this date.
-          Publish a menu from the left side.
+        <div class="header-actions">
+            <button mat-stroked-button type="button" (click)="clearAll()">
+                <mat-icon>refresh</mat-icon>
+                Reset
+            </button>
+            <button mat-flat-button color="primary" type="button" (click)="onSaveMenu()">
+                <mat-icon>{{ editingMenuId ? 'save' : 'publish' }}</mat-icon>
+                {{ editingMenuId ? 'Update Menu' : 'Publish Menu' }}
+            </button>
         </div>
-      </ng-template>
     </div>
-  </div>
+
+    <!-- MODE TOGGLE -->
+    <div class="mode-toggle-section">
+        <div class="mode-toggle-label">Create menu for:</div>
+        <mat-button-toggle-group [value]="menuMode" (change)="onModeChange($event.value)" class="mode-toggle-group">
+            <mat-button-toggle value="DATE">
+                <mat-icon>calendar_today</mat-icon>
+                Specific Date
+            </mat-button-toggle>
+            <mat-button-toggle value="DAY_OF_WEEK">
+                <mat-icon>date_range</mat-icon>
+                Day of Week (Weekly)
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+
+    <!-- BODY: two columns -->
+    <div class="layout-grid">
+        <!-- LEFT: builder -->
+        <div class="left-panel">
+            <form [formGroup]="menuForm" class="menu-filters">
+
+                <!-- DATE MODE FIELDS -->
+                <ng-container *ngIf="menuMode === 'DATE'">
+                    <mat-form-field appearance="outline" class="filter-field">
+                        <mat-label>Menu Date</mat-label>
+                        <input matInput [matDatepicker]="datePicker" formControlName="date" />
+                        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datePicker></mat-datepicker>
+                        <mat-error *ngIf="menuForm.get('date')?.hasError('required')">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="filter-field">
+                        <mat-label>Repeat</mat-label>
+                        <mat-select formControlName="recurrence">
+                            <mat-option *ngFor="let opt of recurrenceOptions" [value]="opt.value">
+                                {{ opt.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="filter-field"
+                        *ngIf="menuForm.get('recurrence')?.value !== 'ONE_TIME'">
+                        <mat-label>Valid Till</mat-label>
+                        <input matInput [matDatepicker]="validTillPicker" formControlName="validTill" />
+                        <mat-datepicker-toggle matSuffix [for]="validTillPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #validTillPicker></mat-datepicker>
+                        <mat-error *ngIf="menuForm.get('validTill')?.hasError('required')">
+                            End date is required
+                        </mat-error>
+                    </mat-form-field>
+                </ng-container>
+
+                <!-- DAY OF WEEK MODE FIELDS -->
+                <ng-container *ngIf="menuMode === 'DAY_OF_WEEK'">
+                    <mat-form-field appearance="outline" class="filter-field day-select-field">
+                        <mat-label>Select Day</mat-label>
+                        <mat-select formControlName="dayOfWeek">
+                            <mat-option *ngFor="let day of daysOfWeek" [value]="day.value">
+                                <div class="day-option">
+                                    <span class="day-name">{{ day.label }}</span>
+                                    <span class="day-count" *ngIf="getMenuCountForDay(day.value) > 0">
+                                        {{ getMenuCountForDay(day.value) }} menu(s)
+                                    </span>
+                                </div>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="day-info-chip">
+                        <mat-icon>info</mat-icon>
+                        This menu will repeat every {{ getDayLabel(menuForm.get('dayOfWeek')?.value) }}
+                    </div>
+                </ng-container>
+
+                <!-- COMMON FIELDS -->
+                <mat-form-field appearance="outline" class="filter-field">
+                    <mat-label>Meal Type</mat-label>
+                    <mat-select formControlName="mealType">
+                        <mat-option *ngFor="let type of availableMealTypes" [value]="type">
+                            {{ type }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="filter-field time-field">
+                    <mat-label>Serve From</mat-label>
+                    <input matInput type="time" formControlName="serveFrom" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="filter-field time-field">
+                    <mat-label>Serve Till</mat-label>
+                    <input matInput type="time" formControlName="serveTo" />
+                </mat-form-field>
+            </form>
+
+            <!-- Search & selection -->
+            <div class="search-row">
+                <mat-form-field appearance="outline" class="search-field">
+                    <mat-icon matPrefix>search</mat-icon>
+                    <input matInput placeholder="Search menu item" [value]="searchText"
+                        (input)="onSearchChange($any($event.target).value)" />
+                </mat-form-field>
+
+                <div class="selection-summary">
+                    <span class="selected-count">
+                        <mat-icon>check_circle</mat-icon>
+                        {{ selectedItemIds.size }} item(s) selected
+                    </span>
+                    <button mat-button type="button" (click)="selectAllVisible()" [disabled]="!filteredItems.length">
+                        Select All
+                    </button>
+                    <button mat-button type="button" color="warn" (click)="clearSelection()"
+                        [disabled]="!selectedItemIds.size">
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Item cards -->
+            <div class="menu-grid" *ngIf="filteredItems.length; else noItems">
+                <div *ngFor="let item of filteredItems; trackBy: trackById" class="menu-card"
+                    [ngClass]="{ 'selected-card': isSelected(item) }" (click)="onCardClick(item)">
+
+                    <mat-checkbox class="card-checkbox" [checked]="isSelected(item)"
+                        (change)="toggleSelection(item, $event)" (click)="$event.stopPropagation()">
+                    </mat-checkbox>
+
+                    <div class="image-wrapper">
+                        <img [src]="item.imageUrl || defaultImage" [alt]="item.itemName" loading="lazy" />
+                        <span class="item-type-badge" [ngClass]="{
+          veg: item.itemType === 'VEG',
+          nonveg: item.itemType === 'NON_VEG',
+          egg: item.itemType === 'EGG'
+        }">
+                            {{ item.itemType === 'VEG' ? 'VEG' : item.itemType === 'NON_VEG' ? 'NON-VEG' : 'EGG' }}
+                        </span>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="title-row">
+                            <h3>{{ item.itemName }}</h3>
+                            <span class="meal-chip">{{ item.mealType }}</span>
+                        </div>
+                        <p class="description" *ngIf="item.description">
+                            {{ item.description }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noItems>
+                <div class="empty-state">
+                    <mat-icon>restaurant_menu</mat-icon>
+                    <p>No configured items found for this meal type.</p>
+                    <span>Configure items first in the Menu Config screen.</span>
+                </div>
+            </ng-template>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+
+            <!-- DATE MODE RIGHT PANEL -->
+            <ng-container *ngIf="menuMode === 'DATE'">
+                <div class="right-header">
+                    <div>
+                        <h3>
+                            <mat-icon>calendar_today</mat-icon>
+                            Menus for {{ menuForm.get('date')?.value | date: 'EEEE, dd MMM y' }}
+                        </h3>
+                        <p>All meals scheduled for this date.</p>
+                    </div>
+                </div>
+
+                <ng-container *ngIf="menusForSelectedDate.length; else noMenusForDate">
+                    <div class="menu-summary" *ngFor="let m of menusForSelectedDate; trackBy: trackByPublishedId"
+                        [ngClass]="{ 'editing-highlight': editingMenuId === m.id }">
+
+                        <div class="summary-header">
+                            <div class="summary-left">
+                                <div class="meal-title">
+                                    <mat-icon>{{ m.mealType === 'Breakfast' ? 'free_breakfast' : m.mealType === 'Lunch'
+                                        ? 'lunch_dining' : m.mealType === 'Dinner' ? 'dinner_dining' : 'local_cafe'
+                                        }}</mat-icon>
+                                    {{ m.mealType }}
+                                </div>
+                                <div class="time-range" *ngIf="m.serveFrom || m.serveTo">
+                                    <mat-icon>schedule</mat-icon>
+                                    {{ m.serveFrom || '--' }} – {{ m.serveTo || '--' }}
+                                </div>
+                                <div class="repeat-chip" *ngIf="m.recurrence !== 'ONE_TIME'">
+                                    <mat-icon>repeat</mat-icon>
+                                    {{ getRecurrenceLabel(m.recurrence) }}
+                                    <span *ngIf="m.endDate">till {{ m.endDate | date: 'dd MMM, y' }}</span>
+                                </div>
+                            </div>
+
+                            <div class="summary-right">
+                                <mat-form-field appearance="fill" class="status-field">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select [value]="m.status" (selectionChange)="onStatusChange(m, $event.value)">
+                                        <mat-option value="AVAILABLE">
+                                            <mat-icon class="status-icon available">check_circle</mat-icon>
+                                            Available
+                                        </mat-option>
+                                        <mat-option value="COMPLETED">
+                                            <mat-icon class="status-icon completed">task_alt</mat-icon>
+                                            Completed
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <button mat-icon-button type="button" (click)="onEditPublished(m)"
+                                    matTooltip="Edit Menu">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-icon-button type="button" color="warn" (click)="onDeletePublished(m.id)"
+                                    matTooltip="Delete Menu">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Per-item statuses -->
+                        <div class="items-list">
+                            <div class="items-header">
+                                <mat-icon>restaurant</mat-icon>
+                                Items ({{ menuItemsCache[m.id]?.length || 0 }})
+                            </div>
+                            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]">
+                                <span class="item-name">
+                                    <span class="item-type-dot" [ngClass]="{
+                    'veg': it.menuItem.itemType === 'VEG',
+                    'nonveg': it.menuItem.itemType === 'NON_VEG',
+                    'egg': it.menuItem.itemType === 'EGG'
+                  }"></span>
+                                    {{ it.menuItem.itemName }}
+                                </span>
+                                <mat-form-field appearance="fill" class="item-status-field">
+                                    <mat-select [value]="it.status"
+                                        (selectionChange)="onItemStatusChange(m, it.menuItem.id, $event.value)">
+                                        <mat-option value="AVAILABLE">Available</mat-option>
+                                        <mat-option value="COMPLETED">Completed</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #noMenusForDate>
+                    <div class="empty-right">
+                        <mat-icon>event_busy</mat-icon>
+                        <p>No menus configured for this date.</p>
+                        <span>Publish a menu from the left side.</span>
+                    </div>
+                </ng-template>
+            </ng-container>
+
+            <!-- DAY OF WEEK MODE RIGHT PANEL -->
+            <ng-container *ngIf="menuMode === 'DAY_OF_WEEK'">
+                <div class="right-header">
+                    <div>
+                        <h3>
+                            <mat-icon>date_range</mat-icon>
+                            Weekly Menu Schedule
+                        </h3>
+                        <p>View and manage menus for each day of the week.</p>
+                    </div>
+                </div>
+
+                <!-- Day tabs -->
+                <div class="day-tabs">
+                    <button *ngFor="let day of daysOfWeek" mat-button [class.active-day]="selectedViewDay === day.value"
+                        (click)="onViewDayChange(day.value)">
+                        <span class="day-short">{{ day.short }}</span>
+                        <span class="day-badge" *ngIf="getMenuCountForDay(day.value) > 0">
+                            {{ getMenuCountForDay(day.value) }}
+                        </span>
+                    </button>
+                </div>
+
+                <div class="selected-day-header">
+                    <h4>{{ getDayLabel(selectedViewDay) }}'s Menu</h4>
+                </div>
+
+                <ng-container *ngIf="menusForSelectedDay.length; else noMenusForDay">
+                    <div class="menu-summary" *ngFor="let m of menusForSelectedDay; trackBy: trackByPublishedId"
+                        [ngClass]="{ 'editing-highlight': editingMenuId === m.id }">
+
+                        <div class="summary-header">
+                            <div class="summary-left">
+                                <div class="meal-title">
+                                    <mat-icon>{{ m.mealType === 'Breakfast' ? 'free_breakfast' : m.mealType === 'Lunch'
+                                        ? 'lunch_dining' : m.mealType === 'Dinner' ? 'dinner_dining' : 'local_cafe'
+                                        }}</mat-icon>
+                                    {{ m.mealType }}
+                                </div>
+                                <div class="time-range" *ngIf="m.serveFrom || m.serveTo">
+                                    <mat-icon>schedule</mat-icon>
+                                    {{ m.serveFrom || '--' }} – {{ m.serveTo || '--' }}
+                                </div>
+                                <div class="weekly-badge">
+                                    <mat-icon>repeat</mat-icon>
+                                    Repeats every {{ getDayLabel(m.dayOfWeek!) }}
+                                </div>
+                            </div>
+
+                            <div class="summary-right">
+                                <mat-form-field appearance="fill" class="status-field">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select [value]="m.status" (selectionChange)="onStatusChange(m, $event.value)">
+                                        <mat-option value="AVAILABLE">Available</mat-option>
+                                        <mat-option value="COMPLETED">Completed</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <button mat-icon-button type="button" (click)="onEditPublished(m)"
+                                    matTooltip="Edit Menu">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-icon-button type="button" color="warn" (click)="onDeletePublished(m.id)"
+                                    matTooltip="Delete Menu">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Per-item statuses -->
+                        <div class="items-list">
+                            <div class="items-header">
+                                <mat-icon>restaurant</mat-icon>
+                                Items ({{ menuItemsCache[m.id]?.length || 0 }})
+                            </div>
+                            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]">
+                                <span class="item-name">
+                                    <span class="item-type-dot" [ngClass]="{
+                    'veg': it.menuItem.itemType === 'VEG',
+                    'nonveg': it.menuItem.itemType === 'NON_VEG',
+                    'egg': it.menuItem.itemType === 'EGG'
+                  }"></span>
+                                    {{ it.menuItem.itemName }}
+                                </span>
+                                <mat-form-field appearance="fill" class="item-status-field">
+                                    <mat-select [value]="it.status"
+                                        (selectionChange)="onItemStatusChange(m, it.menuItem.id, $event.value)">
+                                        <mat-option value="AVAILABLE">Available</mat-option>
+                                        <mat-option value="COMPLETED">Completed</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #noMenusForDay>
+                    <div class="empty-right">
+                        <mat-icon>event_busy</mat-icon>
+                        <p>No menus configured for {{ getDayLabel(selectedViewDay) }}.</p>
+                        <span>Select items and publish a menu for this day.</span>
+                    </div>
+                </ng-template>
+            </ng-container>
+        </div>
+    </div>
 </div>

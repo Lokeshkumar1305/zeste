@@ -50,7 +50,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       title: 'ONBOARDING',
       icon: 'shield-lock',
       items: [
-        { title: 'Outlets', route: '/core/outlet-getAll' },
+        { title: 'Clients', route: '/core/outlet-getAll' },
         { title: 'Staff', route: '/core/staff-onboarding-getAll' }
       ]
     },
