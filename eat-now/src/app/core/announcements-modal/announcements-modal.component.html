@@ -1,0 +1,149 @@
+<!-- announcement-dialog/announcement-dialog.component.html -->
+<div class="announcement-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    {{ isEdit ? 'Edit Announcement' : 'Create New Announcement' }}
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="announcementForm" class="announcement-form">
+      <div class="row">
+        <!-- Title -->
+        <div class="col-12 mb-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="bi bi-type-h1 me-1"></i> Title
+            </mat-label>
+            <input matInput formControlName="title" placeholder="Enter announcement title">
+            <mat-hint>{{ f['title'].value?.length || 0 }}/100 characters</mat-hint>
+            <mat-error *ngIf="f['title'].hasError('required')">Title is required</mat-error>
+            <mat-error *ngIf="f['title'].hasError('minlength')">Minimum 5 characters required</mat-error>
+            <mat-error *ngIf="f['title'].hasError('maxlength')">Maximum 100 characters allowed</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Announcement Type -->
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="bi bi-tag me-1"></i> Type
+            </mat-label>
+            <mat-select formControlName="type">
+              <mat-option *ngFor="let type of announcementTypes" [value]="type.value">
+                <i class="bi {{ type.icon }} me-2"></i> {{ type.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Priority -->
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="bi bi-flag me-1"></i> Priority
+            </mat-label>
+            <mat-select formControlName="priority">
+              <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+                <span class="badge bg-{{ priority.color }} me-2">●</span> {{ priority.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Message -->
+        <div class="col-12 mb-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="bi bi-chat-text me-1"></i> Message
+            </mat-label>
+            <textarea matInput formControlName="message" 
+                      placeholder="Enter announcement message" 
+                      rows="5"></textarea>
+            <mat-hint>{{ f['message'].value?.length || 0 }}/1000 characters</mat-hint>
+            <mat-error *ngIf="f['message'].hasError('required')">Message is required</mat-error>
+            <mat-error *ngIf="f['message'].hasError('minlength')">Minimum 10 characters required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Target Audience -->
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="bi bi-people me-1"></i> Target Audience
+            </mat-label>
+            <mat-select formControlName="targetAudience">
+              <mat-option *ngFor="let audience of targetAudiences" [value]="audience.value">
+                <i class="bi {{ audience.icon }} me-2"></i> {{ audience.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Expiry Date -->
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="bi bi-calendar-x me-1"></i> Expiry Date (Optional)
+            </mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="expiryDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-hint>Leave empty for no expiry</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Specific Rooms (conditional) -->
+        <div class="col-md-6 mb-3" *ngIf="f['targetAudience'].value === 'specific_rooms'">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="bi bi-door-open me-1"></i> Select Rooms
+            </mat-label>
+            <mat-select formControlName="targetRooms" multiple>
+              <mat-option *ngFor="let room of rooms" [value]="room">
+                Room {{ room }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Specific Floors (conditional) -->
+        <div class="col-md-6 mb-3" *ngIf="f['targetAudience'].value === 'specific_floors'">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>
+              <i class="bi bi-building me-1"></i> Select Floors
+            </mat-label>
+            <mat-select formControlName="targetFloors" multiple>
+              <mat-option *ngFor="let floor of floors" [value]="floor">
+                {{ floor }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Active Status -->
+        <div class="col-12 mb-3">
+          <mat-slide-toggle formControlName="isActive" color="primary">
+            <span class="ms-2">
+              <i class="bi bi-broadcast me-1"></i>
+              Publish immediately
+            </span>
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button (click)="onCancel()" [disabled]="isLoading">
+      <i class="bi bi-x-lg me-1"></i> Cancel
+    </button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">
+        <i class="bi" [ngClass]="isEdit ? 'bi-check-lg' : 'bi-send'"></i>
+        {{ isEdit ? 'Update' : 'Publish' }}
+      </span>
+      <span *ngIf="isLoading">
+        <mat-spinner diameter="20"></mat-spinner>
+      </span>
+    </button>
+  </mat-dialog-actions>
+</div>

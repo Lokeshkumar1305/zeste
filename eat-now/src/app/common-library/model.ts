@@ -476,3 +476,55 @@ export interface HostelOnboardingData {
   termsAccepted: boolean;
   status: 'Draft' | 'Submitted' | 'Approved' | 'Rejected';
 }
+
+
+// models/announcement.model.ts
+export interface Announcement {
+  id: number;
+  title: string;
+  message: string;
+  type: AnnouncementType;
+  priority: Priority;
+  targetAudience: TargetAudience;
+  targetRooms?: string[];
+  targetFloors?: string[];
+  createdAt: Date;
+  updatedAt?: Date;
+  expiryDate?: Date;
+  isActive: boolean;
+  createdBy: string;
+  attachments?: string[];
+  readBy?: number[];
+}
+
+export enum AnnouncementType {
+  GENERAL = 'general',
+  MAINTENANCE = 'maintenance',
+  EMERGENCY = 'emergency',
+  EVENT = 'event',
+  PAYMENT = 'payment',
+  RULES = 'rules'
+}
+
+export enum Priority {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+  URGENT = 'urgent'
+}
+
+export enum TargetAudience {
+  ALL = 'all',
+  SPECIFIC_ROOMS = 'specific_rooms',
+  SPECIFIC_FLOORS = 'specific_floors',
+  NEW_TENANTS = 'new_tenants'
+}
+
+export interface AnnouncementFilter {
+  type?: AnnouncementType;
+  priority?: Priority;
+  isActive?: boolean;
+  dateFrom?: Date;
+  dateTo?: Date;
+  searchTerm?: string;
+}

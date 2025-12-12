@@ -40,6 +40,7 @@ import { InventoryDashboardComponent } from './inventory-dashboard/inventory-das
 import { SubscriptionPackagesComponent } from './subscription-packages/subscription-packages.component';
 import { SubscriptionPackagesModalComponent } from './subscription-packages-modal/subscription-packages-modal.component';
 import { SubscriptionBillingHistoryComponent } from './subscription-billing-history/subscription-billing-history.component';
+import { AnnouncementsComponent } from './announcements/announcements.component';
 
 const routes: Routes = [
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
@@ -67,7 +68,7 @@ const routes: Routes = [
   { path: 'maintenance-category', component: MaintenanceCategoryComponent },
   { path: 'expenses-category', component: ExpensesCategoryComponent },
   { path: 'menu-list', component: MenuListComponent },
-   { path: 'inventory-dashboard', component: InventoryDashboardComponent },
+  { path: 'inventory-dashboard', component: InventoryDashboardComponent },
   { path: 'inventory-unit', component: InventoryUnitsComponent },
   { path: 'inventory-items', component: InventoryItemsComponent },
   { path: 'inventory-items-categories', component: InventoryItemsCategoriesComponent },
@@ -78,8 +79,9 @@ const routes: Routes = [
   { path: 'inventory-reports', component: InventoryReportsComponent },
   { path: 'inventory-settings', component: InventorySettingsComponent },
   { path: 'subscription-packages', component: SubscriptionPackagesComponent },
-   { path: 'subscription-packages-modal', component: SubscriptionPackagesModalComponent },
-    { path: 'subscription-billing-history', component: SubscriptionBillingHistoryComponent },
+  { path: 'subscription-packages-modal', component: SubscriptionPackagesModalComponent },
+  { path: 'subscription-billing-history', component: SubscriptionBillingHistoryComponent },
+  { path: 'announcements', component: AnnouncementsComponent },
 
 ];
 

@@ -59,6 +59,17 @@
         </div>
       </div>
 
+
+
+       <div class="section misc-section">
+        <span class="section-title" *ngIf="!isCollapsed">Announcements</span>
+        <div class="menu-item" [class.active]="isRouteActive('/core/announcements')"
+          (click)="navigateTo('/core/announcements')">
+          <i class="bi bi-journal-text"></i>
+          <span *ngIf="!isCollapsed">Announcements</span>
+        </div>
+      </div>
+
       <!-- MISCELLANEOUS -->
       <div class="section misc-section">
         <span class="section-title" *ngIf="!isCollapsed">MISCELLANEOUS</span>

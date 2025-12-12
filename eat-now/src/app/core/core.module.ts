@@ -85,6 +85,8 @@ import { InventoryMovementsModalComponent } from './inventory-movements-modal/in
 import { InventoryPurchaseOrdersModalComponent } from './inventory-purchase-orders-modal/inventory-purchase-orders-modal.component';
 import { InventorySuppliersModalComponent } from './inventory-suppliers-modal/inventory-suppliers-modal.component';
 import { SubscriptionBillingHistoryComponent } from './subscription-billing-history/subscription-billing-history.component';
+import { AnnouncementsComponent } from './announcements/announcements.component';
+import { AnnouncementsModalComponent } from './announcements-modal/announcements-modal.component';
 
 
 
@@ -156,7 +158,9 @@ import { SubscriptionBillingHistoryComponent } from './subscription-billing-hist
  InventoryMovementsModalComponent,
  InventoryPurchaseOrdersModalComponent,
  InventorySuppliersModalComponent,
- SubscriptionBillingHistoryComponent
+ SubscriptionBillingHistoryComponent,
+ AnnouncementsComponent,
+ AnnouncementsModalComponent
  
  
  
