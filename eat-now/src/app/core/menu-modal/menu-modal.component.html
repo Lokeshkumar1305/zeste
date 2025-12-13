@@ -126,8 +126,9 @@
         <mat-form-field appearance="outline" class="flex-fill mb-0 add-meal-field">
             <input matInput [(ngModel)]="newMealType" placeholder="e.g., Snacks, Brunch" 
                 (keydown.enter)="addMealType()" autocomplete="off" spellcheck="false" />
+            <!-- ✅ FIXED: Removed ?. since newMealType is always a string -->
             <button matSuffix mat-icon-button color="primary" type="button" class="add-btn" 
-                (click)="addMealType()" [disabled]="!newMealType?.trim()" matTooltip="Add new meal type">
+                (click)="addMealType()" [disabled]="!newMealType.trim()" matTooltip="Add new meal type">
                 <i class="bi bi-plus-lg"></i>
             </button>
         </mat-form-field>
