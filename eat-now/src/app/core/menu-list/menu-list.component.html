@@ -258,9 +258,9 @@
                         <div class="items-list">
                             <div class="items-header">
                                 <mat-icon>restaurant</mat-icon>
-                                Items ({{ menuItemsCache[m.id]?.length || 0 }})
+                                Items ({{ getMenuItemsCount(m.id) }})
                             </div>
-                            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]; trackBy: trackByItemId">
+                            <div class="item-row" *ngFor="let it of getMenuItems(m.id); trackBy: trackByItemId">
                                 <span class="item-name">
                                     <span class="item-type-dot" [ngClass]="{
                                         'veg': it.menuItem.itemType === 'VEG',
@@ -364,9 +364,9 @@
                         <div class="items-list">
                             <div class="items-header">
                                 <mat-icon>restaurant</mat-icon>
-                                Items ({{ menuItemsCache[m.id]?.length || 0 }})
+                                Items ({{ getMenuItemsCount(m.id) }})
                             </div>
-                            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]; trackBy: trackByItemId">
+                            <div class="item-row" *ngFor="let it of getMenuItems(m.id); trackBy: trackByItemId">
                                 <span class="item-name">
                                     <span class="item-type-dot" [ngClass]="{
                                         'veg': it.menuItem.itemType === 'VEG',

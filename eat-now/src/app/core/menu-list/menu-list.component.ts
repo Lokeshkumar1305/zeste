@@ -486,6 +486,15 @@ export class MenuListComponent implements OnInit {
     return option ? option.label : rec;
   }
 
+  getMenuItemsCount(menuId: number): number {
+    const items = this.menuItemsCache[menuId];
+    return items ? items.length : 0;
+  }
+
+  getMenuItems(menuId: number): { menuItem: MenuItem; status: MenuStatus }[] {
+    return this.menuItemsCache[menuId] || [];
+  }
+
   private normalizeDate(d: Date): Date {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
   }
