@@ -295,8 +295,15 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
 
   openEditDialog(announcement: Announcement): void {
     const dialogRef = this.dialog.open(AnnouncementsModalComponent, {
-      width: '700px',
-      maxHeight: '90vh',
+      width: '560px',
+      maxWidth: '90vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false,
       data: { isEdit: true, announcement }
     });
 

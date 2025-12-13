@@ -1,10 +1,18 @@
-<!-- announcement-dialog/announcement-dialog.component.html -->
 <div class="announcement-dialog">
-  <h2 mat-dialog-title class="dialog-title">
-    {{ isEdit ? 'Edit Announcement' : 'Create New Announcement' }}
-  </h2>
 
-  <mat-dialog-content>
+  <!-- HEADER -->
+  <div class="modal-header">
+    <span class="modal-title">
+      {{ isEdit ? 'Edit Announcement' : 'Create New Announcement' }}
+    </span>
+
+    <button mat-icon-button type="button" class="modal-close-btn" (click)="onCancel()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <!-- BODY -->
+  <div class="modal-body">
     <form [formGroup]="announcementForm" class="announcement-form">
       <div class="row">
         <!-- Title -->
@@ -21,7 +29,7 @@
           </mat-form-field>
         </div>
 
-        <!-- Announcement Type -->
+        <!-- Type -->
         <div class="col-md-6 mb-3">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>
@@ -55,9 +63,7 @@
             <mat-label>
               <i class="bi bi-chat-text me-1"></i> Message
             </mat-label>
-            <textarea matInput formControlName="message" 
-                      placeholder="Enter announcement message" 
-                      rows="5"></textarea>
+            <textarea matInput formControlName="message" placeholder="Enter announcement message" rows="5"></textarea>
             <mat-hint>{{ f['message'].value?.length || 0 }}/1000 characters</mat-hint>
             <mat-error *ngIf="f['message'].hasError('required')">Message is required</mat-error>
             <mat-error *ngIf="f['message'].hasError('minlength')">Minimum 10 characters required</mat-error>
@@ -91,7 +97,7 @@
           </mat-form-field>
         </div>
 
-        <!-- Specific Rooms (conditional) -->
+        <!-- Specific Rooms -->
         <div class="col-md-6 mb-3" *ngIf="f['targetAudience'].value === 'specific_rooms'">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>
@@ -105,7 +111,7 @@
           </mat-form-field>
         </div>
 
-        <!-- Specific Floors (conditional) -->
+        <!-- Specific Floors -->
         <div class="col-md-6 mb-3" *ngIf="f['targetAudience'].value === 'specific_floors'">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>
@@ -130,20 +136,23 @@
         </div>
       </div>
     </form>
-  </mat-dialog-content>
+  </div>
 
-  <mat-dialog-actions align="end" class="dialog-actions">
+  <!-- FOOTER -->
+  <div class="modal-footer">
     <button mat-button (click)="onCancel()" [disabled]="isLoading">
       <i class="bi bi-x-lg me-1"></i> Cancel
     </button>
+
     <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isLoading">
-      <span *ngIf="!isLoading">
-        <i class="bi" [ngClass]="isEdit ? 'bi-check-lg' : 'bi-send'"></i>
+      <ng-container *ngIf="!isLoading">
+        <i class="bi me-1" [ngClass]="isEdit ? 'bi-check-lg' : 'bi-send'"></i>
         {{ isEdit ? 'Update' : 'Publish' }}
-      </span>
-      <span *ngIf="isLoading">
+      </ng-container>
+      <ng-container *ngIf="isLoading">
         <mat-spinner diameter="20"></mat-spinner>
-      </span>
+      </ng-container>
     </button>
-  </mat-dialog-actions>
+  </div>
+
 </div>
