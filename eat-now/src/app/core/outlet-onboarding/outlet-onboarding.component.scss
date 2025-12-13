@@ -1,0 +1,190 @@
+.hostel-onboarding-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* Header card: space inside and below the card */
+.onboarding-card {
+    margin-bottom: 24px;
+}
+
+.onboarding-card .mat-mdc-card-content {
+    padding: 0; /* we control padding via .onboarding-header */
+}
+
+.onboarding-header {
+    padding: 16px 24px; /* space between card border and content */
+}
+
+/* Stepper content */
+.step-content {
+    padding: 24px 0;
+}
+
+/* Section cards used in steps */
+.section-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.section-card mat-card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.section-card mat-card-header mat-card-title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.section-card mat-card-content {
+    padding: 20px;
+}
+
+/* Required field asterisk */
+.required::after {
+    content: ' *';
+    color: #f44336;
+}
+
+.optional-badge {
+    font-size: 12px;
+    font-weight: 400;
+    color: #9e9e9e;
+}
+
+/* Step actions (buttons at bottom of each step) */
+.step-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Photo Upload */
+.photo-upload-container .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.photo-upload-container .photo-item {
+    position: relative;
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.photo-upload-container .photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-upload-container .photo-item .remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.photo-upload-container .photo-item .remove-btn mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.photo-upload-container .photo-upload-btn {
+    aspect-ratio: 4/3;
+    border: 2px dashed #bdbdbd;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #757575;
+}
+
+.photo-upload-container .photo-upload-btn:hover {
+    border-color: #1976d2;
+    color: #1976d2;
+    background: rgba(25, 118, 210, 0.04);
+}
+
+.photo-upload-container .photo-upload-btn i {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.photo-upload-container .photo-upload-btn span {
+    font-size: 12px;
+}
+
+/* File Upload */
+.file-upload-wrapper .file-name {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #4caf50;
+}
+
+/* Info Box */
+.info-box {
+    background: #e3f2fd;
+    border-left: 4px solid #1976d2;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #1565c0;
+}
+
+/* Form fields */
+mat-form-field.mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 4px;
+}
+
+mat-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #424242;
+    margin-bottom: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hostel-onboarding-container {
+        padding: 16px;
+    }
+
+    .onboarding-header {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .onboarding-header > div:last-child {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .step-actions {
+        flex-direction: column-reverse;
+        gap: 12px;
+    }
+
+    .step-actions button {
+        width: 100%;
+    }
+}

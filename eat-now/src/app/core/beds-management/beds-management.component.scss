@@ -1,0 +1,422 @@
+/* ========================================
+   1) PAGE CONTAINER
+   ======================================== */
+.page-container {
+  --page-gutter: 24px;
+  --page-max: 1280px;
+  width: min(var(--page-max), 100% - (var(--page-gutter) * 2));
+  margin-inline: auto;
+}
+
+/* ========================================
+   2) CASE CARD
+   ======================================== */
+.case-card {
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* ========================================
+   3) BUTTONS
+   ======================================== */
+.btn-secondary {
+  color: var(--text-color);
+  background: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--input-background);
+  border-color: var(--brand-primary-light);
+}
+
+.btn-primary {
+  color: #fff;
+  background: var(--brand-primary);
+  border: 1px solid var(--brand-primary);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--brand-primary-700);
+  border-color: var(--brand-primary-700);
+}
+
+/* ========================================
+   4) DIVIDER
+   ======================================== */
+.toolbar-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 16px 0;
+}
+
+/* ========================================
+   5) FILTER SECTION
+   ======================================== */
+.filter-section {
+  padding: 12px;
+  background: var(--input-background);
+  border-radius: 6px;
+}
+
+.filter-pills {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.filter-pill {
+  padding: 6px 16px;
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  color: var(--text-color);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+  border-color: var(--brand-primary);
+  background: var(--input-background);
+}
+
+.filter-pill.active {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: #fff;
+}
+
+/* ========================================
+   6) BEDS GRID
+   ======================================== */
+.beds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* ========================================
+   7) BED CARD
+   ======================================== */
+.bed-card {
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bed-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Card Header */
+.bed-card-header {
+  padding: 12px;
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-700) 100%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.bed-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bed-icon {
+  font-size: 20px;
+  color: #fff;
+}
+
+.bi-bed-fill.text-warning {
+  color: #fbbf24 !important;
+}
+
+.bi-tools {
+  color: #fff;
+}
+
+.bed-id {
+  flex: 1;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-available {
+  background: rgba(32, 201, 151, 0.9);
+  color: #fff;
+}
+
+.status-occupied {
+  background: rgba(100, 116, 139, 0.9);
+  color: #fff;
+}
+
+.status-maintenance {
+  background: rgba(245, 158, 11, 0.9);
+  color: #fff;
+}
+
+/* Card Body */
+.bed-card-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bed-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.bed-info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.info-label i {
+  font-size: 13px;
+  color: var(--brand-primary);
+}
+
+.info-value {
+  font-size: 13px;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.rent-value {
+  color: var(--brand-primary);
+  font-size: 15px;
+}
+
+.amenities-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 60%;
+  justify-content: flex-end;
+}
+
+.amenity-tag {
+  padding: 3px 7px;
+  background: var(--input-background);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  font-size: 9.5px;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+/* Card Footer */
+.bed-card-footer {
+  padding: 10px 12px;
+  background: var(--input-background);
+  display: flex;
+  gap: 6px;
+  border-top: 1px solid var(--card-border);
+}
+
+.action-btn {
+  flex: 1;
+  padding: 6px 12px;
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  color: var(--text-color);
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.edit-btn:hover {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #fff;
+}
+
+/* ========================================
+   8) EMPTY STATE
+   ======================================== */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-icon {
+  font-size: 56px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.empty-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ========================================
+   9) ROWS PER PAGE
+   ======================================== */
+.rows-per-page {
+  min-width: 72px;
+  color: var(--text-color);
+  background: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 6px 28px 6px 10px;
+  font-size: 14px;
+}
+
+/* ========================================
+   10) FOOTER & PAGINATION
+   ======================================== */
+.table-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--card-border);
+  color: var(--text-secondary);
+}
+
+.footer-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagination {
+  display: inline-flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 6px;
+}
+
+.page-item {
+  display: inline-flex;
+}
+
+.page-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-color);
+  background-color: var(--background);
+  border: 1px solid var(--card-border);
+  min-width: 36px;
+  min-height: 32px;
+  border-radius: 4px;
+  padding: 6px 15px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.page-item.active .page-link {
+  color: #fff;
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+  font-weight: 600;
+}
+
+.page-item.disabled .page-link {
+  color: var(--text-muted);
+  background-color: var(--background);
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.page-item:not(.disabled) .page-link:hover {
+  border-color: var(--brand-primary);
+  background: var(--input-background);
+}
+
+.text-high-contrast {
+  color: var(--text-color) !important;
+  opacity: 1 !important;
+}
+
+/* ========================================
+   11) RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .beds-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-left {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+}

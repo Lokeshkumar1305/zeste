@@ -1,0 +1,22 @@
+<nav class="secondary-header" 
+     aria-label="Breadcrumb" 
+     [class.collapsed]="sidebarCollapsed">  <!-- Now reacts instantly -->
+  <div class="breadcrumb-inner">
+    <ol class="breadcrumb" role="list">
+      <li class="crumb" *ngFor="let bc of breadcrumbs$ | async; let last = last; trackBy: trackByUrl" role="listitem">
+        <a *ngIf="!last" class="crumb-link f-14-r" [routerLink]="bc.url">
+          <mat-icon *ngIf="bc.icon" class="crumb-icon">{{ bc.icon }}</mat-icon>
+          <span>{{ bc.label }}</span>
+        </a>
+        <span *ngIf="last" class="crumb-current f-14-r" aria-current="page">
+          <mat-icon *ngIf="bc.icon" class="crumb-icon">{{ bc.icon }}</mat-icon>
+          <span>{{ bc.label }}</span>
+        </span>
+        <mat-icon *ngIf="!last" class="crumb-sep">chevron_right</mat-icon>
+      </li>
+    </ol>
+    <div class="breadcrumb-actions">
+      <ng-content select="[breadcrumb-actions]"></ng-content>
+    </div>
+  </div>
+</nav>

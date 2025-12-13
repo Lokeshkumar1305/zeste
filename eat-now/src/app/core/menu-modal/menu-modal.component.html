@@ -1,0 +1,158 @@
+<div class="modal-slide-in">
+    <div class="modal-header d-flex align-items-center justify-content-between">
+        <p class="f-18-m mb-0">Menu Details</p>
+        <button mat-icon-button (click)="onCancel()" class="text-muted">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form #menuForm="ngForm">
+            <div class="row">
+
+                <!-- Item Name -->
+                <div class="col-12">
+                    <mat-label class="required">Item Name (English)</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="menu.itemName" name="itemName" placeholder="e.g., Margherita Pizza"
+                            required />
+                        <mat-error *ngIf="menuForm.submitted && menuForm.controls['itemName']?.invalid">
+                            Item name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Item Description -->
+                <div class="col-12">
+                    <mat-label>Item Description (English)</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <textarea matInput rows="3" [(ngModel)]="menu.description" name="description"
+                            placeholder="e.g., A classic Italian pizza with fresh tomatoes and basil."></textarea>
+                    </mat-form-field>
+                </div>
+
+
+
+                <div class="col-md-6">
+                    <mat-label class="required">Meal Type</mat-label>
+
+                    <mat-form-field appearance="outline" class="w-100 mt-1 final-meal-field" floatLabel="always">
+                        <mat-select [(ngModel)]="menu.mealType" name="mealType" placeholder="--" required>
+                            <mat-option *ngFor="let type of availableMealTypes" [value]="type">
+                                {{ type }}
+                            </mat-option>
+                        </mat-select>
+
+                        <!-- Arrow + Divider + Gear (tight to the right) -->
+                        <div matSuffix class="final-suffix">
+                            <div class="divider"></div>
+                            <button mat-icon-button class="gear-btn"
+                                (click)="openMealTypeConfig(); $event.stopPropagation()">
+                                <i class="bi bi-gear"></i>
+                            </button>
+                        </div>
+                    </mat-form-field>
+                </div>
+                <!-- Item Type Badges (no changes needed, but add mt-1 to match) -->
+                <div class="col-md-6 d-flex flex-column">
+                    <mat-label>Item Type</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <mat-select [(ngModel)]="menu.itemType" name="itemType" placeholder="Select item type">
+                            <mat-option [value]="VEG">
+                                <i class="bi bi-circle-fill text-success me-2"></i>Veg
+                            </mat-option>
+                            <mat-option [value]="NON_VEG">
+                                <i class="bi bi-circle-fill text-danger me-2"></i>Non-Veg
+                            </mat-option>
+                            <mat-option [value]="EGG">
+                                <i class="bi bi-egg-fill text-warning me-2"></i>Egg
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Is Available -->
+                <div class="col-md-6 mt-3">
+                    <mat-label>Is Available</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <mat-select [(ngModel)]="menu.isAvailable" name="isAvailable">
+                            <mat-option [value]="true">Yes</mat-option>
+                            <mat-option [value]="false">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Item Image -->
+                <div class="col-12 mt-4">
+                    <mat-label>Item Image</mat-label>
+                    <div class="mt-2">
+                        <input type="file" #itemImageInput (change)="onImageSelected($event)" accept="image/*"
+                            class="form-control form-control-sm" />
+                        <small class="text-muted d-block">
+                            Supported: JPEG, PNG, JPG, GIF, SVG. Max 2MB. Recommended: 200×200 px.
+                        </small>
+                    </div>
+
+                    <div *ngIf="imagePreviewUrl" class="mt-3 text-center">
+                        <img [src]="imagePreviewUrl" alt="Preview" class="img-fluid rounded shadow-sm"
+                            style="max-height: 250px; object-fit: contain;" />
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeImage()">
+                                <i class="bi bi-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" [disabled]="!menuForm.valid || menu.itemTypes.length === 0"
+            (click)="onSave()">
+            <i class="bi bi-check2 me-1"></i> Save Menu Item
+        </button>
+    </div>
+</div>
+
+<!-- Meal Type Config Popup -->
+<div class="meal-config-overlay" *ngIf="showMealConfig" (click)="closeConfig()"></div>
+<div class="meal-config-popup" *ngIf="showMealConfig">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Manage Meal Types</h4>
+        <button mat-icon-button (click)="closeConfig()">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+
+    <div class="d-flex align-items-center gap-2 mb-3">
+        <mat-form-field appearance="outline" class="flex-fill mb-0 add-meal-field">
+            <input matInput [(ngModel)]="newMealType" placeholder="e.g., Snacks, Brunch" (keydown.enter)="addMealType()"
+                autocomplete="off" spellcheck="false" />
+
+            <button matSuffix mat-icon-button color="primary" class="add-btn" (click)="addMealType()"
+                [disabled]="!newMealType?.trim()" matTooltip="Add new meal type">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        </mat-form-field>
+    </div>
+
+    <!-- List of Meal Types -->
+    <div class="meal-list">
+        <div *ngFor="let type of availableMealTypes; let i = index"
+            class="d-flex align-items-center justify-content-between py-2 px-1 border-bottom">
+            <span>{{ type }}</span>
+            <button mat-icon-button color="warn" class="text-danger" (click)="removeMealType(type)"
+                [disabled]="availableMealTypes.length === 1">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="mt-3 text-end">
+        <button class="btn btn-sm btn-primary" (click)="closeConfig()">Done</button>
+    </div>
+</div>

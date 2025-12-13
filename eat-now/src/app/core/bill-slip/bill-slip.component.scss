@@ -1,0 +1,18 @@
+@media print {
+  body * {
+    display: none !important;
+  }
+
+  #bill-slip, #bill-slip * {
+    display: block !important;
+    visibility: visible;
+  }
+
+  #bill-slip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+    width: 100%;
+  }
+}

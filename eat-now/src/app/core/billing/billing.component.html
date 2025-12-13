@@ -1,0 +1,139 @@
+<div class="eatnow-container container-fluid">
+    <div class="d-flex" style="gap: 1rem;">
+        <div class="left-section pe-3" style="width: 60%; border-right: 2px solid #dee2e6;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="welcome-text me-3">Welcome to EatNow</div>
+                <div class="d-flex flex-grow-1 serch-field">
+                    <div class="search-bar position-relative">
+                        <input type="text" placeholder="Search by" class="form-control pe-5 w-100" />
+                        <i class="search-icon position-absolute top-50 end-0 translate-middle-y me-2"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="section-title fw-semibold mb-2">Choose the category</div>
+
+            <div class="categories d-flex align-items-center mt-3">
+                <button class="nav-arrow me-2" (click)="scrollCategories('left')">&#8249;</button>
+
+                <div #categoryScroll class="d-flex overflow-auto flex-nowrap" style="scroll-behavior: smooth; max-width: 100%;">
+
+                    <div class="category me-3 text-center flex-shrink-0"
+                        [ngClass]="{ active: selectedCategory === 'Chicken' }" (click)="selectCategory('Chicken')">
+                        <div class="category-icon fs-3">🍗</div>
+                        <div class="category-text">Chicken</div>
+                    </div>
+
+                    <div class="category me-3 text-center flex-shrink-0" *ngFor="let cat of pizzas"
+                        [ngClass]="{ active: selectedCategory === cat.name }" (click)="selectCategory(cat.name)">
+                        <div class="fs-3">🍕</div>
+                        <div>{{ cat.name }}</div>
+                    </div>
+
+                </div>
+
+                <button class="nav-arrow ms-2" (click)="scrollCategories('right')">&#8250;</button>
+            </div>
+
+
+
+            <!-- Divider line -->
+            <!-- <hr class="my-3" style="border-top: 2px solid #dee2e6; margin-left: -16px; margin-right: -16px;" /> -->
+
+            <!-- Items Grid -->
+            <div class="items-section mt-5">
+                <div class="section-title fw-semibold mb-2">Choose the Items</div>
+                <div class="items-grid d-grid gap-3" style="grid-template-columns: repeat(6, 1fr);">
+                    <div class="item-card p-2 rounded shadow-sm bg-white" *ngFor="let item of items">
+                        <img [src]="item.image" alt="Item" class="w-100 rounded"
+                            style="height: 100px; object-fit: cover;" />
+                        <div class="item-name fw-medium my-2">{{ item.name }}</div>
+                        <div class="item-footer d-flex justify-content-between align-items-center">
+                            <span class="price fw-bold text-warning">₹30.00</span>
+                            <button class="add-btn btn btn-sm btn-outline-warning" (click)="addToOrder(item)">+
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section  -->
+        <div class="right-section ps-3" style="width: 40%;">
+            <!-- Order Section -->
+            <div class="order-section">
+                <div class="order-type d-flex justify-content-around mb-3">
+                    <label><input type="radio" name="orderType" (change)="setOrderType('Dine In')" checked /> Dine
+                        In</label>
+                    <label><input type="radio" name="orderType" (change)="setOrderType('Takeaway')" /> Takeaway</label>
+                    <label><input type="radio" name="orderType" (change)="setOrderType('Pickup')" /> Pickup</label>
+                </div>
+
+                <div class="order-header d-flex justify-content-between fw-semibold mb-3 " id="print-section">
+                    <span>Orders #05</span>
+                    <button class="assign-table btn btn-sm btn-outline-dark">Assign Table</button>
+                </div>
+
+                <div class="order-table">
+                    <div class="order-table-head d-flex justify-content-between border-bottom pb-2 fw-bold small">
+                        <span>ITEM NAME</span>
+                        <span>QTY</span>
+                        <span>PRICE</span>
+                        <span>AMOUNT</span>
+                        <span>ACTION</span>
+                    </div>
+                    <div *ngIf="orderItems.length === 0" class="order-empty text-center text-muted py-5">
+                        <i class="fs-2">🛒</i>
+                        <p class="m-0">No Record Found</p>
+                    </div>
+
+                    <div *ngFor="let order of orderItems"
+                        class="d-flex justify-content-between align-items-center py-2 border-bottom small">
+                        <span>{{ order.name }}</span>
+
+                        <span class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-outline-secondary me-1"
+                                (click)="decreaseQty(order)">−</button>
+                            <span>{{ order.qty }}</span>
+                            <button class="btn btn-sm btn-outline-secondary ms-1"
+                                (click)="increaseQty(order)">+</button>
+                        </span>
+
+                        <span>₹{{ order.price.toFixed(2) }}</span>
+                        <span>₹{{ order.amount.toFixed(2) }}</span>
+
+                        <button class="btn btn-sm btn-danger" (click)="removeItem(order)">×</button>
+                    </div>
+
+
+                </div>
+
+                <div class="order-summary mt-3 small">
+                    <button class="add-discount btn btn-light border w-100 text-start mb-2">🖋 Add Discount</button>
+                    <div class="summary-line">Item(s): {{ totalQty }}</div>
+                    <div class="summary-line">Sub Total: ₹{{ subTotal.toFixed(2) }}</div>
+                    <div class="summary-line">SGST (2.5%): ₹{{ (subTotal * 0.025).toFixed(2) }}</div>
+                    <div class="summary-line">CGST (2.5%): ₹{{ (subTotal * 0.025).toFixed(2) }}</div>
+                    <div class="summary-total fw-bold mt-2">Total: ₹{{ totalAmount.toFixed(2) }}</div>
+
+                </div>
+
+                <div class="order-buttons d-flex flex-wrap gap-2 mt-3">
+                    <button class="btn btn-outline-secondary">KOT</button>
+                    <button class="btn btn-outline-secondary">KOT & Print</button>
+                    <button class="btn btn-purple text-white" (click)="printBill()">BILL</button>
+                    <button class="btn btn-success">Bill & Payment</button>
+                    <button class="btn btn-primary">Bill & Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This will be used for printing the bill -->
+<div #printSection style="display: none;">
+    <app-bill-slip [orderItems]="orderItems" [subTotal]="subTotal" [totalAmount]="totalAmount"
+        [selectedOrderType]="selectedOrderType">
+    </app-bill-slip>
+</div>

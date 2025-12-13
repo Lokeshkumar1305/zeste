@@ -1,0 +1,12 @@
+.dialog-header,
+.dialog-footer {
+    height: 64px;
+}
+
+::ng-deep .modal-height.mat-mdc-dialog-content {
+    max-height: calc(100vh - 134px) !important;
+}
+
+.form-feild-width {
+    width: 300px;
+}

@@ -1,0 +1,361 @@
+$border-color: #e5e7eb;
+$bg-surface: #ffffff;
+$bg-soft: #f9fafb;
+$text-main: #111827;
+$text-muted: #6b7280;
+$primary: #4f46e5;
+$success: #16a34a;
+$warning: #f59e0b;
+$danger: #dc2626;
+
+.page {
+    background-color: #f3f4f6;
+    min-height: 100vh;
+    padding: 16px 24px 32px;
+    box-sizing: border-box;
+}
+
+/* widen card so content has more room */
+.page-inner {
+    max-width: 1320px;
+    /* increased from 1200 */
+    margin: 0 auto;
+}
+
+/* Header */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    h1 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    .subtitle {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: $text-muted;
+    }
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Summary cards */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.summary-card {
+    background-color: $bg-surface;
+    border-radius: 12px;
+    border: 1px solid $border-color;
+    padding: 10px 14px;
+
+    .summary-title {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: $text-muted;
+        margin-bottom: 4px;
+    }
+
+    .summary-value {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .summary-meta {
+        font-size: 12px;
+        color: $text-muted;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/* Filters card */
+
+.filters-card {
+    background-color: $bg-surface;
+    border-radius: 12px;
+    border: 1px solid $border-color;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+}
+
+.filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.filter {
+    min-width: 220px;
+}
+
+.search-filter {
+    flex: 1 1 260px;
+}
+
+.status-filter {
+    width: 200px;
+}
+
+/* Table */
+
+.table {
+    border-radius: 12px;
+    border: 1px solid $border-color;
+    background-color: $bg-surface;
+    overflow: hidden;
+}
+
+.table-row {
+    display: grid;
+    /* increased last column for actions and slightly adjusted others */
+    grid-template-columns: 130px 160px minmax(0, 1.8fr) 110px 130px 170px 230px;
+    gap: 16px;
+    padding: 10px 16px;
+    border-bottom: 1px solid $border-color;
+    font-size: 13px;
+    align-items: center;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.table-header {
+    background-color: $bg-soft;
+    font-size: 12px;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.col-date .date-sub {
+    font-size: 11px;
+    color: $text-muted;
+}
+
+.invoice-no {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.invoice-meta {
+    font-size: 11px;
+    color: $text-muted;
+    margin-top: 2px;
+}
+
+.col-plan .plan-name {
+    font-weight: 500;
+}
+
+.col-plan .plan-period {
+    font-size: 11px;
+    color: $text-muted;
+}
+
+.col-plan .plan-autorenew {
+    font-size: 11px;
+    color: $primary;
+    margin-top: 2px;
+}
+
+.col-amount .amount {
+    font-weight: 600;
+}
+
+/* Status pill */
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    border: 1px solid transparent;
+}
+
+.status-paid {
+    background-color: #ecfdf3;
+    color: $success;
+    border-color: rgba($success, 0.3);
+}
+
+.status-pending {
+    background-color: #fef9c3;
+    color: #854d0e;
+    border-color: rgba(202, 138, 4, 0.4);
+}
+
+.status-failed {
+    background-color: #fee2e2;
+    color: $danger;
+    border-color: rgba($danger, 0.4);
+}
+
+.status-refunded {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border-color: rgba(3, 105, 161, 0.4);
+}
+
+/* Payment method */
+
+.method-main {
+    display: flex;
+    align-items: center;
+}
+
+.method-sub {
+    font-size: 11px;
+    color: $text-muted;
+}
+
+/* Actions */
+
+.col-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    /* push buttons to right within column */
+}
+
+/* Icon + text fully inside button, centered */
+.action-btn.mat-mdc-button-base {
+    min-width: 94px;
+    /* 2 * 94 + 8 gap = 196 < 230 col width */
+    height: 32px;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+/* Material wraps content in .mat-mdc-button__label */
+.action-btn .mat-mdc-button__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.action-btn .mat-mdc-button-touch-target {
+    height: 32px;
+}
+
+.action-btn i {
+    font-size: 14px;
+}
+
+/* Empty state */
+
+.empty-state {
+    padding: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: $text-muted;
+}
+
+/* Responsive */
+
+@media (max-width: 1100px) {
+    .table-row {
+        grid-template-columns: 110px 130px minmax(0, 1.5fr) 100px 130px;
+        grid-template-areas:
+            'date invoice plan amount status'
+            'date invoice plan method actions';
+        row-gap: 4px;
+    }
+
+    .col-date {
+        grid-area: date;
+    }
+
+    .col-invoice {
+        grid-area: invoice;
+    }
+
+    .col-plan {
+        grid-area: plan;
+    }
+
+    .col-amount {
+        grid-area: amount;
+    }
+
+    .col-status {
+        grid-area: status;
+    }
+
+    .col-method {
+        grid-area: method;
+    }
+
+    .col-actions {
+        grid-area: actions;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding-inline: 12px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-actions {
+        align-self: stretch;
+        justify-content: flex-end;
+    }
+
+    .filters-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .table-row {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            'invoice'
+            'plan'
+            'date'
+            'amount'
+            'status'
+            'method'
+            'actions';
+        row-gap: 4px;
+    }
+
+    .col-date,
+    .col-invoice,
+    .col-plan,
+    .col-amount,
+    .col-status,
+    .col-method,
+    .col-actions {
+        justify-content: flex-start;
+    }
+}

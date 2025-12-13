@@ -1,0 +1,171 @@
+<div class="page">
+    <div class="page-inner">
+        <!-- Header -->
+        <div class="page-header">
+            <div>
+                <h1>Billing History</h1>
+                <p class="subtitle">
+                    View all subscription invoices, payments and refunds.
+                </p>
+            </div>
+
+            <div class="header-actions">
+                <button mat-stroked-button color="primary" type="button">
+                    <i class="bi bi-download me-1"></i>
+                    Export CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-title">
+                    <span>Current Plan</span>
+                </div>
+                <div class="summary-value">Ultimate Access</div>
+                <div class="summary-meta">
+                    <i class="bi bi-clock-history me-1"></i>
+                    Renews on
+                    <strong>{{ records[0]?.periodTo | date: 'mediumDate' }}</strong>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-title">
+                    <span>Total Paid (Last 12 Months)</span>
+                </div>
+                <div class="summary-value">
+                    ₹{{ totalPaidAmount | number: '1.0-0' }}
+                </div>
+                <div class="summary-meta">
+                    <i class="bi bi-check2-circle me-1 text-success"></i>
+                    All payments up to date
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-title">
+                    <span>Outstanding</span>
+                </div>
+                <div class="summary-value">
+                    ₹{{ totalOutstandingAmount | number: '1.0-0' }}
+                </div>
+                <div class="summary-meta">
+                    <i class="bi bi-info-circle me-1 text-warning"></i>
+                    Includes pending or failed invoices
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters in a card -->
+        <div class="filters-card">
+            <div class="filters-row">
+                <mat-form-field appearance="outline" class="filter search-filter">
+                    <mat-label>Search by invoice or plan</mat-label>
+                    <span matPrefix><i class="bi bi-search"></i>&nbsp;</span>
+                    <input matInput [(ngModel)]="searchTerm" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="filter status-filter">
+                    <mat-label>Status</mat-label>
+                    <mat-select [(ngModel)]="statusFilter">
+                        <mat-option value="all">All</mat-option>
+                        <mat-option value="paid">Paid</mat-option>
+                        <mat-option value="pending">Pending</mat-option>
+                        <mat-option value="failed">Failed</mat-option>
+                        <mat-option value="refunded">Refunded</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table">
+            <div class="table-row table-header">
+                <div class="col col-date">Date</div>
+                <div class="col col-invoice">Invoice</div>
+                <div class="col col-plan">Plan & Period</div>
+                <div class="col col-amount">Amount</div>
+                <div class="col col-status">Status</div>
+                <div class="col col-method">Payment Method</div>
+                <div class="col col-actions">Action</div>
+            </div>
+
+            <ng-container *ngFor="let r of filteredRecords">
+                <div class="table-row">
+                    <div class="col col-date">
+                        <div>{{ r.date | date: 'mediumDate' }}</div>
+                        <div class="date-sub">
+                            {{ r.date | date: 'shortTime' }}
+                        </div>
+                    </div>
+
+                    <div class="col col-invoice">
+                        <div class="invoice-no">
+                            <i class="bi bi-receipt-cutoff me-1"></i>
+                            {{ r.invoiceNumber }}
+                        </div>
+                        <div class="invoice-meta">
+                            ID: #{{ r.id }}
+                        </div>
+                    </div>
+
+                    <div class="col col-plan">
+                        <div class="plan-name">{{ r.planName }}</div>
+                        <div class="plan-period">
+                            {{ r.periodFrom | date: 'mediumDate' }}
+                            –
+                            {{ r.periodTo | date: 'mediumDate' }}
+                        </div>
+                        <div class="plan-autorenew" *ngIf="r.autoRenew">
+                            <i class="bi bi-arrow-repeat me-1"></i>
+                            Auto-renew on {{ r.periodTo | date: 'mediumDate' }}
+                        </div>
+                    </div>
+
+                    <div class="col col-amount">
+                        <div class="amount">
+                            ₹{{ r.amount | number: '1.0-0' }}
+                        </div>
+                    </div>
+
+                    <div class="col col-status">
+                        <span class="status-pill" [ngClass]="'status-' + r.status">
+                            <i class="bi me-1" [ngClass]="getStatusIcon(r.status)"></i>
+                            {{ getStatusLabel(r.status) }}
+                        </span>
+                    </div>
+
+                    <div class="col col-method">
+                        <div class="method-main">
+                            <i class="bi bi-credit-card-2-back me-1"></i>
+                            {{ getPaymentLabel(r) }}
+                        </div>
+                        <div class="method-sub">
+                            {{ r.paymentMethod | titlecase }}
+                        </div>
+                    </div>
+
+                    <div class="col col-actions">
+                        <button mat-stroked-button color="primary" class="action-btn" type="button"
+                            (click)="viewInvoice(r)">
+                            <i class="bi bi-eye"></i>
+                            <span>View</span>
+                        </button>
+
+                        <button mat-stroked-button color="accent" class="action-btn" type="button"
+                            (click)="downloadInvoice(r)">
+                            <i class="bi bi-download"></i>
+                            <span>Download</span>
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="empty-state" *ngIf="filteredRecords.length === 0">
+                No invoices found for the selected filters.
+            </div>
+        </div>
+    </div>
+</div>

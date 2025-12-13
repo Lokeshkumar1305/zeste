@@ -1,0 +1,485 @@
+.toucan-header {
+  position: fixed !important;
+  top: 0;
+  left: 260px;
+  right: 0;
+  height: 64px;
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 24px !important;
+  z-index: 1000 !important;
+  box-shadow: none !important;
+  width: calc(100% - 260px) !important;
+  transition: left 0.3s ease, width 0.3s ease;
+  border-bottom: 1px solid #e5e7eb; 
+  &.collapsed {
+    left: 78px;
+    width: calc(100% - 78px) !important;
+  }
+
+  @media (max-width: 768px) {
+    left: 0 !important;
+    width: 100% !important;
+    padding: 0 16px !important;
+  }
+}
+
+/* Left menu icon (no circle, blue color) */
+.menu-toggle {
+ color: #374151 !important;
+  width: 40px !important;
+  height: 40px !important;
+
+  mat-icon {
+    font-size: 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  &:hover {
+    background: transparent !important;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.header-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* Thin vertical divider between icons and profile */
+.header-divider {
+  height: 28px;
+  margin: 0 4px;
+  border-color: #e5e7eb;
+}
+
+/* Round icon buttons on the right */
+.circle-icon-btn.mat-mdc-icon-button {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 9999px !important;
+  background-color: #f2f4f7 !important;  // light grey/blue circle
+  color: #344054 !important;
+  padding: 0 !important;
+
+  .mat-mdc-button-touch-target {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  mat-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  &:hover {
+    background-color: #e5e7eb !important;
+  }
+}
+
+/* Button itself */
+.profile-chip {
+  padding: 0 !important;
+   min-height: 50px !important;
+  min-width: 150px !important;
+  background: transparent !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+
+/* Our own wrapper inside the button */
+.profile-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;  /* keeps everything on one line */
+}
+
+/* Avatar circle on the left */
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #2563eb;
+}
+
+/* Name over role */
+.profile-text-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+
+.profile-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.profile-role {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Arrow on the right */
+.chevron-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: #9ca3af;
+  margin-left: 4px;
+}
+
+
+
+.spacer {
+  flex: 1 1 auto;
+  min-width: 16px; // Minimum spacing
+}
+
+.notification-btn,
+.profile-btn {
+  color: #6b7280 !important;
+  min-width: 48px !important;
+  width: 48px !important;
+  height: 48px !important;
+  flex-shrink: 0; // Prevent shrinking
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
+
+  mat-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+.profile-btn {
+  width: auto !important;
+  min-width: auto !important;
+  padding: 4px 12px 4px 4px !important; // Adjusted padding
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border-radius: 24px !important; // Added for better appearance
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px; // Increased gap
+  cursor: pointer;
+  white-space: nowrap; // Prevent text wrapping
+
+  .avatar-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+    flex-shrink: 0; // Prevent shrinking
+  }
+
+  .user-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0; // Allow text truncation
+    
+    @media (max-width: 960px) {
+      display: none;
+    }
+  }
+
+  .user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .user-role {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .chevron {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    color: #9ca3af;
+    flex-shrink: 0; // Prevent shrinking
+
+    @media (max-width: 960px) {
+      display: none;
+    }
+  }
+}
+
+// Rest of the styles remain the same...
+::ng-deep .mat-mdc-menu-panel {
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+
+  .mat-mdc-menu-content {
+    padding: 0 !important;
+  }
+}
+
+.notification-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #f3f4f6;
+  min-width: 380px;
+
+  @media (max-width: 480px) {
+    min-width: 320px;
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  button {
+    font-size: 12px;
+  }
+}
+
+.notification-list {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 16px 20px !important;
+  display: flex !important;
+  gap: 12px !important;
+  align-items: flex-start !important;
+  height: auto !important;
+  border-bottom: 1px solid #f9fafb;
+  width: 100% !important;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: #f9fafb !important;
+  }
+
+  mat-icon {
+    color: #3b82f6;
+    margin: 0 !important;
+    flex-shrink: 0;
+  }
+
+  .notif-content {
+    flex: 1;
+    text-align: left;
+    min-width: 0;
+  }
+
+  .notif-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 4px;
+  }
+
+  .notif-description {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .notif-time {
+    font-size: 12px;
+    color: #9ca3af;
+  }
+}
+
+.empty-notification {
+  padding: 60px 20px;
+  text-align: center;
+  color: #9ca3af;
+
+  mat-icon {
+    font-size: 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+    opacity: 0.4;
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+  }
+}
+
+.profile-menu-header {
+  display: flex;
+  gap: 16px;
+  padding: 24px 20px;
+  min-width: 280px;
+
+  .avatar-large {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+  }
+
+  .profile-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    min-width: 0;
+
+    .profile-name {
+      font-size: 16px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .profile-email {
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+::ng-deep .profile-menu button.mat-mdc-menu-item {
+  padding: 12px 20px !important;
+  height: auto !important;
+  min-height: 48px !important;
+
+  mat-icon {
+    margin-right: 12px;
+    color: #6b7280;
+  }
+
+  span {
+    color: #374151;
+    font-size: 14px;
+  }
+
+  &:hover {
+    background: #f9fafb !important;
+  }
+}
+
+.theme-selector {
+  padding: 16px 20px;
+  background: #f9fafb;
+
+  span {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 12px;
+  }
+
+  .color-swatches {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &.active {
+        border-color: #333;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
+.logout-btn {
+  color: #ef4444 !important;
+  border-top: 1px solid #f3f4f6;
+
+  mat-icon {
+    color: #ef4444 !important;
+  }
+
+  span {
+    color: #ef4444 !important;
+  }
+
+  &:hover {
+    background: #fef2f2 !important;
+  }
+}
+
+// Ensure smooth badge display
+::ng-deep .mat-badge-content {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+// Fix for menu positioning
+::ng-deep .mat-mdc-menu-panel.notification-menu,
+::ng-deep .mat-mdc-menu-panel.profile-menu {
+  max-width: 95vw !important;
+}

@@ -1,0 +1,159 @@
+<!-- inventory-suppliers-modal.component.html -->
+<div class="modal-slide-in">
+  <!-- Header -->
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <div>
+      <p class="f-18-m mb-0">
+        <i class="bi bi-building me-2"></i>
+        {{ isEditMode ? 'Edit Supplier' : 'Add New Supplier' }}
+      </p>
+      <small class="text-muted">Add shops or companies where you buy items from</small>
+    </div>
+    <button mat-icon-button (click)="onCancel()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Help Section -->
+    <div class="help-box mb-4">
+      <div class="help-icon">
+        <i class="bi bi-lightbulb"></i>
+      </div>
+      <div class="help-content">
+        <strong>What is a Supplier?</strong>
+        <p class="mb-0">A supplier is any shop, store, or company where you buy your items. For example: Local grocery store, wholesale market, online seller, etc.</p>
+      </div>
+    </div>
+
+    <form>
+      <div class="row">
+        <!-- Supplier Name -->
+        <div class="col-12">
+          <mat-label class="required">Supplier / Shop Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix>store</mat-icon>
+            <input
+              matInput
+              [(ngModel)]="supplier.name"
+              name="name"
+              placeholder="e.g. ABC Grocery Store, Big Bazaar"
+              required />
+            <mat-hint>Name of the shop or company</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Contact Person -->
+        <div class="col-md-6 mt-3">
+          <mat-label>Contact Person</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix>person</mat-icon>
+            <input
+              matInput
+              [(ngModel)]="supplier.contactPerson"
+              name="contactPerson"
+              placeholder="e.g. Mr. Sharma" />
+            <mat-hint>Person to contact (optional)</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6 mt-3">
+          <mat-label class="required">Phone Number</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix>phone</mat-icon>
+            <input
+              matInput
+              [(ngModel)]="supplier.phone"
+              name="phone"
+              placeholder="e.g. 9876543210"
+              maxlength="15"
+              required />
+            <mat-hint>Mobile or landline number</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6 mt-3">
+          <mat-label>Email Address</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix>email</mat-icon>
+            <input
+              matInput
+              type="email"
+              [(ngModel)]="supplier.email"
+              name="email"
+              placeholder="e.g. shop@example.com" />
+            <mat-hint>Optional: For sending orders</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Address -->
+        <div class="col-12 mt-3">
+          <mat-label>Address</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix>location_on</mat-icon>
+            <textarea
+              matInput
+              rows="3"
+              [(ngModel)]="supplier.address"
+              name="address"
+              placeholder="Shop address...">
+            </textarea>
+            <mat-hint>Where is the shop located?</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Status -->
+        <div class="col-12 mt-3">
+          <mat-checkbox [(ngModel)]="supplier.isActive" name="isActive" color="primary">
+            <span class="ms-2">Active Supplier (currently doing business with)</span>
+          </mat-checkbox>
+        </div>
+      </div>
+    </form>
+
+    <!-- Preview Card -->
+    <div class="supplier-card mt-4" *ngIf="supplier.name">
+      <div class="card-header">
+        <i class="bi bi-building"></i>
+        <span>{{ supplier.name }}</span>
+      </div>
+      <div class="card-body">
+        <div class="info-row" *ngIf="supplier.contactPerson">
+          <i class="bi bi-person"></i>
+          <span>{{ supplier.contactPerson }}</span>
+        </div>
+        <div class="info-row" *ngIf="supplier.phone">
+          <i class="bi bi-telephone"></i>
+          <span>{{ supplier.phone }}</span>
+        </div>
+        <div class="info-row" *ngIf="supplier.email">
+          <i class="bi bi-envelope"></i>
+          <span>{{ supplier.email }}</span>
+        </div>
+        <div class="info-row" *ngIf="supplier.address">
+          <i class="bi bi-geo-alt"></i>
+          <span>{{ supplier.address }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="modal-footer d-flex justify-content-between mt-4">
+    <div class="footer-hint">
+      <i class="bi bi-info-circle me-1"></i>
+      <small>Suppliers can be used when creating purchase orders</small>
+    </div>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onSave()">
+        <i class="bi bi-check2 me-1"></i> 
+        {{ isEditMode ? 'Update Supplier' : 'Add Supplier' }}
+      </button>
+    </div>
+  </div>
+</div>

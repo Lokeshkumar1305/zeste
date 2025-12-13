@@ -1,0 +1,54 @@
+<div class="modal-slide-in">
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <p class="f-18-m mb-0">Room Type Details</p>
+    <button mat-icon-button (click)="onCancel()" class="text-muted">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form>
+      <div class="row ">
+        <!-- Room ID -->
+        <div class="col-md-6">
+          <mat-label class="required">Room Type</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input matInput [(ngModel)]="room.roomType" name="roomtype" placeholder="Unique identifier for the room" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Room Owner -->
+        <div class="col-md-6">
+          <mat-label class="required">No of Beds</mat-label>
+           <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input matInput [(ngModel)]="room.beds" name="beds" placeholder="Unique identifier for the room" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Description -->
+        <div class="col-12">
+          <mat-label>Description</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <textarea
+              matInput
+              rows="4"
+              [(ngModel)]="room.description"
+              name="description"
+              placeholder="Detailed description of the room.">
+            </textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
+      <i class="bi bi-check2 me-1"></i> Create Room Type
+    </button>
+
+  </div>
+</div>

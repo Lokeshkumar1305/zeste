@@ -1,1 +1,102 @@
-<p>header works!</p>
+<mat-toolbar class="toucan-header" [class.collapsed]="sidebarCollapsed">
+  <!-- Left: menu / sidebar toggle -->
+  <button mat-icon-button (click)="toggleSidebar()" class="menu-toggle">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="spacer"></span>
+
+  <!-- Right: icons + profile -->
+  <div class="header-actions">
+    <!-- Example extra icon (screen / layout) -->
+    <button mat-icon-button class="circle-icon-btn">
+      <mat-icon>crop_free</mat-icon>
+    </button>
+
+    <!-- Notifications -->
+    <button mat-icon-button class="circle-icon-btn" [matMenuTriggerFor]="notificationMenu">
+      <mat-icon>notifications_none</mat-icon>
+    </button>
+
+    <mat-divider class="header-divider" vertical></mat-divider>
+
+    <!-- Profile -->
+    <button mat-button class="profile-chip" [matMenuTriggerFor]="profileMenu">
+      <!-- FLEX wrapper that we control -->
+      <div class="profile-wrapper">
+        <div class="avatar-circle">
+          {{ userInitials }}
+        </div>
+
+        <div class="profile-text-block">
+          <div class="profile-name">{{ userName }}</div>
+          <div class="profile-role">{{ userRole }}</div>
+        </div>
+
+        <mat-icon class="chevron-icon">expand_more</mat-icon>
+      </div>
+    </button>
+  </div>
+</mat-toolbar>
+
+<!-- keep your existing notificationMenu and profileMenu code as‑is -->
+
+<mat-menu #notificationMenu="matMenu" xPosition="before">
+  <div class="notification-menu-header">
+    <span>Notifications</span>
+    <button mat-button *ngIf="notificationCount > 0" (click)="markAllAsRead()">
+      Mark all as read
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="notification-list">
+    <div *ngIf="notifications.length === 0" class="empty-notification">
+      <mat-icon>notifications_none</mat-icon>
+      <p>No new notifications</p>
+    </div>
+    <button mat-menu-item *ngFor="let notif of notifications" class="notification-item">
+      <mat-icon>{{ notif.icon }}</mat-icon>
+      <div class="notif-content">
+        <div class="notif-title">{{ notif.title }}</div>
+        <div class="notif-description">{{ notif.description }}</div>
+        <div class="notif-time">{{ notif.time }}</div>
+      </div>
+    </button>
+  </div>
+</mat-menu>
+
+<mat-menu #profileMenu="matMenu" xPosition="before">
+  <div class="profile-menu-header">
+    <img [src]="userAvatar" alt="User Avatar" class="avatar-large" />
+    <div class="profile-info">
+      <div class="profile-name">{{ userName }}</div>
+      <div class="profile-email">{{ userEmail }}</div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+
+  <button mat-menu-item>
+    <mat-icon>person</mat-icon>
+    <span>View Profile</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>lock</mat-icon>
+    <span>Change Password</span>
+  </button>
+
+  <button mat-menu-item >
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </button>
+  <mat-divider></mat-divider>
+
+  <!-- <div class="theme-selector">
+    <span>Theme</span>
+    <div class="color-swatches">
+      <button *ngFor="let color of themeColors" class="swatch" [style.background-color]="color"
+        [class.active]="color === selectedTheme" (click)="selectTheme(color)">
+      </button>
+    </div>
+  </div> -->
+
+</mat-menu>

@@ -1,0 +1,157 @@
+.modal-slide-in {
+  max-width: 100%;
+  background: var(--card-background);
+  border-left: 1px solid var(--card-border);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+}
+
+
+.modal-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-background);
+  flex-shrink: 0;
+}
+
+.modal-body {
+  flex: 1;
+  padding: 20px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--card-border);
+  background: var(--card-background);
+  flex-shrink: 0;
+}
+
+.profile-pic-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.edit-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  background: #1976d2;
+  box-shadow: 0 2px 6px rgba(25, 118, 210, 0.3);
+  &:hover {
+    background: #1565c0;
+  }
+}
+
+/* Required star */
+mat-label.required::after {
+  content: " *";
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+/* Form field tweaks */
+::ng-deep .mat-mdc-form-field {
+  .mdc-notched-outline {
+    border-radius: 8px !important;
+  }
+  .mat-mdc-form-field-infix {
+    padding: 10px 0 !important;
+  }
+  .mat-mdc-text-field-wrapper {
+    padding: 0 4px;
+  }
+}
+
+::ng-deep .mat-mdc-select-arrow {
+  color: var(--text-muted);
+}
+
+::ng-deep .mat-mdc-option {
+  font-size: 14px;
+}
+
+/* Datepicker icon */
+::ng-deep .mat-datepicker-toggle {
+  color: var(--text-muted);
+}
+
+
+
+/* Smaller Icons */
+.icon-sm {
+  font-size: 0.9rem !important; /* ~14px */
+}
+
+.icon-btn-sm {
+  width: 32px;
+  height: 32px;
+  line-height: 32px !important;
+  
+  .bi {
+    font-size: 0.875rem !important; /* 14px */
+  }
+}
+
+/* Ensure upload container remains balanced */
+.upload-container {
+  background: var(--card-background);
+  border: 1.5px dashed var(--input-border);
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--brand-primary-light);
+    cursor: pointer;
+  }
+
+  &:active {
+    background: rgba(var(--brand-primary), 0.1);
+    transform: scale(0.99);
+  }
+}
+
+/* Truncate long filenames */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Responsive tweak for small screens */
+@media (max-width: 576px) {
+  .upload-container .d-flex.gap-2 {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  .upload-container .d-flex.gap-1 {
+    margin-top: 8px;
+  }
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-slide-in {
+    width: 100%;
+  }
+}

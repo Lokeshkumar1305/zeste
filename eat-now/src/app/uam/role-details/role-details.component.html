@@ -1,0 +1,107 @@
+<div class="page-wrap container-fluid py-3">
+  <!-- Role form -->
+  <mat-card class="p-3 p-md-4 mt-3">
+    <form [formGroup]="form" novalidate>
+      <div class="mb-3">
+        <p class="f-16-m">Role Details</p>
+      </div>
+      <mat-divider class="w-100"></mat-divider>
+      <div class="g-3 mt-3">
+        <div class="col-12 col-md-6 col-lg-4">
+          <mat-label>Role</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-2">
+            <input matInput formControlName="roleTitle" maxlength="60" placeholder="System Admin" />
+            <mat-error *ngIf="form.get('roleTitle')?.touched && form.get('roleTitle')?.hasError('required')">
+              Role is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <mat-label>Description</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-2">
+            <textarea
+              matInput
+              rows="3"
+              formControlName="roleDescription"
+              maxlength="160"
+              placeholder="Manages entire platform, IAM..."></textarea>
+            <mat-hint align="end">{{ form.get('roleDescription')?.value?.length || 0 }}/160</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <mat-divider class="w-100 my-3"></mat-divider>
+      <div class="mb-2">
+        <p class="f-16-m">Features</p>
+      </div>
+      <mat-accordion class="feature-accordion">
+        <mat-expansion-panel (opened)="expanded = true" (closed)="expanded = false">
+          <mat-expansion-panel-header class="feature-header">
+            <div class="w-100 d-flex align-items-center">
+              <span class="module-title">User Management</span>
+            </div>
+          </mat-expansion-panel-header>
+          <div class="p-3">
+            <div class="permission-card">
+              <p class="resource-title">Role</p>
+              <mat-checkbox
+                *ngFor="let permission of modules[0].resources[0].permissions"
+                [checked]="isSelected(permission.id)"
+                (change)="onPermissionChange(permission.id, $event.checked)">
+                {{ permission.label }}
+              </mat-checkbox>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="expanded = true" (closed)="expanded = false">
+          <mat-expansion-panel-header class="feature-header">
+            <div class="w-100 d-flex align-items-center">
+              <span class="module-title">Resident Management</span>
+            </div>
+          </mat-expansion-panel-header>
+          <div class="p-3">
+            <div class="permission-card">
+              <p class="resource-title">Role</p>
+              <mat-checkbox
+                *ngFor="let permission of modules[1].resources[0].permissions"
+                [checked]="isSelected(permission.id)"
+                (change)="onPermissionChange(permission.id, $event.checked)">
+                {{ permission.label }}
+              </mat-checkbox>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="expanded = true" (closed)="expanded = false">
+          <mat-expansion-panel-header class="feature-header">
+            <div class="w-100 d-flex align-items-center">
+              <span class="module-title">Community Core Management</span>
+            </div>
+          </mat-expansion-panel-header>
+          <div class="p-3">
+            <div class="permission-card">
+              <p class="resource-title">Role</p>
+              <mat-checkbox
+                *ngFor="let permission of modules[2].resources[0].permissions"
+                [checked]="isSelected(permission.id)"
+                (change)="onPermissionChange(permission.id, $event.checked)">
+                {{ permission.label }}
+              </mat-checkbox>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </mat-card>
+  <mat-card class="topbar-card p-3 mt-3">
+    <div class="d-flex align-items-center justify-content-end flex-wrap gap-2">
+      <button mat-button type="button" class="text-accent" (click)="onCancel()">Cancel</button>
+      <button
+        mat-raised-button
+        color="primary"
+        class="btn-create"
+        [disabled]="form.invalid || permissionsSelection.size === 0"
+        (click)="onSave()">
+        Create Role
+      </button>
+    </div>
+  </mat-card>
+</div>

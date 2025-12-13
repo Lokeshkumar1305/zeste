@@ -1,0 +1,143 @@
+<div class="page-container">
+    <section class="case-card">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <p class="mb-0 f-18-m text-high-contrast">Beds Details</p>
+
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+                    (click)="onFilter()">
+                    <i class="bi bi-funnel"></i>
+                    <span class="f-12-m">Filter</span>
+                </button>
+                <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+                    (click)="onReset()">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    <span class="f-12-m">Reset</span>
+                </button>
+                <!-- <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
+                    (click)="onAddNewBed()">
+                    <i class="bi bi-plus-circle"></i>
+                    <span class="f-14-m">Add New Bed</span>
+                </button> -->
+            </div>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="filter-section mb-3">
+            <div class="d-flex align-items-center gap-2">
+                <span class="f-12-m text-muted">Filter by Status:</span>
+                <div class="filter-pills">
+                    <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'All'"
+                        (click)="onSelectStatusChange('All')">
+                        All
+                    </button>
+                    <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Available'"
+                        (click)="onSelectStatusChange('Available')">
+                        Available
+                    </button>
+                    <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Occupied'"
+                        (click)="onSelectStatusChange('Occupied')">
+                        Occupied
+                    </button>
+                    <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Maintenance'"
+                        (click)="onSelectStatusChange('Maintenance')">
+                        Maintenance
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="pagedBeds.length > 0; else noBeds" class="beds-grid">
+            <div *ngFor="let bed of pagedBeds; trackBy: trackById" class="bed-card">
+                <div class="bed-card-header">
+                    <div class="bed-icon-wrapper">
+                        <i class="bi" [ngClass]="{
+       'bi bi-bed-fill': bed.status === 'Available',
+       'bi bi-bed-fill text-warning': bed.status === 'Occupied',
+       'bi-tools': bed.status === 'Maintenance'
+     }"></i>
+                    </div>
+                    <div class="bed-id">
+                        <span class="f-14-m">{{ bed.id }}</span>
+                    </div>
+                    <span class="status-badge" [ngClass]="{
+            'status-available': bed.status === 'Available',
+            'status-occupied': bed.status === 'Occupied',
+            'status-maintenance': bed.status === 'Maintenance'
+          }">
+                        {{ bed.status }}
+                    </span>
+                </div>
+
+                <div class="bed-card-body">
+                    <div class="bed-info-row">
+                        <span class="info-label">
+                            <i class="bi bi-building"></i> Floor
+                        </span>
+                        <span class="info-value">{{ bed.floor }}</span>
+                    </div>
+
+                    <div class="bed-info-row">
+                        <span class="info-label">
+                            <i class="bi bi-door-open"></i> Room No
+                        </span>
+                        <span class="info-value">{{ bed.roomNumber }}</span>
+                    </div>
+
+                    <div class="bed-info-row">
+                        <span class="info-label">
+                            <i class="bi bi-hash"></i> Bed No
+                        </span>
+                        <span class="info-value">{{ bed.bedNumber }}</span>
+                    </div>
+
+                    <div class="bed-info-row">
+                        <span class="info-label">
+                            <i class="bi bi-tag"></i> Room Type
+                        </span>
+                        <span class="info-value">{{ bed.roomType }}</span>
+                    </div>
+
+                    <div class="bed-info-row">
+                        <span class="info-label">
+                            <i class="bi bi-currency-rupee"></i> Rent
+                        </span>
+                        <span class="info-value rent-value">₹{{ bed.rent }}</span>
+                    </div>
+
+                    <div class="bed-info-row" *ngIf="bed.amenities.length > 0">
+                        <span class="info-label">
+                            <i class="bi bi-stars"></i> Amenities
+                        </span>
+                        <div class="amenities-tags">
+                            <span *ngFor="let amenity of bed.amenities" class="amenity-tag">
+                                {{ amenity }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bed-card-footer">
+                    <button type="button" class="action-btn edit-btn" title="Edit" (click)="onEditBed(bed)">
+                        <i class="bi bi-pencil"></i> Edit
+                    </button>
+                    <button type="button" class="action-btn delete-btn" title="Delete" (click)="onDeleteBed(bed)">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #noBeds>
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-bed"></i>
+                </div>
+                <p class="empty-title">No beds found</p>
+                <p class="empty-description">Create a room to automatically generate beds</p>
+            </div>
+        </ng-template>
+
+    </section>
+</div>

@@ -1,0 +1,996 @@
+<div class="inventory-reports-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-content">
+            <h1>
+                <mat-icon>assessment</mat-icon>
+                Inventory Reports
+            </h1>
+            <p class="subtitle">Generate and analyze inventory reports</p>
+        </div>
+        <div class="header-actions">
+            <button mat-stroked-button (click)="printReport()">
+                <mat-icon>print</mat-icon>
+                Print
+            </button>
+            <button mat-stroked-button (click)="exportToExcel()">
+                <mat-icon>file_download</mat-icon>
+                Export Excel
+            </button>
+            <button mat-raised-button color="primary" (click)="exportToPDF()">
+                <mat-icon>picture_as_pdf</mat-icon>
+                Export PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+        <mat-card class="summary-card">
+            <div class="card-content">
+                <span class="label">Total Items</span>
+                <span class="value">{{ summaryData.totalItems }}</span>
+            </div>
+            <div class="card-icon blue">
+                <mat-icon>inventory_2</mat-icon>
+            </div>
+        </mat-card>
+
+        <mat-card class="summary-card">
+            <div class="card-content">
+                <span class="label">Total Stock Value</span>
+                <span class="value">₹{{ summaryData.totalValue | number }}</span>
+            </div>
+            <div class="card-icon green">
+                <mat-icon>account_balance_wallet</mat-icon>
+            </div>
+        </mat-card>
+
+        <mat-card class="summary-card">
+            <div class="card-content">
+                <span class="label">Low Stock Items</span>
+                <span class="value warning">{{ summaryData.lowStockItems }}</span>
+            </div>
+            <div class="card-icon orange">
+                <mat-icon>warning</mat-icon>
+            </div>
+        </mat-card>
+
+        <mat-card class="summary-card">
+            <div class="card-content">
+                <span class="label">Out of Stock</span>
+                <span class="value danger">{{ summaryData.outOfStockItems }}</span>
+            </div>
+            <div class="card-icon red">
+                <mat-icon>remove_circle</mat-icon>
+            </div>
+        </mat-card>
+    </div>
+
+    <!-- Report Type Selection -->
+    <mat-card class="report-type-card">
+        <mat-card-content>
+            <div class="report-type-buttons">
+                <button *ngFor="let type of reportTypes" mat-stroked-button
+                    [class.active]="selectedReportType === type.value" (click)="onReportTypeChange(type.value)">
+                    <mat-icon>{{ type.icon }}</mat-icon>
+                    {{ type.label }}
+                </button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Filters Section -->
+    <mat-card class="filter-card">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon>filter_list</mat-icon>
+                Filter Options
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="filterForm" class="filter-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Date From</mat-label>
+                    <input matInput [matDatepicker]="dateFromPicker" formControlName="dateFrom" />
+                    <mat-datepicker-toggle matSuffix [for]="dateFromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateFromPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Date To</mat-label>
+                    <input matInput [matDatepicker]="dateToPicker" formControlName="dateTo" />
+                    <mat-datepicker-toggle matSuffix [for]="dateToPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateToPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="categoryId">
+                        <mat-option [value]="null">All Categories</mat-option>
+                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                            {{ category.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="
+            selectedReportType === 'purchase' ||
+            selectedReportType === 'supplier'
+          ">
+                    <mat-label>Supplier</mat-label>
+                    <mat-select formControlName="supplierId">
+                        <mat-option [value]="null">All Suppliers</mat-option>
+                        <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                            {{ supplier.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="
+            selectedReportType === 'stock' ||
+            selectedReportType === 'movement'
+          ">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                        <mat-option *ngFor="let status of statusOptions" [value]="status.value">
+                            {{ status.label }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="filter-actions">
+                    <button mat-raised-button color="primary" (click)="applyFilter()">
+                        <mat-icon>search</mat-icon>
+                        Apply Filter
+                    </button>
+                    <button mat-stroked-button (click)="resetFilters()">
+                        <mat-icon>refresh</mat-icon>
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Loading Spinner -->
+    <div class="loading-container" *ngIf="isLoading">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Loading report data...</p>
+    </div>
+
+    <!-- Stock Report Table -->
+    <mat-card class="report-table-card" *ngIf="
+      (selectedReportType === 'stock' ||
+        selectedReportType === 'lowstock') &&
+      !isLoading
+    ">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon>inventory_2</mat-icon>
+                {{
+                selectedReportType === 'lowstock'
+                ? 'Low Stock Alert Report'
+                : 'Stock Report'
+                }}
+            </mat-card-title>
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyTableFilter($event, stockDataSource)" placeholder="Search items..." />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="table-container">
+                <table mat-table [dataSource]="stockDataSource" matSort class="report-table">
+                    <ng-container matColumnDef="itemName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Item Name
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.itemName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="categoryName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Category
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.categoryName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="currentStock">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Current Stock
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="stock-value">{{ row.currentStock }} {{ row.unitName }}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="minStock">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Min Stock
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.minStock }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="reorderLevel">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Reorder Level
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.reorderLevel }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="stockValue">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Stock Value
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            ₹{{ row.stockValue | number }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Status
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="status-badge" [ngClass]="getStatusClass(row.status)">
+                                {{ row.status }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lastUpdated">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Last Updated
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.lastUpdated | date : 'dd/MM/yyyy' }}
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="stockColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: stockColumns"></tr>
+
+                    <tr class="no-data-row" *matNoDataRow>
+                        <td [attr.colspan]="stockColumns.length" class="no-data">
+                            <mat-icon>inbox</mat-icon>
+                            <p>No stock data available</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Hidden material paginator (logic only) -->
+            <mat-paginator #stockPaginator class="hidden-paginator"
+                [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+
+            <!-- Custom paginator (design like screenshot) -->
+            <div class="custom-paginator" *ngIf="stockPaginator">
+                <div class="paginator-left">
+                    <span class="paginator-info">
+                        {{ getCustomRangeLabel(stockPaginator) }}
+                    </span>
+
+                    <div class="page-size-select">
+                        <span>Rows per page:</span>
+                        <select [value]="stockPaginator.pageSize" (change)="
+                onCustomPageSizeChange(
+                  stockPaginator,
+                  $any($event.target).value
+                )
+              ">
+                            <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="paginator-right">
+                    <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(stockPaginator)"
+                        (click)="goToPreviousPage(stockPaginator)">
+                        <span class="arrow">&lt;</span>
+                        Previous
+                    </button>
+
+                    <button *ngFor="let page of getPageNumbers(stockPaginator)" type="button" class="page-number"
+                        [class.active]="page === stockPaginator.pageIndex" (click)="goToPage(stockPaginator, page)">
+                        {{ page + 1 }}
+                    </button>
+
+                    <button type="button" class="page-btn next" [disabled]="!hasNextPage(stockPaginator)"
+                        (click)="goToNextPage(stockPaginator)">
+                        Next
+                        <span class="arrow">&gt;</span>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Movement Report Table -->
+    <mat-card class="report-table-card" *ngIf="selectedReportType === 'movement' && !isLoading">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon>swap_horiz</mat-icon>
+                Movement Report
+            </mat-card-title>
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyTableFilter($event, movementDataSource)"
+                    placeholder="Search movements..." />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="table-container">
+                <table mat-table [dataSource]="movementDataSource" matSort class="report-table">
+                    <ng-container matColumnDef="movementDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Date
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.movementDate | date : 'dd/MM/yyyy HH:mm' }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="itemName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Item Name
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.itemName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="movementType">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="movement-type-badge" [ngClass]="getMovementTypeClass(row.movementType)">
+                                <mat-icon *ngIf="row.movementType === 'IN'">arrow_downward</mat-icon>
+                                <mat-icon *ngIf="row.movementType === 'OUT'">arrow_upward</mat-icon>
+                                <mat-icon *ngIf="row.movementType === 'TRANSFER'">swap_horiz</mat-icon>
+                                <mat-icon *ngIf="row.movementType === 'ADJUSTMENT'">tune</mat-icon>
+                                {{ row.movementType }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="quantity">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Quantity
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span [class.positive]="row.quantity > 0" [class.negative]="row.quantity < 0">
+                                {{ row.quantity > 0 ? '+' : '' }}{{ row.quantity }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fromLocation">
+                        <th mat-header-cell *matHeaderCellDef>From</th>
+                        <td mat-cell *matCellDef="let row">{{ row.fromLocation }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="toLocation">
+                        <th mat-header-cell *matHeaderCellDef>To</th>
+                        <td mat-cell *matCellDef="let row">{{ row.toLocation }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="performedBy">
+                        <th mat-header-cell *matHeaderCellDef>Performed By</th>
+                        <td mat-cell *matCellDef="let row">{{ row.performedBy }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="remarks">
+                        <th mat-header-cell *matHeaderCellDef>Remarks</th>
+                        <td mat-cell *matCellDef="let row">{{ row.remarks }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="movementColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: movementColumns"></tr>
+
+                    <tr class="no-data-row" *matNoDataRow>
+                        <td [attr.colspan]="movementColumns.length" class="no-data">
+                            <mat-icon>inbox</mat-icon>
+                            <p>No movement data available</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <mat-paginator #movementPaginator class="hidden-paginator"
+                [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+
+            <div class="custom-paginator" *ngIf="movementPaginator">
+                <div class="paginator-left">
+                    <span class="paginator-info">
+                        {{ getCustomRangeLabel(movementPaginator) }}
+                    </span>
+
+                    <div class="page-size-select">
+                        <span>Rows per page:</span>
+                        <select [value]="movementPaginator.pageSize" (change)="
+                onCustomPageSizeChange(
+                  movementPaginator,
+                  $any($event.target).value
+                )
+              ">
+                            <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="paginator-right">
+                    <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(movementPaginator)"
+                        (click)="goToPreviousPage(movementPaginator)">
+                        <span class="arrow">&lt;</span>
+                        Previous
+                    </button>
+
+                    <button *ngFor="let page of getPageNumbers(movementPaginator)" type="button" class="page-number"
+                        [class.active]="page === movementPaginator.pageIndex"
+                        (click)="goToPage(movementPaginator, page)">
+                        {{ page + 1 }}
+                    </button>
+
+                    <button type="button" class="page-btn next" [disabled]="!hasNextPage(movementPaginator)"
+                        (click)="goToNextPage(movementPaginator)">
+                        Next
+                        <span class="arrow">&gt;</span>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Purchase Order Report Table -->
+    <mat-card class="report-table-card" *ngIf="selectedReportType === 'purchase' && !isLoading">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon>shopping_cart</mat-icon>
+                Purchase Order Report
+            </mat-card-title>
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyTableFilter($event, purchaseDataSource)" placeholder="Search orders..." />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="table-container">
+                <table mat-table [dataSource]="purchaseDataSource" matSort class="report-table">
+                    <ng-container matColumnDef="orderNo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Order No
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="order-number">{{ row.orderNo }}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="supplierName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Supplier
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.supplierName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="orderDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Order Date
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.orderDate | date : 'dd/MM/yyyy' }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="expectedDelivery">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Expected Delivery
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.expectedDelivery | date : 'dd/MM/yyyy' }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalItems">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Items</th>
+                        <td mat-cell *matCellDef="let row">{{ row.totalItems }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalAmount">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Amount
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            ₹{{ row.totalAmount | number }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Status
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="status-badge" [ngClass]="getStatusClass(row.status)">
+                                {{ row.status }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="purchaseColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: purchaseColumns"></tr>
+
+                    <tr class="no-data-row" *matNoDataRow>
+                        <td [attr.colspan]="purchaseColumns.length" class="no-data">
+                            <mat-icon>inbox</mat-icon>
+                            <p>No purchase order data available</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <mat-paginator #purchasePaginator class="hidden-paginator"
+                [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+
+            <div class="custom-paginator" *ngIf="purchasePaginator">
+                <div class="paginator-left">
+                    <span class="paginator-info">
+                        {{ getCustomRangeLabel(purchasePaginator) }}
+                    </span>
+
+                    <div class="page-size-select">
+                        <span>Rows per page:</span>
+                        <select [value]="purchasePaginator.pageSize" (change)="
+                onCustomPageSizeChange(
+                  purchasePaginator,
+                  $any($event.target).value
+                )
+              ">
+                            <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="paginator-right">
+                    <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(purchasePaginator)"
+                        (click)="goToPreviousPage(purchasePaginator)">
+                        <span class="arrow">&lt;</span>
+                        Previous
+                    </button>
+
+                    <button *ngFor="let page of getPageNumbers(purchasePaginator)" type="button" class="page-number"
+                        [class.active]="page === purchasePaginator.pageIndex"
+                        (click)="goToPage(purchasePaginator, page)">
+                        {{ page + 1 }}
+                    </button>
+
+                    <button type="button" class="page-btn next" [disabled]="!hasNextPage(purchasePaginator)"
+                        (click)="goToNextPage(purchasePaginator)">
+                        Next
+                        <span class="arrow">&gt;</span>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Category Wise Report Table -->
+    <mat-card class="report-table-card" *ngIf="selectedReportType === 'category' && !isLoading">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon>category</mat-icon>
+                Category Wise Report
+            </mat-card-title>
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyTableFilter($event, categoryDataSource)"
+                    placeholder="Search categories..." />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="table-container">
+                <table mat-table [dataSource]="categoryDataSource" matSort class="report-table">
+                    <ng-container matColumnDef="categoryName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Category
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="category-name">{{ row.categoryName }}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalItems">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Total Items
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.totalItems }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalQuantity">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Total Quantity
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.totalQuantity | number }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalValue">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Total Value
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            ₹{{ row.totalValue | number }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lowStockItems">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Low Stock
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span [class.warning]="row.lowStockItems > 0">
+                                {{ row.lowStockItems }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="outOfStockItems">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Out of Stock
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span [class.danger]="row.outOfStockItems > 0">
+                                {{ row.outOfStockItems }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="categoryColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: categoryColumns"></tr>
+
+                    <tr class="no-data-row" *matNoDataRow>
+                        <td [attr.colspan]="categoryColumns.length" class="no-data">
+                            <mat-icon>inbox</mat-icon>
+                            <p>No category data available</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <mat-paginator #categoryPaginator class="hidden-paginator"
+                [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+
+            <div class="custom-paginator" *ngIf="categoryPaginator">
+                <div class="paginator-left">
+                    <span class="paginator-info">
+                        {{ getCustomRangeLabel(categoryPaginator) }}
+                    </span>
+
+                    <div class="page-size-select">
+                        <span>Rows per page:</span>
+                        <select [value]="categoryPaginator.pageSize" (change)="
+                onCustomPageSizeChange(
+                  categoryPaginator,
+                  $any($event.target).value
+                )
+              ">
+                            <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="paginator-right">
+                    <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(categoryPaginator)"
+                        (click)="goToPreviousPage(categoryPaginator)">
+                        <span class="arrow">&lt;</span>
+                        Previous
+                    </button>
+
+                    <button *ngFor="let page of getPageNumbers(categoryPaginator)" type="button" class="page-number"
+                        [class.active]="page === categoryPaginator.pageIndex"
+                        (click)="goToPage(categoryPaginator, page)">
+                        {{ page + 1 }}
+                    </button>
+
+                    <button type="button" class="page-btn next" [disabled]="!hasNextPage(categoryPaginator)"
+                        (click)="goToNextPage(categoryPaginator)">
+                        Next
+                        <span class="arrow">&gt;</span>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Supplier Report Table -->
+    <mat-card class="report-table-card" *ngIf="selectedReportType === 'supplier' && !isLoading">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon>local_shipping</mat-icon>
+                Supplier Report
+            </mat-card-title>
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyTableFilter($event, supplierDataSource)"
+                    placeholder="Search suppliers..." />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="table-container">
+                <table mat-table [dataSource]="supplierDataSource" matSort class="report-table">
+                    <ng-container matColumnDef="supplierName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Supplier
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.supplierName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalOrders">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Total Orders
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.totalOrders }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalAmount">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Total Amount
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            ₹{{ row.totalAmount | number }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="pendingOrders">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Pending
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span [class.warning]="row.pendingOrders > 0">
+                                {{ row.pendingOrders }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="completedOrders">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Completed
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.completedOrders }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="avgDeliveryDays">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Avg. Delivery Days
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.avgDeliveryDays }} days
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lastOrderDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Last Order
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.lastOrderDate | date : 'dd/MM/yyyy' }}
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="supplierColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: supplierColumns"></tr>
+
+                    <tr class="no-data-row" *matNoDataRow>
+                        <td [attr.colspan]="supplierColumns.length" class="no-data">
+                            <mat-icon>inbox</mat-icon>
+                            <p>No supplier data available</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <mat-paginator #supplierPaginator class="hidden-paginator"
+                [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+
+            <div class="custom-paginator" *ngIf="supplierPaginator">
+                <div class="paginator-left">
+                    <span class="paginator-info">
+                        {{ getCustomRangeLabel(supplierPaginator) }}
+                    </span>
+
+                    <div class="page-size-select">
+                        <span>Rows per page:</span>
+                        <select [value]="supplierPaginator.pageSize" (change)="
+                onCustomPageSizeChange(
+                  supplierPaginator,
+                  $any($event.target).value
+                )
+              ">
+                            <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="paginator-right">
+                    <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(supplierPaginator)"
+                        (click)="goToPreviousPage(supplierPaginator)">
+                        <span class="arrow">&lt;</span>
+                        Previous
+                    </button>
+
+                    <button *ngFor="let page of getPageNumbers(supplierPaginator)" type="button" class="page-number"
+                        [class.active]="page === supplierPaginator.pageIndex"
+                        (click)="goToPage(supplierPaginator, page)">
+                        {{ page + 1 }}
+                    </button>
+
+                    <button type="button" class="page-btn next" [disabled]="!hasNextPage(supplierPaginator)"
+                        (click)="goToNextPage(supplierPaginator)">
+                        Next
+                        <span class="arrow">&gt;</span>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Consumption Report Table -->
+    <mat-card class="report-table-card" *ngIf="selectedReportType === 'consumption' && !isLoading">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon>trending_down</mat-icon>
+                Consumption Report
+            </mat-card-title>
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyTableFilter($event, consumptionDataSource)"
+                    placeholder="Search items..." />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="table-container">
+                <table mat-table [dataSource]="consumptionDataSource" matSort class="report-table">
+                    <ng-container matColumnDef="itemName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Item Name
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.itemName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="categoryName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Category
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.categoryName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="openingStock">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Opening Stock
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row.openingStock }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="received">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Received
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="positive">
+                            +{{ row.received }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="consumed">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Consumed
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="negative">
+                            -{{ row.consumed }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="closingStock">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Closing Stock
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <strong>{{ row.closingStock }}</strong>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="avgDailyConsumption">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Avg. Daily
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.avgDailyConsumption }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="daysRemaining">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Days Remaining
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span [class.danger]="row.daysRemaining <= 7" [class.warning]="
+                  row.daysRemaining > 7 && row.daysRemaining <= 14
+                ">
+                                {{ row.daysRemaining }} days
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="consumptionColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: consumptionColumns"></tr>
+
+                    <tr class="no-data-row" *matNoDataRow>
+                        <td [attr.colspan]="consumptionColumns.length" class="no-data">
+                            <mat-icon>inbox</mat-icon>
+                            <p>No consumption data available</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <mat-paginator #consumptionPaginator class="hidden-paginator"
+                [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+
+            <div class="custom-paginator" *ngIf="consumptionPaginator">
+                <div class="paginator-left">
+                    <span class="paginator-info">
+                        {{ getCustomRangeLabel(consumptionPaginator) }}
+                    </span>
+
+                    <div class="page-size-select">
+                        <span>Rows per page:</span>
+                        <select [value]="consumptionPaginator.pageSize" (change)="
+                onCustomPageSizeChange(
+                  consumptionPaginator,
+                  $any($event.target).value
+                )
+              ">
+                            <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="paginator-right">
+                    <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(consumptionPaginator)"
+                        (click)="goToPreviousPage(consumptionPaginator)">
+                        <span class="arrow">&lt;</span>
+                        Previous
+                    </button>
+
+                    <button *ngFor="let page of getPageNumbers(consumptionPaginator)" type="button" class="page-number"
+                        [class.active]="page === consumptionPaginator.pageIndex"
+                        (click)="goToPage(consumptionPaginator, page)">
+                        {{ page + 1 }}
+                    </button>
+
+                    <button type="button" class="page-btn next" [disabled]="!hasNextPage(consumptionPaginator)"
+                        (click)="goToNextPage(consumptionPaginator)">
+                        Next
+                        <span class="arrow">&gt;</span>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

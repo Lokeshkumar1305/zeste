@@ -1,0 +1,91 @@
+.modal-slide-in {
+  width: 520px;
+  max-width: 100%;
+  background: var(--card-background);
+  border-left: 1px solid var(--card-border);
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-background);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.modal-body {
+  flex: 1;
+  padding: 16px 24px;
+  overflow-y: auto;           /* Critical: Enables scroll */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth on mobile */
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--card-border);
+  background: var(--card-background);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+/* Button styling */
+.modal-footer .btn {
+  min-width: 80px;
+}
+
+/* Required field asterisk */
+mat-label.required::after {
+  content: " *";
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+/* Material field tweaks */
+::ng-deep .mat-mdc-form-field {
+  .mdc-notched-outline {
+    border-radius: 6px !important;
+  }
+
+  .mat-mdc-form-field-infix {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+::ng-deep .mat-mdc-select-arrow {
+  color: var(--text-muted);
+}
+
+/* Image Preview */
+.damage-preview-img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+}
+
+.border {
+  border-color: #dee2e6 !important;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+/* Slide-in Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

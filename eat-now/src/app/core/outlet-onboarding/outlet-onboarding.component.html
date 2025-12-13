@@ -1,0 +1,453 @@
+<div class="hostel-onboarding-container">
+    <!-- Header -->
+    <mat-card class="onboarding-card">
+        <mat-card-content>
+            <div class="onboarding-header d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="f-20-b mb-1">Hostel Onboarding</h1>
+                    <p class="text-muted f-14-r mb-0">Register your hostel on our platform</p>
+                </div>
+                <div>
+                    <button mat-stroked-button class="me-2" (click)="saveDraft()" [disabled]="saving">
+                        <i class="bi bi-save me-1"></i> Save Draft
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Stepper -->
+    <mat-horizontal-stepper linear #stepper class="mt-4">
+
+        <!-- Step 1: Owner Details -->
+        <mat-step [stepControl]="ownerForm" label="Owner Details">
+            <form [formGroup]="ownerForm" class="step-content">
+                <mat-card class="section-card">
+                    <mat-card-header>
+                        <mat-card-title class="f-16-m">
+                            <i class="bi bi-person me-2"></i>Owner Information
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-label class="required">Full Name</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="fullName" placeholder="Enter owner's full name">
+                                    <mat-error *ngIf="ownerForm.get('fullName')?.hasError('required')">
+                                        Full name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-label class="required">Email Address</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="email" placeholder="owner@example.com"
+                                        type="email">
+                                    <mat-icon matSuffix>email</mat-icon>
+                                    <mat-error *ngIf="ownerForm.get('email')?.hasError('required')">
+                                        Email is required
+                                    </mat-error>
+                                    <mat-error *ngIf="ownerForm.get('email')?.hasError('email')">
+                                        Enter a valid email
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-label class="required">Phone Number</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <span matPrefix>+91 &nbsp;</span>
+                                    <input matInput formControlName="phone" placeholder="9876543210" maxlength="10">
+                                    <mat-error *ngIf="ownerForm.get('phone')?.hasError('required')">
+                                        Phone number is required
+                                    </mat-error>
+                                    <mat-error *ngIf="ownerForm.get('phone')?.hasError('pattern')">
+                                        Enter valid 10-digit number
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-label>Alternate Phone</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <span matPrefix>+91 &nbsp;</span>
+                                    <input matInput formControlName="alternatePhone" placeholder="9876543210"
+                                        maxlength="10">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-label>Aadhar Number</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="aadharNumber" placeholder="XXXX XXXX XXXX"
+                                        maxlength="14">
+                                    <mat-hint>For verification purposes</mat-hint>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-label>PAN Number</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="panNumber" placeholder="ABCDE1234F" maxlength="10"
+                                        style="text-transform: uppercase;">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <div class="step-actions mt-4">
+                    <span></span>
+                    <button mat-raised-button color="primary" matStepperNext>
+                        Next <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+
+        <!-- Step 2: Hostel Details -->
+        <mat-step [stepControl]="hostelForm" label="Hostel Details">
+            <form [formGroup]="hostelForm" class="step-content">
+
+                <!-- Basic Info -->
+                <mat-card class="section-card mb-4">
+                    <mat-card-header>
+                        <mat-card-title class="f-16-m">
+                            <i class="bi bi-building me-2"></i>Basic Information
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-label class="required">Hostel Name</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="hostelName"
+                                        placeholder="e.g., Sunrise PG & Hostel">
+                                    <mat-error *ngIf="hostelForm.get('hostelName')?.hasError('required')">
+                                        Hostel name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-label class="required">Hostel Type</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <mat-select formControlName="hostelType" placeholder="Select type">
+                                        <mat-option value="Boys">
+                                            <i class="bi bi-gender-male me-2"></i>Boys Hostel
+                                        </mat-option>
+                                        <mat-option value="Girls">
+                                            <i class="bi bi-gender-female me-2"></i>Girls Hostel
+                                        </mat-option>
+                                        <mat-option value="Co-ed">
+                                            <i class="bi bi-people me-2"></i>Co-ed (Mixed)
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="hostelForm.get('hostelType')?.hasError('required')">
+                                        Hostel type is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mat-label class="required">Total Floors</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="totalFloors" type="number" min="1"
+                                        placeholder="e.g., 3">
+                                    <mat-error>Required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mat-label class="required">Total Rooms</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="totalRooms" type="number" min="1"
+                                        placeholder="e.g., 20">
+                                    <mat-error>Required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mat-label class="required">Total Beds</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="totalBeds" type="number" min="1"
+                                        placeholder="e.g., 50">
+                                    <mat-error>Required</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Address -->
+                <mat-card class="section-card mb-4">
+                    <mat-card-header>
+                        <mat-card-title class="f-16-m">
+                            <i class="bi bi-geo-alt me-2"></i>Hostel Address
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-12">
+                                <mat-label class="required">Address Line 1</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="addressLine1"
+                                        placeholder="Building name, Door no.">
+                                    <mat-error>Address is required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-8">
+                                <mat-label>Address Line 2</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="addressLine2" placeholder="Street, Area">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mat-label>Landmark</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="landmark" placeholder="Near...">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mat-label class="required">City</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="city" placeholder="Enter city">
+                                    <mat-error>City is required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mat-label class="required">State</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <mat-select formControlName="state" placeholder="Select state">
+                                        <mat-option *ngFor="let state of indianStates" [value]="state">
+                                            {{ state }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>State is required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mat-label class="required">Pincode</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="pincode" placeholder="XXXXXX" maxlength="6">
+                                    <mat-error>Valid pincode required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12">
+                                <mat-label>Google Maps Link</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="googleMapsLink"
+                                        placeholder="Paste Google Maps link">
+                                    <mat-icon matSuffix>location_on</mat-icon>
+                                    <mat-hint>Share your location from Google Maps</mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Contact -->
+                <mat-card class="section-card mb-4">
+                    <mat-card-header>
+                        <mat-card-title class="f-16-m">
+                            <i class="bi bi-telephone me-2"></i>Hostel Contact
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-label class="required">Contact Phone</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <span matPrefix>+91 &nbsp;</span>
+                                    <input matInput formControlName="contactPhone" placeholder="9876543210"
+                                        maxlength="10">
+                                    <mat-error>Contact phone is required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-label>Contact Email</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="contactEmail" placeholder="hostel@example.com"
+                                        type="email">
+                                    <mat-icon matSuffix>email</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Photos -->
+                <mat-card class="section-card">
+                    <mat-card-header>
+                        <mat-card-title class="f-16-m">
+                            <i class="bi bi-images me-2"></i>Hostel Photos
+                            <span class="optional-badge ms-2">(Optional but recommended)</span>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="photo-upload-container">
+                            <input type="file" #photoInput accept="image/*" multiple (change)="onPhotosSelect($event)"
+                                hidden>
+
+                            <div class="photo-grid">
+                                <div class="photo-item" *ngFor="let photo of hostelPhotos; let i = index">
+                                    <img [src]="photo.preview" alt="Hostel photo">
+                                    <button mat-icon-button class="remove-btn" (click)="removePhoto(i)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+
+                                <div class="photo-upload-btn" (click)="photoInput.click()"
+                                    *ngIf="hostelPhotos.length < 5">
+                                    <i class="bi bi-plus-lg"></i>
+                                    <span>Add Photo</span>
+                                </div>
+                            </div>
+
+                            <div class="f-12-r text-muted mt-2">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Upload up to 5 photos (Rooms, Common areas, Building exterior)
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <div class="step-actions mt-4">
+                    <button mat-button matStepperPrevious>
+                        <i class="bi bi-arrow-left me-1"></i> Previous
+                    </button>
+                    <button mat-raised-button color="primary" matStepperNext>
+                        Next <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+
+        <!-- Step 3: License & Property -->
+        <mat-step [stepControl]="licenseForm" label="License & Property">
+            <form [formGroup]="licenseForm" class="step-content">
+
+                <!-- Property Type -->
+                <mat-card class="section-card mb-4">
+                    <mat-card-header>
+                        <mat-card-title class="f-16-m">
+                            <i class="bi bi-house me-2"></i>Property Type
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-label class="required">Property Ownership</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <mat-select formControlName="propertyType" placeholder="Select ownership type">
+                                        <mat-option value="Owned">
+                                            <i class="bi bi-house-check me-2"></i>Owned Property
+                                        </mat-option>
+                                        <mat-option value="Rented">
+                                            <i class="bi bi-house-door me-2"></i>Rented Property
+                                        </mat-option>
+                                        <mat-option value="Leased">
+                                            <i class="bi bi-file-earmark-text me-2"></i>Leased Property
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>Property type is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Food License -->
+                <mat-card class="section-card mb-4">
+                    <mat-card-header>
+                        <mat-card-title class="f-16-m d-flex align-items-center justify-content-between w-100">
+                            <span>
+                                <i class="bi bi-cup-hot me-2"></i>Food License (FSSAI)
+                                <span class="optional-badge ms-2">Optional</span>
+                            </span>
+                            <mat-slide-toggle formControlName="hasFoodLicense" color="primary">
+                            </mat-slide-toggle>
+                        </mat-card-title>
+                    </mat-card-header>
+
+                    <mat-card-content *ngIf="licenseForm.get('hasFoodLicense')?.value">
+                        <div class="info-box mb-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            FSSAI license is required if you provide food/mess service to residents
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-label>FSSAI License Number</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <input matInput formControlName="fssaiNumber" placeholder="14-digit license number"
+                                        maxlength="14">
+                                    <mat-hint>Enter 14-digit FSSAI number</mat-hint>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-label>FSSAI Certificate</mat-label>
+                                <div class="file-upload-wrapper mt-1">
+                                    <input type="file" #fssaiInput accept=".pdf,.jpg,.jpeg,.png"
+                                        (change)="onFssaiDocSelect($event)" hidden>
+                                    <button mat-stroked-button type="button" (click)="fssaiInput.click()" class="w-100">
+                                        <i class="bi bi-upload me-2"></i>
+                                        {{ fssaiDocument ? 'Change Document' : 'Upload Certificate' }}
+                                    </button>
+                                    <span class="file-name" *ngIf="fssaiDocument">
+                                        <i class="bi bi-file-earmark-check text-success me-1"></i>
+                                        {{ fssaiDocument.name }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+
+                    <mat-card-content *ngIf="!licenseForm.get('hasFoodLicense')?.value">
+                        <div class="text-muted f-14-r">
+                            <i class="bi bi-x-circle me-2"></i>
+                            No food service provided at this hostel
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Terms & Conditions -->
+                <mat-card class="section-card">
+                    <mat-card-content>
+                        <mat-checkbox formControlName="termsAccepted" color="primary">
+                            <span class="f-14-r">
+                                I agree to the <a href="javascript:void(0)" (click)="openTerms()">Terms & Conditions</a>
+                                and <a href="javascript:void(0)" (click)="openPrivacy()">Privacy Policy</a>
+                            </span>
+                        </mat-checkbox>
+                        <mat-error *ngIf="licenseForm.get('termsAccepted')?.touched && 
+                             licenseForm.get('termsAccepted')?.hasError('requiredTrue')" class="f-12-r mt-1">
+                            You must accept the terms and conditions
+                        </mat-error>
+                    </mat-card-content>
+                </mat-card>
+
+                <div class="step-actions mt-4">
+                    <button mat-button matStepperPrevious>
+                        <i class="bi bi-arrow-left me-1"></i> Previous
+                    </button>
+                    <button mat-raised-button color="primary" [disabled]="!canSubmit() || saving">
+                        <i class="bi bi-check2-circle me-1"></i>
+                        {{ saving ? 'Submitting...' : 'Submit for Review' }}
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+
+    </mat-horizontal-stepper>
+</div>

@@ -1,0 +1,114 @@
+<div class="modal-slide-in">
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <p class="f-18-m mb-0">Payment Details</p>
+    <button mat-icon-button (click)="onCancel()" class="text-muted">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form>
+      <div class="row">
+        <!-- Tenant Name -->
+        <div class="col-md-6">
+          <mat-label class="required">Tenant Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input matInput [(ngModel)]="payment.tenantName" name="tenantName" placeholder="Enter tenant name" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Room Number -->
+        <div class="col-md-6">
+          <mat-label class="required">Room Number</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input matInput [(ngModel)]="payment.roomNumber" name="roomNumber" placeholder="e.g., 101" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Amount -->
+        <div class="col-md-6">
+          <mat-label class="required">Amount</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <span matTextPrefix>$ </span>
+            <input matInput type="number" [(ngModel)]="payment.amount" name="amount" placeholder="0.00" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Payment Type -->
+        <div class="col-md-6">
+          <mat-label>Payment Type</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="payment.paymentType" name="paymentType">
+              <mat-option value="Rent">Rent</mat-option>
+              <mat-option value="Deposit">Deposit</mat-option>
+              <mat-option value="Utility">Utility</mat-option>
+              <mat-option value="Maintenance">Maintenance</mat-option>
+              <mat-option value="Other">Other</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Due Date -->
+        <div class="col-md-6">
+          <mat-label class="required">Due Date</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <input matInput [matDatepicker]="dueDatePicker" [(ngModel)]="payment.dueDate" name="dueDate" placeholder="mm/dd/yyyy" required />
+            <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #dueDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <!-- Status -->
+        <div class="col-md-6">
+          <mat-label>Status</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="payment.status" name="status">
+              <mat-option value="Pending">Pending</mat-option>
+              <mat-option value="Paid">Paid</mat-option>
+              <mat-option value="Overdue">Overdue</mat-option>
+              <mat-option value="Waived">Waived</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="col-md-6">
+          <mat-label>Payment Method</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-select [(ngModel)]="payment.paymentMethod" name="paymentMethod" placeholder="Select method">
+              <mat-option value="">Select method</mat-option>
+              <mat-option value="Cash">Cash</mat-option>
+              <mat-option value="Bank Transfer">Bank Transfer</mat-option>
+              <mat-option value="Credit Card">Credit Card</mat-option>
+              <mat-option value="Online Payment">Online Payment</mat-option>
+              <mat-option value="Check">Check</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Notes -->
+        <div class="col-12">
+          <mat-label>Notes</mat-label>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <textarea
+              matInput
+              rows="3"
+              [(ngModel)]="payment.notes"
+              name="notes"
+              placeholder="Additional notes..."
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
+      <i class="bi bi-check2 me-1"></i> Create Payment
+    </button>
+  </div>
+</div>

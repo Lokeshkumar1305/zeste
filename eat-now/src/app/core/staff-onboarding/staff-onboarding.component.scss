@@ -1,0 +1,882 @@
+// =========================
+// Variables
+// =========================
+$primary: #5a67d8;
+$primary-light: #e8eafc;
+$success: #48bb78;
+$success-light: #e6f7ef;
+$warning: #ed8936;
+$warning-light: #fef3e2;
+$danger: #e53e3e;
+$danger-light: #fee2e2;
+
+$gray-50: #fafafa;
+$gray-100: #f5f5f5;
+$gray-200: #eeeeee;
+$gray-300: #e0e0e0;
+$gray-400: #bdbdbd;
+$gray-500: #9e9e9e;
+$gray-600: #757575;
+$gray-700: #616161;
+$gray-800: #424242;
+$gray-900: #212121;
+
+$border-radius: 8px;
+$box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+$box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+// =========================
+// Layout Containers
+// =========================
+
+.staff-onboarding-page {
+  min-height: 100vh;
+  background: $gray-100;
+  padding: 24px 16px;
+}
+
+.staff-onboarding-container {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+// =========================
+// Page Header
+// =========================
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #fff;
+  border-radius: $border-radius;
+  border: 1px solid $gray-200;
+  box-shadow: $box-shadow;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin-bottom: 20px;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .btn-back {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid $gray-300;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: $gray-100;
+      border-color: $gray-400;
+    }
+
+    i {
+      font-size: 18px;
+      color: $gray-700;
+    }
+  }
+
+  .header-title {
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: $gray-900;
+      margin: 0;
+    }
+
+    p {
+      font-size: 13px;
+      color: $gray-500;
+      margin: 4px 0 0;
+    }
+  }
+
+  .employee-id-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: $gray-100;
+    border: 1px solid $gray-200;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: $gray-700;
+  }
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+// =========================
+// Loading State
+// =========================
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $gray-200;
+    border-top-color: $primary;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  p {
+    margin-top: 16px;
+    color: $gray-600;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// =========================
+// Main Content
+// =========================
+
+.main-content {
+  width: 100%;
+}
+
+// Step Progress
+.step-progress-container {
+  background: #fff;
+  border-radius: $border-radius;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: $box-shadow;
+  overflow-x: auto;
+}
+
+.step-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 600px;
+
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    .step-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid $gray-300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: $gray-500;
+      transition: all 0.2s;
+    }
+
+    .step-label {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: $gray-500;
+      white-space: nowrap;
+    }
+
+    &:hover .step-circle {
+      border-color: $primary;
+    }
+
+    &.active {
+      .step-circle {
+        background: $primary;
+        border-color: $primary;
+        color: #fff;
+      }
+
+      .step-label {
+        color: $primary;
+        font-weight: 600;
+      }
+    }
+
+    &.completed {
+      .step-circle {
+        background: $success;
+        border-color: $success;
+        color: #fff;
+      }
+
+      .step-label {
+        color: $success;
+      }
+    }
+  }
+
+  .step-line {
+    width: 60px;
+    height: 2px;
+    background: $gray-300;
+    margin: 0 8px;
+    margin-bottom: 28px;
+
+    &.completed {
+      background: $success;
+    }
+  }
+}
+
+// =========================
+// Form Content & Panels
+// =========================
+
+.form-content {
+  background: #fff;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  margin-bottom: 20px;
+}
+
+.step-panel {
+  animation: fadeIn 0.3s ease;
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid $gray-200;
+
+    i {
+      font-size: 20px;
+      color: $primary;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: $gray-900;
+      margin: 0;
+    }
+  }
+
+  .panel-body {
+    padding: 24px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// =========================
+// Profile Photo
+// =========================
+
+.profile-photo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  background: $gray-50;
+  border-radius: $border-radius;
+  margin-bottom: 24px;
+
+  .profile-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px dashed $gray-300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    i {
+      font-size: 40px;
+      color: $gray-400;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &.has-photo {
+      border-style: solid;
+      border-color: $success;
+    }
+  }
+
+  .photo-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    small {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+// =========================
+// Form Grid & Groups
+// =========================
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+.form-group {
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: $gray-700;
+    margin-bottom: 6px;
+
+    &.required::after {
+      content: ' *';
+      color: $danger;
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+
+    .mat-mdc-text-field-wrapper {
+      background: #fff;
+    }
+  }
+
+  .country-code,
+  .currency-prefix {
+    color: $gray-600;
+    font-size: 14px;
+  }
+}
+
+// Section Subtitle
+.section-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: $gray-800;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $gray-200;
+
+  i {
+    color: $primary;
+    font-size: 16px;
+  }
+}
+
+// Address Section
+.address-section {
+  margin-bottom: 24px;
+}
+
+.same-address-check {
+  padding: 16px 0;
+  border-top: 1px solid $gray-200;
+  border-bottom: 1px solid $gray-200;
+  margin-bottom: 24px;
+}
+
+// =========================
+// Salary & Bank
+// =========================
+
+.salary-section {
+  margin-bottom: 32px;
+}
+
+.salary-summary {
+  background: $success-light;
+  border: 1px solid darken($success-light, 10%);
+  border-radius: $border-radius;
+  padding: 16px 20px;
+  margin-top: 24px;
+
+  .summary-header {
+    font-weight: 600;
+    color: $gray-800;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid darken($success-light, 10%);
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+    color: $gray-700;
+
+    &.add {
+      color: $success;
+    }
+
+    &.subtract {
+      color: $danger;
+    }
+
+    &.total {
+      font-weight: 600;
+      font-size: 16px;
+      color: $gray-900;
+      padding-top: 12px;
+      margin-top: 8px;
+      border-top: 1px dashed darken($success-light, 15%);
+    }
+  }
+}
+
+.bank-section {
+  margin-top: 24px;
+}
+
+// =========================
+// Documents
+// =========================
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  background: $gray-50;
+  border: 2px dashed $gray-300;
+  border-radius: $border-radius;
+  margin-bottom: 16px;
+
+  i {
+    font-size: 48px;
+    color: $gray-400;
+  }
+
+  p {
+    color: $gray-600;
+    margin: 12px 0 16px;
+  }
+}
+
+.document-card {
+  background: $gray-50;
+  border: 1px solid $gray-200;
+  border-radius: $border-radius;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: $primary;
+  }
+
+  .document-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto auto;
+    gap: 16px;
+    align-items: flex-end;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+  }
+}
+
+// File Input
+.file-input-wrapper {
+  .file-input-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #fff;
+    border: 1px dashed $gray-300;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    color: $gray-600;
+    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+    }
+
+    i {
+      font-size: 16px;
+    }
+  }
+}
+
+// Remove Buttons
+.btn-remove {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  border: 1px solid $danger;
+  background: #fff;
+  color: $danger;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $danger;
+    color: #fff;
+  }
+}
+
+.btn-remove-sm {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: $gray-200;
+  color: $gray-600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $danger;
+    color: #fff;
+  }
+}
+
+// Info Box
+.info-box {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  background: $warning-light;
+  border: 1px solid darken($warning-light, 10%);
+  border-radius: $border-radius;
+  margin-top: 16px;
+
+  i {
+    color: $warning;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: $gray-700;
+  }
+}
+
+// =========================
+// Emergency Contacts
+// =========================
+
+.contact-card {
+  background: #fff;
+  border-radius: $border-radius;
+  border: 1px solid $gray-200;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+
+  .contact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .contact-number {
+      font-size: 13px;
+      font-weight: 600;
+      color: $gray-700;
+    }
+  }
+
+  .contact-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// =========================
+// Generic Section Block (Schedule, Skills, Languages, Notes)
+// =========================
+
+.section-block {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: $gray-50;
+  border-radius: $border-radius;
+  border: 1px solid $gray-200;
+
+  &:first-of-type {
+    margin-top: 0; // first block in the panel sticks to top padding only
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+
+    .section-subtitle {
+      margin: 0; // avoid extra double margin inside the header
+    }
+  }
+}
+
+// =========================
+// Work Schedule Layout
+// =========================
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 16px;
+}
+
+.schedule-item {
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border-radius: $border-radius;
+  border: 1px solid $gray-200;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+
+  &.day-off {
+    background: $gray-50;
+  }
+
+  .day-toggle {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .time-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .time-input {
+    flex: 0 0 130px;
+    max-width: 150px;
+    min-width: 120px;
+
+    .mat-mdc-text-field-wrapper {
+      width: 100%;
+    }
+  }
+
+  .time-separator {
+    font-size: 13px;
+    color: $gray-600;
+    flex: 0 0 auto;
+  }
+
+  .off-label {
+    font-size: 13px;
+    color: $gray-600;
+    margin-left: 8px;
+  }
+}
+
+/* On very small screens make each row vertical so times are never cramped */
+@media (max-width: 600px) {
+  .schedule-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .schedule-item .time-range {
+    width: 100%;
+  }
+
+  .schedule-item .time-input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+/* Ensure native time input text isn't clipped */
+input[type='time'] {
+  min-width: 0;
+}
+
+// =========================
+// Chips (Skills & Languages)
+// =========================
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid $gray-300;
+  background: #fff;
+  font-size: 13px;
+  color: $gray-700;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+  }
+
+  &.selected {
+    background: $primary-light;
+    border-color: $primary;
+    color: $primary;
+    font-weight: 500;
+  }
+}
+
+// Status dots
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.status-active {
+  background: $success;
+}
+
+.status-inactive,
+.status-on-leave,
+.status-terminated {
+  background: $danger;
+}
+
+// =========================
+// Footer Actions
+// =========================
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: 12px 24px;
+  position: sticky;
+  bottom: 0;
+  z-index: 90;
+  border: 1px solid $gray-200;
+
+  .footer-left,
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    .footer-right {
+      justify-content: flex-end;
+    }
+  }
+}

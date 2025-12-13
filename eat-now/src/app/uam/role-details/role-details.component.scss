@@ -1,0 +1,76 @@
+.page-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Top bar card */
+.topbar-card {
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+}
+
+/* Feature accordion to match screenshot */
+.feature-accordion {
+  .mat-expansion-panel {
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    box-shadow: none;
+    background: var(--card-background);
+    margin-bottom: 8px;
+  }
+
+  .feature-header.mat-expansion-panel-header {
+    background: rgba(32, 201, 151, 0.08);
+    border-radius: 6px;
+    height: 48px;
+    padding: 0 16px;
+  }
+
+  .module-title {
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+
+  .mat-expansion-indicator {
+    display: none !important; /* Ensure default indicator is hidden */
+  }
+
+  .expand-icon {
+    font-size: 1rem;
+    transition: transform 0.2s;
+  }
+
+  .mat-expansion-panel-header.mat-expanded .expand-icon i {
+    transform: rotate(180deg);
+  }
+}
+
+/* Permission card (white box inside each panel) */
+.permission-card {
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--card-background);
+  padding: 16px;
+  width: 150px;
+}
+
+.resource-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Cancel link accent */
+.text-accent {
+  color: var(--brand-primary) !important;
+  font-weight: 600;
+}
+
+/* Ensure mat-divider spans full width of the card */
+mat-divider.w-100 {
+  width: 100 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+
+

@@ -1,0 +1,333 @@
+{
+    "GET_MERCHANT_DETAILS": [
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "outletId": "EN001",
+            "outletName": "EatNow",
+            "outletType": "Restuarant",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        }
+    ],
+    "GET_MERCHANTSTAFF_DETAILS": [
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        }
+    ],
+    "GET_EATNOWSTAFF_DETAILS": [
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        },
+        {
+            "staffId": "EN001",
+            "staffName": "Lokesh",
+            "role": "Admin",
+            "contactNumber": "8976543269",
+            "status": "Active"
+        }
+    ],
+    "GET_USERS": [
+        {
+            "fullName": "Amit Sharma",
+            "userId": "amitsharma",
+            "email": "amitsharma001@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Priya Verma",
+            "userId": "priyaverma",
+            "email": "priyaverma002@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Rahul Singh",
+            "userId": "rahulsingh",
+            "email": "rahulsingh003@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Sneha Gupta",
+            "userId": "snehagupta",
+            "email": "snehagupta004@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Vikas Yadav",
+            "userId": "vikasyadav",
+            "email": "vikasyadav005@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Anjali Nair",
+            "userId": "anjalinair",
+            "email": "anjalinair006@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Rohit Mehta",
+            "userId": "rohitmehta",
+            "email": "rohitmehta007@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Kavita Reddy",
+            "userId": "kavitareddy",
+            "email": "kavitareddy008@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Sandeep Kumar",
+            "userId": "sandeepkumar",
+            "email": "sandeepkumar009@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Pooja Mishra",
+            "userId": "poojamishra",
+            "email": "poojamishra010@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Arjun Das",
+            "userId": "arjundas",
+            "email": "arjundas011@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Neha Joshi",
+            "userId": "nehajoshi",
+            "email": "nehajoshi012@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Manish Patel",
+            "userId": "manishpatel",
+            "email": "manishpatel013@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Swati Saxena",
+            "userId": "swatisaxena",
+            "email": "swatisaxena014@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Rajesh Iyer",
+            "userId": "rajeshiyer",
+            "email": "rajeshiyer015@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Divya Menon",
+            "userId": "divyamenon",
+            "email": "divyamenon016@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Abhishek Pandey",
+            "userId": "abhishekpandey",
+            "email": "abhishekpandey017@gmail.com",
+            "status": "Inactive"
+        },
+        {
+            "fullName": "Ritika Choudhary",
+            "userId": "ritikachoudhary",
+            "email": "ritikachoudhary018@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Nitin Malhotra",
+            "userId": "nitinmalhotra",
+            "email": "nitinmalhotra019@gmail.com",
+            "status": "Active"
+        },
+        {
+            "fullName": "Meera Kulkarni",
+            "userId": "meerakulkarni",
+            "email": "meerakulkarni020@gmail.com",
+            "status": "Inactive"
+        }
+    ]
+}
