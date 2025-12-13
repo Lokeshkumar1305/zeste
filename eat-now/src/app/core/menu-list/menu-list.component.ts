@@ -1,11 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MenuItem } from '../menu/menu.component';
 
 export type MenuRecurrence = 'ONE_TIME' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
 export type MenuStatus = 'AVAILABLE' | 'COMPLETED';
 export type MenuMode = 'DATE' | 'DAY_OF_WEEK';
+export type ItemType = 'VEG' | 'NON_VEG' | 'EGG';
+
+export interface MenuItem {
+  id: string;
+  itemName: string;
+  description?: string;
+  mealType: string;
+  itemType: ItemType;
+  isAvailable: boolean;
+  imageUrl?: string;
+}
 
 export interface MenuItemInMenu {
   itemId: string;
@@ -140,11 +150,11 @@ export class MenuListComponent implements OnInit {
   searchText = '';
   selectedItemIds = new Set<string>();
 
-  recurrenceOptions = [
-    { value: 'ONE_TIME' as MenuRecurrence, label: 'Only this day' },
-    { value: 'DAILY' as MenuRecurrence, label: 'Repeat daily' },
-    { value: 'WEEKLY' as MenuRecurrence, label: 'Repeat weekly' },
-    { value: 'MONTHLY' as MenuRecurrence, label: 'Repeat monthly' }
+  recurrenceOptions: { value: MenuRecurrence; label: string }[] = [
+    { value: 'ONE_TIME', label: 'Only this day' },
+    { value: 'DAILY', label: 'Repeat daily' },
+    { value: 'WEEKLY', label: 'Repeat weekly' },
+    { value: 'MONTHLY', label: 'Repeat monthly' }
   ];
 
   defaultImage = 'assets/images/menu/placeholder-food.jpg';
@@ -156,7 +166,7 @@ export class MenuListComponent implements OnInit {
   menuItemsCache: Record<number, { menuItem: MenuItem; status: MenuStatus }[]> = {};
 
   // For day view - selected day in right panel
-  selectedViewDay: number = 1;
+  selectedViewDay = 1;
 
   private nextMenuId = 1;
   editingMenuId: number | null = null;
@@ -185,7 +195,7 @@ export class MenuListComponent implements OnInit {
       }
     });
 
-    this.menuForm.get('dayOfWeek')!.valueChanges.subscribe((day) => {
+    this.menuForm.get('dayOfWeek')!.valueChanges.subscribe((day: number) => {
       if (this.menuMode === 'DAY_OF_WEEK') {
         this.selectedViewDay = day;
         this.refreshMenusForSelectedDay();
@@ -246,7 +256,6 @@ export class MenuListComponent implements OnInit {
     return this.selectedItemIds.has(item.id);
   }
 
-  // Method for checkbox change event
   toggleSelection(item: MenuItem, event: MatCheckboxChange): void {
     if (event.checked) {
       this.selectedItemIds.add(item.id);
@@ -255,7 +264,6 @@ export class MenuListComponent implements OnInit {
     }
   }
 
-  // Method for card click
   onCardClick(item: MenuItem): void {
     if (this.selectedItemIds.has(item.id)) {
       this.selectedItemIds.delete(item.id);
@@ -335,6 +343,8 @@ export class MenuListComponent implements OnInit {
       if (idx > -1) {
         const currentStatus = this.publishedMenus[idx].status;
         this.publishedMenus[idx] = { ...payload, id: this.editingMenuId, status: currentStatus };
+        // Update cache
+        delete this.menuItemsCache[this.editingMenuId];
       }
     } else {
       const newMenu: PublishedMenu = {
@@ -465,18 +475,15 @@ export class MenuListComponent implements OnInit {
 
   // ---------- HELPERS ----------
 
-  getDayLabel(dayValue: number): string {
+  getDayLabel(dayValue: number | null | undefined): string {
+    if (dayValue == null) return '';
     const day = this.daysOfWeek.find(d => d.value === dayValue);
     return day ? day.label : '';
   }
 
   getRecurrenceLabel(rec: MenuRecurrence): string {
-    switch (rec) {
-      case 'ONE_TIME': return 'Only this day';
-      case 'DAILY': return 'Daily';
-      case 'WEEKLY': return 'Weekly';
-      case 'MONTHLY': return 'Monthly';
-    }
+    const option = this.recurrenceOptions.find(o => o.value === rec);
+    return option ? option.label : rec;
   }
 
   private normalizeDate(d: Date): Date {
@@ -521,7 +528,25 @@ export class MenuListComponent implements OnInit {
     return m.id;
   }
 
+  trackByDay(_: number, day: DayOfWeekOption): number {
+    return day.value;
+  }
+
+  trackByItemId(_: number, item: { menuItem: MenuItem; status: MenuStatus }): string {
+    return item.menuItem.id;
+  }
+
   getMenuCountForDay(day: number): number {
     return this.publishedMenus.filter(m => m.mode === 'DAY_OF_WEEK' && m.dayOfWeek === day).length;
+  }
+
+  /** Get selected date for display */
+  get selectedDateDisplay(): Date | null {
+    return this.menuForm.get('date')?.value || null;
+  }
+
+  /** Get selected day of week value */
+  get selectedDayOfWeek(): number {
+    return this.menuForm.get('dayOfWeek')?.value ?? 1;
   }
 }

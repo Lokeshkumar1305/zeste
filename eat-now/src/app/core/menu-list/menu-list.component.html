@@ -81,7 +81,7 @@
                     <mat-form-field appearance="outline" class="filter-field day-select-field">
                         <mat-label>Select Day</mat-label>
                         <mat-select formControlName="dayOfWeek">
-                            <mat-option *ngFor="let day of daysOfWeek" [value]="day.value">
+                            <mat-option *ngFor="let day of daysOfWeek; trackBy: trackByDay" [value]="day.value">
                                 <div class="day-option">
                                     <span class="day-name">{{ day.label }}</span>
                                     <span class="day-count" *ngIf="getMenuCountForDay(day.value) > 0">
@@ -94,7 +94,7 @@
 
                     <div class="day-info-chip">
                         <mat-icon>info</mat-icon>
-                        This menu will repeat every {{ getDayLabel(menuForm.get('dayOfWeek')?.value) }}
+                        This menu will repeat every {{ getDayLabel(selectedDayOfWeek) }}
                     </div>
                 </ng-container>
 
@@ -156,10 +156,10 @@
                     <div class="image-wrapper">
                         <img [src]="item.imageUrl || defaultImage" [alt]="item.itemName" loading="lazy" />
                         <span class="item-type-badge" [ngClass]="{
-          veg: item.itemType === 'VEG',
-          nonveg: item.itemType === 'NON_VEG',
-          egg: item.itemType === 'EGG'
-        }">
+                            'veg': item.itemType === 'VEG',
+                            'nonveg': item.itemType === 'NON_VEG',
+                            'egg': item.itemType === 'EGG'
+                        }">
                             {{ item.itemType === 'VEG' ? 'VEG' : item.itemType === 'NON_VEG' ? 'NON-VEG' : 'EGG' }}
                         </span>
                     </div>
@@ -194,7 +194,12 @@
                     <div>
                         <h3>
                             <mat-icon>calendar_today</mat-icon>
-                            Menus for {{ menuForm.get('date')?.value | date: 'EEEE, dd MMM y' }}
+                            <ng-container *ngIf="selectedDateDisplay; else noDateSelected">
+                                Menus for {{ selectedDateDisplay | date: 'EEEE, dd MMM y' }}
+                            </ng-container>
+                            <ng-template #noDateSelected>
+                                Select a date
+                            </ng-template>
                         </h3>
                         <p>All meals scheduled for this date.</p>
                     </div>
@@ -255,13 +260,13 @@
                                 <mat-icon>restaurant</mat-icon>
                                 Items ({{ menuItemsCache[m.id]?.length || 0 }})
                             </div>
-                            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]">
+                            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]; trackBy: trackByItemId">
                                 <span class="item-name">
                                     <span class="item-type-dot" [ngClass]="{
-                    'veg': it.menuItem.itemType === 'VEG',
-                    'nonveg': it.menuItem.itemType === 'NON_VEG',
-                    'egg': it.menuItem.itemType === 'EGG'
-                  }"></span>
+                                        'veg': it.menuItem.itemType === 'VEG',
+                                        'nonveg': it.menuItem.itemType === 'NON_VEG',
+                                        'egg': it.menuItem.itemType === 'EGG'
+                                    }"></span>
                                     {{ it.menuItem.itemName }}
                                 </span>
                                 <mat-form-field appearance="fill" class="item-status-field">
@@ -299,7 +304,8 @@
 
                 <!-- Day tabs -->
                 <div class="day-tabs">
-                    <button *ngFor="let day of daysOfWeek" mat-button [class.active-day]="selectedViewDay === day.value"
+                    <button *ngFor="let day of daysOfWeek; trackBy: trackByDay" mat-button 
+                        [class.active-day]="selectedViewDay === day.value"
                         (click)="onViewDayChange(day.value)">
                         <span class="day-short">{{ day.short }}</span>
                         <span class="day-badge" *ngIf="getMenuCountForDay(day.value) > 0">
@@ -328,9 +334,9 @@
                                     <mat-icon>schedule</mat-icon>
                                     {{ m.serveFrom || '--' }} – {{ m.serveTo || '--' }}
                                 </div>
-                                <div class="weekly-badge">
+                                <div class="weekly-badge" *ngIf="m.dayOfWeek != null">
                                     <mat-icon>repeat</mat-icon>
-                                    Repeats every {{ getDayLabel(m.dayOfWeek!) }}
+                                    Repeats every {{ getDayLabel(m.dayOfWeek) }}
                                 </div>
                             </div>
 
@@ -360,13 +366,13 @@
                                 <mat-icon>restaurant</mat-icon>
                                 Items ({{ menuItemsCache[m.id]?.length || 0 }})
                             </div>
-                            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]">
+                            <div class="item-row" *ngFor="let it of menuItemsCache[m.id]; trackBy: trackByItemId">
                                 <span class="item-name">
                                     <span class="item-type-dot" [ngClass]="{
-                    'veg': it.menuItem.itemType === 'VEG',
-                    'nonveg': it.menuItem.itemType === 'NON_VEG',
-                    'egg': it.menuItem.itemType === 'EGG'
-                  }"></span>
+                                        'veg': it.menuItem.itemType === 'VEG',
+                                        'nonveg': it.menuItem.itemType === 'NON_VEG',
+                                        'egg': it.menuItem.itemType === 'EGG'
+                                    }"></span>
                                     {{ it.menuItem.itemName }}
                                 </span>
                                 <mat-form-field appearance="fill" class="item-status-field">

@@ -23,11 +23,17 @@
                 <div class="summary-title">
                     <span>Current Plan</span>
                 </div>
-                <div class="summary-value">Ultimate Access</div>
+                <div class="summary-value">{{ currentPlanName }}</div>
                 <div class="summary-meta">
-                    <i class="bi bi-clock-history me-1"></i>
-                    Renews on
-                    <strong>{{ records[0]?.periodTo | date: 'mediumDate' }}</strong>
+                    <ng-container *ngIf="renewalDate; else noRenewal">
+                        <i class="bi bi-clock-history me-1"></i>
+                        Renews on
+                        <strong>{{ renewalDate | date: 'mediumDate' }}</strong>
+                    </ng-container>
+                    <ng-template #noRenewal>
+                        <i class="bi bi-info-circle me-1"></i>
+                        No active subscription
+                    </ng-template>
                 </div>
             </div>
 
@@ -92,7 +98,7 @@
                 <div class="col col-actions">Action</div>
             </div>
 
-            <ng-container *ngFor="let r of filteredRecords">
+            <ng-container *ngFor="let r of filteredRecords; trackBy: trackByRecordId">
                 <div class="table-row">
                     <div class="col col-date">
                         <div>{{ r.date | date: 'mediumDate' }}</div>

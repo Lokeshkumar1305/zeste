@@ -2,16 +2,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
-const VEG = 'VEG';
-const NON_VEG = 'NON_VEG';
-const EGG = 'EGG';
+export type ItemType = 'VEG' | 'NON_VEG' | 'EGG';
 
-interface MenuItem {
+export interface MenuItem {
   itemName: string;
   description: string;
   mealType: string;
-  itemTypes: string[];        // e.g. ["Spicy", "Jain"]
-  itemType: typeof VEG | typeof NON_VEG | typeof EGG;  // <-- changed to single value
+  itemType: ItemType;
   isAvailable: boolean;
   imageFile?: File;
   imageUrl?: string;
@@ -25,71 +22,58 @@ interface MenuItem {
 export class MenuModalComponent {
   @ViewChild('itemImageInput') itemImageInput!: ElementRef<HTMLInputElement>;
 
-  // Constants exposed to template
-  VEG = VEG;
-  NON_VEG = NON_VEG;
-  EGG = EGG;
+  // Item type options for template
+  readonly itemTypeOptions: { value: ItemType; label: string; icon: string; colorClass: string }[] = [
+    { value: 'VEG', label: 'Veg', icon: 'bi-circle-fill', colorClass: 'text-success' },
+    { value: 'NON_VEG', label: 'Non-Veg', icon: 'bi-circle-fill', colorClass: 'text-danger' },
+    { value: 'EGG', label: 'Egg', icon: 'bi-egg-fill', colorClass: 'text-warning' }
+  ];
 
-  newMealType: string = '';
+  newMealType = '';
 
   menu: MenuItem = {
     itemName: '',
     description: '',
     mealType: '',
-    itemTypes: [],
-    itemType: VEG,           // default value
+    itemType: 'VEG',
     isAvailable: true
   };
 
   imagePreviewUrl: SafeUrl | null = null;
 
-  // Meal Type Configuration (unchanged)
-  allMealTypes = ['Breakfast', 'Lunch', 'Dinner'];
-  enabledMealTypes: { [key: string]: boolean } = {
-    Breakfast: true,
-    Lunch: true,
-    Dinner: true
-  };
+  // Meal Type Configuration
   availableMealTypes: string[] = ['Breakfast', 'Lunch', 'Dinner'];
   showMealConfig = false;
 
   constructor(
     public dialogRef: MatDialogRef<MenuModalComponent>,
     private sanitizer: DomSanitizer
-  ) {
-    this.updateAvailableMealTypes();
+  ) {}
+
+  // ✅ ADD THIS METHOD
+  trackByMealType(index: number, type: string): string {
+    return type;
   }
 
- openMealTypeConfig() {
+  openMealTypeConfig(): void {
     this.showMealConfig = true;
   }
 
- 
-  updateAvailableMealTypes() {
-    this.availableMealTypes = this.allMealTypes.filter(type => this.enabledMealTypes[type]);
-    if (this.menu.mealType && !this.availableMealTypes.includes(this.menu.mealType)) {
-      this.menu.mealType = '';
-    }
+  closeConfig(): void {
+    this.showMealConfig = false;
   }
 
-  toggleItemType(type: string) {
-    const idx = this.menu.itemTypes.indexOf(type);
-    if (idx > -1) {
-      this.menu.itemTypes.splice(idx, 1);
-    } else {
-      this.menu.itemTypes.push(type);
-    }
-  }
-
-  // ... other methods (image, meal config, save, cancel) unchanged ...
-
-  onImageSelected(event: any) {
-    const file = event.target.files[0];
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    
     if (file && file.type.startsWith('image/') && file.size <= 2 * 1024 * 1024) {
       this.menu.imageFile = file;
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(e.target.result);
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result) {
+          this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(e.target.result as string);
+        }
       };
       reader.readAsDataURL(file);
     } else if (file) {
@@ -97,7 +81,7 @@ export class MenuModalComponent {
     }
   }
 
-  addMealType() {
+  addMealType(): void {
     const trimmed = this.newMealType.trim();
     if (trimmed && !this.availableMealTypes.includes(trimmed)) {
       this.availableMealTypes.push(trimmed);
@@ -105,7 +89,7 @@ export class MenuModalComponent {
     }
   }
 
-  removeMealType(type: string) {
+  removeMealType(type: string): void {
     if (this.availableMealTypes.length === 1) return;
 
     this.availableMealTypes = this.availableMealTypes.filter(t => t !== type);
@@ -116,7 +100,7 @@ export class MenuModalComponent {
     }
   }
 
-  removeImage() {
+  removeImage(): void {
     this.menu.imageFile = undefined;
     this.imagePreviewUrl = null;
     if (this.itemImageInput) {
@@ -124,21 +108,20 @@ export class MenuModalComponent {
     }
   }
 
-  onCancel() {
+  onCancel(): void {
     this.dialogRef.close();
   }
 
-  closeConfig() {
-    this.showMealConfig = false;
-  }
-
-  onSave() {
+  onSave(): void {
     const payload = {
       ...this.menu,
-      enabledMealTypes: this.enabledMealTypes
+      availableMealTypes: this.availableMealTypes
     };
     this.dialogRef.close(payload);
   }
 
-
+  /** Check if form is valid */
+  get isFormValid(): boolean {
+    return !!(this.menu.itemName?.trim() && this.menu.mealType);
+  }
 }

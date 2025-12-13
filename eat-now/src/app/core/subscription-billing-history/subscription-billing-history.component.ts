@@ -14,8 +14,8 @@ interface BillingRecord {
   currency: 'INR';
   status: BillingStatus;
   paymentMethod: PaymentMethod;
-  paymentProvider?: string; // Razorpay, Stripe, etc.
-  last4?: string;           // last 4 digits for card/UPI
+  paymentProvider?: string;
+  last4?: string;
   autoRenew: boolean;
   invoiceUrl?: string;
   downloadUrl?: string;
@@ -99,7 +99,27 @@ export class SubscriptionBillingHistoryComponent {
     },
   ];
 
-  /** Derived amounts for summary cards (no arrow functions in template) */
+  // ✅ ADD THIS METHOD
+  trackByRecordId(index: number, record: BillingRecord): number {
+    return record.id;
+  }
+
+  /** Get current plan name */
+  get currentPlanName(): string {
+    return this.records.length > 0 ? this.records[0].planName : 'No Plan';
+  }
+
+  /** Get renewal date safely */
+  get renewalDate(): Date | null {
+    return this.records.length > 0 ? this.records[0].periodTo : null;
+  }
+
+  /** Get first record safely */
+  get firstRecord(): BillingRecord | null {
+    return this.records.length > 0 ? this.records[0] : null;
+  }
+
+  /** Derived amounts for summary cards */
   get totalPaidAmount(): number {
     return this.records
       .filter((r) => r.status === 'paid')

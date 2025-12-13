@@ -14,8 +14,8 @@
                 <div class="col-12">
                     <mat-label class="required">Item Name (English)</mat-label>
                     <mat-form-field appearance="outline" class="w-100 mt-1">
-                        <input matInput [(ngModel)]="menu.itemName" name="itemName" placeholder="e.g., Margherita Pizza"
-                            required />
+                        <input matInput [(ngModel)]="menu.itemName" name="itemName" 
+                            placeholder="e.g., Margherita Pizza" required />
                         <mat-error *ngIf="menuForm.submitted && menuForm.controls['itemName']?.invalid">
                             Item name is required
                         </mat-error>
@@ -31,11 +31,9 @@
                     </mat-form-field>
                 </div>
 
-
-
+                <!-- Meal Type -->
                 <div class="col-md-6">
                     <mat-label class="required">Meal Type</mat-label>
-
                     <mat-form-field appearance="outline" class="w-100 mt-1 final-meal-field" floatLabel="always">
                         <mat-select [(ngModel)]="menu.mealType" name="mealType" placeholder="--" required>
                             <mat-option *ngFor="let type of availableMealTypes" [value]="type">
@@ -43,29 +41,25 @@
                             </mat-option>
                         </mat-select>
 
-                        <!-- Arrow + Divider + Gear (tight to the right) -->
+                        <!-- Arrow + Divider + Gear -->
                         <div matSuffix class="final-suffix">
                             <div class="divider"></div>
-                            <button mat-icon-button class="gear-btn"
+                            <button mat-icon-button type="button" class="gear-btn"
                                 (click)="openMealTypeConfig(); $event.stopPropagation()">
                                 <i class="bi bi-gear"></i>
                             </button>
                         </div>
                     </mat-form-field>
                 </div>
-                <!-- Item Type Badges (no changes needed, but add mt-1 to match) -->
+
+                <!-- Item Type -->
                 <div class="col-md-6 d-flex flex-column">
                     <mat-label>Item Type</mat-label>
                     <mat-form-field appearance="outline" class="w-100 mt-1">
                         <mat-select [(ngModel)]="menu.itemType" name="itemType" placeholder="Select item type">
-                            <mat-option [value]="VEG">
-                                <i class="bi bi-circle-fill text-success me-2"></i>Veg
-                            </mat-option>
-                            <mat-option [value]="NON_VEG">
-                                <i class="bi bi-circle-fill text-danger me-2"></i>Non-Veg
-                            </mat-option>
-                            <mat-option [value]="EGG">
-                                <i class="bi bi-egg-fill text-warning me-2"></i>Egg
+                            <mat-option *ngFor="let option of itemTypeOptions" [value]="option.value">
+                                <i class="bi me-2" [ngClass]="[option.icon, option.colorClass]"></i>
+                                {{ option.label }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -110,7 +104,8 @@
 
     <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
         <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" [disabled]="!menuForm.valid || menu.itemTypes.length === 0"
+        <button type="button" class="btn btn-primary btn-sm" 
+            [disabled]="!isFormValid"
             (click)="onSave()">
             <i class="bi bi-check2 me-1"></i> Save Menu Item
         </button>
@@ -122,19 +117,17 @@
 <div class="meal-config-popup" *ngIf="showMealConfig">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="mb-0">Manage Meal Types</h4>
-        <button mat-icon-button (click)="closeConfig()">
+        <button mat-icon-button type="button" (click)="closeConfig()">
             <i class="bi bi-x-lg"></i>
         </button>
     </div>
 
-
     <div class="d-flex align-items-center gap-2 mb-3">
         <mat-form-field appearance="outline" class="flex-fill mb-0 add-meal-field">
-            <input matInput [(ngModel)]="newMealType" placeholder="e.g., Snacks, Brunch" (keydown.enter)="addMealType()"
-                autocomplete="off" spellcheck="false" />
-
-            <button matSuffix mat-icon-button color="primary" class="add-btn" (click)="addMealType()"
-                [disabled]="!newMealType?.trim()" matTooltip="Add new meal type">
+            <input matInput [(ngModel)]="newMealType" placeholder="e.g., Snacks, Brunch" 
+                (keydown.enter)="addMealType()" autocomplete="off" spellcheck="false" />
+            <button matSuffix mat-icon-button color="primary" type="button" class="add-btn" 
+                (click)="addMealType()" [disabled]="!newMealType?.trim()" matTooltip="Add new meal type">
                 <i class="bi bi-plus-lg"></i>
             </button>
         </mat-form-field>
@@ -142,17 +135,17 @@
 
     <!-- List of Meal Types -->
     <div class="meal-list">
-        <div *ngFor="let type of availableMealTypes; let i = index"
+        <div *ngFor="let type of availableMealTypes; trackBy: trackByMealType"
             class="d-flex align-items-center justify-content-between py-2 px-1 border-bottom">
             <span>{{ type }}</span>
-            <button mat-icon-button color="warn" class="text-danger" (click)="removeMealType(type)"
-                [disabled]="availableMealTypes.length === 1">
+            <button mat-icon-button color="warn" type="button" class="text-danger" 
+                (click)="removeMealType(type)" [disabled]="availableMealTypes.length === 1">
                 <i class="bi bi-trash"></i>
             </button>
         </div>
     </div>
 
     <div class="mt-3 text-end">
-        <button class="btn btn-sm btn-primary" (click)="closeConfig()">Done</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="closeConfig()">Done</button>
     </div>
 </div>
