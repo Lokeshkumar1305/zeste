@@ -1,20 +1,28 @@
-<nav class="secondary-header" 
-     aria-label="Breadcrumb" 
-     [class.collapsed]="sidebarCollapsed">  <!-- Now reacts instantly -->
-  <div class="breadcrumb-inner">
-    <ol class="breadcrumb" role="list">
-      <li class="crumb" *ngFor="let bc of breadcrumbs$ | async; let last = last; trackBy: trackByUrl" role="listitem">
-        <a *ngIf="!last" class="crumb-link f-14-r" [routerLink]="bc.url">
-          <mat-icon *ngIf="bc.icon" class="crumb-icon">{{ bc.icon }}</mat-icon>
+<nav class="breadcrumb-bar" aria-label="Breadcrumb" [class.collapsed]="sidebarCollapsed">
+  <div class="breadcrumb-content">
+    <ol class="breadcrumb-list" role="list">
+      <li class="breadcrumb-item"
+        *ngFor="let bc of breadcrumbs$ | async; let last = last; let first = first; trackBy: trackByUrl"
+        role="listitem">
+
+        <!-- Link (not last item) -->
+        <a *ngIf="!last" class="breadcrumb-link" [routerLink]="bc.url" [attr.aria-label]="bc.label">
+          <mat-icon *ngIf="first && bc.icon" class="breadcrumb-icon">{{ bc.icon }}</mat-icon>
           <span>{{ bc.label }}</span>
         </a>
-        <span *ngIf="last" class="crumb-current f-14-r" aria-current="page">
-          <mat-icon *ngIf="bc.icon" class="crumb-icon">{{ bc.icon }}</mat-icon>
+
+        <!-- Current (last item) -->
+        <span *ngIf="last" class="breadcrumb-current" aria-current="page">
+          <mat-icon *ngIf="first && bc.icon" class="breadcrumb-icon">{{ bc.icon }}</mat-icon>
           <span>{{ bc.label }}</span>
         </span>
-        <mat-icon *ngIf="!last" class="crumb-sep">chevron_right</mat-icon>
+
+        <!-- Separator -->
+        <!-- <mat-icon *ngIf="!last" class="breadcrumb-separator">chevron_right</mat-icon> -->
       </li>
     </ol>
+
+    <!-- Actions slot -->
     <div class="breadcrumb-actions">
       <ng-content select="[breadcrumb-actions]"></ng-content>
     </div>

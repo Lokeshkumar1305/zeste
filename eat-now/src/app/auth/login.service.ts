@@ -8,6 +8,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
   providedIn: 'root'
 })
 export class LoginService {
+  isLoggedIn: any;
 
   constructor(public ApiService: ApiService, private http: HttpClient,) { }
   isUserLoggedIn() {

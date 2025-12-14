@@ -1,35 +1,116 @@
-:host {
-  --sidenav-width-expanded: 260px; 
-  --sidenav-width-collapsed: 78px;
-  --header-height: 64px;
+// ===== Variables =====
+$sidenav-width: 260px;
+$sidenav-width-tablet: 240px;
+$collapsed-width: 72px;
+$header-height: 64px;
+$breadcrumb-height: 48px;
+
+// ===== Breakpoints =====
+$mobile-breakpoint: 768px;
+$tablet-breakpoint: 1024px;
+$desktop-breakpoint: 1280px;
+$large-desktop-breakpoint: 1536px;
+
+@mixin mobile {
+  @media (max-width: #{$mobile-breakpoint - 1px}) {
+    @content;
+  }
 }
 
-.main-content {
-  flex: 1;
-  margin-left: var(--sidenav-width-expanded); 
-  transition: margin-left 0.3s ease;
-  padding-top: 100px;
+@mixin tablet {
+  @media (min-width: $mobile-breakpoint) and (max-width: #{$tablet-breakpoint - 1px}) {
+    @content;
+  }
 }
 
-.app-container {
+@mixin desktop {
+  @media (min-width: $tablet-breakpoint) {
+    @content;
+  }
+}
+
+@mixin large-desktop {
+  @media (min-width: $large-desktop-breakpoint) {
+    @content;
+  }
+}
+
+// ===== Layout Container =====
+.app-layout {
   display: flex;
   min-height: 100vh;
+  min-height: 100dvh; // Dynamic viewport height
+  background: #f9fafb;
 }
 
+// ===== Main Area =====
+.main-area {
+  flex: 1;
+  min-width: 0;
+  margin-left: $sidenav-width;
+  transition: margin-left 0.3s ease;
 
-.app-container.sidenav-collapsed .main-content {
-  margin-left: var(--sidenav-width-collapsed);  // 78px ← now works!
+  @include tablet {
+    margin-left: $sidenav-width-tablet;
+  }
+
+  @include mobile {
+    margin-left: 0;
+  }
+
+  .sidenav-collapsed & {
+    margin-left: $collapsed-width;
+
+    @include mobile {
+      margin-left: 0;
+    }
+  }
 }
 
-/* Content area padding */
-.content-wrapper {
+// ===== Page Content =====
+.page-content {
+  padding-top: calc(#{$header-height} + #{$breadcrumb-height});
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  @include mobile {
+    padding-top: calc(#{$header-height} + 44px); // Smaller breadcrumb on mobile
+  }
+}
+
+.content-container {
   padding: 24px;
-  min-height: calc(100vh - 64px);
+  max-width: 1600px;
+  margin: 0 auto;
+
+  @include tablet {
+    padding: 20px;
+  }
+
+  @include mobile {
+    padding: 16px;
+  }
+
+  @include large-desktop {
+    max-width: 1800px;
+    padding: 32px;
+  }
 }
 
-/* Mobile: sidebar overlays, main content full width */
-@media (max-width: 768px) {
-  .main-content {
-    margin-left: 0 !important;
+// ===== Global Responsive Utilities =====
+:host {
+  // CSS Custom Properties for easy theming
+  --sidenav-width: #{$sidenav-width};
+  --sidenav-collapsed-width: #{$collapsed-width};
+  --header-height: #{$header-height};
+  --breadcrumb-height: #{$breadcrumb-height};
+
+  @include tablet {
+    --sidenav-width: #{$sidenav-width-tablet};
+  }
+
+  @include mobile {
+    --sidenav-width: 0px;
+    --breadcrumb-height: 44px;
   }
 }

@@ -1,15 +1,27 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  HostListener
+} from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ThemeService } from '../services/theme.service';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { LayoutService } from '../services/layout.service';
 
+type NotificationType = 'info' | 'success' | 'warning' | 'error';
+
 interface Notification {
-  icon: string;
-  color: string;
+  id: number;
   title: string;
   description: string;
   time: string;
+  type: NotificationType;
+  read: boolean;
 }
 
 @Component({
@@ -17,202 +29,190 @@ interface Notification {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-  @ViewChild('searchInput') private searchInput!: ElementRef<HTMLInputElement>;
-   @Input() sidebarCollapsed = false;
+export class HeaderComponent implements OnInit, OnDestroy {
+  @Input() sidebarCollapsed = false;
   @Output() sidebarToggle = new EventEmitter<void>();
 
+  isMobile = false;
+  isTablet = false;
 
-  
-
-
-  loggedInUser = '';
-  searchQuery = '';
-  notificationCount = 0;
-  profileCompletionPercentage = 76;
-
-  isSidenavCollapsed = true;
-isMobile = false;
- userName = 'Lokesh Kumar';
+  userName = 'Lokesh Kumar';
   userRole = 'Admin';
-  userEmail = 'lokesh.kanuboina@zeste.com';
-  userAvatar =
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop';
+  userEmail = 'lokesh.kumar@zeste.com';
+  userAvatar: string | null = null;
+  loggedInUser = '';
 
-  notifications = [
-    {
-      icon: 'check_circle',
-      title: 'User Created',
-      description: 'New user account has been created',
-      time: '2 minutes ago',
-    },
-    {
-      icon: 'warning',
-      title: 'System Alert',
-      description: 'Scheduled maintenance at 2 PM',
-      time: '1 hour ago',
-    },
-    {
-      icon: 'info',
-      title: 'Update Available',
-      description: 'New version is available for download',
-      time: '3 hours ago',
-    },
-  ];
+  notifications: Notification[] = [];
+  notificationCount = 0;
 
-  // Theme state
-  isDarkMode = false;
-  themeColors: string[] = ['#1A365D', '#3B5A8C', '#2A69A6', '#8A4A9F', '#28A745'];
-  selectedColor = this.themeColors[0];
- selectedTheme = this.themeColors[0];
-  notificationsList: Notification[] = [];
+  private readonly MOBILE_BREAKPOINT = 768;
+  private readonly TABLET_BREAKPOINT = 1024;
 
-  // Optional: Listen to screen size
-@HostListener('window:resize')
-onResize() {
-  this.isMobile = window.innerWidth < 768;
-}
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly router: Router,
     private readonly theme: ThemeService,
     public layout: LayoutService
-  ) {
-    this.layout.collapsed$.subscribe(val => this.isSidenavCollapsed = val);
-  }
-
-get userInitials(): string {
-  return this.userName
-    .split(' ')
-    .filter(p => !!p)
-    .map(p => p[0])
-    .join('')
-    .toUpperCase();
-}
-
-
- toggleSidebar() {
-    this.sidebarToggle.emit();
-  }
-
-    markAllAsRead() {
-    this.notificationCount = 0;
-  }
-
-  selectTheme(color: string) {
-    this.selectedTheme = color;
-  }
+  ) { }
 
   ngOnInit(): void {
-    this.loggedInUser = sessionStorage.getItem('loggedInUser') || 'eatnow@gmail.com';
-    this.extractUserName();
+    this.checkScreenSize();
+    this.initializeUser();
+    this.initializeTheme();
     this.loadNotifications();
-
-    // Initialize theme from persisted state or system preference
-     const state = this.theme.getState();
-    this.isDarkMode = state.mode === 'dark';
-    this.selectedColor = state.color;
-    this.theme.init(); 
-
-    // Apply selected color to document data attribute for dynamic styling
-    document.documentElement.setAttribute('data-brand-color', this.selectedColor);
-
-
-    const mode = document.documentElement.getAttribute('data-theme');
-    this.isDarkMode = mode === 'dark';
+    this.subscribeToLayoutChanges();
   }
 
-  // Alt + K focuses the search input
-  @HostListener('window:keydown', ['$event'])
-  onKeyDown(e: KeyboardEvent): void {
-    if (e.altKey && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      this.searchInput?.nativeElement?.focus();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    const width = window.innerWidth;
+    this.isMobile = width < this.MOBILE_BREAKPOINT;
+    this.isTablet = width >= this.MOBILE_BREAKPOINT && width < this.TABLET_BREAKPOINT;
+  }
+
+  private initializeUser(): void {
+    this.loggedInUser = sessionStorage.getItem('loggedInUser') || '';
+    if (this.loggedInUser && !this.userName) {
+      this.userName = this.formatUserName(this.loggedInUser);
     }
   }
 
-  onSearch(): void {
-    const term = (this.searchQuery || '').trim();
-    if (!term) return;
-    // Implement your search navigation or service call
-    console.log('Searching for:', term);
+  private formatUserName(email: string): string {
+    if (!email) return '';
+    const namePart = email.split('@')[0];
+    return namePart
+      .replace(/[._]/g, ' ')
+      .split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(' ');
+  }
+
+  get userInitials(): string {
+    return this.userName
+      .split(' ')
+      .filter(Boolean)
+      .map(p => p[0].toUpperCase())
+      .slice(0, 2)
+      .join('');
+  }
+
+  private initializeTheme(): void {
+    const state = this.theme.getState();
+    this.theme.init();
+    document.documentElement.setAttribute('data-brand-color', state.color);
+    document.body.classList.toggle('dark-theme', state.mode === 'dark');
+  }
+
+  private subscribeToLayoutChanges(): void {
+    this.layout.collapsed$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(collapsed => (this.sidebarCollapsed = collapsed));
+  }
+
+  toggleSidebar(): void {
+    this.sidebarToggle.emit();
+  }
+
+  // Notifications
+  private loadNotifications(): void {
+    this.notifications = [
+      {
+        id: 1,
+        title: 'Leave approved',
+        description: 'Your leave request for Dec 20–22 has been approved.',
+        time: '2 hours ago',
+        type: 'success',
+        read: false
+      },
+      {
+        id: 2,
+        title: 'Meeting reminder',
+        description: 'Team sync scheduled at 3:00 PM today.',
+        time: '5 hours ago',
+        type: 'info',
+        read: false
+      },
+      {
+        id: 3,
+        title: 'New announcement',
+        description: 'Company holiday list for 2026 is now available.',
+        time: '1 day ago',
+        type: 'warning',
+        read: true
+      }
+    ];
+    this.updateNotificationCount();
+  }
+
+  private updateNotificationCount(): void {
+    this.notificationCount = this.notifications.filter(n => !n.read).length;
+  }
+
+  markAllAsRead(): void {
+    this.notifications.forEach(n => (n.read = true));
+    this.updateNotificationCount();
+  }
+
+  onNotificationClick(notification: Notification): void {
+    notification.read = true;
+    this.updateNotificationCount();
+    // handle navigation if needed
+  }
+
+  dismissNotification(notification: Notification, event: MouseEvent): void {
+    event.stopPropagation();
+    this.notifications = this.notifications.filter(n => n.id !== notification.id);
+    this.updateNotificationCount();
+  }
+
+  viewAllNotifications(): void {
+    this.router.navigate(['/notifications']);
+  }
+
+  // Bootstrap icon classes for each notification type
+  getNotificationIcon(type: NotificationType): string {
+    switch (type) {
+      case 'success':
+        return 'bi-check-circle';
+      case 'warning':
+        return 'bi-exclamation-triangle';
+      case 'error':
+        return 'bi-x-circle';
+      default:
+        return 'bi-info-circle';
+    }
+  }
+
+  // Profile / navigation
+  goToProfile(): void {
+    this.router.navigate(['/uam/user-profile/1']);
+  }
+
+  goToSettings(): void {
+    this.router.navigate(['/settings']);
   }
 
   psdChange(): void {
     this.router.navigate(['/core/change-password']);
   }
 
-  goToProfile(): void {
-    this.router.navigate(['/uam/user-profile/1']);
+  goToHelp(): void {
+    this.router.navigate(['/help']);
   }
 
   logout(): void {
     sessionStorage.clear();
-    this.router.navigate(['/']);
+    localStorage.removeItem('authToken');
+    this.router.navigate(['/login']);
   }
-
-  markAllRead(): void {
-    this.notificationCount = 0;
-  }
-
-  private extractUserName(): void {
-    const lu = this.loggedInUser;
-    if (lu) {
-      this.userName = lu.split('@')[0].replace('.', ' ');
-    }
-  }
-
-  private loadNotifications(): void {
-    this.notificationsList = [
-      {
-        icon: 'check_circle',
-        color: '#20C997',
-        title: 'Leave Approved',
-        description: 'Your leave request for Dec 20-22 has been approved',
-        time: '2 hours ago'
-      },
-      {
-        icon: 'event',
-        color: '#5B4A9F',
-        title: 'Meeting Reminder',
-        description: 'Team sync scheduled at 3:00 PM today',
-        time: '5 hours ago'
-      },
-      {
-        icon: 'campaign',
-        color: '#FF9800',
-        title: 'New Announcement',
-        description: 'Company holiday list for 2026 is now available',
-        time: '1 day ago'
-      }
-    ];
-    this.notificationCount = this.notificationsList.length;
-  }
-
-  // Theme actions
-  onColorPick(color: string): void {
-    this.selectedColor = color;
-    this.theme.setBrandColor(color);
-    document.documentElement.setAttribute('data-brand-color', color); // Update data attribute on color change
-  }
-
-  // onModeToggle(event: { checked: boolean }): void {
-  //   this.isDarkMode = event.checked;
-  //   this.theme.setMode(this.isDarkMode ? 'dark' : 'light');
-  // }
-
-
-  onModeToggle(ev: MatSlideToggleChange) {
-    this.isDarkMode = ev.checked;
-    this.theme.setMode(this.isDarkMode ? 'dark' : 'light');
-  }
-
-
-toggleDarkMode(enabled: boolean): void {
-  this.isDarkMode = enabled;
-  document.body.classList.toggle('dark-theme', enabled);
-}
-
-
-
 }

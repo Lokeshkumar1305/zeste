@@ -1,22 +1,22 @@
 import {
   Component,
-  HostListener,
   OnInit,
   OnDestroy,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  HostListener,
+  ElementRef,
+  Renderer2
 } from '@angular/core';
-import {
-  Router,
-  NavigationEnd,
-  Event as RouterEvent
-} from '@angular/router';
-import { filter, Subject, takeUntil } from 'rxjs';
+import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 interface MenuItem {
   title: string;
   route: string;
+  icon?: string;
 }
 
 interface MenuGroup {
@@ -24,6 +24,7 @@ interface MenuGroup {
   title: string;
   icon: string;
   items: MenuItem[];
+  expanded?: boolean;
 }
 
 @Component({
@@ -35,15 +36,24 @@ export class SidenavComponent implements OnInit, OnDestroy {
   @Input() isCollapsed = false;
   @Output() toggle = new EventEmitter<void>();
 
-  isMobile = window.innerWidth < 768;
+  // Screen size flags
+  isMobile = false;
+  isTablet = false;
+
+  // Menu state
   selectedMenu = 'dashboard';
   openedGroup: string | null = null;
 
-  // vertical position for floating card (in px from top of viewport)
+  // Floating card position
   floatingCardTop = 80;
+
+  // Breakpoints
+  private readonly MOBILE_BREAKPOINT = 768;
+  private readonly TABLET_BREAKPOINT = 1024;
 
   private destroy$ = new Subject<void>();
 
+  // Menu configuration
   collapsibleGroups: MenuGroup[] = [
     {
       key: 'onboarding',
@@ -60,7 +70,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       icon: 'shield-lock',
       items: [
         { title: 'Users', route: '/uam/users' },
-         { title: 'Roles', route: '/uam/roles' },
+        { title: 'Roles', route: '/uam/roles' },
         { title: 'User Profile', route: '/core/user-profile' }
       ]
     },
@@ -80,13 +90,17 @@ export class SidenavComponent implements OnInit, OnDestroy {
       key: 'tenants',
       title: 'TENANTS',
       icon: 'people',
-      items: [{ title: 'Tenants', route: '/core/tenant-management' }]
+      items: [
+        { title: 'Tenants', route: '/core/tenant-management' }
+      ]
     },
     {
       key: 'payments',
       title: 'PAYMENTS',
       icon: 'credit-card',
-      items: [{ title: 'Payments', route: '/core/payment-management' }]
+      items: [
+        { title: 'Payments', route: '/core/payment-management' }
+      ]
     },
     {
       key: 'maintenance',
@@ -118,7 +132,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     {
       key: 'inventory',
       title: 'INVENTORY',
-      icon: 'box-seam', // Valid Bootstrap icon for inventory
+      icon: 'box-seam',
       items: [
         { title: 'Dashboard', route: '/core/inventory-dashboard' },
         { title: 'Units', route: '/core/inventory-unit' },
@@ -135,7 +149,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     {
       key: 'subscription',
       title: 'SUBSCRIPTION',
-      icon: 'calendar-check', // or 'card-checklist', 'bookmark-star', 'patch-check'
+      icon: 'calendar-check',
       items: [
         { title: 'Plans', route: '/core/subscription-packages' },
         { title: 'My Subscription', route: '/core/subscription-packages' },
@@ -144,13 +158,16 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private router: Router) {
-    this.subscribeToRouterEvents();
-  }
+  constructor(
+    private router: Router,
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
     this.checkScreenSize();
     this.updateActiveMenu(this.router.url);
+    this.subscribeToRouterEvents();
   }
 
   ngOnDestroy(): void {
@@ -158,112 +175,79 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  /**
+   * Handle window resize
+   */
   @HostListener('window:resize')
-  onResize() {
+  onResize(): void {
     const wasMobile = this.isMobile;
-    this.isMobile = window.innerWidth < 768;
+    this.checkScreenSize();
 
-    if (!this.isMobile && wasMobile) {
-      this.isCollapsed = false;
+    // Auto-close on transition to mobile
+    if (this.isMobile && !wasMobile && !this.isCollapsed) {
+      this.isCollapsed = true;
       this.toggle.emit();
+    }
+
+    // Close floating card on resize
+    if (!this.isMobile && this.isCollapsed) {
+      this.openedGroup = null;
     }
   }
 
   /**
-   * FIX: Only close floating card in collapsed mode when clicking outside.
-   * In expanded mode, submenus should stay open regardless of main content clicks.
+   * Handle document clicks for closing floating cards
    */
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    // In expanded mode, don't close submenus on outside clicks
-    if (!this.isCollapsed) {
+  onDocumentClick(event: MouseEvent): void {
+    // Only handle in collapsed desktop mode
+    if (this.isMobile || !this.isCollapsed || !this.openedGroup) {
       return;
     }
 
-    // In collapsed mode, close floating card when clicking outside sidenav
     const target = event.target as HTMLElement;
-    const insideSidenav = target.closest('.sidenav');
-    const insideCard = target.closest('.floating-card');
-    const insideHamburger = target.closest('.mobile-hamburger');
+    const clickedInside = this.elementRef.nativeElement.contains(target);
+    const clickedFloatingCard = target.closest('.floating-card');
 
-    if (!insideSidenav && !insideCard && !insideHamburger) {
+    if (!clickedInside && !clickedFloatingCard) {
       this.openedGroup = null;
     }
-  }
-
-  toggleSidenav() {
-    this.isCollapsed = !this.isCollapsed;
-    this.toggle.emit();
-
-    // When expanding to full sidenav, auto-open the group containing active route
-    if (!this.isCollapsed) {
-      this.autoOpenActiveGroup();
-    } else {
-      // When collapsing, close any open group
-      this.openedGroup = null;
-    }
-  }
-
-  onGroupHeaderClick(event: MouseEvent, groupKey: string) {
-    event.stopPropagation();
-
-    // TOGGLE: if the same group is already open, close it
-    if (this.openedGroup === groupKey) {
-      this.openedGroup = null;
-      return;
-    }
-
-    // Otherwise, open this group and position the floating card
-    const el = event.currentTarget as HTMLElement;
-    const rect = el.getBoundingClientRect();
-    this.floatingCardTop = rect.top;
-
-    this.openedGroup = groupKey;
-  }
-
-  navigateTo(route: string, event?: MouseEvent) {
-    if (event) {
-      event.stopPropagation();
-    }
-
-    // Navigate
-    this.router.navigate([route]);
-
-    // On mobile, close sidenav after selection
-    if (this.isMobile) {
-      this.isCollapsed = true;
-      this.openedGroup = null;
-      this.toggle.emit();
-    }
-    // On desktop in collapsed mode, close the floating card after selection
-    else if (this.isCollapsed) {
-      this.openedGroup = null;
-    }
-    // On desktop in expanded mode, keep the submenu open (do nothing)
-  }
-
-  isRouteActive(route: string): boolean {
-    return this.router.url.includes(route);
   }
 
   /**
-   * Check if any item in a group is currently active
+   * Handle escape key press
    */
-  isGroupActive(group: MenuGroup): boolean {
-    return group.items.some(item => this.router.url.includes(item.route));
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    if (this.isMobile && !this.isCollapsed) {
+      this.toggleSidenav();
+    }
+    if (this.openedGroup) {
+      this.openedGroup = null;
+    }
   }
 
-  private checkScreenSize() {
-    this.isMobile = window.innerWidth < 768;
-    this.isCollapsed = this.isMobile;
+  /**
+   * Check and set screen size flags
+   */
+  private checkScreenSize(): void {
+    const width = window.innerWidth;
+    this.isMobile = width < this.MOBILE_BREAKPOINT;
+    this.isTablet = width >= this.MOBILE_BREAKPOINT && width < this.TABLET_BREAKPOINT;
+
+    // Auto-collapse on mobile
+    if (this.isMobile) {
+      this.isCollapsed = true;
+    }
   }
 
-  private subscribeToRouterEvents() {
+  /**
+   * Subscribe to router events
+   */
+  private subscribeToRouterEvents(): void {
     this.router.events
       .pipe(
-        filter(
-          (e: RouterEvent): e is NavigationEnd => e instanceof NavigationEnd
-        ),
+        filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntil(this.destroy$)
       )
       .subscribe(event => {
@@ -271,26 +255,25 @@ export class SidenavComponent implements OnInit, OnDestroy {
       });
   }
 
-  private updateActiveMenu(url: string) {
-    if (
-      url.includes('/core/outlet-onboarding') ||
-      url === '/core' ||
-      url === '/'
-    ) {
+  /**
+   * Update active menu based on current URL
+   */
+  private updateActiveMenu(url: string): void {
+    // Check for dashboard
+    if (this.isDashboardUrl(url)) {
       this.selectedMenu = 'dashboard';
-      // In expanded mode, keep the active group open
-      if (!this.isCollapsed) {
+      if (!this.isCollapsed && !this.isMobile) {
         this.autoOpenActiveGroup();
       }
       return;
     }
 
+    // Check for group items
     for (const group of this.collapsibleGroups) {
       for (const item of group.items) {
         if (url.includes(item.route)) {
           this.selectedMenu = item.route;
-          // In expanded mode, auto-open the group containing the active route
-          if (!this.isCollapsed) {
+          if (!this.isCollapsed && !this.isMobile) {
             this.openedGroup = group.key;
           }
           return;
@@ -300,9 +283,19 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Auto-open the group that contains the currently active route
+   * Check if URL is dashboard
    */
-  private autoOpenActiveGroup() {
+  private isDashboardUrl(url: string): boolean {
+    return url.includes('/core/outlet-onboarding') || 
+           url === '/core' || 
+           url === '/' ||
+           url === '/dashboard';
+  }
+
+  /**
+   * Auto-open group containing active route
+   */
+  private autoOpenActiveGroup(): void {
     for (const group of this.collapsibleGroups) {
       for (const item of group.items) {
         if (this.router.url.includes(item.route)) {
@@ -311,5 +304,106 @@ export class SidenavComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  /**
+   * Toggle sidenav collapsed state
+   */
+  toggleSidenav(): void {
+    this.isCollapsed = !this.isCollapsed;
+    this.toggle.emit();
+
+    if (!this.isCollapsed) {
+      this.autoOpenActiveGroup();
+    } else {
+      this.openedGroup = null;
+    }
+  }
+
+  /**
+   * Handle group header click - FIXED: Accept Event type
+   */
+  onGroupHeaderClick(event: Event, groupKey: string): void {
+    event.stopPropagation();
+
+    // Toggle group
+    if (this.openedGroup === groupKey) {
+      this.openedGroup = null;
+      return;
+    }
+
+    // Position floating card for collapsed mode
+    if (this.isCollapsed && !this.isMobile) {
+      const el = event.currentTarget as HTMLElement;
+      const rect = el.getBoundingClientRect();
+      this.floatingCardTop = rect.top;
+    }
+
+    this.openedGroup = groupKey;
+  }
+
+  /**
+   * Navigate to a route - FIXED: Accept Event type
+   */
+  navigateTo(route: string, event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+
+    this.router.navigate([route]);
+    this.selectedMenu = route;
+
+    // Handle post-navigation state
+    if (this.isMobile) {
+      // Close sidenav on mobile
+      this.isCollapsed = true;
+      this.openedGroup = null;
+      this.toggle.emit();
+    } else if (this.isCollapsed) {
+      // Close floating card on collapsed desktop
+      this.openedGroup = null;
+    }
+  }
+
+  /**
+   * Check if route is active
+   */
+  isRouteActive(route: string): boolean {
+    return this.router.url.includes(route);
+  }
+
+  /**
+   * Check if any item in group is active
+   */
+  isGroupActive(group: MenuGroup): boolean {
+    return group.items.some(item => this.isRouteActive(item.route));
+  }
+
+  /**
+   * Get visibility state for section titles
+   */
+  showSectionTitle(): boolean {
+    return !this.isCollapsed || this.isMobile;
+  }
+
+  /**
+   * Get visibility state for menu item text
+   */
+  showMenuText(): boolean {
+    return !this.isCollapsed || this.isMobile;
+  }
+
+  /**
+   * TrackBy function for ngFor
+   */
+  trackByGroupKey(index: number, group: MenuGroup): string {
+    return group.key;
+  }
+
+  /**
+   * TrackBy function for menu items
+   */
+  trackByRoute(index: number, item: MenuItem): string {
+    return item.route;
   }
 }

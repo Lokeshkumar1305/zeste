@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 export class LayoutService {
   private collapsedSubject = new BehaviorSubject<boolean>(false); // false = expanded
   collapsed$ = this.collapsedSubject.asObservable();
+  setCollapsed: any;
 
   toggle() {
     this.collapsedSubject.next(!this.collapsedSubject.value);
