@@ -4,6 +4,11 @@ $sidenav-width: 260px;
 $sidenav-width-tablet: 240px;
 $collapsed-width: 72px;
 
+// ===== Icon sizes =====
+$icon-size-desktop: 40px;
+$icon-size-tablet: 36px;
+$icon-size-mobile: 32px;
+
 // ===== Color system =====
 $primary-color: #1f4ed8;
 $accent-color: #14b8a6;
@@ -105,14 +110,15 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-// ===== Left menu toggle (blue icon only) =====
+// ===== Left menu toggle =====
 .menu-toggle {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   color: $primary-color !important;
 
-  i {
+  i,
+  mat-icon {
     line-height: 1;
   }
 
@@ -160,22 +166,31 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-// ===== Circular icon buttons =====
+// ======================================================
+// Circular icon buttons
+// ======================================================
 .action-btn.circle-icon-btn {
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  border-radius: 999px !important;
+  border-radius: 50% !important;
   background: $icon-bg !important;
   border: 1px solid $icon-border !important;
   color: $icon-color !important;
   box-shadow: none !important;
   position: relative;
-  overflow: visible !important;
+  overflow: hidden !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0;
 
+  // icon inside
+  mat-icon,
   i {
-    font-size: 20px;
-    line-height: 1;
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 20px !important;
   }
 
   &:hover {
@@ -183,21 +198,36 @@ $tablet-breakpoint: 1024px;
     color: $icon-hover-color !important;
     box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
   }
+}
 
-  @include tablet {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
+/* Force size of Material icon buttons (desktop/tablet/mobile) */
+:host ::ng-deep button.mat-mdc-icon-button.action-btn.circle-icon-btn {
+  width: $icon-size-desktop !important;
+  height: $icon-size-desktop !important;
+  min-width: $icon-size-desktop !important;
+  min-height: $icon-size-desktop !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  box-sizing: border-box !important;
+
+  @include tablet-and-below {
+    width: $icon-size-tablet !important;
+    height: $icon-size-tablet !important;
+    min-width: $icon-size-tablet !important;
+    min-height: $icon-size-tablet !important;
   }
 
   @include small-mobile {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
+    width: $icon-size-mobile !important;
+    height: $icon-size-mobile !important;
+    min-width: $icon-size-mobile !important;
+    min-height: $icon-size-mobile !important;
   }
 }
 
-// ===== User section =====
+// ======================================================
+// User section
+// ======================================================
 .user-wrapper {
   display: flex;
   align-items: center;
@@ -250,7 +280,6 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-/* Name and role (Admin) */
 .profile-name {
   font-size: 14px;
   font-weight: 500;
@@ -259,10 +288,9 @@ $tablet-breakpoint: 1024px;
 
 .profile-role {
   font-size: 13px;
-  color: #9ca3af; // lighter, to match the screenshot
+  color: #9ca3af;
 }
 
-/* Row with Admin + arrow */
 .profile-meta {
   display: flex;
   align-items: center;
@@ -278,18 +306,25 @@ $tablet-breakpoint: 1024px;
   align-items: center;
 }
 
-/* Button itself */
 .profile-btn {
   padding: 0 !important;
   min-height: 50px !important;
-  min-width: 150px !important;
+  min-width: auto !important;
+  width: auto !important;
   background: transparent !important;
   text-transform: none !important;
   box-shadow: none !important;
   border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 4px 12px 4px 4px !important;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
 }
 
-/* Our own wrapper inside the button */
 .profile-wrapper {
   display: flex;
   flex-direction: row;
@@ -298,7 +333,6 @@ $tablet-breakpoint: 1024px;
   white-space: nowrap;
 }
 
-/* Arrow on the right (legacy class, not used for the new layout) */
 .chevron-icon {
   font-size: 18px !important;
   width: 18px !important;
@@ -312,39 +346,18 @@ $tablet-breakpoint: 1024px;
   min-width: 16px;
 }
 
+// Only color / hover here, NO width/height so circles stay correct
 .notification-btn,
 .profile-btn {
   color: #6b7280 !important;
-  min-width: 48px !important;
-  width: 48px !important;
-  height: 48px !important;
   flex-shrink: 0;
 
   &:hover {
     background: rgba(0, 0, 0, 0.04) !important;
   }
-
-  mat-icon {
-    font-size: 20px !important;
-    width: 20px !important;
-    height: 20px !important;
-  }
 }
 
-.profile-btn {
-  width: auto !important;
-  min-width: auto !important;
-  padding: 4px 12px 4px 4px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  border-radius: 8px !important;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.04) !important;
-  }
-}
-
+// (legacy user-profile styles, if used elsewhere)
 .user-profile {
   display: flex;
   align-items: center;

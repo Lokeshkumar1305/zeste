@@ -19,7 +19,8 @@
       </button>
 
       <!-- Notifications -->
-      <button mat-icon-button class="action-btn circle-icon-btn notification-btn">
+      <button mat-icon-button class="action-btn circle-icon-btn notification-btn" [matMenuTriggerFor]="notificationMenu"
+        aria-label="Notifications">
         <mat-icon>notifications_none</mat-icon>
       </button>
     </div>
