@@ -1,8 +1,4 @@
 <div class="sidenav-wrapper">
-  <!-- Mobile hamburger - Only visible on mobile when sidenav is closed -->
-  <button class="mobile-hamburger" *ngIf="isMobile && isCollapsed" (click)="toggleSidenav()" aria-label="Open menu">
-    <i class="bi bi-list"></i>
-  </button>
 
   <nav class="sidenav" [class.collapsed]="isCollapsed && !isMobile" [class.mobile-open]="!isCollapsed && isMobile"
     [class.mobile-closed]="isCollapsed && isMobile" role="navigation" aria-label="Main navigation">

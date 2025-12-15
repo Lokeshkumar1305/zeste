@@ -7,7 +7,6 @@ $collapsed-width: 72px;
 // ===== Icon sizes =====
 $icon-size-desktop: 40px;
 $icon-size-tablet: 36px;
-// smaller on mobile so the circular actions look lighter
 $icon-size-mobile: 30px;
 
 // ===== Color system =====
@@ -126,60 +125,16 @@ $tablet-breakpoint: 1024px;
 }
 
 // ===== Left menu toggle =====
+// Only spacing here – visual styling is unified at the bottom of this file
 .menu-toggle {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: $primary-color !important;
-  padding: 0 !important;
-
-  i,
-  mat-icon {
-    line-height: 1;
-  }
-
-  &:hover {
-    background: transparent !important;
-    color: darken($primary-color, 8%) !important;
-  }
-
   @include mobile {
     margin-right: 4px;
   }
 }
 
-/* Make the toggle button itself smaller on mobile */
-:host ::ng-deep button.mat-mdc-icon-button.menu-toggle {
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  min-height: 40px !important;
-
-  mat-icon {
-    font-size: 24px !important;
-  }
-
-  @include mobile {
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-
-    mat-icon {
-      font-size: 20px !important;
-    }
-  }
-
-  @include small-mobile {
-    width: 28px !important;
-    height: 28px !important;
-    min-width: 28px !important;
-    min-height: 28px !important;
-
-    mat-icon {
-      font-size: 18px !important;
-    }
-  }
+/* Remove tap highlight for all icon buttons in header */
+:host ::ng-deep .app-header button.mat-mdc-icon-button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 // ===== Center space =====
@@ -225,7 +180,7 @@ $tablet-breakpoint: 1024px;
 }
 
 // ======================================================
-// Circular icon buttons
+// Circular icon buttons (quick action + notification + toggle)
 // ======================================================
 .action-btn.circle-icon-btn {
   border-radius: 50% !important;
@@ -271,7 +226,7 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-/* Force size of Material icon buttons */
+/* Force size of Material icon buttons for action icons (including toggle) */
 :host ::ng-deep button.mat-mdc-icon-button.action-btn.circle-icon-btn {
   width: $icon-size-desktop !important;
   height: $icon-size-desktop !important;
@@ -425,27 +380,6 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-.profile-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-}
-
-.chevron-icon {
-  font-size: 18px !important;
-  width: 18px !important;
-  height: 18px !important;
-  color: #9ca3af;
-  margin-left: 4px;
-}
-
-.spacer {
-  flex: 1 1 auto;
-  min-width: 16px;
-}
-
 .notification-btn,
 .profile-btn {
   color: #6b7280 !important;
@@ -453,65 +387,6 @@ $tablet-breakpoint: 1024px;
 
   &:hover {
     background: rgba(0, 0, 0, 0.04) !important;
-  }
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  white-space: nowrap;
-
-  .avatar-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e5e7eb;
-    flex-shrink: 0;
-  }
-
-  .user-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-
-    @media (max-width: 960px) {
-      display: none;
-    }
-  }
-
-  .user-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1f2937;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .user-role {
-    font-size: 12px;
-    color: #6b7280;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .chevron {
-    font-size: 18px !important;
-    width: 18px !important;
-    height: 18px !important;
-    color: #9ca3af;
-    flex-shrink: 0;
-
-    @media (max-width: 960px) {
-      display: none;
-    }
   }
 }
 
@@ -807,7 +682,6 @@ $tablet-breakpoint: 1024px;
     }
   }
 
-  // FIXED: dismiss icon alignment and styling
   .notif-dismiss {
     margin-left: 8px;
     flex-shrink: 0;
@@ -1011,7 +885,6 @@ $tablet-breakpoint: 1024px;
 
 /* log out button styling */
 .logout-btn {
-
   i,
   span {
     color: #dc2626 !important;
@@ -1056,4 +929,80 @@ $tablet-breakpoint: 1024px;
 :host {
   display: block;
   width: 100%;
+}
+
+// ============================================================================
+// FINAL: HARD OVERRIDE – MAKE MENU TOGGLE IDENTICAL TO OTHER ICONS EVERYWHERE
+// ============================================================================
+
+.app-header .menu-toggle {
+  background: $icon-bg !important;
+  border: 1px solid $icon-border !important;
+  border-radius: 50% !important;
+  color: $icon-color !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+
+  width: $icon-size-desktop !important;
+  height: $icon-size-desktop !important;
+  min-width: $icon-size-desktop !important;
+  min-height: $icon-size-desktop !important;
+
+  mat-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 20px !important;
+  }
+
+  &:hover {
+    background: $icon-hover-bg !important;
+    color: $icon-hover-color !important;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  }
+}
+
+@media (max-width: #{$tablet-breakpoint - 1px}) {
+  .app-header .menu-toggle {
+    width: $icon-size-tablet !important;
+    height: $icon-size-tablet !important;
+    min-width: $icon-size-tablet !important;
+    min-height: $icon-size-tablet !important;
+  }
+}
+
+@media (max-width: #{$mobile-breakpoint - 1px}) {
+  .app-header .menu-toggle {
+    width: $icon-size-mobile !important;
+    height: $icon-size-mobile !important;
+    min-width: $icon-size-mobile !important;
+    min-height: $icon-size-mobile !important;
+
+    mat-icon {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+      line-height: 18px !important;
+    }
+  }
+}
+
+@media (max-width: #{$small-mobile-breakpoint - 1px}) {
+  .app-header .menu-toggle {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+
+    mat-icon {
+      font-size: 16px !important;
+      width: 16px !important;
+      height: 16px !important;
+      line-height: 16px !important;
+    }
+  }
 }

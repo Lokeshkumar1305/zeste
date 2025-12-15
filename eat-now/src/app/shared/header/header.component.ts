@@ -54,7 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly theme: ThemeService,
     public layout: LayoutService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.checkScreenSize();
@@ -77,7 +77,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private checkScreenSize(): void {
     const width = window.innerWidth;
     this.isMobile = width < this.MOBILE_BREAKPOINT;
-    this.isTablet = width >= this.MOBILE_BREAKPOINT && width < this.TABLET_BREAKPOINT;
+    this.isTablet =
+      width >= this.MOBILE_BREAKPOINT && width < this.TABLET_BREAKPOINT;
   }
 
   private initializeUser(): void {
@@ -166,7 +167,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onNotificationClick(notification: Notification): void {
     notification.read = true;
     this.updateNotificationCount();
-    // handle navigation if needed
   }
 
   dismissNotification(notification: Notification, event: MouseEvent): void {
@@ -179,7 +179,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/notifications']);
   }
 
-  // Bootstrap icon classes for each notification type
   getNotificationIcon(type: NotificationType): string {
     switch (type) {
       case 'success':
@@ -193,7 +192,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Profile / navigation
   goToProfile(): void {
     this.router.navigate(['/uam/user-profile/1']);
   }

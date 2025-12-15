@@ -1,6 +1,7 @@
 <mat-toolbar class="app-header" [class.collapsed]="sidebarCollapsed">
   <!-- Left: Menu toggle -->
-  <button mat-icon-button class="menu-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar" type="button">
+  <button mat-icon-button class="menu-toggle action-btn circle-icon-btn" (click)="toggleSidebar()"
+    aria-label="Toggle sidebar" type="button">
     <mat-icon>menu</mat-icon>
   </button>
 
@@ -74,7 +75,6 @@
       <p>No new notifications</p>
     </div>
 
-    <!-- FIXED: no nested button, proper flex alignment -->
     <button mat-menu-item *ngFor="let notif of notifications" class="notification-item" [class.unread]="!notif.read"
       (click)="onNotificationClick(notif)" type="button">
       <div class="notif-icon" [ngClass]="notif.type">
