@@ -1,3 +1,4 @@
+// Updated room-management-modal.component.ts
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AmenitiesManagementModalComponent } from '../amenities-management-modal/amenities-management-modal.component';
@@ -87,17 +88,21 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
   }
 
   openAmenityConfig(): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '520px';
     const ref = this.dialog.open(AmenitiesManagementModalComponent, {
-      width: '520px',
+      width: width,
+      maxWidth: '100vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
       data: { amenities: this.amenityOptions },
     });
 
     ref.afterClosed().subscribe((amenities: string[] | undefined) => {
       if (amenities) {
         this.amenityOptions = amenities;
-        this.room.amenities = this.room.amenities.filter(a =>
-          amenities.includes(a)
-        );
+        this.room.amenities = this.room.amenities.filter(a => amenities.includes(a));
       }
     });
   }

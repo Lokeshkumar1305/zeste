@@ -1,3 +1,4 @@
+// Updated amenities-management-modal.component.ts (no changes needed)
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 

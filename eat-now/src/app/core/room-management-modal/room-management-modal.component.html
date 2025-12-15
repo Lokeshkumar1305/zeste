@@ -1,3 +1,4 @@
+<!-- Updated room-management-modal.component.html -->
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
     <p class="f-18-m mb-0">Room Details</p>
@@ -5,22 +6,15 @@
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
-
   <div class="modal-body">
     <form>
       <div class="row">
         <div class="col-md-6">
           <mat-label class="required">Room Number</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input
-              matInput
-              [(ngModel)]="room.roomNumber"
-              name="roomNumber"
-              placeholder="e.g. 101"
-              required />
+            <input matInput [(ngModel)]="room.roomNumber" name="roomNumber" placeholder="e.g. 101" required />
           </mat-form-field>
         </div>
-
         <div class="col-md-6">
           <mat-label>Floor</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -32,15 +26,10 @@
             No floors configured. Please configure floors first.
           </div>
         </div>
-
         <div class="col-md-6">
           <mat-label class="required">Room Type</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select
-              [(ngModel)]="room.type"
-              name="type"
-              (selectionChange)="onRoomTypeChange(room.type)"
-              required>
+            <mat-select [(ngModel)]="room.type" name="type" (selectionChange)="onRoomTypeChange(room.type)" required>
               <mat-option *ngFor="let t of roomTypes" [value]="t.name">
                 {{ t.name }} ({{ t.beds }} {{ t.beds === 1 ? 'Bed' : 'Beds' }})
               </mat-option>
@@ -50,45 +39,24 @@
             No room types configured. Please configure room types first.
           </div>
         </div>
-
         <div class="col-md-6">
           <mat-label>Beds</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input
-              matInput
-              type="number"
-              [(ngModel)]="room.beds"
-              name="beds"
-              placeholder="Auto-filled based on room type"
-              readonly />
+            <input matInput type="number" [(ngModel)]="room.beds" name="beds" placeholder="Auto-filled based on room type" readonly />
           </mat-form-field>
         </div>
-
         <div class="col-md-6">
           <mat-label class="required">Monthly Rent</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input
-              matInput
-              type="number"
-              [(ngModel)]="room.monthlyRent"
-              name="monthlyRent"
-              placeholder="e.g. 8000"
-              required />
+            <input matInput type="number" [(ngModel)]="room.monthlyRent" name="monthlyRent" placeholder="e.g. 8000" required />
           </mat-form-field>
         </div>
-
         <div class="col-md-6">
           <mat-label>Security Deposit</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input
-              matInput
-              type="number"
-              [(ngModel)]="room.securityDeposit"
-              name="securityDeposit"
-              placeholder="e.g. 16000" />
+            <input matInput type="number" [(ngModel)]="room.securityDeposit" name="securityDeposit" placeholder="e.g. 16000" />
           </mat-form-field>
         </div>
-
         <div class="col-md-6">
           <mat-label class="required">Status</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -97,56 +65,35 @@
             </mat-select>
           </mat-form-field>
         </div>
-
         <div class="col-12">
           <div class="d-flex align-items-center justify-content-between">
             <mat-label>Amenities</mat-label>
-            <button type="button" mat-stroked-button class="btn btn-outline-secondary btn-sm" (click)="openAmenityConfig()">
-              Configure
-            </button>
+            <button type="button" mat-stroked-button class="btn btn-outline-secondary btn-sm" (click)="openAmenityConfig()"> Configure </button>
           </div>
-
           <ng-container *ngIf="amenityOptions.length; else noAmenities">
             <div class="mt-2">
               <mat-chip-listbox multiple aria-label="Select amenities">
-                <mat-chip-option
-                  class="amenity-chip"
-                  *ngFor="let a of amenityOptions"
-                  [selected]="room.amenities.includes(a)"
-                  (selectionChange)="onAmenityToggle(a, $event.source.selected)">
+                <mat-chip-option class="amenity-chip" *ngFor="let a of amenityOptions" [selected]="room.amenities.includes(a)" (selectionChange)="onAmenityToggle(a, $event.source.selected)">
                   {{ a }}
                 </mat-chip-option>
               </mat-chip-listbox>
             </div>
           </ng-container>
-
           <ng-template #noAmenities>
-            <div class="f-12-m mt-2">
-              No amenities configured. Click Configure to add amenities.
-            </div>
+            <div class="f-12-m mt-2"> No amenities configured. Click Configure to add amenities. </div>
           </ng-template>
         </div>
-
         <div class="col-12 mt-2">
           <mat-label>Description</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <textarea
-              matInput
-              rows="4"
-              [(ngModel)]="room.description"
-              name="description"
-              placeholder="Spacious single room with attached bathroom">
-            </textarea>
+            <textarea matInput rows="4" [(ngModel)]="room.description" name="description" placeholder="Spacious single room with attached bathroom"> </textarea>
           </mat-form-field>
         </div>
       </div>
     </form>
   </div>
-
   <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
-    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
-      Cancel
-    </button>
+    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()"> Cancel </button>
     <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
       <i class="bi bi-check2 me-1"></i> Create Room
     </button>

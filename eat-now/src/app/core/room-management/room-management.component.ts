@@ -1,10 +1,9 @@
+// Updated room-management.component.ts
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RoomManagementModalComponent, RoomDetails } from '../room-management-modal/room-management-modal.component';
 
 type RoomStatus = 'Available' | 'Occupied' | 'Maintenance';
-
-
 type CaseStatus = 'Open' | 'Closed' | 'On Hold';
 type CasePriority = 'Low' | 'Medium' | 'High';
 
@@ -25,7 +24,6 @@ export interface CaseItem {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RoomManagementComponent implements OnInit {
-
   // Toolbar filters
   public selectedStatusFilter: 'All' | RoomStatus = 'All';
 
@@ -44,89 +42,18 @@ export class RoomManagementComponent implements OnInit {
   ngOnInit(): void {
     // Seed sample room data
     this.allRooms = [
-      {
-        roomNumber: '101',
-        type: 'Single',
-        monthlyRent: 8000,
-        securityDeposit: 16000,
-        floor: 'Ground',
-        beds: 1,
-        status: 'Available',
-        description: 'Spacious single room with attached bathroom',
-        amenities: ['Wi-Fi', 'AC', 'TV']
-      },
-      {
-        roomNumber: '102',
-        type: 'Double',
-        monthlyRent: 12000,
-        securityDeposit: 24000,
-        floor: 'Ground',
-        beds: 2,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi', 'AC']
-      },
-      {
-        roomNumber: '201',
-        type: 'Single',
-        monthlyRent: 8500,
-        securityDeposit: 17000,
-        floor: 'First',
-        beds: 1,
-        status: 'Maintenance',
-        description: '',
-        amenities: ['Wi-Fi', 'TV']
-      },
-      {
-        roomNumber: '202',
-        type: 'Double',
-        monthlyRent: 13000,
-        securityDeposit: 26000,
-        floor: 'First',
-        beds: 2,
-        status: 'Available',
-        description: 'Balcony view',
-        amenities: ['Wi-Fi', 'AC', 'Balcony']
-      },
-      {
-        roomNumber: '301',
-        type: 'Single',
-        monthlyRent: 8200,
-        securityDeposit: 16400,
-        floor: 'Second',
-        beds: 1,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi']
-      },
-      {
-        roomNumber: '302',
-        type: 'Double',
-        monthlyRent: 12500,
-        securityDeposit: 25000,
-        floor: 'Second',
-        beds: 2,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi', 'AC', 'TV']
-      },
-      {
-        roomNumber: '303',
-        type: 'Single',
-        monthlyRent: 7900,
-        securityDeposit: 15800,
-        floor: 'Second',
-        beds: 1,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi']
-      }
+      { roomNumber: '101', type: 'Single', monthlyRent: 8000, securityDeposit: 16000, floor: 'Ground', beds: 1, status: 'Available', description: 'Spacious single room with attached bathroom', amenities: ['Wi-Fi', 'AC', 'TV'] },
+      { roomNumber: '102', type: 'Double', monthlyRent: 12000, securityDeposit: 24000, floor: 'Ground', beds: 2, status: 'Occupied', description: '', amenities: ['Wi-Fi', 'AC'] },
+      { roomNumber: '201', type: 'Single', monthlyRent: 8500, securityDeposit: 17000, floor: 'First', beds: 1, status: 'Maintenance', description: '', amenities: ['Wi-Fi', 'TV'] },
+      { roomNumber: '202', type: 'Double', monthlyRent: 13000, securityDeposit: 26000, floor: 'First', beds: 2, status: 'Available', description: 'Balcony view', amenities: ['Wi-Fi', 'AC', 'Balcony'] },
+      { roomNumber: '301', type: 'Single', monthlyRent: 8200, securityDeposit: 16400, floor: 'Second', beds: 1, status: 'Occupied', description: '', amenities: ['Wi-Fi'] },
+      { roomNumber: '302', type: 'Double', monthlyRent: 12500, securityDeposit: 25000, floor: 'Second', beds: 2, status: 'Available', description: '', amenities: ['Wi-Fi', 'AC', 'TV'] },
+      { roomNumber: '303', type: 'Single', monthlyRent: 7900, securityDeposit: 15800, floor: 'Second', beds: 1, status: 'Available', description: '', amenities: ['Wi-Fi'] }
     ];
-
     this.applyAllFilters();
   }
 
-  /* -------------------  Pagination getters  ------------------- */
+  /* ------------------- Pagination getters ------------------- */
   get totalItems(): number {
     return this.filteredRooms.length;
   }
@@ -147,7 +74,7 @@ export class RoomManagementComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  /* -------------------  UI Actions  ------------------- */
+  /* ------------------- UI Actions ------------------- */
   onSelectStatusChange(value: 'All' | RoomStatus): void {
     this.selectedStatusFilter = value;
     this.currentPage = 1;
@@ -197,7 +124,7 @@ export class RoomManagementComponent implements OnInit {
     return room.roomNumber;
   }
 
-  /* -------------------  Core filtering + pagination  ------------------- */
+  /* ------------------- Core filtering + pagination ------------------- */
   private applyAllFilters(): void {
     this.filteredRooms = this.applyStatusFilter(this.allRooms, this.selectedStatusFilter);
     this.updatePagedRooms();
@@ -214,10 +141,13 @@ export class RoomManagementComponent implements OnInit {
     this.pagedRooms = this.filteredRooms.slice(start, end);
   }
 
-  /* -------------------  Modal handling  ------------------- */
+  /* ------------------- Modal handling ------------------- */
   onAddNewRoom(): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '600px';
     const dialogRef = this.dialog.open(RoomManagementModalComponent, {
-      width: '600px',
+      width: width,
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -238,8 +168,11 @@ export class RoomManagementComponent implements OnInit {
   }
 
   onEditRoom(room: RoomDetails): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '600px';
     const dialogRef = this.dialog.open(RoomManagementModalComponent, {
-      width: '600px',
+      width: width,
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
