@@ -1,6 +1,6 @@
 <mat-toolbar class="app-header" [class.collapsed]="sidebarCollapsed">
   <!-- Left: Menu toggle -->
-  <button mat-icon-button class="menu-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+  <button mat-icon-button class="menu-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar" type="button">
     <mat-icon>menu</mat-icon>
   </button>
 
@@ -14,13 +14,14 @@
     <!-- Icons -->
     <div class="icon-group">
       <!-- Scan / quick actions icon - HIDDEN ON MOBILE -->
-      <button mat-icon-button class="action-btn circle-icon-btn hide-on-mobile" aria-label="Quick actions">
+      <button mat-icon-button class="action-btn circle-icon-btn hide-on-mobile" aria-label="Quick actions"
+        type="button">
         <mat-icon>crop_free</mat-icon>
       </button>
 
       <!-- Notifications -->
       <button mat-icon-button class="action-btn circle-icon-btn notification-btn" [matMenuTriggerFor]="notificationMenu"
-        aria-label="Notifications">
+        aria-label="Notifications" type="button">
         <mat-icon [matBadge]="notificationCount > 0 ? notificationCount : null" matBadgeColor="warn"
           matBadgeSize="small">
           notifications_none
@@ -30,7 +31,7 @@
 
     <!-- ===== USER PROFILE ===== -->
     <div class="user-wrapper">
-      <button mat-button class="profile-btn" [matMenuTriggerFor]="profileMenu" aria-label="User menu">
+      <button mat-button class="profile-btn" [matMenuTriggerFor]="profileMenu" aria-label="User menu" type="button">
         <div class="profile-content">
           <div class="avatar-circle">
             <img *ngIf="userAvatar; else initialsTemplate" [src]="userAvatar" [alt]="userName" class="avatar-img" />
@@ -59,7 +60,7 @@
       Notifications
     </span>
     <button mat-button *ngIf="notificationCount > 0" (click)="markAllAsRead(); $event.stopPropagation()"
-      class="mark-read-btn">
+      class="mark-read-btn" type="button">
       <i class="bi bi-check2-all me-1"></i>
       <span class="mark-read-text">Mark all read</span>
     </button>
@@ -73,8 +74,9 @@
       <p>No new notifications</p>
     </div>
 
+    <!-- FIXED: no nested button, proper flex alignment -->
     <button mat-menu-item *ngFor="let notif of notifications" class="notification-item" [class.unread]="!notif.read"
-      (click)="onNotificationClick(notif)">
+      (click)="onNotificationClick(notif)" type="button">
       <div class="notif-icon" [ngClass]="notif.type">
         <i class="bi" [ngClass]="getNotificationIcon(notif.type)"></i>
       </div>
@@ -88,16 +90,18 @@
         </span>
       </div>
 
-      <button mat-icon-button class="notif-dismiss" (click)="dismissNotification(notif, $event)"
-        aria-label="Dismiss notification">
+      <!-- Dismiss as span, not a nested button -->
+      <span class="notif-dismiss" (click)="dismissNotification(notif, $event)" aria-label="Dismiss notification"
+        role="button">
         <i class="bi bi-x"></i>
-      </button>
+      </span>
     </button>
   </div>
 
   <mat-divider *ngIf="notifications.length > 0"></mat-divider>
 
-  <button mat-menu-item class="view-all-btn" *ngIf="notifications.length > 0" (click)="viewAllNotifications()">
+  <button mat-menu-item class="view-all-btn" *ngIf="notifications.length > 0" (click)="viewAllNotifications()"
+    type="button">
     <span>View all</span>
     <i class="bi bi-arrow-right"></i>
   </button>
@@ -121,12 +125,12 @@
   <mat-divider class="profile-divider"></mat-divider>
 
   <!-- Middle actions -->
-  <button mat-menu-item class="profile-item" (click)="goToProfile()">
+  <button mat-menu-item class="profile-item" (click)="goToProfile()" type="button">
     <i class="bi bi-person"></i>
     <span>Profile Details</span>
   </button>
 
-  <button mat-menu-item class="profile-item" (click)="psdChange()">
+  <button mat-menu-item class="profile-item" (click)="psdChange()" type="button">
     <i class="bi bi-arrow-clockwise"></i>
     <span>Change Password</span>
   </button>
@@ -134,7 +138,7 @@
   <mat-divider class="profile-divider"></mat-divider>
 
   <!-- Bottom: log out -->
-  <button mat-menu-item class="profile-item logout-btn" (click)="logout()">
+  <button mat-menu-item class="profile-item logout-btn" (click)="logout()" type="button">
     <i class="bi bi-box-arrow-right"></i>
     <span>Log Out</span>
   </button>

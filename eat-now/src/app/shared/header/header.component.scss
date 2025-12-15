@@ -7,7 +7,8 @@ $collapsed-width: 72px;
 // ===== Icon sizes =====
 $icon-size-desktop: 40px;
 $icon-size-tablet: 36px;
-$icon-size-mobile: 34px;
+// smaller on mobile so the circular actions look lighter
+$icon-size-mobile: 30px;
 
 // ===== Color system =====
 $primary-color: #1f4ed8;
@@ -130,6 +131,7 @@ $tablet-breakpoint: 1024px;
   border: none !important;
   box-shadow: none !important;
   color: $primary-color !important;
+  padding: 0 !important;
 
   i,
   mat-icon {
@@ -143,6 +145,40 @@ $tablet-breakpoint: 1024px;
 
   @include mobile {
     margin-right: 4px;
+  }
+}
+
+/* Make the toggle button itself smaller on mobile */
+:host ::ng-deep button.mat-mdc-icon-button.menu-toggle {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+
+  mat-icon {
+    font-size: 24px !important;
+  }
+
+  @include mobile {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+
+    mat-icon {
+      font-size: 20px !important;
+    }
+  }
+
+  @include small-mobile {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+
+    mat-icon {
+      font-size: 18px !important;
+    }
   }
 }
 
@@ -219,6 +255,13 @@ $tablet-breakpoint: 1024px;
       height: 18px !important;
       line-height: 18px !important;
     }
+
+    @include small-mobile {
+      font-size: 16px !important;
+      width: 16px !important;
+      height: 16px !important;
+      line-height: 16px !important;
+    }
   }
 
   &:hover {
@@ -250,6 +293,13 @@ $tablet-breakpoint: 1024px;
     height: $icon-size-mobile !important;
     min-width: $icon-size-mobile !important;
     min-height: $icon-size-mobile !important;
+  }
+
+  @include small-mobile {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
   }
 }
 
@@ -299,6 +349,11 @@ $tablet-breakpoint: 1024px;
     width: 30px;
     height: 30px;
     font-size: 12px;
+  }
+
+  @include small-mobile {
+    width: 28px;
+    height: 28px;
   }
 }
 
@@ -752,26 +807,41 @@ $tablet-breakpoint: 1024px;
     }
   }
 
+  // FIXED: dismiss icon alignment and styling
   .notif-dismiss {
-    margin-left: 8px !important;
+    margin-left: 8px;
     flex-shrink: 0;
-    width: 28px !important;
-    height: 28px !important;
-    min-width: 28px !important;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $text-muted;
+    align-self: flex-start;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
 
     @include mobile {
-      width: 24px !important;
-      height: 24px !important;
-      min-width: 24px !important;
-      margin-left: 4px !important;
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      margin-left: 4px;
     }
 
     i {
-      font-size: 16px;
+      font-size: 14px;
 
       @include mobile {
-        font-size: 14px;
+        font-size: 12px;
       }
+    }
+
+    &:hover {
+      background: rgba(15, 23, 42, 0.06);
+      color: $text-primary;
+      transform: translateY(-1px);
     }
   }
 }
@@ -941,6 +1011,7 @@ $tablet-breakpoint: 1024px;
 
 /* log out button styling */
 .logout-btn {
+
   i,
   span {
     color: #dc2626 !important;
@@ -950,9 +1021,6 @@ $tablet-breakpoint: 1024px;
     background: #fef2f2 !important;
   }
 }
-
-
-
 
 // Badge tweaks
 ::ng-deep .mat-badge-warn .mat-badge-content {
