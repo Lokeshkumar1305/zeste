@@ -3,7 +3,9 @@ $sidenav-width: 260px;
 $sidenav-width-tablet: 240px;
 $collapsed-width: 72px;
 $header-height: 64px;
+$header-height-mobile: 56px;
 $breadcrumb-height: 48px;
+$breadcrumb-height-mobile: 44px;
 
 // ===== Breakpoints =====
 $mobile-breakpoint: 768px;
@@ -39,8 +41,10 @@ $large-desktop-breakpoint: 1536px;
 .app-layout {
   display: flex;
   min-height: 100vh;
-  min-height: 100dvh; // Dynamic viewport height
+  min-height: 100dvh;
   background: #f9fafb;
+  margin: 0;
+  padding: 0;
 }
 
 // ===== Main Area =====
@@ -49,6 +53,8 @@ $large-desktop-breakpoint: 1536px;
   min-width: 0;
   margin-left: $sidenav-width;
   transition: margin-left 0.3s ease;
+  margin: 0;
+  padding: 0;
 
   @include tablet {
     margin-left: $sidenav-width-tablet;
@@ -72,9 +78,10 @@ $large-desktop-breakpoint: 1536px;
   padding-top: calc(#{$header-height} + #{$breadcrumb-height});
   min-height: 100vh;
   min-height: 100dvh;
+  margin: 0;
 
   @include mobile {
-    padding-top: calc(#{$header-height} + 44px); // Smaller breadcrumb on mobile
+    padding-top: calc(#{$header-height-mobile} + #{$breadcrumb-height-mobile});
   }
 }
 
@@ -99,7 +106,6 @@ $large-desktop-breakpoint: 1536px;
 
 // ===== Global Responsive Utilities =====
 :host {
-  // CSS Custom Properties for easy theming
   --sidenav-width: #{$sidenav-width};
   --sidenav-collapsed-width: #{$collapsed-width};
   --header-height: #{$header-height};
@@ -111,6 +117,7 @@ $large-desktop-breakpoint: 1536px;
 
   @include mobile {
     --sidenav-width: 0px;
-    --breadcrumb-height: 44px;
+    --header-height: #{$header-height-mobile};
+    --breadcrumb-height: #{$breadcrumb-height-mobile};
   }
 }

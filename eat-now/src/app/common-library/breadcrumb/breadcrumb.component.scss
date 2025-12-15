@@ -1,90 +1,210 @@
-:host {
-  --breadcrumb-height: 48px;
-  --brand-primary: #ab47bc; /* Match the purple color from your screenshot */
-  --text-color: #212121;
-  --text-muted: #757575;
-}
+// ===== Variables =====
+$header-height: 64px;
+$header-height-mobile: 56px;
+$breadcrumb-height: 48px;
+$breadcrumb-height-mobile: 44px;
+$sidenav-width: 260px;
+$sidenav-width-tablet: 240px;
+$collapsed-width: 72px;
 
-.secondary-header {
-  position: fixed;
-  top: var(--header-height);   // already using this
-  left: 250px;                 // width of expanded sidenav
-  right: 0;
-  height: var(--breadcrumb-height);
-  z-index: 997;
-  background: var(--card-background) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+$text-muted: #9ca3af;
+$primary-color: #1e40af;
+$border-color: #e5e7eb;
+$hover-color: #3b82f6;
 
-  @media (max-width: 767.98px) {
-    left: 0;
-    padding: 0 16px;
+// ===== Breakpoints =====
+$mobile-breakpoint: 768px;
+$tablet-breakpoint: 1024px;
+
+@mixin mobile {
+  @media (max-width: #{$mobile-breakpoint - 1px}) {
+    @content;
   }
 }
 
-/* collapsed */
-.secondary-header.collapsed {
-  left: 72px;                  // width of collapsed sidenav
+@mixin tablet {
+  @media (min-width: $mobile-breakpoint) and (max-width: #{$tablet-breakpoint - 1px}) {
+    @content;
+  }
 }
 
-.breadcrumb-inner {
+// ===== Breadcrumb Bar =====
+.breadcrumb-bar {
+  position: fixed;
+  top: $header-height;
+  left: $sidenav-width;
+  right: 0;
+  height: $breadcrumb-height;
+  background: #ffffff;
+  border-bottom: 1px solid $border-color;
+  z-index: 998;
   display: flex;
+  align-items: center;
+  padding: 0 24px;
+  transition: left 0.3s ease, top 0.3s ease;
+  margin: 0;
+  border-top: none;
+
+  @include tablet {
+    left: $sidenav-width-tablet;
+    padding: 0 16px;
+  }
+
+  @include mobile {
+    top: $header-height-mobile;
+    left: 0;
+    padding: 0 12px;
+    height: $breadcrumb-height-mobile;
+    margin: 0;
+    border-top: none;
+  }
+
+  &.collapsed {
+    left: $collapsed-width;
+
+    @include mobile {
+      left: 0;
+    }
+  }
+}
+
+.breadcrumb-content {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
+  gap: 16px;
+  margin: 0;
+  
+  @include mobile {
+    gap: 12px;
+  }
 }
 
-.breadcrumb {
+.breadcrumb-list {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
 }
 
-.crumb {
+.breadcrumb-item {
   display: flex;
   align-items: center;
-  line-height: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  
+  &:not(:last-child)::after {
+    content: '›';
+    color: $text-muted;
+    margin: 0 6px;
+    font-size: 18px;
+    flex-shrink: 0;
+    
+    @include mobile {
+      margin: 0 4px;
+      font-size: 16px;
+    }
+  }
 }
 
-.crumb-link {
-  color: var(--text-color);
+.breadcrumb-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   text-decoration: none;
+  color: $text-secondary;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
 
   &:hover {
-    text-decoration: underline;
+    color: $hover-color;
+    background: rgba($hover-color, 0.08);
+  }
+
+  @include mobile {
+    font-size: 13px;
+    padding: 4px 6px;
+    gap: 4px;
   }
 }
 
-.crumb-current {
-  color: var(--text-muted);
-  font-family: 'Inter', sans-serif; /* Assuming Inter is the font family */
+.breadcrumb-current {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $text-primary;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
 
-  &.active {
-    color: var(--brand-primary);
+  @include mobile {
+    font-size: 13px;
+    padding: 4px 6px;
+    max-width: 140px;
+    gap: 4px;
   }
 }
 
+.breadcrumb-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: inherit;
+  flex-shrink: 0;
+  margin: 0 !important;
 
-
-.crumb-icon {
-  font-size: 16px;
-  margin-right: 4px;
-  vertical-align: middle;
+  @include mobile {
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+  }
 }
 
-.crumb-sep {
-  font-size: 20px; /* Increased size for better visibility */
-  color: var(--text-muted);
-  margin-top: 5px;
-  vertical-align: middle; /* Ensure vertical alignment */
+.breadcrumb-separator {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: $text-muted;
+  margin: 0 2px;
+  flex-shrink: 0;
+
+  @include mobile {
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0;
+  }
 }
 
 .breadcrumb-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  
+  @include mobile {
+    gap: 4px;
+  }
 }
