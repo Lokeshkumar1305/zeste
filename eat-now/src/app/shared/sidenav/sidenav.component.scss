@@ -35,7 +35,6 @@ $desktop-breakpoint: 1280px;
   align-items: center;
 }
 
-// FIXED: Single argument mixin
 @mixin transition($props: all) {
   transition: $props $transition-speed ease;
 }
@@ -66,7 +65,8 @@ $desktop-breakpoint: 1280px;
 
 // ===== Base Styles =====
 .sidenav-wrapper {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
   position: relative;
 }
 
@@ -79,7 +79,6 @@ $desktop-breakpoint: 1280px;
   width: $sidenav-width;
   background: #ffffff;
   border-right: 1px solid $border-color;
-  // FIXED: Use direct transition instead of mixin for multiple properties
   transition: width $transition-speed ease, transform $transition-speed ease;
   z-index: 1000;
   display: flex;
@@ -123,7 +122,6 @@ $desktop-breakpoint: 1280px;
   @include flex-align;
   gap: 12px;
   background: white;
-  border-bottom: 1px solid $border-color;
   flex-shrink: 0;
 
   @include mobile {
@@ -148,7 +146,7 @@ $desktop-breakpoint: 1280px;
   .logo-text {
     font-weight: 800;
     font-size: 18px;
-    color: #8A4A9F;
+    color: #8a4a9f;
     letter-spacing: 1px;
     white-space: nowrap;
 
@@ -186,11 +184,15 @@ $desktop-breakpoint: 1280px;
   overflow-y: auto;
   overflow-x: visible;
   padding: 12px 0;
-  scrollbar-width: thin;
-  scrollbar-color: $border-color transparent;
+
+  // hide scrollbar but keep scrolling
+  scrollbar-width: none;        // Firefox
+  -ms-overflow-style: none;     // IE / Edge legacy
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 0;
+    height: 0;
+    background: transparent;    // Chrome, Safari, Edge
   }
 
   &::-webkit-scrollbar-track {
@@ -198,8 +200,7 @@ $desktop-breakpoint: 1280px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: $border-color;
-    border-radius: 4px;
+    background: transparent;
   }
 
   @include mobile {
@@ -226,13 +227,26 @@ $desktop-breakpoint: 1280px;
   }
 }
 
+// ===== Horizontal divider between top-level items =====
+.menu-divider {
+  height: 1px;
+  background: $border-color;
+  margin: 8px 16px 0;
+  border-radius: 9999px;
+  flex-shrink: 0;
+
+  @include mobile {
+    margin: 8px 16px 0;
+  }
+}
+
 // ===== Base Menu Item Styles =====
 .menu-item,
 .dashboard-item,
 .group-header {
   height: 44px;
   @include flex-align;
-  margin: 2px 8px;
+  margin: 0 8px;
   border-radius: 8px;
   cursor: pointer;
   @include transition;
@@ -248,7 +262,7 @@ $desktop-breakpoint: 1280px;
 
   @include mobile {
     height: 48px;
-    margin: 2px 8px;
+    margin: 0 8px;
   }
 }
 
@@ -461,7 +475,8 @@ $desktop-breakpoint: 1280px;
 // ===== Floating Card (Collapsed Desktop Only) =====
 .floating-card {
   position: fixed;
-  left: $collapsed-width + 8px;
+  // bring card right next to collapsed sidenav (no white gap)
+  left: $collapsed-width - 1px;
   min-width: 200px;
   max-width: 280px;
   background: #ffffff;
@@ -477,6 +492,7 @@ $desktop-breakpoint: 1280px;
       opacity: 0;
       transform: translateX(-8px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -612,8 +628,13 @@ $desktop-breakpoint: 1280px;
   -webkit-tap-highlight-color: transparent;
 
   @keyframes overlayFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
 }
 
@@ -678,6 +699,16 @@ $desktop-breakpoint: 1280px;
   .logo-section {
     justify-content: center;
     padding: 0 8px;
+  }
+
+  // No line above toggle in collapsed state
+  .collapse-toggle {
+    border-top: none;
+  }
+
+  // remove ALL dividers when sidenav is collapsed
+  .menu-container .menu-divider {
+    display: none;
   }
 }
 

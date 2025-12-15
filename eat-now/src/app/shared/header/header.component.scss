@@ -7,7 +7,7 @@ $collapsed-width: 72px;
 // ===== Icon sizes =====
 $icon-size-desktop: 40px;
 $icon-size-tablet: 36px;
-$icon-size-mobile: 32px;
+$icon-size-mobile: 34px;
 
 // ===== Color system =====
 $primary-color: #1f4ed8;
@@ -97,6 +97,13 @@ $tablet-breakpoint: 1024px;
     left: 0 !important;
     width: 100% !important;
     padding: 0 12px !important;
+    height: 56px;
+    min-height: 56px !important;
+    max-height: 56px !important;
+  }
+
+  @include small-mobile {
+    padding: 0 8px !important;
   }
 
   &.collapsed {
@@ -107,6 +114,13 @@ $tablet-breakpoint: 1024px;
       left: 0 !important;
       width: 100% !important;
     }
+  }
+}
+
+// ===== Hide on mobile utility =====
+.hide-on-mobile {
+  @include mobile {
+    display: none !important;
   }
 }
 
@@ -154,6 +168,10 @@ $tablet-breakpoint: 1024px;
   @include mobile {
     gap: 8px;
   }
+
+  @include small-mobile {
+    gap: 6px;
+  }
 }
 
 .icon-group {
@@ -163,6 +181,10 @@ $tablet-breakpoint: 1024px;
 
   @include mobile {
     gap: 8px;
+  }
+
+  @include small-mobile {
+    gap: 6px;
   }
 }
 
@@ -176,7 +198,7 @@ $tablet-breakpoint: 1024px;
   color: $icon-color !important;
   box-shadow: none !important;
   position: relative;
-  overflow: hidden !important;
+  overflow: visible !important;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
@@ -184,13 +206,19 @@ $tablet-breakpoint: 1024px;
   box-sizing: border-box !important;
   flex-shrink: 0;
 
-  // icon inside
   mat-icon,
   i {
     font-size: 20px !important;
     width: 20px !important;
     height: 20px !important;
     line-height: 20px !important;
+
+    @include mobile {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+      line-height: 18px !important;
+    }
   }
 
   &:hover {
@@ -200,7 +228,7 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-/* Force size of Material icon buttons (desktop/tablet/mobile) */
+/* Force size of Material icon buttons */
 :host ::ng-deep button.mat-mdc-icon-button.action-btn.circle-icon-btn {
   width: $icon-size-desktop !important;
   height: $icon-size-desktop !important;
@@ -217,7 +245,7 @@ $tablet-breakpoint: 1024px;
     min-height: $icon-size-tablet !important;
   }
 
-  @include small-mobile {
+  @include mobile {
     width: $icon-size-mobile !important;
     height: $icon-size-mobile !important;
     min-width: $icon-size-mobile !important;
@@ -236,7 +264,12 @@ $tablet-breakpoint: 1024px;
   border-left: 1px solid $header-border;
 
   @include mobile {
-    padding-left: 10px;
+    padding-left: 8px;
+    margin-left: 2px;
+  }
+
+  @include small-mobile {
+    padding-left: 6px;
   }
 }
 
@@ -261,6 +294,12 @@ $tablet-breakpoint: 1024px;
   font-weight: 600;
   font-size: 14px;
   color: #2563eb;
+
+  @include mobile {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
 }
 
 .avatar-img {
@@ -320,6 +359,12 @@ $tablet-breakpoint: 1024px;
   gap: 8px !important;
   padding: 4px 12px 4px 4px !important;
 
+  @include mobile {
+    min-height: 40px !important;
+    padding: 4px 6px 4px 4px !important;
+    gap: 4px !important;
+  }
+
   &:hover {
     background: rgba(0, 0, 0, 0.04) !important;
   }
@@ -346,7 +391,6 @@ $tablet-breakpoint: 1024px;
   min-width: 16px;
 }
 
-// Only color / hover here, NO width/height so circles stay correct
 .notification-btn,
 .profile-btn {
   color: #6b7280 !important;
@@ -357,7 +401,6 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-// (legacy user-profile styles, if used elsewhere)
 .user-profile {
   display: flex;
   align-items: center;
@@ -425,23 +468,37 @@ $tablet-breakpoint: 1024px;
   box-shadow: 0 10px 40px rgba(15, 23, 42, 0.18) !important;
   max-width: 95vw !important;
 
+  @include mobile {
+    border-radius: 10px !important;
+  }
+
   .mat-mdc-menu-content {
     padding: 0 !important;
   }
 }
 
+// ======================================================
+// NOTIFICATION MENU - MOBILE OPTIMIZED
+// ======================================================
 ::ng-deep .notification-menu {
   min-width: 320px !important;
   max-width: 380px !important;
 
+  @include tablet {
+    min-width: 300px !important;
+    max-width: 340px !important;
+  }
+
   @include mobile {
-    min-width: 280px !important;
-    max-width: calc(100vw - 24px) !important;
+    min-width: 260px !important;
+    max-width: 300px !important;
+    margin-right: 8px;
   }
 
   @include small-mobile {
-    min-width: 260px !important;
-    max-width: calc(100vw - 16px) !important;
+    min-width: 240px !important;
+    max-width: 280px !important;
+    margin-right: 4px;
   }
 }
 
@@ -453,13 +510,29 @@ $tablet-breakpoint: 1024px;
   padding: 14px 16px;
   gap: 8px;
 
+  @include mobile {
+    padding: 10px 12px;
+  }
+
+  @include small-mobile {
+    padding: 8px 10px;
+  }
+
   .menu-title {
     font-size: 16px;
     font-weight: 600;
     color: $text-primary;
 
+    @include mobile {
+      font-size: 14px;
+    }
+
     i {
       font-size: 18px;
+
+      @include mobile {
+        font-size: 16px;
+      }
     }
   }
 
@@ -468,6 +541,17 @@ $tablet-breakpoint: 1024px;
     color: $primary-color;
     padding: 4px 8px !important;
     min-height: auto !important;
+
+    @include mobile {
+      font-size: 11px;
+      padding: 3px 6px !important;
+    }
+
+    @include small-mobile {
+      .mark-read-text {
+        display: none;
+      }
+    }
   }
 }
 
@@ -475,6 +559,14 @@ $tablet-breakpoint: 1024px;
 .notification-list {
   max-height: 320px;
   overflow-y: auto;
+
+  @include mobile {
+    max-height: 250px;
+  }
+
+  @include small-mobile {
+    max-height: 220px;
+  }
 }
 
 .empty-state {
@@ -482,10 +574,25 @@ $tablet-breakpoint: 1024px;
   text-align: center;
   color: $text-muted;
 
+  @include mobile {
+    padding: 30px 16px;
+  }
+
   i {
     font-size: 40px;
     margin-bottom: 12px;
     opacity: 0.5;
+
+    @include mobile {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+  }
+
+  p {
+    @include mobile {
+      font-size: 13px;
+    }
   }
 }
 
@@ -496,6 +603,18 @@ $tablet-breakpoint: 1024px;
   align-items: flex-start !important;
   gap: 12px !important;
   white-space: normal !important;
+
+  @include mobile {
+    padding: 10px 12px !important;
+    min-height: 56px !important;
+    gap: 10px !important;
+  }
+
+  @include small-mobile {
+    padding: 8px 10px !important;
+    min-height: 50px !important;
+    gap: 8px !important;
+  }
 
   &.unread {
     background: $active-bg;
@@ -516,8 +635,30 @@ $tablet-breakpoint: 1024px;
     align-items: center;
     justify-content: center;
 
+    @include mobile {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 8px;
+    }
+
+    @include small-mobile {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border-radius: 6px;
+    }
+
     i {
       font-size: 20px;
+
+      @include mobile {
+        font-size: 16px;
+      }
+
+      @include small-mobile {
+        font-size: 14px;
+      }
     }
 
     &.info {
@@ -548,6 +689,10 @@ $tablet-breakpoint: 1024px;
     flex-direction: column;
     gap: 3px;
     overflow: hidden;
+
+    @include mobile {
+      gap: 2px;
+    }
   }
 
   .notif-title {
@@ -557,6 +702,14 @@ $tablet-breakpoint: 1024px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @include mobile {
+      font-size: 13px;
+    }
+
+    @include small-mobile {
+      font-size: 12px;
+    }
   }
 
   .notif-description {
@@ -567,24 +720,58 @@ $tablet-breakpoint: 1024px;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+
+    @include mobile {
+      font-size: 12px;
+      -webkit-line-clamp: 2;
+      line-height: 1.3;
+    }
+
+    @include small-mobile {
+      font-size: 11px;
+      -webkit-line-clamp: 1;
+    }
   }
 
   .notif-time {
     font-size: 11px;
     color: $text-muted;
 
+    @include mobile {
+      font-size: 10px;
+    }
+
     i {
       margin-right: 4px;
       font-size: 12px;
+
+      @include mobile {
+        font-size: 10px;
+        margin-right: 2px;
+      }
     }
   }
 
   .notif-dismiss {
     margin-left: 8px !important;
     flex-shrink: 0;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+
+    @include mobile {
+      width: 24px !important;
+      height: 24px !important;
+      min-width: 24px !important;
+      margin-left: 4px !important;
+    }
 
     i {
       font-size: 16px;
+
+      @include mobile {
+        font-size: 14px;
+      }
     }
   }
 }
@@ -598,36 +785,78 @@ $tablet-breakpoint: 1024px;
   font-weight: 500 !important;
   padding: 12px 16px !important;
 
+  @include mobile {
+    padding: 10px 12px !important;
+    font-size: 13px;
+    gap: 6px;
+  }
+
   i {
     font-size: 16px;
+
+    @include mobile {
+      font-size: 14px;
+    }
   }
 }
 
-// Profile menu
+// ======================================================
+// Profile menu (profile card dropdown)
+// ======================================================
 ::ng-deep .profile-menu {
-  min-width: 240px !important;
-  max-width: 280px !important;
+  min-width: 260px !important;
+  max-width: 320px !important;
+
+  @include mobile {
+    min-width: 230px !important;
+    max-width: 260px !important;
+  }
+
+  .mat-mdc-menu-content {
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
 }
 
 .profile-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 20px 16px;
-  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
-  color: #ffffff;
+  gap: 12px;
+  padding: 16px 20px 12px;
+  background: #ffffff;
+  color: $text-primary;
+
+  @include mobile {
+    padding: 14px 14px 10px;
+    gap: 10px;
+  }
 
   .avatar-large {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.18);
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 9999px;
+    background: #eff6ff;
+    color: #1d4ed8;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 600;
+    font-size: 16px;
+
+    @include mobile {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      font-size: 14px;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      object-fit: cover;
+    }
   }
 
   .profile-details {
@@ -635,56 +864,74 @@ $tablet-breakpoint: 1024px;
     flex-direction: column;
     min-width: 0;
     overflow: hidden;
+    gap: 2px;
 
     .name {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      @include mobile {
+        font-size: 14px;
+      }
     }
 
     .email {
       font-size: 13px;
-      opacity: 0.9;
+      color: $text-secondary;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-  }
 
-  .status-badge {
-    margin-top: 6px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-size: 11px;
-
-    &.online {
-      background: rgba(16, 185, 129, 0.18);
-      color: #bbf7d0;
-    }
-
-    i {
-      font-size: 8px;
+      @include mobile {
+        font-size: 12px;
+      }
     }
   }
 }
 
+/* dividers inside the profile card */
+::ng-deep .mat-divider.profile-divider {
+  margin: 4px 0;
+  border-top-color: $border-color !important;
+
+  @include mobile {
+    margin: 2px 0;
+  }
+}
+
+/* profile menu items */
 ::ng-deep .profile-menu button.mat-mdc-menu-item {
-  padding: 12px 16px !important;
-  min-height: 48px !important;
+  padding: 10px 20px !important;
+  min-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+
+  @include mobile {
+    padding: 8px 16px !important;
+    min-height: 40px !important;
+  }
 
   i {
     margin-right: 12px;
     color: $text-secondary;
+    font-size: 18px;
+
+    @include mobile {
+      margin-right: 10px;
+      font-size: 16px;
+    }
   }
 
   span {
     color: $text-primary;
     font-size: 14px;
+
+    @include mobile {
+      font-size: 13px;
+    }
   }
 
   &:hover {
@@ -692,6 +939,7 @@ $tablet-breakpoint: 1024px;
   }
 }
 
+/* log out button styling */
 .logout-btn {
   i,
   span {
@@ -703,6 +951,9 @@ $tablet-breakpoint: 1024px;
   }
 }
 
+
+
+
 // Badge tweaks
 ::ng-deep .mat-badge-warn .mat-badge-content {
   background-color: $badge-warn !important;
@@ -711,6 +962,11 @@ $tablet-breakpoint: 1024px;
 ::ng-deep .mat-badge-small.mat-badge-above .mat-badge-content {
   top: 2px !important;
   right: 2px !important;
+
+  @include mobile {
+    top: 0 !important;
+    right: 0 !important;
+  }
 }
 
 ::ng-deep .mat-badge-content {
@@ -719,6 +975,13 @@ $tablet-breakpoint: 1024px;
   width: 18px !important;
   height: 18px !important;
   line-height: 18px !important;
+
+  @include mobile {
+    font-size: 9px !important;
+    width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+  }
 }
 
 // Host
