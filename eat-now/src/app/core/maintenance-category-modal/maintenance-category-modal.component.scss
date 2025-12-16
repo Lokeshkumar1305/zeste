@@ -1,16 +1,29 @@
 .modal-slide-in {
-  width: 520px;
+  width: 720px;
   max-width: 100%;
   background: var(--card-background);
   border-left: 1px solid var(--card-border);
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px 0 0 8px;
+}
+
+/* Full screen on mobile */
+@media (max-width: 768px) {
+  .modal-slide-in {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border-left: none;
+    box-shadow: none;
+  }
 }
 
 .modal-header {
-  padding: 15px;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--card-border);
   background: var(--card-background);
   flex-shrink: 0;
@@ -18,102 +31,9 @@
 
 .modal-body {
   flex: 1;
-  padding: 16px 24px;
+  padding: 20px 24px;
   overflow-y: auto;
-  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-}
-
-.category-sets-container {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 8px;
-  margin-right: -8px;
-}
-
-/* Section styling */
-.category-section {
-  padding: 12px 0;
-}
-
-.section-divider {
-  margin: 5px 0;
-  border: 0;
-  border-top: 1px solid var(--card-border);
-  opacity: 0.6;
-}
-
-/* Fixed layout: fields + delete button */
-.fields-container {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Full-width fields inside container */
-.field-full {
-  width: 100%;
-  display: block;
-}
-
-/* Required asterisk */
-mat-label.required::after {
-  content: " *";
-  color: #d32f2f;
-  font-weight: bold;
-}
-
-/* Delete button wrapper (fixed size) */
-.delete-btn-wrapper,
-.delete-btn-spacer {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 24px; /* Aligns with top of first mat-form-field label */
-}
-
-.delete-btn-spacer {
-  visibility: hidden;
-}
-
-.delete-btn {
-  width: 32px !important;
-  height: 32px !important;
-  line-height: 32px !important;
-  font-size: 16px !important;
-
-  i {
-    font-size: 16px;
-  }
-}
-
-/* Material field tweaks */
-::ng-deep .mat-mdc-form-field {
-  .mdc-notched-outline {
-    border-radius: 6px !important;
-  }
-
-  .mat-mdc-form-field-infix {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
-  }
-}
-
-/* Custom scrollbar */
-.category-sets-container::-webkit-scrollbar {
-  width: 6px;
-}
-.category-sets-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-.category-sets-container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-}
-.category-sets-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.4);
 }
 
 .modal-footer {
@@ -124,21 +44,51 @@ mat-label.required::after {
 }
 
 .modal-footer .btn {
-  min-width: 80px;
+  min-width: 90px;
 }
 
-::ng-deep .mat-mdc-select-arrow {
-  color: var(--text-muted);
+/* Category list container */
+.category-sets-container {
+  max-height: 100%;
 }
 
-/* Animation */
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
+/* Individual category item */
+.category-item {
+  padding: 16px 0;
+}
+
+.section-divider {
+  border-top: 1px solid var(--card-border);
+  opacity: 0.5;
+}
+
+/* Delete button alignment */
+.delete-btn-wrapper {
+  margin-top: 32px;
+  /* Aligns with first form field label */
+  flex-shrink: 0;
+}
+
+.delete-btn {
+  width: 40px;
+  height: 40px;
+}
+
+/* Required asterisk */
+mat-label.required::after {
+  content: " *";
+  color: #d32f2f;
+  margin-left: 4px;
+  font-weight: bold;
+}
+
+/* Material overrides */
+::ng-deep .mat-mdc-form-field {
+  .mdc-notched-outline {
+    border-radius: 8px !important;
   }
-  to {
-    transform: translateX(0);
-    opacity: 1;
+
+  .mat-mdc-form-field-infix {
+    padding: 12px 0 !important;
   }
 }

@@ -40,6 +40,11 @@ export class ExpensesManagementModalComponent {
 
   imagePreviewUrl: SafeUrl | null = null;
 
+  // NEW: Add these properties
+  isImage = false;               // Determines if the uploaded file is an image
+  attachmentName = '';           // File name to display
+  attachmentSize: number = 0;    // File size in bytes
+
   constructor(
     public dialogRef: MatDialogRef<ExpensesManagementModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -52,6 +57,8 @@ export class ExpensesManagementModalComponent {
       }
       if (data.expense.receiptUrl) {
         this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(data.expense.receiptUrl);
+        // If editing an existing expense with a receipt URL, you may want to set name/size here too
+        // (optional, depending on whether backend provides file name/size)
       }
     }
   }
@@ -61,18 +68,25 @@ export class ExpensesManagementModalComponent {
     if (file) {
       this.expense.receiptFile = file;
       this.expense.receiptFileName = file.name;
+
+      // Update preview-related properties
+      this.attachmentName = file.name;
+      this.attachmentSize = file.size;
+      this.isImage = file.type.startsWith('image/');
+
       this.updatePreview(file);
     }
   }
 
   private updatePreview(file: File): void {
-    if (file.type.startsWith('image/')) {
+    if (this.isImage) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(e.target.result);
       };
       reader.readAsDataURL(file);
     } else {
+      // For non-images (e.g., PDF), clear preview image
       this.imagePreviewUrl = null;
     }
   }
@@ -81,10 +95,17 @@ export class ExpensesManagementModalComponent {
     this.expense.receiptFile = undefined;
     this.expense.receiptFileName = undefined;
     this.imagePreviewUrl = null;
+    this.isImage = false;
+    this.attachmentName = '';
+    this.attachmentSize = 0;
+
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
   }
+
+  // Optional: handle existing receiptUrl when editing (if you have file name/size info)
+  // You can call this in constructor if needed
 
   downloadFile(): void {
     if (this.expense.receiptFile) {
@@ -105,6 +126,15 @@ export class ExpensesManagementModalComponent {
     if (this.expense.receiptFile) {
       window.URL.revokeObjectURL(url);
     }
+  }
+
+  // NEW: Helper method to format file size (e.g., 1024 → 1 KB)
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
   onCancel(): void {

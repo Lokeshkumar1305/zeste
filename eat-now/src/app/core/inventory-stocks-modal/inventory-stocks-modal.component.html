@@ -1,19 +1,18 @@
-<!-- inventory-stocks-modal.component.html -->
-<div class="modal-slide-in stock-view">
+<div class="modal-slide-in">
   <!-- Header -->
   <div class="modal-header d-flex align-items-center justify-content-between">
     <div>
       <p class="f-18-m mb-0">
-        <i class="bi bi-boxes me-2"></i>
-        Current Stock Overview
+        <i class="bi bi-boxes me-2"></i> Current Stock Overview
       </p>
       <small class="text-muted">See how much stock you have for each item</small>
     </div>
-    <button mat-icon-button (click)="onClose()">
+    <button mat-icon-button (click)="onClose()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
 
+  <!-- Body -->
   <div class="modal-body">
     <!-- Summary Cards -->
     <div class="summary-cards mb-4">
@@ -21,7 +20,7 @@
         <i class="bi bi-box-seam"></i>
         <div class="info">
           <span class="label">Total Items</span>
-        <span class="value">{{ items.length }}</span>
+          <span class="value">{{ items.length }}</span>
         </div>
       </div>
       <div class="summary-card ok">
@@ -35,7 +34,7 @@
         <i class="bi bi-exclamation-triangle"></i>
         <div class="info">
           <span class="label">Low Stock</span>
-         <span class="value">{{ lowStockCount }}</span>
+          <span class="value">{{ lowStockCount }}</span>
         </div>
       </div>
       <div class="summary-card out">
@@ -47,25 +46,21 @@
       </div>
     </div>
 
-    <!-- Help Box -->
-    <div class="help-box-inline mb-3">
+    <!-- Help Legend -->
+    <div class="help-box-inline mb-4">
       <i class="bi bi-info-circle"></i>
       <span>
-        <strong>🔴 Red</strong> = Out of stock | 
-        <strong>🟡 Yellow</strong> = Low stock (need to buy soon) | 
-        <strong>🟢 Green</strong> = Enough stock
+        <strong class="text-danger">Red</strong> = Out of stock |
+        <strong class="text-warning">Yellow</strong> = Low stock |
+        <strong class="text-success">Green</strong> = Enough stock
       </span>
     </div>
 
     <!-- Filters -->
-    <div class="filter-bar mb-3">
+    <div class="filter-bar mb-4">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input 
-          type="text" 
-          [(ngModel)]="searchTerm" 
-          (ngModelChange)="filterItems()"
-          placeholder="Search items..." />
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterItems()" placeholder="Search items..." />
       </div>
       <select [(ngModel)]="filterCategory" (ngModelChange)="filterItems()" class="filter-select">
         <option value="">All Categories</option>
@@ -75,17 +70,16 @@
         <option value="all">All Status</option>
         <option value="ok">In Stock</option>
         <option value="low">Low Stock</option>
+        <option value="out">Out of Stock</option>
       </select>
     </div>
 
     <!-- Stock List -->
     <div class="stock-list">
-      <div class="stock-item" *ngFor="let item of filteredItems" 
-           [class.status-ok]="getStockStatus(item) === 'ok'"
-           [class.status-low]="getStockStatus(item) === 'low'"
-           [class.status-out]="getStockStatus(item) === 'out'">
+      <div class="stock-item" *ngFor="let item of filteredItems" [class.status-ok]="getStockStatus(item) === 'ok'"
+        [class.status-low]="getStockStatus(item) === 'low'" [class.status-out]="getStockStatus(item) === 'out'">
         <div class="item-info">
-          <span class="item-name"></span>
+          <span class="item-name">{{ item.name }}</span>
           <span class="item-category">{{ item.categoryName || 'Uncategorized' }}</span>
         </div>
         <div class="stock-info">
@@ -103,9 +97,9 @@
       </div>
 
       <div class="no-items" *ngIf="filteredItems.length === 0">
-        <i class="bi bi-inbox"></i>
+        <i class="bi bi-inbox fs-1"></i>
         <p>No items found</p>
-        <small>Try changing your search or filters</small>
+        <small>Try adjusting your search or filters</small>
       </div>
     </div>
 
@@ -117,9 +111,7 @@
   </div>
 
   <!-- Footer -->
-  <div class="modal-footer d-flex justify-content-end mt-4">
-    <button type="button" class="btn btn-outline-secondary" >
-      Close
-    </button>
+  <div class="modal-footer d-flex justify-content-end">
+    <button mat-stroked-button (click)="onClose()">Close</button>
   </div>
 </div>

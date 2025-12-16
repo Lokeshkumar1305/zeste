@@ -29,7 +29,7 @@ export class MaintenanceCategoryComponent {
   public filteredCategories: MaintenanceCategory[] = [];
   public pagedCategories: MaintenanceCategory[] = [];
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     // Seed sample data
@@ -112,7 +112,8 @@ export class MaintenanceCategoryComponent {
   // ─────────────────────────────────── CRUD ───────────────────────────────────
   onAddNewMaintenance(): void {
     const dialogRef = this.dialog.open(MaintenanceCategoryModalComponent, {
-      width: '480px',
+      width: '720px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -139,7 +140,8 @@ export class MaintenanceCategoryComponent {
 
   onEditCategory(category: MaintenanceCategory): void {
     const dialogRef = this.dialog.open(MaintenanceCategoryModalComponent, {
-      width: '480px',
+      width: '720px',
+    maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',

@@ -218,6 +218,7 @@ export class InventoryMovementsComponent {
   onAddNewRoom(): void {
     const dialogRef = this.dialog.open(InventoryMovementsModalComponent, {
       width: '800px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -239,7 +240,8 @@ export class InventoryMovementsComponent {
 
   onEditRoom(room: RoomDetails): void {
     const dialogRef = this.dialog.open(InventoryMovementsModalComponent, {
-      width: '800px',
+     width: '800px',
+     maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',

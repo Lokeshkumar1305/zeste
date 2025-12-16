@@ -107,7 +107,8 @@ export class ExpensesCategoryComponent {
   // ─────────────────────────────────── CRUD ───────────────────────────────────
   onAddNewMaintenance(): void {
     const dialogRef = this.dialog.open(ExpensesCategoryModalComponent, {
-      width: '480px',
+       width: '720px',
+     maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -134,7 +135,8 @@ export class ExpensesCategoryComponent {
 
   onEditCategory(category: MaintenanceCategory): void {
     const dialogRef = this.dialog.open(MaintenanceCategoryModalComponent, {
-      width: '480px',
+     width: '720px',
+     maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',

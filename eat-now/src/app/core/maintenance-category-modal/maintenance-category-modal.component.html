@@ -1,92 +1,73 @@
-<!-- src/app/config/config-modal/config-modal.component.html -->
 <div class="modal-slide-in">
+  <!-- Header -->
   <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">Configure Categories</p>
+    <p class="f-18-m mb-0">Configure Maintenance Categories</p>
     <button mat-icon-button (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
 
-  <!-- Scrollable Body -->
+  <!-- Body -->
   <div class="modal-body">
     <form #cfgForm="ngForm">
       <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <mat-label class="fw-semibold">Categories</mat-label>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h6 class="mb-0 fw-semibold">Categories</h6>
           <button mat-stroked-button color="primary" (click)="addCategorySet()" class="btn-sm">
-            + Add Category
+            <i class="bi bi-plus-circle me-1"></i> Add Category
           </button>
         </div>
 
-        <!-- Scrollable Category Sets -->
+        <!-- Scrollable Category List -->
         <div class="category-sets-container">
-          <div *ngFor="let item of tempCategorySets; let i = index">
-            <!-- Category Section -->
-            <div class="category-section">
-              <div class="d-flex gap-3 align-items-start">
-                <!-- Form Fields (Fixed Width) -->
-                <div class="fields-container">
-                  <!-- Category Name -->
-                  <mat-label class="required">Category Name </mat-label>
-                  <mat-form-field appearance="outline" class="field-full mt-1">
-                    <input
-                      matInput
-                      [(ngModel)]="item.name"
-                      [name]="'catName'+i"
-                      required
-                      placeholder="e.g., Air Conditioning"
-                    />
-                    <mat-error>Category name is required</mat-error>
-                  </mat-form-field>
+          <div *ngFor="let item of tempCategorySets; let i = index" class="category-item">
+            <div class="d-flex align-items-start gap-4">
+              <!-- Fields -->
+              <div class="fields-container flex-grow-1">
+                <mat-label class="required">Category Name</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <input matInput [(ngModel)]="item.name" [name]="'catName' + i" required
+                    placeholder="e.g., Air Conditioning" />
+                  <mat-error>Category name is required</mat-error>
+                </mat-form-field>
 
-                  <!-- Description -->
-                  <mat-label>Description</mat-label>
-                  <mat-form-field appearance="outline" class="field-full mt-1">
-                    <textarea
-                      matInput
-                      [(ngModel)]="item.description"
-                      [name]="'catDesc'+i"
-                      rows="2"
-                      placeholder="Brief description..."
-                    ></textarea>
-                  </mat-form-field>
-                </div>
+                <mat-label>Description (optional)</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <textarea matInput rows="3" [(ngModel)]="item.description" [name]="'catDesc' + i"
+                    placeholder="Brief description of this category..."></textarea>
+                </mat-form-field>
+              </div>
 
-                <!-- Delete Button (Fixed Size & Only from 2nd) -->
-                <div class="delete-btn-wrapper" *ngIf="i > 0">
-                  <button
-                    mat-icon-button
-                    color="warn"
-                    (click)="removeCategorySet(i)"
-                    class="delete-btn"
-                    matTooltip="Delete category"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-
-                <!-- Invisible spacer when no delete button -->
-                <div class="delete-btn-spacer" *ngIf="i === 0"></div>
+              <!-- Delete Button (hidden for first item) -->
+              <div class="delete-btn-wrapper" *ngIf="tempCategorySets.length > 1">
+                <button mat-icon-button color="warn" (click)="removeCategorySet(i)" matTooltip="Remove category"
+                  class="delete-btn">
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
             </div>
 
-            <!-- Divider except after last -->
-            <hr *ngIf="i < tempCategorySets.length - 1" class="section-divider" />
+            <!-- Divider -->
+            <hr *ngIf="i < tempCategorySets.length - 1" class="section-divider my-4" />
+          </div>
+
+          <!-- Empty state -->
+          <div *ngIf="tempCategorySets.length === 0" class="text-center text-muted py-5">
+            No categories added yet. Click "+ Add Category" to begin.
           </div>
         </div>
       </div>
     </form>
   </div>
 
-  <!-- Sticky Footer -->
-  <div class="modal-footer d-flex justify-content-end gap-2">
-    <button class="btn btn-outline-secondary btn-sm" (click)="onCancel()">Cancel</button>
-    <button
-      class="btn btn-primary btn-sm"
-      (click)="onSave()"
-      [disabled]="!cfgForm.valid || !hasValidCategories()"
-    >
-      Save Configuration
+  <!-- Footer -->
+  <div class="modal-footer d-flex justify-content-end gap-3">
+    <button mat-stroked-button (click)="onCancel()">
+      Cancel
+    </button>
+    <button mat-flat-button color="primary" (click)="onSave()"
+      [disabled]="!cfgForm.valid || tempCategorySets.length === 0 || !hasValidCategories()">
+      Save Categories
     </button>
   </div>
 </div>

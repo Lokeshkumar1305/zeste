@@ -203,3 +203,15 @@ mat-label.required::after {
   color: #666;
   font-size: 12px;
 }
+
+/* Full screen on mobile */
+@media (max-width: 768px) {
+  .modal-slide-in {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border-left: none;
+    box-shadow: none;
+  }
+}

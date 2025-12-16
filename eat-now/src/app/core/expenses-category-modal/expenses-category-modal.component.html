@@ -29,38 +29,23 @@
                   <!-- Category Name -->
                   <mat-label class="required">Category Name </mat-label>
                   <mat-form-field appearance="outline" class="field-full mt-1">
-                    <input
-                      matInput
-                      [(ngModel)]="item.name"
-                      [name]="'catName'+i"
-                      required
-                      placeholder="e.g., Air Conditioning"
-                    />
+                    <input matInput [(ngModel)]="item.name" [name]="'catName'+i" required
+                      placeholder="e.g., Air Conditioning" />
                     <mat-error>Category name is required</mat-error>
                   </mat-form-field>
 
                   <!-- Description -->
                   <mat-label>Description</mat-label>
                   <mat-form-field appearance="outline" class="field-full mt-1">
-                    <textarea
-                      matInput
-                      [(ngModel)]="item.description"
-                      [name]="'catDesc'+i"
-                      rows="2"
-                      placeholder="Brief description..."
-                    ></textarea>
+                    <textarea matInput [(ngModel)]="item.description" [name]="'catDesc'+i" rows="2"
+                      placeholder="Brief description..."></textarea>
                   </mat-form-field>
                 </div>
 
                 <!-- Delete Button (Fixed Size & Only from 2nd) -->
                 <div class="delete-btn-wrapper" *ngIf="i > 0">
-                  <button
-                    mat-icon-button
-                    color="warn"
-                    (click)="removeCategorySet(i)"
-                    class="delete-btn"
-                    matTooltip="Delete category"
-                  >
+                  <button mat-icon-button color="warn" (click)="removeCategorySet(i)" class="delete-btn"
+                    matTooltip="Delete category">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
@@ -81,11 +66,7 @@
   <!-- Sticky Footer -->
   <div class="modal-footer d-flex justify-content-end gap-2">
     <button class="btn btn-outline-secondary btn-sm" (click)="onCancel()">Cancel</button>
-    <button
-      class="btn btn-primary btn-sm"
-      (click)="onSave()"
-      [disabled]="!cfgForm.valid || !hasValidCategories()"
-    >
+    <button class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="!cfgForm.valid || !hasValidCategories()">
       Save Configuration
     </button>
   </div>

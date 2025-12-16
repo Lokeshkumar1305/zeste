@@ -9,13 +9,14 @@ import { Supplier, InventoryService } from '../../shared/services/inventory.serv
   styleUrls: ['./inventory-suppliers-modal.component.scss']
 })
 export class InventorySuppliersModalComponent implements OnInit {
-  
+
   supplier: Partial<Supplier> = {
     name: '',
     contactPerson: '',
     phone: '',
     email: '',
     address: '',
+    gst: '',           // ← ADD THIS LINE
     isActive: true
   };
 
@@ -27,6 +28,7 @@ export class InventorySuppliersModalComponent implements OnInit {
     private inventoryService: InventoryService
   ) {
     if (data?.supplier) {
+      // Spread all properties including gst (if it exists in the original)
       this.supplier = { ...data.supplier };
       this.isEditMode = true;
     }

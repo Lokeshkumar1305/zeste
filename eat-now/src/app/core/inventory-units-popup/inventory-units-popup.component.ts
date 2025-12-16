@@ -1,25 +1,6 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { BedsService } from '../../shared/services/beds.service';
-import { RoomConfigService } from '../../shared/services/room-config.service';
-import { AmenitiesManagementModalComponent } from '../amenities-management-modal/amenities-management-modal.component';
-import { RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
-import { RoomType } from '../room-type-management/room-type-management.component';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Unit, InventoryService } from '../../shared/services/inventory.service';
-
-
-export interface RoomDetails {
-  roomNumber: string;
-  type: string;
-  monthlyRent: number | null;
-  securityDeposit: number | null;
-  floor: string | null;
-  beds: number | null;
-  status: string;
-  description: string;
-  amenities: string[];
-}
 
 @Component({
   selector: 'app-inventory-units-popup',
@@ -27,7 +8,7 @@ export interface RoomDetails {
   styleUrl: './inventory-units-popup.component.scss'
 })
 export class InventoryUnitsPopupComponent implements OnInit {
-  
+
   unit: Partial<Unit> = {
     name: '',
     shortName: '',
@@ -37,8 +18,8 @@ export class InventoryUnitsPopupComponent implements OnInit {
 
   isEditMode = false;
 
-  // Example units for hints
-  exampleUnits = [
+  // ← RENAME exampleUnits → quickUnits to match template
+  quickUnits = [
     { name: 'Pieces', short: 'pcs', desc: 'For counting items like chairs, tables' },
     { name: 'Kilograms', short: 'kg', desc: 'For measuring weight like rice, vegetables' },
     { name: 'Liters', short: 'L', desc: 'For measuring liquids like water, oil' },
@@ -59,10 +40,11 @@ export class InventoryUnitsPopupComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  selectExample(example: any): void {
+  // ← ADD THIS METHOD (or rename selectExample → applyQuickUnit)
+  applyQuickUnit(example: any): void {
     this.unit.name = example.name;
     this.unit.shortName = example.short;
-    this.unit.description = example.desc;
+    this.unit.description = example.desc || '';
   }
 
   onCancel(): void {

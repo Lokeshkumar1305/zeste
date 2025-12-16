@@ -63,6 +63,7 @@ export interface Movement {
 export interface Supplier {
   id: string;
   name: string;
+  gst: string;
   contactPerson: string;
   phone: string;
   email: string;

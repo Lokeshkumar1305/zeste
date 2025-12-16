@@ -1,5 +1,5 @@
 .modal-slide-in {
-  width: 520px;
+  width: 720px; 
   max-width: 100%;
   background: var(--card-background);
   border-left: 1px solid var(--card-border);
@@ -140,5 +140,17 @@ mat-label.required::after {
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .modal-slide-in {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border-left: none;
+    box-shadow: none;
   }
 }

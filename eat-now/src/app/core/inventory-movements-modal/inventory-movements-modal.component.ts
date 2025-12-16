@@ -9,7 +9,7 @@ import { InventoryItem, Movement, InventoryService } from '../../shared/services
   styleUrls: ['./inventory-movements-modal.component.scss']
 })
 export class InventoryMovementsModalComponent implements OnInit {
-  
+
   movement: Partial<Movement> = {
     itemId: '',
     type: 'IN',
@@ -23,7 +23,7 @@ export class InventoryMovementsModalComponent implements OnInit {
 
   items: InventoryItem[] = [];
   selectedItem: InventoryItem | null = null;
-  
+
   movementReasons = {
     IN: [
       'Purchased from supplier',
@@ -43,6 +43,15 @@ export class InventoryMovementsModalComponent implements OnInit {
       'Other'
     ]
   };
+
+  // ADD THESE GETTERS TO FIX THE TEMPLATE ERRORS
+  get reasonsIN(): string[] {
+    return this.movementReasons.IN;
+  }
+
+  get reasonsOUT(): string[] {
+    return this.movementReasons.OUT;
+  }
 
   constructor(
     public dialogRef: MatDialogRef<InventoryMovementsModalComponent>,
@@ -71,6 +80,7 @@ export class InventoryMovementsModalComponent implements OnInit {
     return `${prefix}${timestamp}`;
   }
 
+  // Optional: reset reason and reference when type changes
   onTypeChange(): void {
     this.movement.reason = '';
     this.movement.reference = this.generateReference();
@@ -87,7 +97,7 @@ export class InventoryMovementsModalComponent implements OnInit {
   getNewStock(): number {
     if (!this.selectedItem) return 0;
     const qty = this.movement.quantity || 0;
-    return this.movement.type === 'IN' 
+    return this.movement.type === 'IN'
       ? this.selectedItem.currentStock + qty
       : Math.max(0, this.selectedItem.currentStock - qty);
   }
@@ -103,12 +113,13 @@ export class InventoryMovementsModalComponent implements OnInit {
     }
 
     if (this.movement.type === 'OUT' && this.selectedItem) {
-      if (this.movement.quantity > this.selectedItem.currentStock) {
-        alert(`Not enough stock! Current stock is ${this.selectedItem.currentStock}`);
+      if ((this.movement.quantity || 0) > this.selectedItem.currentStock) {
+        alert(`Not enough stock! Current stock is ${this.selectedItem.currentStock} ${this.selectedItem.unitName}`);
         return;
       }
     }
 
+    // Add item name for records
     this.movement.itemName = this.selectedItem?.name;
     this.movement.date = new Date();
 
