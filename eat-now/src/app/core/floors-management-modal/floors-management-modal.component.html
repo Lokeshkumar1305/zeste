@@ -1,6 +1,8 @@
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">Floors Details</p>
+    <p class="f-18-m mb-0">
+      {{ data?.floor ? 'Edit' : 'Add' }} Floor Details
+    </p>
     <button mat-icon-button (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
@@ -8,12 +10,13 @@
 
   <div class="modal-body">
     <form>
-      <div class="row ">
-        <!-- Room ID -->
-        <div class="col-md-12">
+      <div class="row">
+        <!-- Floor No -->
+        <div class="col-12">
           <mat-label class="required">Floor No</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="floor.floorNo" name="floor" placeholder="Unique identifier for the room" required />
+            <input matInput [(ngModel)]="floor.floorNo" name="floorNo" placeholder="e.g. F-01, Ground, Basement"
+              required />
           </mat-form-field>
         </div>
 
@@ -21,26 +24,21 @@
         <div class="col-12">
           <mat-label>Description</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <textarea
-              matInput
-              rows="4"
-              [(ngModel)]="floor.description"
-              name="description"
-              placeholder="Detailed description of the room.">
-            </textarea>
+            <textarea matInput rows="5" [(ngModel)]="floor.description" name="description"
+              placeholder="Detailed description of the floor (optional)."></textarea>
           </mat-form-field>
         </div>
       </div>
     </form>
   </div>
 
-  <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+  <div class="modal-footer d-flex justify-content-end gap-2">
     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
       Cancel
     </button>
-    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
-      <i class="bi bi-check2 me-1"></i> Create Floors
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="!floor.floorNo?.trim()">
+      <i class="bi bi-check2 me-1"></i>
+      {{ data?.floor ? 'Update' : 'Create' }} Floor
     </button>
-
   </div>
 </div>

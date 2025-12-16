@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RoomConfigService } from '../../shared/services/room-config.service';
 
-
 @Component({
   selector: 'app-floors-management-modal',
   templateUrl: './floors-management-modal.component.html',

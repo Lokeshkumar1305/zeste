@@ -203,7 +203,8 @@ export class PaymentManagementComponent {
   /* ------------------- Modal Interactions ------------------- */
   onAddNewPayment(): void {
     const dialogRef = this.dialog.open(PaymentManagementModalComponent, {
-      width: '480px',
+      width: '720px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -226,7 +227,8 @@ export class PaymentManagementComponent {
 
   onEditPayment(payment: PaymentItem): void {
     const dialogRef = this.dialog.open(PaymentManagementModalComponent, {
-      width: '480px',
+     width: '720px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',

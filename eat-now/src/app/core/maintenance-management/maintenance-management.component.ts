@@ -174,7 +174,8 @@ public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
   // Action Handlers
   onAddNewMaintenance(): void {
     const dialogRef = this.dialog.open(MaintenanceManagementModalComponent, {
-      width: '520px',
+      width: '720px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -196,7 +197,8 @@ public selectedCaseFilter: 'All' | 'Open' | 'Closed' | 'On Hold' = 'All';
 
   onEdit(issue: MaintenanceIssue): void {
     const dialogRef = this.dialog.open(MaintenanceManagementModalComponent, {
-      width: '520px',
+     width: '720px',
+     maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',

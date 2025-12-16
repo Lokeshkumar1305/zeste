@@ -1,44 +1,47 @@
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">Payment Details</p>
+    <p class="f-18-m mb-0">
+      {{ data?.payment ? 'Edit' : 'Add' }} Payment Details
+    </p>
     <button mat-icon-button (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
 
   <div class="modal-body">
-    <form>
-      <div class="row">
+    <form #paymentForm="ngForm">
+      <div class="row g-3">
         <!-- Tenant Name -->
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
           <mat-label class="required">Tenant Name</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="payment.tenantName" name="tenantName" placeholder="Enter tenant name" required />
+            <input matInput [(ngModel)]="payment.tenantName" name="tenantName" required placeholder="John Doe" />
           </mat-form-field>
         </div>
 
         <!-- Room Number -->
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
           <mat-label class="required">Room Number</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [(ngModel)]="payment.roomNumber" name="roomNumber" placeholder="e.g., 101" required />
+            <input matInput [(ngModel)]="payment.roomNumber" name="roomNumber" required placeholder="101" />
           </mat-form-field>
         </div>
 
         <!-- Amount -->
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
           <mat-label class="required">Amount</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <span matTextPrefix>$ </span>
-            <input matInput type="number" [(ngModel)]="payment.amount" name="amount" placeholder="0.00" required />
+            <span matTextPrefix>₹&nbsp;</span>
+            <input matInput type="number" [(ngModel)]="payment.amount" name="amount" required min="0"
+              placeholder="8000" />
           </mat-form-field>
         </div>
 
         <!-- Payment Type -->
-        <div class="col-md-6">
-          <mat-label>Payment Type</mat-label>
+        <div class="col-12 col-md-6">
+          <mat-label class="required">Payment Type</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <mat-select [(ngModel)]="payment.paymentType" name="paymentType">
+            <mat-select [(ngModel)]="payment.paymentType" name="paymentType" required>
               <mat-option value="Rent">Rent</mat-option>
               <mat-option value="Deposit">Deposit</mat-option>
               <mat-option value="Utility">Utility</mat-option>
@@ -49,17 +52,17 @@
         </div>
 
         <!-- Due Date -->
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
           <mat-label class="required">Due Date</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <input matInput [matDatepicker]="dueDatePicker" [(ngModel)]="payment.dueDate" name="dueDate" placeholder="mm/dd/yyyy" required />
+            <input matInput [matDatepicker]="dueDatePicker" [(ngModel)]="payment.dueDate" name="dueDate" required />
             <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #dueDatePicker></mat-datepicker>
           </mat-form-field>
         </div>
 
         <!-- Status -->
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
           <mat-label>Status</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="payment.status" name="status">
@@ -72,11 +75,11 @@
         </div>
 
         <!-- Payment Method -->
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
           <mat-label>Payment Method</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="payment.paymentMethod" name="paymentMethod" placeholder="Select method">
-              <mat-option value="">Select method</mat-option>
+              <mat-option value="">-- None --</mat-option>
               <mat-option value="Cash">Cash</mat-option>
               <mat-option value="Bank Transfer">Bank Transfer</mat-option>
               <mat-option value="Credit Card">Credit Card</mat-option>
@@ -90,25 +93,21 @@
         <div class="col-12">
           <mat-label>Notes</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
-            <textarea
-              matInput
-              rows="3"
-              [(ngModel)]="payment.notes"
-              name="notes"
-              placeholder="Additional notes..."
-            ></textarea>
+            <textarea matInput rows="4" [(ngModel)]="payment.notes" name="notes"
+              placeholder="Any additional information..."></textarea>
           </mat-form-field>
         </div>
       </div>
     </form>
   </div>
 
-  <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+  <div class="modal-footer d-flex justify-content-end gap-3">
     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
       Cancel
     </button>
-    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
-      <i class="bi bi-check2 me-1"></i> Create Payment
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="!paymentForm.valid">
+      <i class="bi bi-check2 me-1"></i>
+      {{ data?.payment ? 'Update' : 'Create' }} Payment
     </button>
   </div>
 </div>

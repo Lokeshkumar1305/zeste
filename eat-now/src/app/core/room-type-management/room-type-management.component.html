@@ -1,10 +1,9 @@
 <!-- Page container ensures fixed L/R space and max width -->
 <div class="page-container">
-  <section class="case-card">
-    <!-- Header & Toolbar -->
+  <section class="case-card"> <!-- Header & Toolbar -->
     <div class="d-flex align-items-center justify-content-between mb-3">
       <p class="mb-0 f-18-m text-high-contrast">Room Type Management</p>
-
+    
       <div class="d-flex align-items-center gap-2">
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
@@ -14,7 +13,8 @@
           <i class="bi bi-arrow-counterclockwise"></i>
           <span class="f-12-m">Reset</span>
         </button>
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2" (click)="onAddNewRoom()">
+        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onAddNewRoom()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Room Type</span>
         </button>
@@ -59,6 +59,28 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile Cards View -->
+    <div class="mobile-cards">
+      <div *ngFor="let room of pagedRoomTypes; trackBy: trackByRoomType" class="mobile-card">
+        <div class="mobile-card-header">
+          <span class="f-14-m">{{ room.roomType }}</span>
+        </div>
+        <div class="mobile-card-body">
+          <p class="f-14-r">No. of Beds: {{ room.beds }}</p>
+          <p class="f-14-r text-truncate" [title]="room.description">Description: {{ room.description || '-' }}</p>
+        </div>
+        <div class="mobile-card-footer d-flex justify-content-center gap-3">
+          <button type="button" class="icon-btn" title="Edit" (click)="onEdit(room)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button type="button" class="icon-btn" title="Delete" (click)="onDelete(room)">
+            <i class="bi bi-trash text-danger"></i>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="pagedRoomTypes.length === 0" class="text-center py-4 text-muted">No room types found.</div>
     </div>
 
     <!-- Footer -->

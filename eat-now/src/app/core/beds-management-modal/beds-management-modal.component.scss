@@ -76,10 +76,17 @@ mat-label.required::after {
   background: currentColor;
 }
 
-.status-open .status-dot { background: #20C997; }
-.status-closed .status-dot { background: #6c757d; }
-.status-on-hold .status-dot { background: #FFC107; }
+.status-open .status-dot {
+  background: #20C997;
+}
 
+.status-closed .status-dot {
+  background: #6c757d;
+}
+
+.status-on-hold .status-dot {
+  background: #FFC107;
+}
 
 .amenity-tag {
   display: inline-block;
@@ -104,6 +111,7 @@ mat-label.required::after {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;

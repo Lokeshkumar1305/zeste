@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Bed } from '../../shared/services/beds.service';
 
-
 @Component({
   selector: 'app-beds-management-modal',
   templateUrl: './beds-management-modal.component.html',
@@ -33,7 +32,7 @@ export class BedsManagementModalComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onCancel(): void {
     this.dialogRef.close();

@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RoomConfigService } from '../../shared/services/room-config.service';
 
-
 @Component({
   selector: 'app-room-type-management-modal',
   templateUrl: './room-type-management-modal.component.html',
@@ -32,7 +31,6 @@ export class RoomTypeManagementModalComponent {
 
   onSave(): void {
     if (this.room.roomType && this.room.beds) {
-
       this.dialogRef.close(this.room);
     }
   }

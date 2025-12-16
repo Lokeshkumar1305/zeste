@@ -25,7 +25,7 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private bedsService: BedsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscription = this.bedsService.beds$.subscribe(beds => {
@@ -138,6 +138,8 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
       autoFocus: false,
     });
 
+
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Bed Added:', result);
@@ -157,6 +159,8 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
       autoFocus: false,
       data: { bed }
     });
+
+
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

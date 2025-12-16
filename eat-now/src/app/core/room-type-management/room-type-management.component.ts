@@ -29,7 +29,7 @@ export class RoomTypeManagementComponent implements OnInit {
   public filteredRoomTypes: RoomType[] = [];
   public pagedRoomTypes: RoomType[] = [];
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     // Seed sample Room Type data
@@ -60,6 +60,8 @@ export class RoomTypeManagementComponent implements OnInit {
         description: 'Luxury suite with living area and jacuzzi.'
       }
     ];
+
+
 
     this.applyAllFilters();
   }
@@ -133,50 +135,51 @@ export class RoomTypeManagementComponent implements OnInit {
     return item.roomType;
   }
 
-  // --- CRUD Operations ---
   onAddNewRoom(): void {
-    const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
-      width: '480px',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-dark-backdrop',
-      disableClose: false,
-      autoFocus: false,
-    });
+  const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
+    width: '520px',
+    maxWidth: '100vw',
+    height: '100vh',
+    position: { right: '0', top: '0' },
+    panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
+    hasBackdrop: true,
+    backdropClass: 'cdk-overlay-dark-backdrop',
+    disableClose: false,
+    autoFocus: false,
+  });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.allRoomTypes.push({ ...result });
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.allRoomTypes.push({ ...result });
+      this.applyAllFilters();
+    }
+  });
+}
+
+onEdit(room: RoomType): void {
+  const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
+    width: '520px',
+    maxWidth: '100vw',
+    height: '100vh',
+    position: { right: '0', top: '0' },
+    panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
+    hasBackdrop: true,
+    backdropClass: 'cdk-overlay-dark-backdrop',
+    disableClose: false,
+    autoFocus: false,
+    data: { room: { ...room } }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      const index = this.allRoomTypes.findIndex(r => r.roomType === room.roomType);
+      if (index !== -1) {
+        this.allRoomTypes[index] = { ...result };
         this.applyAllFilters();
       }
-    });
-  }
-
-  onEdit(room: RoomType): void {
-    const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
-      width: '480px',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-dark-backdrop',
-      disableClose: false,
-      autoFocus: false,
-      data: { room: { ...room } }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const index = this.allRoomTypes.findIndex(r => r.roomType === room.roomType);
-        if (index !== -1) {
-          this.allRoomTypes[index] = { ...result };
-          this.applyAllFilters();
-        }
-      }
-    });
-  }
+    }
+  });
+}
 
   onDelete(room: RoomType): void {
     if (confirm(`Are you sure you want to delete room type "${room.roomType}"?`)) {

@@ -2,7 +2,6 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaintenanceService } from '../../shared/services/maintenance.service';
 
-
 export interface MaintenanceIssue {
   tenantName: string;
   roomNumber: string;
@@ -10,11 +9,12 @@ export interface MaintenanceIssue {
   priority: string;
   title: string;
   description: string;
-  
+
   imageFile?: File;         // Actual file
   imagePreview?: string;    // Base64 for preview
   imageName?: string;       // Original filename
 }
+
 @Component({
   selector: 'app-maintenance-management-modal',
   templateUrl: './maintenance-management-modal.component.html',
@@ -37,7 +37,7 @@ export class MaintenanceManagementModalComponent implements OnInit {
   };
 
   categories: string[] = [];
-  priorities: string[] = [];
+  priorities: string[] = ['Low', 'Medium', 'High']; // Fallback
   isSubmitting = false;
 
   constructor(
@@ -52,9 +52,10 @@ export class MaintenanceManagementModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.cfg.config$.subscribe(c => {
-      this.categories = c.categories || [];
-      this.priorities = c.priorities || [];
+      this.categories = c.categories || ['Electrical', 'Plumbing', 'Carpentry', 'Network', 'Cleaning', 'Other'];
+      this.priorities = c.priorities || ['Low', 'Medium', 'High'];
 
+      // Reset invalid selections on edit
       if (this.issue.category && !this.categories.includes(this.issue.category)) {
         this.issue.category = '';
       }
@@ -68,9 +69,12 @@ export class MaintenanceManagementModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const file: File = input.files[0];
+    if (file && file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024) { // 10MB limit
       this.issue.imageFile = file;
       this.issue.imageName = file.name;
 
@@ -79,15 +83,21 @@ export class MaintenanceManagementModalComponent implements OnInit {
         this.issue.imagePreview = e.target.result;
       };
       reader.readAsDataURL(file);
+    } else {
+      alert('Please select a valid image file under 10MB.');
+      input.value = '';
     }
   }
 
-  removeImage(fileInput: HTMLInputElement): void {
+  // FIXED: No parameter needed — uses @ViewChild
+  removeImage(): void {
     this.issue.imageFile = undefined;
     this.issue.imagePreview = '';
     this.issue.imageName = '';
-    if (fileInput) {
-      fileInput.value = '';
+
+    // Clear the actual file input
+    if (this.fileInput?.nativeElement) {
+      this.fileInput.nativeElement.value = '';
     }
   }
 
@@ -102,8 +112,25 @@ export class MaintenanceManagementModalComponent implements OnInit {
     document.body.removeChild(link);
   }
 
+  formatFileSize(bytes?: number): string {
+    if (!bytes) return '0 KB';
+
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
   onSave(): void {
+    if (!this.issue.imageFile) {
+      alert('Please upload a damage image.');
+      return;
+    }
+
     this.isSubmitting = true;
-    this.dialogRef.close(this.issue);
+    setTimeout(() => {
+      this.dialogRef.close(this.issue);
+    }, 500); // Simulate async save
   }
 }

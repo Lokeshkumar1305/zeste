@@ -1,6 +1,7 @@
 /* ========================================
-   1) PAGE CONTAINER
-   ======================================== */
+
+PAGE CONTAINER
+======================================== */
 .page-container {
   --page-gutter: 24px;
   --page-max: 1280px;
@@ -9,8 +10,8 @@
 }
 
 /* ========================================
-   2) CASE CARD
-   ======================================== */
+2) CASE CARD
+======================================== */
 .case-card {
   border: 1px solid var(--card-border);
   background: var(--card-background);
@@ -19,8 +20,8 @@
 }
 
 /* ========================================
-   3) BUTTONS
-   ======================================== */
+3) BUTTONS
+======================================== */
 .btn-secondary {
   color: var(--text-color);
   background: var(--background);
@@ -52,8 +53,8 @@
 }
 
 /* ========================================
-   4) DIVIDER
-   ======================================== */
+4) DIVIDER
+======================================== */
 .toolbar-divider {
   height: 1px;
   background: var(--card-border);
@@ -61,8 +62,8 @@
 }
 
 /* ========================================
-   5) FILTER SECTION
-   ======================================== */
+5) FILTER SECTION
+======================================== */
 .filter-section {
   padding: 12px;
   background: var(--input-background);
@@ -98,8 +99,8 @@
 }
 
 /* ========================================
-   6) BEDS GRID
-   ======================================== */
+6) BEDS GRID
+======================================== */
 .beds-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -108,8 +109,8 @@
 }
 
 /* ========================================
-   7) BED CARD
-   ======================================== */
+7) BED CARD
+======================================== */
 .bed-card {
   border: 1px solid var(--card-border);
   background: var(--card-background);
@@ -290,8 +291,8 @@
 }
 
 /* ========================================
-   8) EMPTY STATE
-   ======================================== */
+8) EMPTY STATE
+======================================== */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -316,8 +317,8 @@
 }
 
 /* ========================================
-   9) ROWS PER PAGE
-   ======================================== */
+9) ROWS PER PAGE
+======================================== */
 .rows-per-page {
   min-width: 72px;
   color: var(--text-color);
@@ -329,8 +330,8 @@
 }
 
 /* ========================================
-   10) FOOTER & PAGINATION
-   ======================================== */
+10) FOOTER & PAGINATION
+======================================== */
 .table-footer {
   display: flex;
   flex-wrap: wrap;
@@ -338,8 +339,6 @@
   justify-content: space-between;
   gap: 12px;
   margin-top: 12px;
-  padding-top: 16px;
-  border-top: 1px solid var(--card-border);
   color: var(--text-secondary);
 }
 
@@ -402,8 +401,8 @@
 }
 
 /* ========================================
-   11) RESPONSIVE
-   ======================================== */
+11) RESPONSIVE
+======================================== */
 @media (max-width: 768px) {
   .beds-grid {
     grid-template-columns: 1fr;

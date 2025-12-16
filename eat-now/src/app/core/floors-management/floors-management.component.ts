@@ -27,7 +27,7 @@ export class FloorsManagementComponent implements OnInit {
   public filteredFloors: Floor[] = [];
   public pagedFloors: Floor[] = [];
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     /* Seed sample floors – you can replace with a real API call */
@@ -41,6 +41,8 @@ export class FloorsManagementComponent implements OnInit {
       { floorNo: 'F-07', description: 'Utility floor', status: 'Active' },
       { floorNo: 'F-08', description: 'Guest suites', status: 'Active' }
     ];
+
+
 
     this.applyAllFilters();
   }
@@ -123,35 +125,35 @@ export class FloorsManagementComponent implements OnInit {
   }
 
   private openFloorModal(floor?: Floor): void {
-    const dialogRef = this.dialog.open(FloorsManagementModalComponent, {
-      width: '480px',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-dark-backdrop',
-      disableClose: false,
-      autoFocus: false,
-      data: { floor }                     // pass existing floor for edit
-    });
+  const dialogRef = this.dialog.open(FloorsManagementModalComponent, {
+    width: '520px',
+    maxWidth: '100vw',
+    height: '100vh',
+    position: { right: '0', top: '0' },
+    panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
+    hasBackdrop: true,
+    backdropClass: 'cdk-overlay-dark-backdrop',
+    disableClose: false,
+    autoFocus: false,
+    data: { floor: floor ? { ...floor } : null }
+  });
 
-    dialogRef.afterClosed().subscribe((result: Floor | undefined) => {
-      if (result) {
-        // ---- EDIT ----
-        if (floor) {
-          const idx = this.allFloors.findIndex(f => f.floorNo === floor.floorNo);
-          if (idx > -1) {
-            this.allFloors[idx] = { ...result, status: this.allFloors[idx].status };
-          }
+  dialogRef.afterClosed().subscribe((result: Floor | undefined) => {
+    if (result) {
+      if (floor) {
+        // Edit: preserve original status
+        const idx = this.allFloors.findIndex(f => f.floorNo === floor.floorNo);
+        if (idx > -1) {
+          this.allFloors[idx] = { ...result, status: this.allFloors[idx].status };
         }
-        // ---- CREATE ----
-        else {
-          this.allFloors.push({ ...result, status: 'Active' });
-        }
-        this.applyAllFilters();
+      } else {
+        // Create: default to Active
+        this.allFloors.push({ ...result, status: 'Active' });
       }
-    });
-  }
+      this.applyAllFilters();
+    }
+  });
+}
 
   deleteFloor(floorNo: string): void {
     if (confirm(`Delete floor ${floorNo}?`)) {
