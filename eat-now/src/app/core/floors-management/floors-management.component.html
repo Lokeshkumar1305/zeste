@@ -1,9 +1,10 @@
-<!-- Page container ensures fixed L/R space and max width -->
 <div class="page-container">
-  <section class="case-card"> <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
+  <section class="case-card">
+    <!-- Header & Toolbar -->
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
       <p class="mb-0 f-18-m text-high-contrast">Floors Details</p>
-      <div class="d-flex align-items-center gap-2">
+
+      <div class="d-flex align-items-center gap-2 flex-wrap">
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="f-12-m">Filter</span>
@@ -15,14 +16,14 @@
         <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
           (click)="onAddNewFloor()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Floors</span>
+          <span class="f-14-m">Add New Floor</span>
         </button>
       </div>
     </div>
 
     <div class="toolbar-divider"></div>
 
-    <!-- Table -->
+    <!-- Desktop/Tablet: Table View -->
     <div class="table-container">
       <table class="case-table" role="table" aria-label="Floors">
         <thead>
@@ -33,7 +34,6 @@
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
-
         <tbody>
           <tr *ngFor="let floor of pagedFloors; trackBy: trackByFloorNo" class="table-row-hover">
             <td class="f-14-m">{{ floor.floorNo }}</td>
@@ -58,7 +58,6 @@
               </div>
             </td>
           </tr>
-
           <tr *ngIf="pagedFloors.length === 0">
             <td colspan="4" class="text-center py-4 text-muted">No floors found.</td>
           </tr>
@@ -66,19 +65,29 @@
       </table>
     </div>
 
-    <!-- Mobile Cards View -->
+    <!-- Mobile: Card View (Matching Your Image) -->
     <div class="mobile-cards">
       <div *ngFor="let floor of pagedFloors; trackBy: trackByFloorNo" class="mobile-card">
         <div class="mobile-card-header">
-          <span class="f-14-m">{{ floor.floorNo }}</span>
+          <div class="room-title f-16-m fw-semibold">{{ floor.floorNo }}</div>
+          <div class="room-subtitle mt-2">
+            <span class="status-pill" [ngClass]="{
+                'status-active': floor.status === 'Active',
+                'status-inactive': floor.status === 'Inactive'
+              }">
+              <span class="status-dot"></span>
+              {{ floor.status }}
+            </span>
+          </div>
         </div>
+
         <div class="mobile-card-body">
-          <p class="f-14-r">Description: {{ floor.description || '-' }}</p>
-          <p>Status: <span class="status-pill"
-              [ngClass]="{'status-active': floor.status === 'Active', 'status-inactive': floor.status === 'Inactive'}"><span
-                class="status-dot"></span>{{ floor.status }}</span></p>
+          <p class="f-14-r mb-0">
+            <strong>Description:</strong> {{ floor.description || '-' }}
+          </p>
         </div>
-        <div class="mobile-card-footer d-flex justify-content-center gap-3">
+
+        <div class="mobile-card-footer d-flex justify-content-end gap-3">
           <button type="button" class="icon-btn" title="Edit" (click)="openEditModal(floor)">
             <i class="bi bi-pencil-square"></i>
           </button>
@@ -87,12 +96,15 @@
           </button>
         </div>
       </div>
-      <div *ngIf="pagedFloors.length === 0" class="text-center py-4 text-muted">No floors found.</div>
+
+      <div *ngIf="pagedFloors.length === 0" class="text-center py-5 text-muted">
+        No floors found.
+      </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer (Visible on Both Desktop & Mobile) -->
     <div class="table-footer">
-      <div class="footer-left">
+      <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
           Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>

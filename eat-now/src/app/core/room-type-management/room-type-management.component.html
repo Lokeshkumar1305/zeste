@@ -1,10 +1,10 @@
-<!-- Page container ensures fixed L/R space and max width -->
 <div class="page-container">
-  <section class="case-card"> <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
+  <section class="case-card">
+    <!-- Header & Toolbar -->
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
       <p class="mb-0 f-18-m text-high-contrast">Room Type Management</p>
-    
-      <div class="d-flex align-items-center gap-2">
+
+      <div class="d-flex align-items-center gap-2 flex-wrap">
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="f-12-m">Filter</span>
@@ -23,7 +23,7 @@
 
     <div class="toolbar-divider"></div>
 
-    <!-- Table -->
+    <!-- Desktop/Tablet: Table View -->
     <div class="table-container">
       <table class="case-table" role="table" aria-label="Room Types">
         <thead>
@@ -34,7 +34,6 @@
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
-
         <tbody>
           <tr *ngFor="let room of pagedRoomTypes; trackBy: trackByRoomType" class="table-row-hover">
             <td class="f-14-m">{{ room.roomType }}</td>
@@ -53,7 +52,6 @@
               </div>
             </td>
           </tr>
-
           <tr *ngIf="pagedRoomTypes.length === 0">
             <td colspan="4" class="text-center py-4 text-muted">No room types found.</td>
           </tr>
@@ -61,17 +59,23 @@
       </table>
     </div>
 
-    <!-- Mobile Cards View -->
+    <!-- Mobile: Card View (Matching Your Image) -->
     <div class="mobile-cards">
       <div *ngFor="let room of pagedRoomTypes; trackBy: trackByRoomType" class="mobile-card">
         <div class="mobile-card-header">
-          <span class="f-14-m">{{ room.roomType }}</span>
+          <div class="room-title f-16-m fw-semibold">{{ room.roomType }}</div>
+          <div class="room-subtitle f-14-r text-muted mt-1">
+           <p class="f-14-r text-muted mt-1 mb-0">{{ room.beds }} Bed{{ +room.beds > 1 ? 's' : '' }}</p>
+          </div>
         </div>
+
         <div class="mobile-card-body">
-          <p class="f-14-r">No. of Beds: {{ room.beds }}</p>
-          <p class="f-14-r text-truncate" [title]="room.description">Description: {{ room.description || '-' }}</p>
+          <p class="f-14-r mb-0">
+            <strong>Description:</strong> {{ room.description || '-' }}
+          </p>
         </div>
-        <div class="mobile-card-footer d-flex justify-content-center gap-3">
+
+        <div class="mobile-card-footer d-flex justify-content-end gap-3">
           <button type="button" class="icon-btn" title="Edit" (click)="onEdit(room)">
             <i class="bi bi-pencil-square"></i>
           </button>
@@ -80,12 +84,15 @@
           </button>
         </div>
       </div>
-      <div *ngIf="pagedRoomTypes.length === 0" class="text-center py-4 text-muted">No room types found.</div>
+
+      <div *ngIf="pagedRoomTypes.length === 0" class="text-center py-5 text-muted">
+        No room types found.
+      </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer (Visible on Both Desktop & Mobile) -->
     <div class="table-footer">
-      <div class="footer-left">
+      <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
           Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>

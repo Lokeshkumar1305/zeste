@@ -1,18 +1,26 @@
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
       <p class="mb-0 f-18-m text-high-contrast">Room Details</p>
-      <div class="d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
-          <i class="bi bi-funnel"></i>
-          <span class="f-12-m">Filter</span>
-        </button>
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
-          <i class="bi bi-arrow-counterclockwise"></i>
-          <span class="f-12-m">Reset</span>
-        </button>
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
+
+      <div class="toolbar-actions d-flex align-items-center gap-3">
+        <!-- Filter & Reset buttons side by side -->
+        <div class="d-flex gap-3">
+          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            (click)="onFilter()">
+            <i class="bi bi-funnel"></i>
+            <span class="f-12-m">Filter</span>
+          </button>
+          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            (click)="onReset()">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            <span class="f-12-m">Reset</span>
+          </button>
+        </div>
+
+        <!-- Add New Room button on the right -->
+        <button type="button" class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewRoom()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Room</span>
@@ -22,9 +30,9 @@
 
     <div class="toolbar-divider"></div>
 
-    <!-- Table and Mobile Cards Container -->
+    <!-- Desktop/Tablet: Table View -->
     <div class="table-container">
-      <table class="case-table desktop-table" role="table" aria-label="Rooms">
+      <table class="case-table" role="table" aria-label="Rooms">
         <thead>
           <tr>
             <th scope="col">Room No</th>
@@ -70,64 +78,78 @@
           </tr>
 
           <tr *ngIf="pagedRooms.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">
+            <td colspan="7" class="text-center py-5 text-muted">
               No rooms found.
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
 
-      <!-- Mobile Cards Alternative -->
-      <div class="mobile-cards">
-        <div *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber" class="room-card">
-          <div class="room-header">
-            <span class="f-14-m">Room No: {{ room.roomNumber }}</span>
-            <span class="status-pill" [ngClass]="{
-                'status-available': room.status === 'Available',
-                'status-occupied': room.status === 'Occupied',
-                'status-maintenance': room.status === 'Maintenance'
-              }">
-              <span class="status-dot"></span>
-              {{ room.status }}
-            </span>
-          </div>
-          <div class="room-detail f-14-r">Type: {{ room.type }}</div>
-          <div class="room-detail f-14-r">Floor: {{ room.floor }}</div>
-          <div class="room-detail f-14-r">
-            Rent:
-            {{ room.monthlyRent | currency:'INR':'symbol':'1.0-0' }}
-          </div>
-          <div class="room-detail f-14-r text-capitalize">
-            Amenities: {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
-          </div>
-          <div class="actions">
-            <button type="button" class="icon-btn" title="Edit" (click)="onEditRoom(room)">
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button type="button" class="icon-btn" title="Delete" (click)="onDeleteRoom(room)">
-              <i class="bi bi-trash text-danger"></i>
-            </button>
+    <!-- Mobile: Card View (unchanged) -->
+    <div class="mobile-cards">
+      <div *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber" class="mobile-card">
+        <div class="mobile-card-header d-flex justify-content-between align-items-center">
+          <div class="room-number f-28-m fw-bold">{{ room.roomNumber }}</div>
+          <span class="status-pill" [ngClass]="{
+              'status-available': room.status === 'Available',
+              'status-occupied': room.status === 'Occupied',
+              'status-maintenance': room.status === 'Maintenance'
+            }">
+            <span class="status-dot"></span>
+            {{ room.status }}
+          </span>
+        </div>
+
+        <div class="mobile-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <strong class="label">Room Type:</strong>
+              <span class="value">{{ room.type }}</span>
+            </div>
+            <div class="detail-item">
+              <strong class="label">Floor:</strong>
+              <span class="value">{{ room.floor }}</span>
+            </div>
+            <div class="detail-item">
+              <strong class="label">Rent:</strong>
+              <span class="value">{{ room.monthlyRent | currency:'INR':'symbol':'1.0-0' }}</span>
+            </div>
+            <div class="detail-item full-width">
+              <strong class="label">Amenities:</strong>
+              <span class="value text-capitalize">
+                {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
+              </span>
+            </div>
           </div>
         </div>
 
-        <div *ngIf="pagedRooms.length === 0" class="no-rooms f-14-r text-muted">
-          No rooms found.
+        <div class="mobile-card-footer">
+          <button type="button" class="icon-btn" title="Edit" (click)="onEditRoom(room)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button type="button" class="icon-btn" title="Delete" (click)="onDeleteRoom(room)">
+            <i class="bi bi-trash text-danger"></i>
+          </button>
         </div>
+      </div>
+
+      <div *ngIf="pagedRooms.length === 0" class="text-center py-5 text-muted f-16-r">
+        No rooms found.
       </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer: Pagination (unchanged) -->
     <div class="table-footer">
-      <div class="footer-left">
+      <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
           Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>
+
         <div class="d-inline-flex align-items-center gap-2">
           <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
-              {{ size }}
-            </option>
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
           </select>
         </div>
       </div>
@@ -136,8 +158,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i>
-              Previous
+              <i class="bi bi-chevron-left"></i> Previous
             </button>
           </li>
 
@@ -149,8 +170,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next
-              <i class="bi bi-chevron-right"></i>
+              Next <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

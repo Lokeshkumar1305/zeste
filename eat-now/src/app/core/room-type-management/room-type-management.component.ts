@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoomTypeManagementModalComponent } from '../room-type-management-modal/room-type-management-modal.component';
 
 export interface RoomType {
-  [x: string]: string;
   roomType: string;
   beds: string;
   description: string;
@@ -16,8 +15,8 @@ export interface RoomType {
 })
 export class RoomTypeManagementComponent implements OnInit {
 
-  // Toolbar filters
-  public selectedCaseFilter: 'All' | 'Active' | 'Inactive' = 'All'; // placeholder
+  // Toolbar filters (placeholder)
+  public selectedCaseFilter: 'All' | 'Active' | 'Inactive' = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
@@ -32,41 +31,18 @@ export class RoomTypeManagementComponent implements OnInit {
   constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    // Seed sample Room Type data
     this.allRoomTypes = [
-      {
-        roomType: 'Deluxe Suite',
-        beds: '2',
-        description: 'Spacious suite with king bed and private balcony.'
-      },
-      {
-        roomType: 'Standard Single',
-        beds: '1',
-        description: 'Compact room ideal for solo travelers.'
-      },
-      {
-        roomType: 'Family Room',
-        beds: '4',
-        description: 'Two double beds, suitable for families.'
-      },
-      {
-        roomType: 'Executive Twin',
-        beds: '2',
-        description: 'Twin beds with work desk and city view.'
-      },
-      {
-        roomType: 'Premium Suite',
-        beds: '3',
-        description: 'Luxury suite with living area and jacuzzi.'
-      }
+      { roomType: 'Deluxe Suite', beds: '2', description: 'Spacious suite with king bed and private balcony.' },
+      { roomType: 'Standard Single', beds: '1', description: 'Compact room ideal for solo travelers.' },
+      { roomType: 'Family Room', beds: '4', description: 'Two double beds, suitable for families.' },
+      { roomType: 'Executive Twin', beds: '2', description: 'Twin beds with work desk and city view.' },
+      { roomType: 'Premium Suite', beds: '3', description: 'Luxury suite with living area and jacuzzi.' }
     ];
-
-
 
     this.applyAllFilters();
   }
 
-  // --- Pagination Getters ---
+  // Pagination getters
   get totalItems(): number {
     return this.filteredRoomTypes.length;
   }
@@ -76,8 +52,7 @@ export class RoomTypeManagementComponent implements OnInit {
   }
 
   get showingFrom(): number {
-    if (this.totalItems === 0) return 0;
-    return (this.currentPage - 1) * this.pageSize + 1;
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get showingTo(): number {
@@ -88,9 +63,8 @@ export class RoomTypeManagementComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // --- UI Actions ---
+  // UI Actions
   onFilter(): void {
-    // Placeholder: cycle filter
     const order: Array<'All' | 'Active' | 'Inactive'> = ['All', 'Active', 'Inactive'];
     const idx = order.indexOf(this.selectedCaseFilter);
     this.selectedCaseFilter = order[(idx + 1) % order.length];
@@ -136,50 +110,50 @@ export class RoomTypeManagementComponent implements OnInit {
   }
 
   onAddNewRoom(): void {
-  const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
-    width: '520px',
-    maxWidth: '100vw',
-    height: '100vh',
-    position: { right: '0', top: '0' },
-    panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
-    hasBackdrop: true,
-    backdropClass: 'cdk-overlay-dark-backdrop',
-    disableClose: false,
-    autoFocus: false,
-  });
+    const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
+      width: '520px',
+      maxWidth: '100vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false,
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.allRoomTypes.push({ ...result });
-      this.applyAllFilters();
-    }
-  });
-}
-
-onEdit(room: RoomType): void {
-  const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
-    width: '520px',
-    maxWidth: '100vw',
-    height: '100vh',
-    position: { right: '0', top: '0' },
-    panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
-    hasBackdrop: true,
-    backdropClass: 'cdk-overlay-dark-backdrop',
-    disableClose: false,
-    autoFocus: false,
-    data: { room: { ...room } }
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      const index = this.allRoomTypes.findIndex(r => r.roomType === room.roomType);
-      if (index !== -1) {
-        this.allRoomTypes[index] = { ...result };
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.allRoomTypes.push({ ...result });
         this.applyAllFilters();
       }
-    }
-  });
-}
+    });
+  }
+
+  onEdit(room: RoomType): void {
+    const dialogRef = this.dialog.open(RoomTypeManagementModalComponent, {
+      width: '520px',
+      maxWidth: '100vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false,
+      data: { room: { ...room } }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.allRoomTypes.findIndex(r => r.roomType === room.roomType);
+        if (index !== -1) {
+          this.allRoomTypes[index] = { ...result };
+          this.applyAllFilters();
+        }
+      }
+    });
+  }
 
   onDelete(room: RoomType): void {
     if (confirm(`Are you sure you want to delete room type "${room.roomType}"?`)) {
@@ -188,9 +162,7 @@ onEdit(room: RoomType): void {
     }
   }
 
-  // --- Core filtering + pagination ---
   private applyAllFilters(): void {
-    // Currently only supports status-like filter; can be extended
     this.filteredRoomTypes = [...this.allRoomTypes];
     this.updatePagedRoomTypes();
   }

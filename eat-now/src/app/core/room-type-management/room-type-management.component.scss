@@ -271,9 +271,7 @@ PAGE CONTAINER
   opacity: 1 !important;
 }
 
-/* ========================================
-10) MOBILE CARDS
-======================================== */
+/* Mobile Cards - Matching Your Image */
 .mobile-cards {
   display: none;
 }
@@ -281,15 +279,84 @@ PAGE CONTAINER
 .mobile-card {
   background: var(--card-background);
   border: 1px solid var(--card-border);
-  border-radius: 8px;
-  margin-bottom: 16px;
+  border-radius: 12px;
   padding: 16px;
+  margin-bottom: 16px;
 }
 
 .mobile-card-header {
+  margin-bottom: 12px;
+}
+
+.room-title {
+  font-size: 18px;
   font-weight: 600;
-  margin-bottom: 8px;
   color: var(--text-color);
+}
+
+.room-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.mobile-card-body {
+  border-top: 1px dashed var(--card-border);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.mobile-card-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--card-border);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table-container {
+    display: none;
+  }
+
+  .mobile-cards {
+    display: block;
+  }
+
+  /* Show pagination on mobile */
+  .table-footer {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .footer-left {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .pagination {
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Toolbar buttons full width */
+  .d-flex.gap-2 {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-sm {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-cards {
+    display: none !important;
+  }
 }
 
 .mobile-card-body p {
