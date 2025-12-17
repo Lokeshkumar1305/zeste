@@ -25,7 +25,7 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private bedsService: BedsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.subscription = this.bedsService.beds$.subscribe(beds => {
@@ -81,7 +81,7 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
   }
 
   onPageSizeChange(size: number): void {
-    this.pageSize = +size;
+    this.pageSize = size;
     this.currentPage = 1;
     this.updatePagedBeds();
   }
@@ -128,7 +128,8 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
 
   onAddNewBed(): void {
     const dialogRef = this.dialog.open(BedsManagementModalComponent, {
-      width: '480px',
+       width: '720px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -138,18 +139,17 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
       autoFocus: false,
     });
 
-
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Bed Added:', result);
+        this.bedsService.addBed(result); // assuming you have addBed method
       }
     });
   }
 
   onEditBed(bed: Bed): void {
     const dialogRef = this.dialog.open(BedsManagementModalComponent, {
-      width: '480px',
+      width: '720px',
+     maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -160,8 +160,6 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
       data: { bed }
     });
 
-
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.bedsService.updateBed(result);
@@ -170,7 +168,7 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
   }
 
   onDeleteBed(bed: Bed): void {
-    if (confirm(`Are you sure you want to delete bed ${bed.id}?`)) {
+    if (confirm(`Are you sure you want to delete Bed ${bed.bedNumber || bed.id}?`)) {
       this.bedsService.deleteBed(bed.id);
     }
   }

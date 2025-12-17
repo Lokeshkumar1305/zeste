@@ -18,6 +18,7 @@ export interface Bed {
 export class BedsService {
   private bedsSubject = new BehaviorSubject<Bed[]>([]);
   public beds$: Observable<Bed[]> = this.bedsSubject.asObservable();
+  addBed: any;
 
   constructor() {}
 

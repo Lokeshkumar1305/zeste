@@ -1,7 +1,10 @@
 /* ========================================
+   BEDS MANAGEMENT – FULLY RESPONSIVE SCSS
+   Compatible with global styles.scss
+   Works on Mobile / Tablet / Desktop
+   ======================================== */
 
-PAGE CONTAINER
-======================================== */
+/* Page Container */
 .page-container {
   --page-gutter: 24px;
   --page-max: 1280px;
@@ -9,82 +12,83 @@ PAGE CONTAINER
   margin-inline: auto;
 }
 
-/* ========================================
-2) CASE CARD
-======================================== */
+/* Card Base */
 .case-card {
-  border: 1px solid var(--card-border);
   background: var(--card-background);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-/* ========================================
-3) BUTTONS
-======================================== */
-.btn-secondary {
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.btn-secondary:hover {
-  background: var(--input-background);
-  border-color: var(--brand-primary-light);
-}
-
-.btn-primary {
-  color: #fff;
-  background: var(--brand-primary);
-  border: 1px solid var(--brand-primary);
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  background: var(--brand-primary-700);
-  border-color: var(--brand-primary-700);
-}
-
-/* ========================================
-4) DIVIDER
-======================================== */
+/* Toolbar Divider */
 .toolbar-divider {
   height: 1px;
   background: var(--card-border);
   margin: 16px 0;
 }
 
-/* ========================================
-5) FILTER SECTION
-======================================== */
-.filter-section {
-  padding: 12px;
-  background: var(--input-background);
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 14px;
   border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-height: 40px;
+}
+
+.btn-primary {
+  background: var(--brand-primary);
+  color: #fff;
+  border: 1px solid var(--brand-primary);
+}
+
+.btn-primary:hover {
+  background: var(--brand-primary-700);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--background);
+  color: var(--text-color);
+  border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+  background: var(--input-background);
+  border-color: var(--brand-primary);
+}
+
+/* Filter Section & Pills */
+.filter-section {
+  padding: 12px 16px;
+  background: var(--input-background);
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 .filter-pills {
-  display: inline-flex;
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .filter-pill {
-  padding: 6px 16px;
+  padding: 8px 18px;
   border: 1px solid var(--card-border);
   background: var(--card-background);
   color: var(--text-color);
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .filter-pill:hover {
@@ -94,59 +98,171 @@ PAGE CONTAINER
 
 .filter-pill.active {
   background: var(--brand-primary);
-  border-color: var(--brand-primary);
   color: #fff;
+  border-color: var(--brand-primary);
 }
 
-/* ========================================
-6) BEDS GRID
-======================================== */
+/* Desktop Table */
+.desktop-view {
+  display: block;
+}
+
+.mobile-view {
+  display: none;
+}
+
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.case-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.case-table thead {
+  background: var(--brand-primary);
+}
+
+.case-table thead th {
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 16px;
+  white-space: nowrap;
+}
+
+.case-table tbody td {
+  padding: 16px;
+  color: var(--text-color);
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.case-table tbody tr:hover {
+  background: var(--input-background);
+}
+
+.case-table tbody tr+tr td {
+  border-top: 1px solid var(--card-border);
+}
+
+/* Status Pills */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-available {
+  background: rgba(32, 201, 151, 0.2);
+  color: #20c997;
+}
+
+.status-available .status-dot {
+  background: #20c997;
+}
+
+.status-occupied {
+  background: rgba(100, 116, 139, 0.2);
+  color: #64748b;
+}
+
+.status-occupied .status-dot {
+  background: #64748b;
+}
+
+.status-maintenance {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.status-maintenance .status-dot {
+  background: #f59e0b;
+}
+
+/* Action Icons */
+.action-icons .icon-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  color: var(--brand-primary);
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.action-icons .icon-btn:hover {
+  background: var(--input-background);
+}
+
+.action-icons .bi-trash {
+  color: #ef4444;
+}
+
+/* Mobile Card Grid */
 .beds-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 18px;
   margin-bottom: 24px;
 }
 
-/* ========================================
-7) BED CARD
-======================================== */
+/* Bed Card */
 .bed-card {
-  border: 1px solid var(--card-border);
   background: var(--card-background);
-  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .bed-card:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 /* Card Header */
 .bed-card-header {
-  padding: 12px;
-  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-700) 100%);
+  padding: 16px;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-700));
+  color: #fff;
   display: flex;
   align-items: center;
-  gap: 10px;
-  position: relative;
+  gap: 14px;
 }
 
 .bed-icon-wrapper {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-.bed-icon {
-  font-size: 20px;
+.bed-icon-wrapper i {
+  font-size: 24px;
   color: #fff;
 }
 
@@ -154,55 +270,37 @@ PAGE CONTAINER
   color: #fbbf24 !important;
 }
 
-.bi-tools {
-  color: #fff;
-}
-
 .bed-id {
   flex: 1;
-  color: #fff;
+  font-size: 18px;
   font-weight: 600;
-  font-size: 16px;
 }
 
 .status-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 11px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-}
-
-.status-available {
-  background: rgba(32, 201, 151, 0.9);
-  color: #fff;
-}
-
-.status-occupied {
-  background: rgba(100, 116, 139, 0.9);
-  color: #fff;
-}
-
-.status-maintenance {
-  background: rgba(245, 158, 11, 0.9);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1f2937;
 }
 
 /* Card Body */
 .bed-card-body {
-  padding: 12px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .bed-info-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--card-border);
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--card-border);
 }
 
 .bed-info-row:last-child {
@@ -212,210 +310,238 @@ PAGE CONTAINER
 .info-label {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11.5px;
+  gap: 8px;
+  font-size: 14px;
   color: var(--text-secondary);
   font-weight: 500;
 }
 
 .info-label i {
-  font-size: 13px;
+  font-size: 16px;
   color: var(--brand-primary);
 }
 
 .info-value {
-  font-size: 13px;
-  color: var(--text-color);
+  font-size: 15px;
   font-weight: 600;
+  color: var(--text-color);
+  text-align: right;
 }
 
 .rent-value {
+  font-size: 17px;
   color: var(--brand-primary);
-  font-size: 15px;
+  font-weight: 700;
 }
 
 .amenities-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  max-width: 60%;
+  gap: 6px;
   justify-content: flex-end;
 }
 
 .amenity-tag {
-  padding: 3px 7px;
+  padding: 5px 10px;
   background: var(--input-background);
   border: 1px solid var(--card-border);
-  border-radius: 4px;
-  font-size: 9.5px;
-  color: var(--text-color);
+  border-radius: 6px;
+  font-size: 12px;
   font-weight: 500;
+  color: var(--text-color);
 }
 
 /* Card Footer */
 .bed-card-footer {
-  padding: 10px 12px;
+  padding: 12px 16px;
   background: var(--input-background);
-  display: flex;
-  gap: 6px;
   border-top: 1px solid var(--card-border);
+  display: flex;
+  gap: 10px;
 }
 
 .action-btn {
   flex: 1;
-  padding: 6px 12px;
-  border: 1px solid var(--card-border);
-  background: var(--card-background);
-  color: var(--text-color);
-  border-radius: 6px;
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  color: var(--text-color);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .edit-btn:hover {
   background: var(--brand-primary);
-  border-color: var(--brand-primary);
   color: #fff;
+  border-color: var(--brand-primary);
 }
 
 .delete-btn:hover {
   background: #ef4444;
-  border-color: #ef4444;
   color: #fff;
+  border-color: #ef4444;
 }
 
-/* ========================================
-8) EMPTY STATE
-======================================== */
+/* Empty State */
 .empty-state {
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
 }
 
 .empty-icon {
-  font-size: 56px;
+  font-size: 72px;
   color: var(--text-muted);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  opacity: 0.6;
 }
 
 .empty-title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
   color: var(--text-color);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .empty-description {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-secondary);
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
-/* ========================================
-9) ROWS PER PAGE
-======================================== */
-.rows-per-page {
-  min-width: 72px;
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 6px 28px 6px 10px;
-  font-size: 14px;
-}
-
-/* ========================================
-10) FOOTER & PAGINATION
-======================================== */
+/* Pagination Footer */
 .table-footer {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
-  color: var(--text-secondary);
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--card-border);
 }
 
 .footer-left {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
 }
 
-.pagination {
-  display: inline-flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 6px;
-}
-
-.page-item {
-  display: inline-flex;
-}
-
-.page-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-color);
-  background-color: var(--background);
+.rows-per-page {
+  padding: 8px 12px 8px 32px;
   border: 1px solid var(--card-border);
-  min-width: 36px;
-  min-height: 32px;
-  border-radius: 4px;
-  padding: 6px 15px;
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--text-color);
   font-size: 14px;
-  transition: all 0.2s ease;
 }
 
-.page-item.active .page-link {
-  color: #fff;
-  background-color: var(--brand-primary);
+.pagination .page-link {
+  min-width: 40px;
+  min-height: 36px;
+  padding: 8px 16px;
+  border: 1px solid var(--card-border);
+  background: var(--background);
+  color: var(--text-color);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--brand-primary);
   border-color: var(--brand-primary);
+  color: #fff;
   font-weight: 600;
 }
 
-.page-item.disabled .page-link {
-  color: var(--text-muted);
-  background-color: var(--background);
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.page-item:not(.disabled) .page-link:hover {
-  border-color: var(--brand-primary);
-  background: var(--input-background);
-}
-
-.text-high-contrast {
-  color: var(--text-color) !important;
-  opacity: 1 !important;
-}
-
 /* ========================================
-11) RESPONSIVE
-======================================== */
-@media (max-width: 768px) {
-  .beds-grid {
-    grid-template-columns: 1fr;
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+@media (max-width: 767px) {
+  .desktop-view {
+    display: none;
+  }
+
+  .mobile-view {
+    display: block;
+  }
+
+  .page-container {
+    --page-gutter: 16px;
+  }
+
+  .case-card {
+    padding: 14px;
+  }
+
+  /* Header buttons stack vertically */
+  .d-flex.justify-content-between.mb-3 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .d-flex.gap-2.flex-wrap {
+    justify-content: stretch;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 12px !important;
+    font-size: 14px !important;
+  }
+
+  /* Filter section */
+  .filter-section {
+    padding: 14px;
+  }
+
+  .filter-pill {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* Larger touch targets */
+  .action-btn {
+    padding: 16px !important;
+    font-size: 15px !important;
+  }
+
+  .icon-btn {
+    font-size: 20px;
+    padding: 10px;
   }
 
   .table-footer {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   .footer-left {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
+    align-items: stretch;
+  }
+
+  .pagination {
+    justify-content: center;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .beds-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  .filter-pill {
+    padding: 10px 20px;
+    font-size: 14px;
   }
 }
