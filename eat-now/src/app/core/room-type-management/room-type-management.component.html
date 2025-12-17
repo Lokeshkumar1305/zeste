@@ -1,22 +1,29 @@
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
-      <p class="mb-0 f-18-m text-high-contrast">Room Type Management</p>
+    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
+      <p class="mb-0 f-18-m text-high-contrast">Room Type Details</p>
 
-      <div class="d-flex align-items-center gap-2 flex-wrap">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
-          <i class="bi bi-funnel"></i>
-          <span class="f-12-m">Filter</span>
-        </button>
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
-          <i class="bi bi-arrow-counterclockwise"></i>
-          <span class="f-12-m">Reset</span>
-        </button>
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
+      <div class="toolbar-actions d-flex align-items-center gap-3">
+        <!-- Filter & Reset buttons side by side -->
+        <div class="d-flex gap-3">
+          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            (click)="onFilter()">
+            <i class="bi bi-funnel"></i>
+            <span class="f-12-m">Filter</span>
+          </button>
+          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            (click)="onReset()">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            <span class="f-12-m">Reset</span>
+          </button>
+        </div>
+
+        <!-- Add New Room button on the right -->
+        <button type="button" class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewRoom()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Room Type</span>
+          <span class="f-14-m">Add Room Type</span>
         </button>
       </div>
     </div>

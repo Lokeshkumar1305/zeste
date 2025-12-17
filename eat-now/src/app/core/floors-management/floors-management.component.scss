@@ -1,5 +1,4 @@
 /* ========================================
-
 PAGE CONTAINER
 ======================================== */
 .page-container {
@@ -10,7 +9,7 @@ PAGE CONTAINER
 }
 
 /* ========================================
-2) CASE CARD
+CASE CARD
 ======================================== */
 .case-card {
   border: 1px solid var(--card-border);
@@ -20,16 +19,18 @@ PAGE CONTAINER
 }
 
 /* ========================================
-3) BUTTONS
+BUTTONS
 ======================================== */
 .btn-secondary {
   color: var(--text-color);
   background: var(--background);
   border: 1px solid var(--card-border);
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 8px 16px;
   font-size: 14px;
   transition: all 0.2s ease;
+  min-height: 40px;
+  white-space: nowrap;
 }
 
 .btn-secondary:hover {
@@ -42,9 +43,12 @@ PAGE CONTAINER
   background: var(--brand-primary);
   border: 1px solid var(--brand-primary);
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 8px 20px;
   font-size: 14px;
   transition: all 0.2s ease;
+  min-height: 40px;
+  min-width: 160px;
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -53,7 +57,31 @@ PAGE CONTAINER
 }
 
 /* ========================================
-4) DIVIDER
+HEADER TOOLBAR
+======================================== */
+.header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.toolbar-actions .d-flex.gap-3 {
+  display: flex;
+  gap: 12px;
+}
+
+/* ========================================
+DIVIDER
 ======================================== */
 .toolbar-divider {
   height: 1px;
@@ -62,7 +90,7 @@ PAGE CONTAINER
 }
 
 /* ========================================
-5) ROWS PER PAGE
+ROWS PER PAGE
 ======================================== */
 .rows-per-page {
   min-width: 72px;
@@ -75,7 +103,7 @@ PAGE CONTAINER
 }
 
 /* ========================================
-6) TABLE
+TABLE
 ======================================== */
 .table-container {
   overflow: auto;
@@ -113,7 +141,7 @@ PAGE CONTAINER
   background: var(--input-background);
 }
 
-.case-table tbody tr+tr td {
+.case-table tbody tr + tr td {
   border-top: 1px solid var(--card-border);
 }
 
@@ -125,7 +153,7 @@ PAGE CONTAINER
 }
 
 /* ========================================
-7) STATUS PILLS – DARK MODE FRIENDLY
+STATUS PILLS - Fully defined for Active/Inactive + others
 ======================================== */
 .status-pill {
   display: inline-flex;
@@ -136,6 +164,7 @@ PAGE CONTAINER
   font-size: 12px;
   padding: 6px 12px;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .status-dot {
@@ -143,40 +172,59 @@ PAGE CONTAINER
   height: 8px;
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0;
 }
 
-/* Open */
+/* Active - Green */
 .status-active {
-  background: rgba(32, 201, 151, 0.2);
-  color: #20C997;
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
 }
 
 .status-active .status-dot {
-  background: #20C997;
+  background: #22c55e;
 }
 
-/* Closed */
+/* Inactive - Red */
 .status-inactive {
-  background: rgba(100, 116, 139, 0.2);
-  color: #94a3b8;
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
 }
 
 .status-inactive .status-dot {
-  background: #94a3b8;
+  background: #ef4444;
 }
 
-/* On Hold */
-.status-hold {
+/* Optional additional statuses (kept from your original) */
+.status-available {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.status-available .status-dot {
+  background: #22c55e;
+}
+
+.status-occupied {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.status-occupied .status-dot {
+  background: #ef4444;
+}
+
+.status-maintenance {
   background: rgba(245, 158, 11, 0.2);
   color: #f59e0b;
 }
 
-.status-hold .status-dot {
+.status-maintenance .status-dot {
   background: #f59e0b;
 }
 
 /* ========================================
-8) ACTION ICONS
+ACTION ICONS
 ======================================== */
 .icon-btn {
   border: 0;
@@ -192,16 +240,18 @@ PAGE CONTAINER
   color: var(--brand-primary-700);
 }
 
-.action-icons .bi-trash {
+.action-icons .bi-trash,
+.mobile-card-footer .bi-trash {
   color: #ef4444;
 }
 
-.action-icons .bi-trash:hover {
+.action-icons .bi-trash:hover,
+.mobile-card-footer .bi-trash:hover {
   color: #dc2626;
 }
 
 /* ========================================
-9) FOOTER & PAGINATION
+FOOTER & PAGINATION
 ======================================== */
 .table-footer {
   display: flex;
@@ -271,7 +321,9 @@ PAGE CONTAINER
   opacity: 1 !important;
 }
 
-/* Mobile Cards - Matching Your Image */
+/* ========================================
+MOBILE CARDS
+======================================== */
 .mobile-cards {
   display: none;
 }
@@ -286,17 +338,16 @@ PAGE CONTAINER
 
 .mobile-card-header {
   margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.room-title {
-  font-size: 18px;
+.mobile-card-header .room-title {
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-color);
-}
-
-.room-subtitle {
-  font-size: 14px;
-  color: var(--text-muted);
 }
 
 .mobile-card-body {
@@ -309,9 +360,14 @@ PAGE CONTAINER
   margin-top: 16px;
   padding-top: 12px;
   border-top: 1px solid var(--card-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
-/* Responsive */
+/* ========================================
+RESPONSIVE
+======================================== */
 @media (max-width: 768px) {
   .table-container {
     display: none;
@@ -321,9 +377,31 @@ PAGE CONTAINER
     display: block;
   }
 
-  /* Show pagination on mobile */
+  .header-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .toolbar-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .toolbar-actions .d-flex.gap-3 {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .btn-secondary,
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+  }
+
   .table-footer {
-    display: flex !important;
     flex-direction: column;
     align-items: stretch;
     gap: 16px;
@@ -340,60 +418,16 @@ PAGE CONTAINER
     justify-content: center;
     width: 100%;
   }
-
-  /* Toolbar buttons full width */
-  .d-flex.gap-2 {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .btn-sm {
-    width: 100%;
-    justify-content: center;
-  }
 }
 
 @media (min-width: 769px) {
   .mobile-cards {
     display: none !important;
   }
-}
 
-.mobile-card-body p {
-  margin: 4px 0;
-  color: var(--text-color);
-}
-
-.mobile-card-footer {
-  margin-top: 12px;
-}
-
-/* ========================================
-11) RESPONSIVE
-======================================== */
-@media (max-width: 768px) {
-  .table-container {
-    display: none;
-  }
-
-  .mobile-cards {
-    display: block;
-  }
-
-  .table-footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .footer-left {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-  }
-
-  .pagination {
+  .toolbar-actions button {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    width: 100%;
-    margin-top: 8px;
   }
 }
