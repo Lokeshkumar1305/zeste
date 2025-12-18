@@ -272,9 +272,8 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
 
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(AnnouncementsModalComponent, {
-
-  width: '560px',
-      maxWidth: '90vw',
+     width: '720px',
+     maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -295,8 +294,8 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
 
   openEditDialog(announcement: Announcement): void {
     const dialogRef = this.dialog.open(AnnouncementsModalComponent, {
-      width: '560px',
-      maxWidth: '90vw',
+     width: '720px',
+     maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
