@@ -100,26 +100,31 @@
           </span>
         </div>
 
-        <!-- Body: Email, Room No, Mobile, Check-in, Rent -->
+        <!-- Body: label left, value right -->
         <div class="mobile-card-body">
           <p class="f-14-r info-row">
-            <strong>Room No:</strong> {{ t.roomNumber || '-' }}
+            <span class="info-label"><strong>Room No:</strong></span>
+            <span class="info-value">{{ t.roomNumber || '-' }}</span>
           </p>
 
           <p class="f-14-r info-row">
-            <strong>Email:</strong> {{ t.email || '-' }}
+            <span class="info-label"><strong>Email:</strong></span>
+            <span class="info-value">{{ t.email || '-' }}</span>
           </p>
 
           <p class="f-14-r info-row">
-            <strong>Mobile:</strong> {{ t.phone || '-' }}
+            <span class="info-label"><strong>Mobile:</strong></span>
+            <span class="info-value">{{ t.phone || '-' }}</span>
           </p>
 
           <p class="f-14-r info-row">
-            <strong>Check-in:</strong> {{ t.checkinDate | date: 'MMM d, y' }}
+            <span class="info-label"><strong>Check-in:</strong></span>
+            <span class="info-value">{{ t.checkinDate | date: 'MMM d, y' }}</span>
           </p>
 
           <p class="f-14-r info-row">
-            <strong>Rent:</strong> ₹{{ t.monthlyRent | number }}
+            <span class="info-label"><strong>Rent:</strong></span>
+            <span class="info-value">₹{{ t.monthlyRent | number }}</span>
           </p>
         </div>
 

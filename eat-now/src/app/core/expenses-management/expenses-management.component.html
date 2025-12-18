@@ -78,10 +78,8 @@
       <div *ngFor="let expense of pagedExpenses; trackBy: trackById" class="mobile-card">
         <!-- Header: title + amount -->
         <div class="mobile-card-header d-flex justify-content-between align-items-start">
-          <div>
-            <div class="expense-title f-16-m fw-semibold">
-              {{ expense.title }}
-            </div>
+          <div class="expense-title f-16-m fw-semibold">
+            {{ expense.title }}
           </div>
           <div class="expense-amount f-14-m fw-semibold">
             {{ expense.amount | currency: 'USD':'symbol':'1.2-2' }}
@@ -91,16 +89,20 @@
         <!-- Body: Category (top) + Date + Payment Method + Vendor -->
         <div class="mobile-card-body">
           <p class="f-14-r info-row">
-            <strong>Category:</strong> {{ expense.category || '-' }}
+            <span class="info-label"><strong>Category:</strong></span>
+            <span class="info-value">{{ expense.category || '-' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Date:</strong> {{ expense.date | date: 'MMM d, y' }}
+            <span class="info-label"><strong>Date:</strong></span>
+            <span class="info-value">{{ expense.date | date: 'MMM d, y' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Payment Method:</strong> {{ expense.paymentMethod || '-' }}
+            <span class="info-label"><strong>Payment Method:</strong></span>
+            <span class="info-value">{{ expense.paymentMethod || '-' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Vendor:</strong> {{ expense.vendor || '-' }}
+            <span class="info-label"><strong>Vendor:</strong></span>
+            <span class="info-value">{{ expense.vendor || '-' }}</span>
           </p>
         </div>
 

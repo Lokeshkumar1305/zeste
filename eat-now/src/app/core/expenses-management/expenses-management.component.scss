@@ -30,12 +30,10 @@
   font-size: 14px;
   transition: all 0.2s ease;
 }
-
 .btn-secondary:hover {
   background: var(--input-background);
   border-color: var(--brand-primary-light);
 }
-
 .btn-primary {
   color: #fff;
   background: var(--brand-primary);
@@ -45,7 +43,6 @@
   font-size: 14px;
   transition: all 0.2s ease;
 }
-
 .btn-primary:hover {
   background: var(--brand-primary-700);
   border-color: var(--brand-primary-700);
@@ -62,7 +59,6 @@
   flex-wrap: wrap;
   gap: 16px;
 }
-
 .toolbar-actions {
   display: flex;
   align-items: center;
@@ -100,17 +96,14 @@
   border-radius: 8px;
   border: 1px solid var(--card-border);
 }
-
 .case-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
 }
-
 .case-table thead {
   background: var(--brand-primary);
 }
-
 .case-table thead th {
   color: #fff;
   text-transform: uppercase;
@@ -121,20 +114,16 @@
   border: none;
   white-space: nowrap;
 }
-
 .case-table tbody tr {
   background: var(--card-background);
   transition: background 0.2s ease;
 }
-
 .case-table tbody tr:hover {
   background: var(--input-background);
 }
-
 .case-table tbody tr + tr td {
   border-top: 1px solid var(--card-border);
 }
-
 .case-table tbody td {
   padding: 16px;
   color: var(--text-color);
@@ -155,7 +144,6 @@
   padding: 6px 12px;
   line-height: 1;
 }
-
 .status-dot {
   width: 8px;
   height: 8px;
@@ -175,16 +163,13 @@
   font-size: 16px;
   transition: color 0.2s ease;
 }
-
 .icon-btn:hover {
   color: var(--brand-primary-700);
 }
-
 .action-icons .bi-trash,
 .mobile-card-footer .bi-trash {
   color: #ef4444;
 }
-
 .action-icons .bi-trash:hover,
 .mobile-card-footer .bi-trash:hover {
   color: #dc2626;
@@ -202,13 +187,11 @@
   margin-top: 12px;
   color: var(--text-secondary);
 }
-
 .footer-left {
   display: inline-flex;
   align-items: center;
   gap: 16px;
 }
-
 .pagination {
   display: inline-flex;
   list-style: none;
@@ -216,11 +199,9 @@
   margin: 0;
   gap: 6px;
 }
-
 .page-item {
   display: inline-flex;
 }
-
 .page-link {
   display: inline-flex;
   align-items: center;
@@ -235,14 +216,12 @@
   font-size: 14px;
   transition: all 0.2s ease;
 }
-
 .page-item.active .page-link {
   color: #fff;
   background-color: var(--brand-primary);
   border-color: var(--brand-primary);
   font-weight: 600;
 }
-
 .page-item.disabled .page-link {
   color: var(--text-muted);
   background-color: var(--background);
@@ -250,12 +229,10 @@
   cursor: not-allowed;
   pointer-events: none;
 }
-
 .page-item:not(.disabled) .page-link:hover {
   border-color: var(--brand-primary);
   background: var(--input-background);
 }
-
 .text-high-contrast {
   color: var(--text-color) !important;
   opacity: 1 !important;
@@ -267,7 +244,6 @@
 .mobile-cards {
   display: none;
 }
-
 .mobile-card {
   background: var(--card-background);
   border: 1px solid var(--card-border);
@@ -275,7 +251,6 @@
   padding: 16px;
   margin-bottom: 16px;
 }
-
 .mobile-card-header {
   margin-bottom: 12px;
   display: flex;
@@ -283,37 +258,41 @@
   align-items: flex-start;
   gap: 12px;
 }
-
 .expense-title {
   font-size: 16px;
   font-weight: 600;
   color: var(--text-color);
 }
-
-.expense-subtitle {
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
 .expense-amount {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-color);
 }
 
+/* Body rows: label left, value right */
 .mobile-card-body {
   border-top: 1px dashed var(--card-border);
   padding-top: 12px;
   margin-top: 12px;
 }
-
-/* spacing between Category / Date / Method / Vendor */
 .mobile-card-body .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
   line-height: 1.5;
   margin-bottom: 8px;
 }
 .mobile-card-body .info-row:last-child {
   margin-bottom: 0;
+}
+.mobile-card-body .info-label {
+  flex: 0 0 auto;
+}
+.mobile-card-body .info-value {
+  flex: 1 1 auto;
+  text-align: right;
+  word-break: break-word;
 }
 
 .mobile-card-footer {
@@ -330,7 +309,7 @@
 ======================================== */
 @media (max-width: 768px) {
   .page-container {
-    width: calc(100vw - 32px) !important; /* 16px L + 16px R */
+    width: calc(100vw - 32px) !important;
     max-width: none !important;
     margin-left: calc(50% - 50vw + 16px) !important;
     margin-right: auto !important;

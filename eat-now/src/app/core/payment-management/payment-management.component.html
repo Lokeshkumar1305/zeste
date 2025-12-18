@@ -105,22 +105,27 @@
           </span>
         </div>
 
-        <!-- Body: details (with extra gap between lines) -->
+        <!-- Body: details with label left, value right -->
         <div class="mobile-card-body">
           <p class="f-14-r info-row">
-            <strong>Room No:</strong> {{ p.roomNumber || '-' }}
+            <span class="info-label"><strong>Room No:</strong></span>
+            <span class="info-value">{{ p.roomNumber || '-' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Amount:</strong> ${{ p.amount | number: '1.2-2' }}
+            <span class="info-label"><strong>Amount:</strong></span>
+            <span class="info-value">${{ p.amount | number: '1.2-2' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Payment Type:</strong> {{ p.paymentType || '-' }}
+            <span class="info-label"><strong>Payment Type:</strong></span>
+            <span class="info-value">{{ p.paymentType || '-' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Due Date:</strong> {{ p.dueDate | date: 'MMM d, y' }}
+            <span class="info-label"><strong>Due Date:</strong></span>
+            <span class="info-value">{{ p.dueDate | date: 'MMM d, y' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Method:</strong> {{ p.paymentMethod || '-' }}
+            <span class="info-label"><strong>Method:</strong></span>
+            <span class="info-value">{{ p.paymentMethod || '-' }}</span>
           </p>
         </div>
 

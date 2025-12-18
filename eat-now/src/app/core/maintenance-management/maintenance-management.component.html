@@ -1,4 +1,3 @@
-<!-- src/app/maintenance/maintenance-management/maintenance-management.component.html -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
@@ -105,18 +104,23 @@
         <!-- Body: Room No + Tenant + Category + Priority -->
         <div class="mobile-card-body">
           <p class="f-14-r info-row">
-            <strong>Room No:</strong> {{ issue.roomNumber || '-' }}
+            <span class="info-label"><strong>Room No:</strong></span>
+            <span class="info-value">{{ issue.roomNumber || '-' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Tenant:</strong> {{ issue.tenantName || '-' }}
+            <span class="info-label"><strong>Tenant:</strong></span>
+            <span class="info-value">{{ issue.tenantName || '-' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Category:</strong> {{ issue.category || '-' }}
+            <span class="info-label"><strong>Category:</strong></span>
+            <span class="info-value">{{ issue.category || '-' }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Priority:</strong>
-            <span class="priority-badge" [ngClass]="getPriorityClass(issue.priority)">
-              {{ issue.priority }}
+            <span class="info-label"><strong>Priority:</strong></span>
+            <span class="info-value">
+              <span class="priority-badge" [ngClass]="getPriorityClass(issue.priority)">
+                {{ issue.priority }}
+              </span>
             </span>
           </p>
         </div>
