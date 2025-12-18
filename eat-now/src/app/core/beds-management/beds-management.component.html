@@ -1,187 +1,212 @@
 <div class="page-container">
-  <section class="case-card">
-    <!-- Header Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-      <p class="mb-0 f-18-m text-high-contrast">Beds Details</p>
+    <section class="case-card">
+        <!-- Header Toolbar -->
+        <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+            <p class="mb-0 f-18-m text-high-contrast">Beds Details</p>
 
-      <div class="d-flex align-items-center gap-2 flex-wrap">
-        <button type="button" class="btn-secondary d-inline-flex align-items-center gap-2" (click)="onFilter()">
-          <i class="bi bi-funnel"></i>
-          <span class="f-12-m">Filter</span>
-        </button>
-        <button type="button" class="btn-secondary d-inline-flex align-items-center gap-2" (click)="onReset()">
-          <i class="bi bi-arrow-counterclockwise"></i>
-          <span class="f-12-m">Reset</span>
-        </button>
-        <button type="button" class="btn-primary d-inline-flex align-items-center gap-2" (click)="onAddNewBed()">
-          <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Bed</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="toolbar-divider"></div>
-
-    <!-- Status Filter Pills -->
-    <div class="filter-section mb-4">
-      <div class="d-flex align-items-center gap-3 flex-wrap">
-        <span class="f-12-m text-muted text-nowrap">Filter by Status:</span>
-        <div class="filter-pills d-flex flex-wrap gap-2">
-          <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'All'"
-                  (click)="onSelectStatusChange('All')">All</button>
-          <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Available'"
-                  (click)="onSelectStatusChange('Available')">Available</button>
-          <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Occupied'"
-                  (click)="onSelectStatusChange('Occupied')">Occupied</button>
-          <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Maintenance'"
-                  (click)="onSelectStatusChange('Maintenance')">Maintenance</button>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <button type="button" class="btn-secondary d-inline-flex align-items-center gap-2" (click)="onFilter()">
+                    <i class="bi bi-funnel"></i>
+                    <span class="f-12-m">Filter</span>
+                </button>
+                <button type="button" class="btn-secondary d-inline-flex align-items-center gap-2" (click)="onReset()">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    <span class="f-12-m">Reset</span>
+                </button>
+                <button type="button" class="btn-primary d-inline-flex align-items-center gap-2"
+                    (click)="onAddNewBed()">
+                    <i class="bi bi-plus-circle"></i>
+                    <span class="f-14-m">Add New Bed</span>
+                </button>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Desktop Table View -->
-    <div class="desktop-view" *ngIf="pagedBeds.length > 0; else emptyState">
-      <div class="table-container">
-        <table class="case-table" role="table" aria-label="Beds">
-          <thead>
-            <tr>
-              <th>Bed No</th>
-              <th>Room No</th>
-              <th>Floor</th>
-              <th>Room Type</th>
-              <th>Rent</th>
-              <th>Amenities</th>
-              <th>Status</th>
-              <th class="text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let bed of pagedBeds; trackBy: trackById">
-              <td class="f-14-m">{{ bed.bedNumber }}</td>
-              <td class="f-14-r">{{ bed.roomNumber }}</td>
-              <td class="f-14-r">{{ bed.floor }}</td>
-              <td class="f-14-r">{{ bed.roomType }}</td>
-              <td class="f-14-r">₹{{ bed.rent }}</td>
-              <td>
-                <div class="amenity-tags">
-                  <span class="amenity-tag" *ngFor="let a of bed.amenities.slice(0,3)">{{ a }}</span>
-                  <span class="amenity-tag more-tag" *ngIf="bed.amenities.length > 3">+{{ bed.amenities.length - 3 }} more</span>
+        <div class="toolbar-divider"></div>
+
+        <!-- Status Filter Pills -->
+        <div class="filter-section mb-4">
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <span class="f-12-m text-muted text-nowrap">Filter by Status:</span>
+                <div class="filter-pills d-flex flex-wrap gap-2">
+                    <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'All'"
+                        (click)="onSelectStatusChange('All')">
+                        All
+                    </button>
+                    <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Available'"
+                        (click)="onSelectStatusChange('Available')">
+                        Available
+                    </button>
+                    <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Occupied'"
+                        (click)="onSelectStatusChange('Occupied')">
+                        Occupied
+                    </button>
+                    <button type="button" class="filter-pill" [class.active]="selectedStatusFilter === 'Maintenance'"
+                        (click)="onSelectStatusChange('Maintenance')">
+                        Maintenance
+                    </button>
                 </div>
-              </td>
-              <td>
-                <span class="status-pill" [ngClass]="'status-' + bed.status.toLowerCase()">
-                  <span class="status-dot"></span> {{ bed.status }}
-                </span>
-              </td>
-              <td class="text-center action-icons">
-                <button class="icon-btn" (click)="onEditBed(bed)"><i class="bi bi-pencil-square"></i></button>
-                <button class="icon-btn" (click)="onDeleteBed(bed)"><i class="bi bi-trash text-danger"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Mobile Card View -->
-    <div class="mobile-view" *ngIf="pagedBeds.length > 0; else emptyState">
-      <div class="beds-grid">
-        <div class="bed-card" *ngFor="let bed of pagedBeds; trackBy: trackById">
-          <div class="bed-card-header">
-            <div class="bed-icon-wrapper">
-              <i class="bi" [ngClass]="{
-                'bi-bed-fill': bed.status === 'Available',
-                'bi-bed-fill text-warning': bed.status === 'Occupied',
-                'bi-tools': bed.status === 'Maintenance'
-              }"></i>
             </div>
-            <div class="bed-id f-16-m">{{ bed.bedNumber }}</div>
-            <span class="status-badge" [ngClass]="'status-' + bed.status.toLowerCase()">
-              {{ bed.status }}
-            </span>
-          </div>
-
-          <div class="bed-card-body">
-            <div class="bed-info-row">
-              <span class="info-label"><i class="bi bi-building"></i> Floor</span>
-              <span class="info-value">{{ bed.floor }}</span>
-            </div>
-            <div class="bed-info-row">
-              <span class="info-label"><i class="bi bi-door-open"></i> Room No</span>
-              <span class="info-value">{{ bed.roomNumber }}</span>
-            </div>
-            <div class="bed-info-row">
-              <span class="info-label"><i class="bi bi-hash"></i> Bed No</span>
-              <span class="info-value">{{ bed.bedNumber }}</span>
-            </div>
-            <div class="bed-info-row">
-              <span class="info-label"><i class="bi bi-tag"></i> Room Type</span>
-              <span class="info-value">{{ bed.roomType }}</span>
-            </div>
-            <div class="bed-info-row">
-              <span class="info-label"><i class="bi bi-currency-rupee"></i> Rent</span>
-              <span class="info-value rent-value">₹{{ bed.rent }}</span>
-            </div>
-            <div class="bed-info-row" *ngIf="bed.amenities.length > 0">
-              <span class="info-label"><i class="bi bi-stars"></i> Amenities</span>
-              <div class="amenities-tags">
-                <span class="amenity-tag" *ngFor="let a of bed.amenities">{{ a }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="bed-card-footer">
-            <button class="action-btn edit-btn d-flex align-items-center justify-content-center gap-2" (click)="onEditBed(bed)">
-              <i class="bi bi-pencil"></i> <span>Edit</span>
-            </button>
-            <button class="action-btn delete-btn d-flex align-items-center justify-content-center gap-2" (click)="onDeleteBed(bed)">
-              <i class="bi bi-trash"></i> <span>Delete</span>
-            </button>
-          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Single Empty State (No Duplication) -->
-    <ng-template #emptyState>
-      <div class="empty-state">
-        <div class="empty-icon">
-          <i class="bi bi-bed"></i>
+        <!-- Desktop Table View -->
+        <div class="desktop-view" *ngIf="pagedBeds.length > 0; else emptyState">
+            <div class="table-container">
+                <table class="case-table" role="table" aria-label="Beds">
+                    <thead>
+                        <tr>
+                            <th>Bed No</th>
+                            <th>Room No</th>
+                            <th>Floor</th>
+                            <th>Room Type</th>
+                            <th>Rent</th>
+                            <th>Amenities</th>
+                            <th>Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let bed of pagedBeds; trackBy: trackById">
+                            <td class="f-14-m">{{ bed.bedNumber }}</td>
+                            <td class="f-14-r">{{ bed.roomNumber }}</td>
+                            <td class="f-14-r">{{ bed.floor }}</td>
+                            <td class="f-14-r">{{ bed.roomType }}</td>
+                            <td class="f-14-r">₹{{ bed.rent }}</td>
+                            <td>
+                                <div class="amenity-tags">
+                                    <span class="amenity-tag" *ngFor="let a of bed.amenities.slice(0, 3)">{{ a }}</span>
+                                    <span class="amenity-tag more-tag" *ngIf="bed.amenities.length > 3">+{{
+                                        bed.amenities.length - 3 }} more</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-pill" [ngClass]="'status-' + bed.status.toLowerCase()">
+                                    <span class="status-dot"></span>
+                                    {{ bed.status }}
+                                </span>
+                            </td>
+                            <td class="text-center action-icons">
+                                <button class="icon-btn" (click)="onEditBed(bed)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="icon-btn" (click)="onDeleteBed(bed)">
+                                    <i class="bi bi-trash text-danger"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <h3 class="empty-title f-20-m">No beds found</h3>
-        <p class="empty-description f-14-r">Create a room to automatically generate beds</p>
-      </div>
-    </ng-template>
 
-    <!-- Pagination Footer - Only show when there is data -->
-    <div class="table-footer" *ngIf="totalItems > 0">
-      <div class="footer-left">
-        <div class="f-12-r text-muted">Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries</div>
-        <div class="d-inline-flex align-items-center gap-2 mt-2 mt-md-0">
-          <span class="f-12-r text-muted">Rows per page:</span>
-          <select class="rows-per-page" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
-          </select>
+        <!-- Mobile Card View -->
+        <div class="mobile-view" *ngIf="pagedBeds.length > 0; else emptyState">
+            <div class="beds-grid">
+                <div class="bed-card" *ngFor="let bed of pagedBeds; trackBy: trackById">
+                    <div class="bed-card-header">
+                        <div class="bed-icon-wrapper">
+                            <i class="bi" [ngClass]="{
+                  'bi-bed-fill': bed.status === 'Available',
+                  'bi-bed-fill text-warning': bed.status === 'Occupied',
+                  'bi-tools': bed.status === 'Maintenance'
+                }"></i>
+                        </div>
+                        <div class="bed-id f-16-m">{{ bed.bedNumber }}</div>
+                        <span class="status-badge" [ngClass]="'status-' + bed.status.toLowerCase()">
+                            {{ bed.status }}
+                        </span>
+                    </div>
+
+                    <div class="bed-card-body">
+                        <div class="bed-info-row">
+                            <span class="info-label"><i class="bi bi-building"></i> Floor</span>
+                            <span class="info-value">{{ bed.floor }}</span>
+                        </div>
+                        <div class="bed-info-row">
+                            <span class="info-label"><i class="bi bi-door-open"></i> Room No</span>
+                            <span class="info-value">{{ bed.roomNumber }}</span>
+                        </div>
+                        <div class="bed-info-row">
+                            <span class="info-label"><i class="bi bi-hash"></i> Bed No</span>
+                            <span class="info-value">{{ bed.bedNumber }}</span>
+                        </div>
+                        <div class="bed-info-row">
+                            <span class="info-label"><i class="bi bi-tag"></i> Room Type</span>
+                            <span class="info-value">{{ bed.roomType }}</span>
+                        </div>
+                        <div class="bed-info-row">
+                            <span class="info-label"><i class="bi bi-currency-rupee"></i> Rent</span>
+                            <span class="info-value rent-value">₹{{ bed.rent }}</span>
+                        </div>
+                        <div class="bed-info-row" *ngIf="bed.amenities.length > 0">
+                            <span class="info-label"><i class="bi bi-stars"></i> Amenities</span>
+                            <div class="amenities-tags">
+                                <span class="amenity-tag" *ngFor="let a of bed.amenities">{{ a }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bed-card-footer">
+                        <button class="action-btn edit-btn d-flex align-items-center justify-content-center gap-2"
+                            (click)="onEditBed(bed)">
+                            <i class="bi bi-pencil"></i> <span>Edit</span>
+                        </button>
+                        <button class="action-btn delete-btn d-flex align-items-center justify-content-center gap-2"
+                            (click)="onDeleteBed(bed)">
+                            <i class="bi bi-trash"></i> <span>Delete</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <nav aria-label="pagination">
-        <ul class="pagination pagination-sm mb-0">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
-            </button>
-          </li>
-          <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === currentPage">
-            <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </section>
+        <!-- Single Empty State -->
+        <ng-template #emptyState>
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-bed"></i>
+                </div>
+                <h3 class="empty-title f-20-m">No beds found</h3>
+                <p class="empty-description f-14-r">
+                    Create a room to automatically generate beds
+                </p>
+            </div>
+        </ng-template>
+
+        <!-- Pagination Footer -->
+        <div class="table-footer" *ngIf="totalItems > 0">
+            <div class="footer-left">
+                <div class="f-12-r text-muted">
+                    Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
+                </div>
+                <div class="d-inline-flex align-items-center gap-2 mt-2 mt-md-0">
+                    <span class="f-12-r text-muted">Rows per page:</span>
+                    <select class="rows-per-page" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+                        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <nav aria-label="pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                        <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
+                            <i class="bi bi-chevron-left"></i> Previous
+                        </button>
+                    </li>
+                    <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === currentPage">
+                        <button class="page-link" (click)="goToPage(page)">
+                            {{ page }}
+                        </button>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
+                            Next <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
 </div>

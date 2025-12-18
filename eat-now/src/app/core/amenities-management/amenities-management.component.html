@@ -1,10 +1,9 @@
-<!-- Amenities and Rooms Management -->
 <div class="page-container">
     <section class="case-card">
         <!-- Header & Toolbar -->
-        <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center justify-content-between mb-3 header-row">
             <p class="mb-0 f-18-m text-high-contrast">Amenities Management</p>
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2 header-actions">
                 <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
                     (click)="onAddNewAmenity()">
                     <i class="bi bi-plus-circle"></i>
@@ -29,7 +28,7 @@
                             <p class="amenity-count">{{ amenity.items.length }} items</p>
                         </div>
                     </div>
-                    
+
                     <div class="amenity-card-body">
                         <div class="amenity-tags">
                             <span class="amenity-tag" *ngFor="let item of amenity.items.slice(0, 5)">
@@ -61,7 +60,9 @@
                     <i class="bi bi-inbox"></i>
                 </div>
                 <h3 class="empty-title">No Amenities Yet</h3>
-                <p class="empty-description">Start by adding your first amenity configuration</p>
+                <p class="empty-description">
+                    Start by adding your first amenity configuration
+                </p>
                 <button type="button" class="btn-primary btn-sm" (click)="onAddNewAmenity()">
                     <i class="bi bi-plus-circle"></i>
                     Add Your First Amenity
@@ -70,194 +71,4 @@
         </ng-template>
     </section>
 
-    <!-- Rooms Table/Card Section -->
-    <section class="case-card mt-4" *ngIf="showRoomsTable">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <p class="mb-0 f-18-m text-high-contrast">Rooms Details</p>
-            <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                    (click)="onFilter()">
-                    <i class="bi bi-funnel"></i>
-                    <span class="f-12-m">Filter</span>
-                </button>
-                <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                    (click)="onReset()">
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                    <span class="f-12-m">Reset</span>
-                </button>
-                <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-                    (click)="onAddNewRoom()">
-                    <i class="bi bi-plus-circle"></i>
-                    <span class="f-14-m">Add New Room</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="toolbar-divider"></div>
-
-        <div class="desktop-view">
-            <div class="table-container">
-                <table class="case-table" role="table" aria-label="Rooms">
-                    <thead>
-                        <tr>
-                            <th scope="col">Room No</th>
-                            <th scope="col">Room Type</th>
-                            <th scope="col">Floor</th>
-                            <th scope="col">Rent</th>
-                            <th scope="col">Amenities</th>
-                            <th scope="col">Status</th>
-                            <th scope="col" class="text-center">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr *ngFor="let room of pagedRooms; trackBy: trackById" class="table-row-hover">
-                            <td class="f-14-m">{{ room.id }}</td>
-                            <td class="f-14-r">{{ room.type }} - {{ room.subtype }}</td>
-                            <td class="f-14-r">{{ room.floor }}</td>
-                            <td class="f-14-r">₹{{ room.rent }}</td>
-                            <td class="f-14-r">
-                                <div class="amenity-tags">
-                                    <span class="amenity-tag" *ngFor="let amenity of room.amenities.slice(0, 3)">
-                                        {{ amenity }}
-                                    </span>
-                                    <span class="amenity-tag more-tag" *ngIf="room.amenities.length > 3">
-                                        +{{ room.amenities.length - 3 }} more
-                                    </span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-pill" [ngClass]="{
-                                    'status-available': room.status === 'Available',
-                                    'status-occupied': room.status === 'Occupied',
-                                    'status-maintenance': room.status === 'Maintenance'
-                                }">
-                                    <span class="status-dot"></span>
-                                    {{ room.status }}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <div class="d-inline-flex align-items-center gap-3 action-icons">
-                                    <button type="button" class="icon-btn" title="Edit" (click)="onEditRoom(room)">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-                                    <button type="button" class="icon-btn" title="Delete" (click)="onDeleteRoom(room)">
-                                        <i class="bi bi-trash text-danger"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr *ngIf="pagedRooms.length === 0">
-                            <td colspan="7" class="text-center py-4 text-muted">No rooms found.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="mobile-view">
-            <div class="rooms-grid">
-                <div *ngFor="let room of pagedRooms; trackBy: trackById" class="room-card">
-                    <div class="room-card-header">
-                        <div class="room-icon-wrapper">
-                            <i class="bi bi-door-open"></i>
-                        </div>
-                        <div class="room-id">
-                            <span class="f-14-m">Room {{ room.id }}</span>
-                        </div>
-                        <span class="status-badge" [ngClass]="{
-                            'status-available': room.status === 'Available',
-                            'status-occupied': room.status === 'Occupied',
-                            'status-maintenance': room.status === 'Maintenance'
-                        }">
-                            {{ room.status }}
-                        </span>
-                    </div>
-
-                    <div class="room-card-body">
-                        <div class="room-info-row">
-                            <span class="info-label">
-                                <i class="bi bi-building"></i> Floor
-                            </span>
-                            <span class="info-value">{{ room.floor }}</span>
-                        </div>
-
-                        <div class="room-info-row">
-                            <span class="info-label">
-                                <i class="bi bi-tag"></i> Type
-                            </span>
-                            <span class="info-value">{{ room.type }} - {{ room.subtype }}</span>
-                        </div>
-
-                        <div class="room-info-row">
-                            <span class="info-label">
-                                <i class="bi bi-currency-rupee"></i> Rent
-                            </span>
-                            <span class="info-value rent-value">₹{{ room.rent }}</span>
-                        </div>
-
-                        <div class="room-info-row" *ngIf="room.amenities.length > 0">
-                            <span class="info-label">
-                                <i class="bi bi-stars"></i> Amenities
-                            </span>
-                            <div class="amenities-tags">
-                                <span *ngFor="let amenity of room.amenities" class="amenity-tag">
-                                    {{ amenity }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="room-card-footer">
-                        <button type="button" class="action-btn edit-btn" title="Edit" (click)="onEditRoom(room)">
-                            <i class="bi bi-pencil"></i> Edit
-                        </button>
-                        <button type="button" class="action-btn delete-btn" title="Delete" (click)="onDeleteRoom(room)">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="table-footer">
-            <div class="footer-left">
-                <div class="f-12-r text-muted text-high-contrast">
-                    Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
-                </div>
-
-                <div class="d-inline-flex align-items-center gap-2">
-                    <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
-                    <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-                        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
-                    </select>
-                </div>
-            </div>
-
-            <nav aria-label="Table pagination">
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item" [class.disabled]="currentPage === 1">
-                        <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-                            <i class="bi bi-chevron-left"></i> Previous
-                        </button>
-                    </li>
-
-                    <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === currentPage">
-                        <button type="button" class="page-link" (click)="goToPage(page)">
-                            {{ page }}
-                        </button>
-                    </li>
-
-                    <li class="page-item" [class.disabled]="currentPage === totalPages">
-                        <button type="button" class="page-link" (click)="nextPage()"
-                            [disabled]="currentPage === totalPages">
-                            Next <i class="bi bi-chevron-right"></i>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </section>
 </div>
