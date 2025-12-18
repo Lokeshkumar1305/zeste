@@ -1,134 +1,178 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomDetails, RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
 import { InventoryPurchaseOrdersModalComponent } from '../inventory-purchase-orders-modal/inventory-purchase-orders-modal.component';
 
+export type PurchaseOrderStatus =
+  | 'Draft'
+  | 'Pending'
+  | 'Approved'
+  | 'Ordered'
+  | 'Received'
+  | 'Cancelled';
 
+export type PurchaseOrderFilter = 'All' | PurchaseOrderStatus;
 
-type RoomStatus = 'Available' | 'Occupied' | 'Maintenance';
-
-
-type CaseStatus = 'Open' | 'Closed' | 'On Hold';
-type CasePriority = 'Low' | 'Medium' | 'High';
-
-export interface CaseItem {
+export interface Supplier {
   id: string;
-  type: string;
-  subtype: string;
-  status: CaseStatus;
-  priority: CasePriority;
-  owner: string;
-  date: Date;
+  name: string;
 }
+
+export interface PurchaseOrderItem {
+  itemId: string;
+  itemName: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+export interface PurchaseOrder {
+  id: string;              // internal id
+  orderNumber: string;     // display PO number (e.g. PO-2024-001)
+  supplierId: string;
+  status: PurchaseOrderStatus;
+  orderDate: Date;
+  expectedDate: Date;
+  items: PurchaseOrderItem[];
+  totalAmount: number;
+  notes?: string;
+}
+
 @Component({
   selector: 'app-inventory-purchase-orders',
   templateUrl: './inventory-purchase-orders.component.html',
   styleUrl: './inventory-purchase-orders.component.scss'
 })
-export class InventoryPurchaseOrdersComponent {
- // Toolbar filters
-  public selectedStatusFilter: 'All' | RoomStatus = 'All';
+export class InventoryPurchaseOrdersComponent implements OnInit {
+  // Toolbar filters
+  public selectedStatusFilter: PurchaseOrderFilter = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
   public pageSize = 5;
   public currentPage = 1;
 
+  // Lookups
+  public suppliers: Supplier[] = [];
+
   // Data
-  private allRooms: RoomDetails[] = [];
-  public filteredRooms: RoomDetails[] = [];
-  public pagedRooms: RoomDetails[] = [];
+  private allOrders: PurchaseOrder[] = [];
+  public filteredOrders: PurchaseOrder[] = [];
+  public pagedOrders: PurchaseOrder[] = [];
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample room data
-    this.allRooms = [
+    // Seed suppliers
+    this.suppliers = [
+      { id: 's1', name: 'Fresh Foods Supplier' },
+      { id: 's2', name: 'Clean & Shine Distributors' },
+      { id: 's3', name: 'Comfort Bedding Co.' }
+    ];
+
+    // Seed sample orders
+    this.allOrders = [
       {
-        roomNumber: '101',
-        type: 'Single',
-        monthlyRent: 8000,
-        securityDeposit: 16000,
-        floor: 'Ground',
-        beds: 1,
-        status: 'Available',
-        description: 'Spacious single room with attached bathroom',
-        amenities: ['Wi-Fi', 'AC', 'TV']
+        id: '1',
+        orderNumber: 'PO-2024-001',
+        supplierId: 's1',
+        status: 'Pending',
+        orderDate: new Date('2024-01-05'),
+        expectedDate: new Date('2024-01-10'),
+        items: [
+          {
+            itemId: 'i1',
+            itemName: 'Basmati Rice',
+            quantity: 50,
+            unitPrice: 80,
+            totalPrice: 4000
+          },
+          {
+            itemId: 'i2',
+            itemName: 'Cooking Oil',
+            quantity: 30,
+            unitPrice: 120,
+            totalPrice: 3600
+          }
+        ],
+        totalAmount: 7600,
+        notes: 'Monthly food stock'
       },
       {
-        roomNumber: '102',
-        type: 'Double',
-        monthlyRent: 12000,
-        securityDeposit: 24000,
-        floor: 'Ground',
-        beds: 2,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi', 'AC']
+        id: '2',
+        orderNumber: 'PO-2024-002',
+        supplierId: 's2',
+        status: 'Ordered',
+        orderDate: new Date('2024-01-08'),
+        expectedDate: new Date('2024-01-12'),
+        items: [
+          {
+            itemId: 'i3',
+            itemName: 'Floor Cleaner',
+            quantity: 20,
+            unitPrice: 150,
+            totalPrice: 3000
+          }
+        ],
+        totalAmount: 3000,
+        notes: 'Cleaning supplies for January'
       },
       {
-        roomNumber: '201',
-        type: 'Single',
-        monthlyRent: 8500,
-        securityDeposit: 17000,
-        floor: 'First',
-        beds: 1,
-        status: 'Maintenance',
-        description: '',
-        amenities: ['Wi-Fi', 'TV']
+        id: '3',
+        orderNumber: 'PO-2024-003',
+        supplierId: 's3',
+        status: 'Received',
+        orderDate: new Date('2023-12-20'),
+        expectedDate: new Date('2023-12-25'),
+        items: [
+          {
+            itemId: 'i4',
+            itemName: 'Bedsheet (Single)',
+            quantity: 15,
+            unitPrice: 400,
+            totalPrice: 6000
+          }
+        ],
+        totalAmount: 6000,
+        notes: 'New bedsheets for Block A'
       },
       {
-        roomNumber: '202',
-        type: 'Double',
-        monthlyRent: 13000,
-        securityDeposit: 26000,
-        floor: 'First',
-        beds: 2,
-        status: 'Available',
-        description: 'Balcony view',
-        amenities: ['Wi-Fi', 'AC', 'Balcony']
+        id: '4',
+        orderNumber: 'PO-2024-004',
+        supplierId: 's1',
+        status: 'Draft',
+        orderDate: new Date('2024-01-15'),
+        expectedDate: new Date('2024-01-18'),
+        items: [],
+        totalAmount: 0,
+        notes: 'Draft order for next month'
       },
       {
-        roomNumber: '301',
-        type: 'Single',
-        monthlyRent: 8200,
-        securityDeposit: 16400,
-        floor: 'Second',
-        beds: 1,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi']
-      },
-      {
-        roomNumber: '302',
-        type: 'Double',
-        monthlyRent: 12500,
-        securityDeposit: 25000,
-        floor: 'Second',
-        beds: 2,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi', 'AC', 'TV']
-      },
-      {
-        roomNumber: '303',
-        type: 'Single',
-        monthlyRent: 7900,
-        securityDeposit: 15800,
-        floor: 'Second',
-        beds: 1,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi']
+        id: '5',
+        orderNumber: 'PO-2024-005',
+        supplierId: 's2',
+        status: 'Cancelled',
+        orderDate: new Date('2023-11-10'),
+        expectedDate: new Date('2023-11-15'),
+        items: [
+          {
+            itemId: 'i5',
+            itemName: 'Hand Soap',
+            quantity: 50,
+            unitPrice: 25,
+            totalPrice: 1250
+          }
+        ],
+        totalAmount: 1250,
+        notes: 'Cancelled due to wrong pricing'
       }
     ];
 
     this.applyAllFilters();
   }
 
-  /* -------------------  Pagination getters  ------------------- */
+  /* ------------------- Pagination getters ------------------- */
   get totalItems(): number {
-    return this.filteredRooms.length;
+    return this.filteredOrders.length;
   }
 
   get totalPages(): number {
@@ -136,7 +180,9 @@ export class InventoryPurchaseOrdersComponent {
   }
 
   get showingFrom(): number {
-    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+    return this.totalItems === 0
+      ? 0
+      : (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get showingTo(): number {
@@ -147,15 +193,23 @@ export class InventoryPurchaseOrdersComponent {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  /* -------------------  UI Actions  ------------------- */
-  onSelectStatusChange(value: 'All' | RoomStatus): void {
+  /* ------------------- UI Actions ------------------- */
+  onSelectStatusChange(value: PurchaseOrderFilter): void {
     this.selectedStatusFilter = value;
     this.currentPage = 1;
     this.applyAllFilters();
   }
 
   onFilter(): void {
-    const order: Array<'All' | RoomStatus> = ['All', 'Available', 'Occupied', 'Maintenance'];
+    const order: PurchaseOrderFilter[] = [
+      'All',
+      'Draft',
+      'Pending',
+      'Approved',
+      'Ordered',
+      'Received',
+      'Cancelled'
+    ];
     const idx = order.indexOf(this.selectedStatusFilter);
     this.onSelectStatusChange(order[(idx + 1) % order.length]);
   }
@@ -170,55 +224,92 @@ export class InventoryPurchaseOrdersComponent {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedRooms();
+    this.updatePagedOrders();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedRooms();
+    this.updatePagedOrders();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagedRooms();
+      this.updatePagedOrders();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagedRooms();
+      this.updatePagedOrders();
     }
   }
 
-  trackByRoomNumber(_: number, room: RoomDetails): string {
-    return room.roomNumber;
+  trackByOrderId(_: number, order: PurchaseOrder): string {
+    return order.id;
   }
 
-  /* -------------------  Core filtering + pagination  ------------------- */
+  /* ------------------- Core filtering + pagination ------------------- */
   private applyAllFilters(): void {
-    this.filteredRooms = this.applyStatusFilter(this.allRooms, this.selectedStatusFilter);
-    this.updatePagedRooms();
+    this.filteredOrders = this.applyStatusFilter(
+      this.allOrders,
+      this.selectedStatusFilter
+    );
+    this.updatePagedOrders();
   }
 
-  private applyStatusFilter(list: RoomDetails[], selected: 'All' | RoomStatus): RoomDetails[] {
+  private applyStatusFilter(
+    list: PurchaseOrder[],
+    selected: PurchaseOrderFilter
+  ): PurchaseOrder[] {
     if (selected === 'All') return [...list];
-    return list.filter(r => r.status === selected);
+    return list.filter(o => o.status === selected);
   }
 
-  private updatePagedRooms(): void {
+  private updatePagedOrders(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedRooms = this.filteredRooms.slice(start, end);
+    this.pagedOrders = this.filteredOrders.slice(start, end);
   }
 
-  /* -------------------  Modal handling  ------------------- */
-  onAddNewRoom(): void {
+  /* ------------------- Helpers ------------------- */
+  getSupplierName(supplierId: string): string | undefined {
+    return this.suppliers.find(s => s.id === supplierId)?.name;
+  }
+
+  /** Simple ID generator based on existing numeric IDs */
+  private generateOrderId(): string {
+    const numericIds = this.allOrders
+      .map(o => parseInt(o.id, 10))
+      .filter(n => !isNaN(n));
+    const next = numericIds.length ? Math.max(...numericIds) + 1 : 1;
+    return next.toString();
+  }
+
+  private generateOrderNumber(): string {
+    const prefix = 'PO-2024-';
+    const numbers = this.allOrders
+      .map(o => {
+        const part = o.orderNumber.split('-').pop() || '';
+        const num = parseInt(part, 10);
+        return isNaN(num) ? 0 : num;
+      })
+      .filter(n => n > 0);
+
+    const next = numbers.length ? Math.max(...numbers) + 1 : 1;
+    return `${prefix}${next.toString().padStart(3, '0')}`;
+  }
+
+  /* ------------------- Modal handling ------------------- */
+  onAddNewOrder(): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '800px';
+
     const dialogRef = this.dialog.open(InventoryPurchaseOrdersModalComponent, {
-     width: '800px',
-     maxWidth: '100vw',
+      width,
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -226,54 +317,72 @@ export class InventoryPurchaseOrdersComponent {
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
       autoFocus: false,
-      data: { amenityOptions: this.getAllAmenities() }
-    });
-
-    dialogRef.afterClosed().subscribe((newRoom: RoomDetails | undefined) => {
-      if (newRoom) {
-        this.allRooms.push(newRoom);
-        this.applyAllFilters();
-        console.log('New Room Created:', newRoom);
+      data: {
+        order: null,
+        suppliers: this.suppliers
+        // you can also pass availableItems here if your modal expects it
+        // availableItems: this.items
       }
     });
-  }
 
-  onEditRoom(room: RoomDetails): void {
-    const dialogRef = this.dialog.open(InventoryPurchaseOrdersModalComponent, {
-     width: '800px',
-     maxWidth: '100vw',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-dark-backdrop',
-      disableClose: false,
-      autoFocus: false,
-      data: { room: { ...room }, amenityOptions: this.getAllAmenities() }
-    });
-
-    dialogRef.afterClosed().subscribe((updated: RoomDetails | undefined) => {
-      if (updated) {
-        const idx = this.allRooms.findIndex(r => r.roomNumber === room.roomNumber);
-        if (idx > -1) {
-          this.allRooms[idx] = updated;
+    dialogRef.afterClosed().subscribe(
+      (newOrder: PurchaseOrder | undefined) => {
+        if (newOrder) {
+          if (!newOrder.id) {
+            newOrder.id = this.generateOrderId();
+          }
+          if (!newOrder.orderNumber) {
+            newOrder.orderNumber = this.generateOrderNumber();
+          }
+          this.allOrders.push(newOrder);
           this.applyAllFilters();
+          console.log('New Purchase Order Created:', newOrder);
         }
       }
-    });
+    );
   }
 
-  onDeleteRoom(room: RoomDetails): void {
-    if (confirm(`Delete room ${room.roomNumber}?`)) {
-      this.allRooms = this.allRooms.filter(r => r.roomNumber !== room.roomNumber);
+  onEditOrder(order: PurchaseOrder): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '800px';
+
+    const dialogRef = this.dialog.open(InventoryPurchaseOrdersModalComponent, {
+      width,
+      maxWidth: '100vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false,
+      data: {
+        order: { ...order },
+        suppliers: this.suppliers
+        // availableItems: this.items
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(
+      (updated: PurchaseOrder | undefined) => {
+        if (updated) {
+          const idx = this.allOrders.findIndex(o => o.id === order.id);
+          if (idx > -1) {
+            this.allOrders[idx] = {
+              ...this.allOrders[idx],
+              ...updated
+            };
+            this.applyAllFilters();
+          }
+        }
+      }
+    );
+  }
+
+  onDeleteOrder(order: PurchaseOrder): void {
+    if (confirm(`Delete purchase order ${order.orderNumber || order.id}?`)) {
+      this.allOrders = this.allOrders.filter(o => o.id !== order.id);
       this.applyAllFilters();
     }
-  }
-
-  /** Helper – collect all unique amenities from existing rooms */
-  private getAllAmenities(): string[] {
-    const set = new Set<string>();
-    this.allRooms.forEach(r => r.amenities.forEach(a => set.add(a)));
-    return Array.from(set);
   }
 }

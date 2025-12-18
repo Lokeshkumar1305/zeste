@@ -1,20 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  InventoryService,
+  InventoryItem
+} from '../../shared/services/inventory.service';
 import { InventoryStocksModalComponent } from '../inventory-stocks-modal/inventory-stocks-modal.component';
-import { InventoryService, InventoryItem } from '../../shared/services/inventory.service';
 
-type CaseStatus = 'Open' | 'Closed' | 'On Hold';
-type CasePriority = 'Low' | 'Medium' | 'High';
-
-export interface CaseItem {
-  id: string;
-  type: string;
-  subtype: string;
-  status: CaseStatus;
-  priority: CasePriority;
-  owner: string;
-  date: Date;
-}
+export type StockFilter = 'All' | 'In Stock' | 'Low Stock' | 'Out of Stock';
 
 @Component({
   selector: 'app-inventory-stocks',
@@ -22,80 +14,175 @@ export interface CaseItem {
   styleUrls: ['./inventory-stocks.component.scss']
 })
 export class InventoryStocksComponent implements OnInit {
+  // Toolbar filter
+  public selectedStockFilter: StockFilter = 'All';
 
-  items: InventoryItem[] = [];
-  filteredItems: InventoryItem[] = [];
-  searchTerm = '';
-  filterCategory = '';
-  filterStatus = 'all';
-  categories: any[] = [];
+  // Pagination
+  public pageSizeOptions: number[] = [5, 10, 25];
+  public pageSize = 5;
+  public currentPage = 1;
+
+  // Data
+  private allItems: InventoryItem[] = [];
+  public filteredItems: InventoryItem[] = [];
+  public pagedItems: InventoryItem[] = [];
 
   constructor(
+    private dialog: MatDialog,
     private inventoryService: InventoryService
   ) {}
 
   ngOnInit(): void {
     this.inventoryService.items$.subscribe(items => {
-      this.items = items;
-      this.filterItems();
-    });
-
-    this.inventoryService.categories$.subscribe(cats => {
-      this.categories = cats;
+      // Load all items from the service
+      this.allItems = items;
+      this.applyAllFilters();
     });
   }
 
-  // Getter methods for summary counts
-  get inStockCount(): number {
-    return this.items.filter(i => i.currentStock > i.minStockLevel).length;
+  /* ------------------- Pagination getters ------------------- */
+  get totalItems(): number {
+    return this.filteredItems.length;
   }
 
-  get lowStockCount(): number {
-    return this.items.filter(i => i.currentStock <= i.minStockLevel && i.currentStock > 0).length;
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
   }
 
-  get outOfStockCount(): number {
-    return this.items.filter(i => i.currentStock === 0).length;
+  get showingFrom(): number {
+    return this.totalItems === 0
+      ? 0
+      : (this.currentPage - 1) * this.pageSize + 1;
   }
 
-  filterItems(): void {
-    this.filteredItems = this.items.filter(item => {
-      const matchesSearch = item.name.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesCategory = !this.filterCategory || item.categoryId === this.filterCategory;
-      
-      let matchesStatus = true;
-      if (this.filterStatus === 'low') {
-        matchesStatus = item.currentStock <= item.minStockLevel && item.currentStock > 0;
-      } else if (this.filterStatus === 'ok') {
-        matchesStatus = item.currentStock > item.minStockLevel;
-      } else if (this.filterStatus === 'out') {
-        matchesStatus = item.currentStock === 0;
-      }
+  get showingTo(): number {
+    return Math.min(this.currentPage * this.pageSize, this.totalItems);
+  }
 
-      return matchesSearch && matchesCategory && matchesStatus;
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  /* ------------------- UI Actions ------------------- */
+  onSelectStockFilter(value: StockFilter): void {
+    this.selectedStockFilter = value;
+    this.currentPage = 1;
+    this.applyAllFilters();
+  }
+
+  onFilter(): void {
+    const order: StockFilter[] = [
+      'All',
+      'In Stock',
+      'Low Stock',
+      'Out of Stock'
+    ];
+    const idx = order.indexOf(this.selectedStockFilter);
+    this.onSelectStockFilter(order[(idx + 1) % order.length]);
+  }
+
+  onReset(): void {
+    this.selectedStockFilter = 'All';
+    this.pageSize = this.pageSizeOptions[0];
+    this.currentPage = 1;
+    this.applyAllFilters();
+  }
+
+  onPageSizeChange(size: number): void {
+    this.pageSize = +size;
+    this.currentPage = 1;
+    this.updatePagedItems();
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.updatePagedItems();
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagedItems();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagedItems();
+    }
+  }
+
+  trackByItemId(_: number, item: InventoryItem): string {
+    return item.id;
+  }
+
+  /* ------------------- Core filtering + pagination ------------------- */
+  private applyAllFilters(): void {
+    // Optionally show only active items
+    const base = this.allItems.filter(i => (i as any).isActive !== false);
+
+    this.filteredItems = this.applyStatusFilter(
+      base,
+      this.selectedStockFilter
+    );
+    this.updatePagedItems();
+  }
+
+  private applyStatusFilter(
+    list: InventoryItem[],
+    selected: StockFilter
+  ): InventoryItem[] {
+    if (selected === 'All') return [...list];
+
+    return list.filter(item => {
+      const status = this.getStockStatus(item);
+      if (selected === 'In Stock') return status === 'ok';
+      if (selected === 'Low Stock') return status === 'low';
+      return status === 'out';
     });
   }
 
-  getStockStatus(item: InventoryItem): string {
-    if (item.currentStock === 0) return 'out';
-    if (item.currentStock <= item.minStockLevel) return 'low';
+  private updatePagedItems(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedItems = this.filteredItems.slice(start, end);
+  }
+
+  /* ------------------- Stock helpers ------------------- */
+  getStockStatus(item: InventoryItem): 'ok' | 'low' | 'out' {
+    const current = item.currentStock ?? 0;
+    const min = (item as any).minStockLevel ?? 0;
+
+    if (current <= 0) return 'out';
+    if (current <= min) return 'low';
     return 'ok';
   }
 
   getStockStatusText(item: InventoryItem): string {
-    const status = this.getStockStatus(item);
-    if (status === 'out') return 'Out of Stock';
-    if (status === 'low') return 'Low Stock';
-    return 'In Stock';
+    const s = this.getStockStatus(item);
+    if (s === 'ok') return 'In Stock';
+    if (s === 'low') return 'Low Stock';
+    return 'Out of Stock';
   }
 
-  getTotalValue(): number {
-    return this.filteredItems.reduce((sum, item) =>
-      sum + (item.currentStock * item.costPrice), 0
-    );
-  }
+  /* ------------------- Modal handling ------------------- */
+  onOpenStockOverview(): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '800px';
 
-  onClose(): void {
-    
+    this.dialog.open(InventoryStocksModalComponent, {
+      width,
+      maxWidth: '100vw',
+      height: '100vh',
+      position: { right: '0', top: '0' },
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: false,
+      autoFocus: false
+      // No data needed; modal uses InventoryService internally
+    });
   }
 }

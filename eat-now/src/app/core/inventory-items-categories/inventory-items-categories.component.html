@@ -1,103 +1,202 @@
-<!-- Page container ensures fixed L/R space and max width -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
-      <p class="mb-0 f-18-m text-high-contrast">Inventory Items Categories Details</p>
+    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <p class="mb-0 f-18-m text-high-contrast">Inventory Items Category Details</p>
+        <small class="text-muted">Categories help organize your items into groups</small>
+      </div>
 
-      <div class="d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onFilter()">
-          <i class="bi bi-funnel"></i>
-          <span class="f-12-m">Filter</span>
-        </button>
+      <div class="toolbar-actions d-flex align-items-center gap-3">
+        <!-- Filter & Reset buttons side by side -->
+        <div class="d-flex gap-3">
+          <button
+            type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            (click)="onFilter()"
+          >
+            <i class="bi bi-funnel"></i>
+            <span class="f-12-m">Filter ({{ selectedStatusFilter }})</span>
+          </button>
+          <button
+            type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            (click)="onReset()"
+          >
+            <i class="bi bi-arrow-counterclockwise"></i>
+            <span class="f-12-m">Reset</span>
+          </button>
+        </div>
 
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onReset()">
-          <i class="bi bi-arrow-counterclockwise"></i>
-          <span class="f-12-m">Reset</span>
-        </button>
-
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onAddNewRoom()">
+        <!-- Add New Category button on the right -->
+        <button
+          type="button"
+          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+          (click)="onAddNewCategory()"
+        >
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Item Categorie</span>
+          <span class="f-14-m">Add New Item Category</span>
         </button>
       </div>
     </div>
 
     <div class="toolbar-divider"></div>
 
-    <!-- Table -->
+    <!-- Desktop/Tablet: Table View -->
     <div class="table-container">
-      <table class="case-table" role="table" aria-label="Rooms">
+      <table class="case-table" role="table" aria-label="Item Categories">
         <thead>
           <tr>
-            <th scope="col">Room No</th>
-            <th scope="col">Room Type</th>
-            <th scope="col">Floor</th>
-            <th scope="col">Rent</th>
-            <th scope="col">Amenities</th>
+            <th scope="col">Category Name</th>
+            <th scope="col">Parent Category</th>
+            <th scope="col">Description</th>
             <th scope="col">Status</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
-
         <tbody>
-          <tr *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber"
-              class="table-row-hover">
-            <td class="f-14-m">{{ room.roomNumber }}</td>
-            <td class="f-14-r">{{ room.type }}</td>
-            <td class="f-14-r">{{ room.floor }}</td>
-            <td class="f-14-r">{{ room.monthlyRent | currency:'INR':'symbol':'1.0-0' }}</td>
-            <td class="f-14-r text-capitalize">
-              {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
+          <tr
+            *ngFor="let category of pagedCategories; trackBy: trackByCategoryId"
+            class="table-row-hover"
+          >
+            <td class="f-14-m">{{ category.name }}</td>
+            <td class="f-14-r">
+              {{ getParentName(category.parentId) || '-' }}
+            </td>
+            <td class="f-14-r" [title]="category.description || '-'">
+              {{ category.description || '-' }}
             </td>
             <td>
-              <span class="status-pill"
-                    [ngClass]="{
-                      'status-available': room.status === 'Available',
-                      'status-occupied': room.status === 'Occupied',
-                      'status-maintenance': room.status === 'Maintenance'
-                    }">
+              <span
+                class="status-pill"
+                [ngClass]="{
+                  'status-available': category.isActive,
+                  'status-maintenance': !category.isActive
+                }"
+              >
                 <span class="status-dot"></span>
-                {{ room.status }}
+                {{ category.isActive ? 'Active' : 'Inactive' }}
               </span>
             </td>
             <td class="text-center">
               <div class="d-inline-flex align-items-center gap-3 action-icons">
-                <button type="button" class="icon-btn" title="Edit"
-                        (click)="onEditRoom(room)">
+                <button
+                  type="button"
+                  class="icon-btn"
+                  title="Edit"
+                  (click)="onEditCategory(category)"
+                >
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button type="button" class="icon-btn" title="Delete"
-                        (click)="onDeleteRoom(room)">
+                <button
+                  type="button"
+                  class="icon-btn"
+                  title="Delete"
+                  (click)="onDeleteCategory(category)"
+                >
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </div>
             </td>
           </tr>
 
-          <tr *ngIf="pagedRooms.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">No rooms found.</td>
+          <tr *ngIf="pagedCategories.length === 0">
+            <td colspan="5" class="text-center py-5 text-muted">
+              No categories found.
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Footer -->
+    <!-- Mobile: Card View -->
+    <div class="mobile-cards">
+      <div
+        *ngFor="let category of pagedCategories; trackBy: trackByCategoryId"
+        class="mobile-card"
+      >
+        <div class="mobile-card-header d-flex justify-content-between align-items-center">
+          <div class="f-18-m fw-bold">
+            {{ category.name }}
+          </div>
+          <span
+            class="status-pill"
+            [ngClass]="{
+              'status-available': category.isActive,
+              'status-maintenance': !category.isActive
+            }"
+          >
+            <span class="status-dot"></span>
+            {{ category.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+
+        <div class="mobile-card-body">
+          <p class="f-14-r info-row">
+            <span class="info-label"><strong>Parent Category:</strong></span>
+            <span class="info-value">
+              {{ getParentName(category.parentId) || '-' }}
+            </span>
+          </p>
+
+          <p class="f-14-r info-row">
+            <span class="info-label"><strong>Description:</strong></span>
+            <span class="info-value">
+              {{ category.description || '-' }}
+            </span>
+          </p>
+        </div>
+
+        <div class="mobile-card-footer">
+          <button
+            type="button"
+            class="icon-btn"
+            title="Edit"
+            (click)="onEditCategory(category)"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            title="Delete"
+            (click)="onDeleteCategory(category)"
+          >
+            <i class="bi bi-trash text-danger"></i>
+          </button>
+        </div>
+      </div>
+
+      <div
+        *ngIf="pagedCategories.length === 0"
+        class="text-center py-5 text-muted f-16-r"
+      >
+        No categories found.
+      </div>
+    </div>
+
+    <!-- Footer: Pagination -->
     <div class="table-footer">
-      <div class="footer-left">
+      <div
+        class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3"
+      >
         <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
+          Showing {{ showingFrom }} to {{ showingTo }} of
+          {{ totalItems }} entries
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
-          <select class="rows-per-page"
-                  [ngModel]="pageSize"
-                  (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+          <span class="f-12-r text-muted text-high-contrast"
+            >Rows per page:</span
+          >
+          <select
+            class="rows-per-page"
+            [ngModel]="pageSize"
+            (ngModelChange)="onPageSizeChange($event)"
+          >
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+              {{ size }}
+            </option>
           </select>
         </div>
       </div>
@@ -105,24 +204,33 @@
       <nav aria-label="Table pagination">
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
-            <button type="button" class="page-link"
-                    (click)="prevPage()" [disabled]="currentPage === 1">
+            <button
+              type="button"
+              class="page-link"
+              (click)="prevPage()"
+              [disabled]="currentPage === 1"
+            >
               <i class="bi bi-chevron-left"></i> Previous
             </button>
           </li>
 
-          <li class="page-item"
-              *ngFor="let page of pageNumbers"
-              [class.active]="page === currentPage">
-            <button type="button" class="page-link"
-                    (click)="goToPage(page)">
+          <li
+            class="page-item"
+            *ngFor="let page of pageNumbers"
+            [class.active]="page === currentPage"
+          >
+            <button type="button" class="page-link" (click)="goToPage(page)">
               {{ page }}
             </button>
           </li>
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button type="button" class="page-link"
-                    (click)="nextPage()" [disabled]="currentPage === totalPages">
+            <button
+              type="button"
+              class="page-link"
+              (click)="nextPage()"
+              [disabled]="currentPage === totalPages"
+            >
               Next <i class="bi bi-chevron-right"></i>
             </button>
           </li>

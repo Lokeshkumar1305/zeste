@@ -1,134 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomDetails, RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
 import { InventoryMovementsModalComponent } from '../inventory-movements-modal/inventory-movements-modal.component';
+import {
+  InventoryItem,
+  Movement,
+  InventoryService
+} from '../../shared/services/inventory.service';
 
+export type MovementFilter = 'All' | 'IN' | 'OUT';
 
-
-type RoomStatus = 'Available' | 'Occupied' | 'Maintenance';
-
-
-type CaseStatus = 'Open' | 'Closed' | 'On Hold';
-type CasePriority = 'Low' | 'Medium' | 'High';
-
-export interface CaseItem {
-  id: string;
-  type: string;
-  subtype: string;
-  status: CaseStatus;
-  priority: CasePriority;
-  owner: string;
-  date: Date;
-}
 @Component({
   selector: 'app-inventory-movements',
   templateUrl: './inventory-movements.component.html',
   styleUrl: './inventory-movements.component.scss'
 })
-export class InventoryMovementsComponent {
- // Toolbar filters
-  public selectedStatusFilter: 'All' | RoomStatus = 'All';
+export class InventoryMovementsComponent implements OnInit {
+  // Filter by movement type
+  public selectedTypeFilter: MovementFilter = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
   public pageSize = 5;
   public currentPage = 1;
 
-  // Data
-  private allRooms: RoomDetails[] = [];
-  public filteredRooms: RoomDetails[] = [];
-  public pagedRooms: RoomDetails[] = [];
+  // Lookups
+  public items: InventoryItem[] = [];
 
-  constructor(private dialog: MatDialog) {}
+  // Data
+  private allMovements: Movement[] = [];
+  public filteredMovements: Movement[] = [];
+  public pagedMovements: Movement[] = [];
+
+  constructor(
+    private dialog: MatDialog,
+    private inventoryService: InventoryService
+  ) {}
 
   ngOnInit(): void {
-    // Seed sample room data
-    this.allRooms = [
-      {
-        roomNumber: '101',
-        type: 'Single',
-        monthlyRent: 8000,
-        securityDeposit: 16000,
-        floor: 'Ground',
-        beds: 1,
-        status: 'Available',
-        description: 'Spacious single room with attached bathroom',
-        amenities: ['Wi-Fi', 'AC', 'TV']
-      },
-      {
-        roomNumber: '102',
-        type: 'Double',
-        monthlyRent: 12000,
-        securityDeposit: 24000,
-        floor: 'Ground',
-        beds: 2,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi', 'AC']
-      },
-      {
-        roomNumber: '201',
-        type: 'Single',
-        monthlyRent: 8500,
-        securityDeposit: 17000,
-        floor: 'First',
-        beds: 1,
-        status: 'Maintenance',
-        description: '',
-        amenities: ['Wi-Fi', 'TV']
-      },
-      {
-        roomNumber: '202',
-        type: 'Double',
-        monthlyRent: 13000,
-        securityDeposit: 26000,
-        floor: 'First',
-        beds: 2,
-        status: 'Available',
-        description: 'Balcony view',
-        amenities: ['Wi-Fi', 'AC', 'Balcony']
-      },
-      {
-        roomNumber: '301',
-        type: 'Single',
-        monthlyRent: 8200,
-        securityDeposit: 16400,
-        floor: 'Second',
-        beds: 1,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi']
-      },
-      {
-        roomNumber: '302',
-        type: 'Double',
-        monthlyRent: 12500,
-        securityDeposit: 25000,
-        floor: 'Second',
-        beds: 2,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi', 'AC', 'TV']
-      },
-      {
-        roomNumber: '303',
-        type: 'Single',
-        monthlyRent: 7900,
-        securityDeposit: 15800,
-        floor: 'Second',
-        beds: 1,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi']
-      }
-    ];
+    // Subscribe to items (for item name / unit in list)
+    this.inventoryService.items$.subscribe(items => {
+      this.items = items;
+    });
 
-    this.applyAllFilters();
+    // Subscribe to movements
+    this.inventoryService.movements$.subscribe(movements => {
+      this.allMovements = movements;
+      this.applyAllFilters();
+    });
   }
 
-  /* -------------------  Pagination getters  ------------------- */
+  /* ------------------- Pagination getters ------------------- */
   get totalItems(): number {
-    return this.filteredRooms.length;
+    return this.filteredMovements.length;
   }
 
   get totalPages(): number {
@@ -136,7 +59,9 @@ export class InventoryMovementsComponent {
   }
 
   get showingFrom(): number {
-    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+    return this.totalItems === 0
+      ? 0
+      : (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get showingTo(): number {
@@ -147,21 +72,21 @@ export class InventoryMovementsComponent {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  /* -------------------  UI Actions  ------------------- */
-  onSelectStatusChange(value: 'All' | RoomStatus): void {
-    this.selectedStatusFilter = value;
+  /* ------------------- UI Actions ------------------- */
+  onSelectTypeChange(value: MovementFilter): void {
+    this.selectedTypeFilter = value;
     this.currentPage = 1;
     this.applyAllFilters();
   }
 
   onFilter(): void {
-    const order: Array<'All' | RoomStatus> = ['All', 'Available', 'Occupied', 'Maintenance'];
-    const idx = order.indexOf(this.selectedStatusFilter);
-    this.onSelectStatusChange(order[(idx + 1) % order.length]);
+    const order: MovementFilter[] = ['All', 'IN', 'OUT'];
+    const idx = order.indexOf(this.selectedTypeFilter);
+    this.onSelectTypeChange(order[(idx + 1) % order.length]);
   }
 
   onReset(): void {
-    this.selectedStatusFilter = 'All';
+    this.selectedTypeFilter = 'All';
     this.pageSize = this.pageSizeOptions[0];
     this.currentPage = 1;
     this.applyAllFilters();
@@ -170,54 +95,75 @@ export class InventoryMovementsComponent {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedRooms();
+    this.updatePagedMovements();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedRooms();
+    this.updatePagedMovements();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagedRooms();
+      this.updatePagedMovements();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagedRooms();
+      this.updatePagedMovements();
     }
   }
 
-  trackByRoomNumber(_: number, room: RoomDetails): string {
-    return room.roomNumber;
+  trackByMovementId(_: number, mv: Movement): string {
+    return mv.id;
   }
 
-  /* -------------------  Core filtering + pagination  ------------------- */
+  /* ------------------- Core filtering + pagination ------------------- */
   private applyAllFilters(): void {
-    this.filteredRooms = this.applyStatusFilter(this.allRooms, this.selectedStatusFilter);
-    this.updatePagedRooms();
+    this.filteredMovements = this.applyTypeFilter(
+      this.allMovements,
+      this.selectedTypeFilter
+    );
+    this.updatePagedMovements();
   }
 
-  private applyStatusFilter(list: RoomDetails[], selected: 'All' | RoomStatus): RoomDetails[] {
+  private applyTypeFilter(
+    list: Movement[],
+    selected: MovementFilter
+  ): Movement[] {
     if (selected === 'All') return [...list];
-    return list.filter(r => r.status === selected);
+    return list.filter(m => m.type === selected);
   }
 
-  private updatePagedRooms(): void {
+  private updatePagedMovements(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedRooms = this.filteredRooms.slice(start, end);
+    this.pagedMovements = this.filteredMovements.slice(start, end);
   }
 
-  /* -------------------  Modal handling  ------------------- */
-  onAddNewRoom(): void {
+  /* ------------------- Lookup helpers ------------------- */
+  getItemName(itemId?: string): string | undefined {
+    if (!itemId) return undefined;
+    return this.items.find(i => i.id === itemId)?.name;
+  }
+
+  getItemUnitName(itemId?: string): string | undefined {
+    if (!itemId) return undefined;
+    // Assuming InventoryItem has unitName; adjust if different
+    return (this.items.find(i => i.id === itemId) as any)?.unitName;
+  }
+
+  /* ------------------- Modal handling ------------------- */
+  onAddNewMovement(): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '600px';
+
     const dialogRef = this.dialog.open(InventoryMovementsModalComponent, {
-      width: '800px',
+      width,
       maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
@@ -226,54 +172,28 @@ export class InventoryMovementsComponent {
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
       autoFocus: false,
-      data: { amenityOptions: this.getAllAmenities() }
+      data: {} as { itemId?: string } // matches modal's data type
     });
 
-    dialogRef.afterClosed().subscribe((newRoom: RoomDetails | undefined) => {
-      if (newRoom) {
-        this.allRooms.push(newRoom);
+    dialogRef.afterClosed().subscribe(result => {
+      // Movement is already added in the service inside the modal (addMovement),
+      // so we just rely on movements$ subscription to refresh.
+      if (result) {
+        console.log('Movement recorded:', result);
+      }
+    });
+  }
+
+  onDeleteMovement(mv: Movement): void {
+    if (confirm(`Delete movement ${mv.reference || mv.id}?`)) {
+      // Assuming InventoryService exposes deleteMovement; implement there if not yet done.
+      if (typeof this.inventoryService.deleteMovement === 'function') {
+        this.inventoryService.deleteMovement(mv.id);
+      } else {
+        // Fallback: remove from local list only (does NOT adjust stock)
+        this.allMovements = this.allMovements.filter(m => m.id !== mv.id);
         this.applyAllFilters();
-        console.log('New Room Created:', newRoom);
       }
-    });
-  }
-
-  onEditRoom(room: RoomDetails): void {
-    const dialogRef = this.dialog.open(InventoryMovementsModalComponent, {
-     width: '800px',
-     maxWidth: '100vw',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-dark-backdrop',
-      disableClose: false,
-      autoFocus: false,
-      data: { room: { ...room }, amenityOptions: this.getAllAmenities() }
-    });
-
-    dialogRef.afterClosed().subscribe((updated: RoomDetails | undefined) => {
-      if (updated) {
-        const idx = this.allRooms.findIndex(r => r.roomNumber === room.roomNumber);
-        if (idx > -1) {
-          this.allRooms[idx] = updated;
-          this.applyAllFilters();
-        }
-      }
-    });
-  }
-
-  onDeleteRoom(room: RoomDetails): void {
-    if (confirm(`Delete room ${room.roomNumber}?`)) {
-      this.allRooms = this.allRooms.filter(r => r.roomNumber !== room.roomNumber);
-      this.applyAllFilters();
     }
-  }
-
-  /** Helper – collect all unique amenities from existing rooms */
-  private getAllAmenities(): string[] {
-    const set = new Set<string>();
-    this.allRooms.forEach(r => r.amenities.forEach(a => set.add(a)));
-    return Array.from(set);
   }
 }

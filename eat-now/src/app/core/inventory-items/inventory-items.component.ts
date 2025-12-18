@@ -1,23 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomDetails, RoomManagementModalComponent } from '../room-management-modal/room-management-modal.component';
 import { InventoryItemsModalComponent } from '../inventory-items-modal/inventory-items-modal.component';
 
+export type ItemStatusFilter = 'All' | 'Active' | 'Inactive';
 
-type RoomStatus = 'Available' | 'Occupied' | 'Maintenance';
-
-
-type CaseStatus = 'Open' | 'Closed' | 'On Hold';
-type CasePriority = 'Low' | 'Medium' | 'High';
-
-export interface CaseItem {
+export interface InventoryItem {
   id: string;
-  type: string;
-  subtype: string;
-  status: CaseStatus;
-  priority: CasePriority;
-  owner: string;
-  date: Date;
+  name: string;
+  sku?: string;
+  categoryId: string;
+  unitId: string;
+  minStockLevel: number;
+  costPrice?: number | null;
+  description?: string;
+  isActive: boolean;
+}
+
+export interface CategoryOption {
+  id: string;
+  name: string;
+}
+
+export interface UnitOption {
+  id: string;
+  name: string;
+  shortName: string;
 }
 
 @Component({
@@ -25,112 +32,128 @@ export interface CaseItem {
   templateUrl: './inventory-items.component.html',
   styleUrl: './inventory-items.component.scss'
 })
-export class InventoryItemsComponent {
-
-
+export class InventoryItemsComponent implements OnInit {
   // Toolbar filters
-  public selectedStatusFilter: 'All' | RoomStatus = 'All';
+  public selectedStatusFilter: ItemStatusFilter = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
   public pageSize = 5;
   public currentPage = 1;
 
+  // Lookups
+  public categories: CategoryOption[] = [];
+  public units: UnitOption[] = [];
+
   // Data
-  private allRooms: RoomDetails[] = [];
-  public filteredRooms: RoomDetails[] = [];
-  public pagedRooms: RoomDetails[] = [];
+  private allItems: InventoryItem[] = [];
+  public filteredItems: InventoryItem[] = [];
+  public pagedItems: InventoryItem[] = [];
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Seed sample room data
-    this.allRooms = [
+    // Seed sample categories
+    this.categories = [
+      { id: '1', name: 'Food & Groceries' },
+      { id: '2', name: 'Cleaning Supplies' },
+      { id: '3', name: 'Bedding & Linen' }
+    ];
+
+    // Seed sample units
+    this.units = [
+      { id: '1', name: 'Kilograms', shortName: 'kg' },
+      { id: '2', name: 'Pieces', shortName: 'pcs' },
+      { id: '3', name: 'Liters', shortName: 'L' }
+    ];
+
+    // Seed sample items
+    this.allItems = [
       {
-        roomNumber: '101',
-        type: 'Single',
-        monthlyRent: 8000,
-        securityDeposit: 16000,
-        floor: 'Ground',
-        beds: 1,
-        status: 'Available',
-        description: 'Spacious single room with attached bathroom',
-        amenities: ['Wi-Fi', 'AC', 'TV']
+        id: '1',
+        name: 'Basmati Rice',
+        sku: 'FOOD-RICE-001',
+        categoryId: '1',
+        unitId: '1',
+        minStockLevel: 50,
+        costPrice: 80,
+        description: '5kg bag basmati rice',
+        isActive: true
       },
       {
-        roomNumber: '102',
-        type: 'Double',
-        monthlyRent: 12000,
-        securityDeposit: 24000,
-        floor: 'Ground',
-        beds: 2,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi', 'AC']
+        id: '2',
+        name: 'Washing Powder',
+        sku: 'CLEAN-LAUNDRY-001',
+        categoryId: '2',
+        unitId: '2',
+        minStockLevel: 20,
+        costPrice: 120,
+        description: 'Laundry washing powder',
+        isActive: true
       },
       {
-        roomNumber: '201',
-        type: 'Single',
-        monthlyRent: 8500,
-        securityDeposit: 17000,
-        floor: 'First',
-        beds: 1,
-        status: 'Maintenance',
-        description: '',
-        amenities: ['Wi-Fi', 'TV']
+        id: '3',
+        name: 'Hand Soap',
+        sku: 'CLEAN-SOAP-001',
+        categoryId: '2',
+        unitId: '2',
+        minStockLevel: 30,
+        costPrice: 25,
+        description: 'Liquid hand wash',
+        isActive: false
       },
       {
-        roomNumber: '202',
-        type: 'Double',
-        monthlyRent: 13000,
-        securityDeposit: 26000,
-        floor: 'First',
-        beds: 2,
-        status: 'Available',
-        description: 'Balcony view',
-        amenities: ['Wi-Fi', 'AC', 'Balcony']
+        id: '4',
+        name: 'Milk',
+        sku: 'FOOD-MILK-001',
+        categoryId: '1',
+        unitId: '3',
+        minStockLevel: 10,
+        costPrice: 55,
+        description: 'Toned milk 1L pack',
+        isActive: true
       },
       {
-        roomNumber: '301',
-        type: 'Single',
-        monthlyRent: 8200,
-        securityDeposit: 16400,
-        floor: 'Second',
-        beds: 1,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi']
+        id: '5',
+        name: 'Bedsheet (Single)',
+        sku: 'BED-SHEET-001',
+        categoryId: '3',
+        unitId: '2',
+        minStockLevel: 10,
+        costPrice: 400,
+        description: 'Single bedsheet cotton',
+        isActive: true
       },
       {
-        roomNumber: '302',
-        type: 'Double',
-        monthlyRent: 12500,
-        securityDeposit: 25000,
-        floor: 'Second',
-        beds: 2,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi', 'AC', 'TV']
+        id: '6',
+        name: 'Pillow Cover',
+        sku: 'BED-PILLOW-001',
+        categoryId: '3',
+        unitId: '2',
+        minStockLevel: 20,
+        costPrice: 80,
+        description: 'Cotton pillow cover',
+        isActive: false
       },
       {
-        roomNumber: '303',
-        type: 'Single',
-        monthlyRent: 7900,
-        securityDeposit: 15800,
-        floor: 'Second',
-        beds: 1,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi']
+        id: '7',
+        name: 'Floor Cleaner',
+        sku: 'CLEAN-FLOOR-001',
+        categoryId: '2',
+        unitId: '3',
+        minStockLevel: 15,
+        costPrice: 150,
+        description: '1L floor cleaning solution',
+        isActive: true
       }
     ];
 
     this.applyAllFilters();
   }
 
-  /* -------------------  Pagination getters  ------------------- */
+  /* ------------------- Pagination getters ------------------- */
   get totalItems(): number {
-    return this.filteredRooms.length;
+    return this.filteredItems.length;
   }
 
   get totalPages(): number {
@@ -138,7 +161,9 @@ export class InventoryItemsComponent {
   }
 
   get showingFrom(): number {
-    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+    return this.totalItems === 0
+      ? 0
+      : (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get showingTo(): number {
@@ -149,15 +174,15 @@ export class InventoryItemsComponent {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  /* -------------------  UI Actions  ------------------- */
-  onSelectStatusChange(value: 'All' | RoomStatus): void {
+  /* ------------------- UI Actions ------------------- */
+  onSelectStatusChange(value: ItemStatusFilter): void {
     this.selectedStatusFilter = value;
     this.currentPage = 1;
     this.applyAllFilters();
   }
 
   onFilter(): void {
-    const order: Array<'All' | RoomStatus> = ['All', 'Available', 'Occupied', 'Maintenance'];
+    const order: ItemStatusFilter[] = ['All', 'Active', 'Inactive'];
     const idx = order.indexOf(this.selectedStatusFilter);
     this.onSelectStatusChange(order[(idx + 1) % order.length]);
   }
@@ -172,54 +197,83 @@ export class InventoryItemsComponent {
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedRooms();
+    this.updatePagedItems();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedRooms();
+    this.updatePagedItems();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagedRooms();
+      this.updatePagedItems();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagedRooms();
+      this.updatePagedItems();
     }
   }
 
-  trackByRoomNumber(_: number, room: RoomDetails): string {
-    return room.roomNumber;
+  trackByItemId(_: number, item: InventoryItem): string {
+    return item.id;
   }
 
-  /* -------------------  Core filtering + pagination  ------------------- */
+  /* ------------------- Core filtering + pagination ------------------- */
   private applyAllFilters(): void {
-    this.filteredRooms = this.applyStatusFilter(this.allRooms, this.selectedStatusFilter);
-    this.updatePagedRooms();
+    this.filteredItems = this.applyStatusFilter(
+      this.allItems,
+      this.selectedStatusFilter
+    );
+    this.updatePagedItems();
   }
 
-  private applyStatusFilter(list: RoomDetails[], selected: 'All' | RoomStatus): RoomDetails[] {
+  private applyStatusFilter(
+    list: InventoryItem[],
+    selected: ItemStatusFilter
+  ): InventoryItem[] {
     if (selected === 'All') return [...list];
-    return list.filter(r => r.status === selected);
+    const isActive = selected === 'Active';
+    return list.filter(i => i.isActive === isActive);
   }
 
-  private updatePagedRooms(): void {
+  private updatePagedItems(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedRooms = this.filteredRooms.slice(start, end);
+    this.pagedItems = this.filteredItems.slice(start, end);
   }
 
-  /* -------------------  Modal handling  ------------------- */
-  onAddNewRoom(): void {
+  /* ------------------- Lookup helpers ------------------- */
+  getCategoryName(categoryId: string): string | undefined {
+    return this.categories.find(c => c.id === categoryId)?.name;
+  }
+
+  getUnitDisplay(unitId: string): string | undefined {
+    const u = this.units.find(x => x.id === unitId);
+    return u ? `${u.name} (${u.shortName})` : undefined;
+  }
+
+  /** Simple ID generator based on existing numeric IDs */
+  private generateId(): string {
+    const numericIds = this.allItems
+      .map(i => parseInt(i.id, 10))
+      .filter(n => !isNaN(n));
+    const next = numericIds.length ? Math.max(...numericIds) + 1 : 1;
+    return next.toString();
+  }
+
+  /* ------------------- Modal handling ------------------- */
+  onAddNewItem(): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '600px';
+
     const dialogRef = this.dialog.open(InventoryItemsModalComponent, {
-      width: '800px',
+      width,
       maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
@@ -228,22 +282,34 @@ export class InventoryItemsComponent {
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
       autoFocus: false,
-      data: { amenityOptions: this.getAllAmenities() }
-    });
-
-    dialogRef.afterClosed().subscribe((newRoom: RoomDetails | undefined) => {
-      if (newRoom) {
-        this.allRooms.push(newRoom);
-        this.applyAllFilters();
-        console.log('New Room Created:', newRoom);
+      data: {
+        item: null,
+        categories: this.categories,
+        units: this.units
       }
     });
+
+    dialogRef.afterClosed().subscribe(
+      (newItem: InventoryItem | undefined) => {
+        if (newItem) {
+          if (!newItem.id) {
+            newItem.id = this.generateId();
+          }
+          this.allItems.push(newItem);
+          this.applyAllFilters();
+          console.log('New Item Created:', newItem);
+        }
+      }
+    );
   }
 
-  onEditRoom(room: RoomDetails): void {
+  onEditItem(item: InventoryItem): void {
+    const isMobile = window.innerWidth < 768;
+    const width = isMobile ? '100vw' : '600px';
+
     const dialogRef = this.dialog.open(InventoryItemsModalComponent, {
-     width: '800px',
-     maxWidth: '100vw',
+      width,
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
       panelClass: 'custom-dialog-container',
@@ -251,31 +317,30 @@ export class InventoryItemsComponent {
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
       autoFocus: false,
-      data: { room: { ...room }, amenityOptions: this.getAllAmenities() }
-    });
-
-    dialogRef.afterClosed().subscribe((updated: RoomDetails | undefined) => {
-      if (updated) {
-        const idx = this.allRooms.findIndex(r => r.roomNumber === room.roomNumber);
-        if (idx > -1) {
-          this.allRooms[idx] = updated;
-          this.applyAllFilters();
-        }
+      data: {
+        item: { ...item },
+        categories: this.categories,
+        units: this.units
       }
     });
+
+    dialogRef.afterClosed().subscribe(
+      (updated: InventoryItem | undefined) => {
+        if (updated) {
+          const idx = this.allItems.findIndex(i => i.id === item.id);
+          if (idx > -1) {
+            this.allItems[idx] = { ...updated };
+            this.applyAllFilters();
+          }
+        }
+      }
+    );
   }
 
-  onDeleteRoom(room: RoomDetails): void {
-    if (confirm(`Delete room ${room.roomNumber}?`)) {
-      this.allRooms = this.allRooms.filter(r => r.roomNumber !== room.roomNumber);
+  onDeleteItem(item: InventoryItem): void {
+    if (confirm(`Delete item "${item.name}"?`)) {
+      this.allItems = this.allItems.filter(i => i.id !== item.id);
       this.applyAllFilters();
     }
-  }
-
-  /** Helper – collect all unique amenities from existing rooms */
-  private getAllAmenities(): string[] {
-    const set = new Set<string>();
-    this.allRooms.forEach(r => r.amenities.forEach(a => set.add(a)));
-    return Array.from(set);
   }
 }

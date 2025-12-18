@@ -1,25 +1,33 @@
-<!-- Page container ensures fixed L/R space and max width -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
-      <p class="mb-0 f-18-m text-high-contrast">Units Details</p>
+    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <p class="mb-0 f-18-m text-high-contrast">Units</p>
+        <small class="text-muted">Define how items are measured (kg, pcs, liters, etc.)</small>
+      </div>
 
-      <div class="d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onFilter()">
-          <i class="bi bi-funnel"></i>
-          <span class="f-12-m">Filter</span>
-        </button>
+      <div class="toolbar-actions d-flex align-items-center gap-3">
+        <!-- Filter & Reset buttons side by side -->
+        <div class="d-flex gap-3">
+          <button type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            (click)="onFilter()">
+            <i class="bi bi-funnel"></i>
+            <span class="f-12-m">Filter ({{ selectedStatusFilter }})</span>
+          </button>
+          <button type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            (click)="onReset()">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            <span class="f-12-m">Reset</span>
+          </button>
+        </div>
 
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onReset()">
-          <i class="bi bi-arrow-counterclockwise"></i>
-          <span class="f-12-m">Reset</span>
-        </button>
-
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onAddNewRoom()">
+        <!-- Add New Unit button on the right -->
+        <button type="button"
+          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+          (click)="onAddNewUnit()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Unit</span>
         </button>
@@ -28,76 +36,115 @@
 
     <div class="toolbar-divider"></div>
 
-    <!-- Table -->
+    <!-- Desktop/Tablet: Table View -->
     <div class="table-container">
-      <table class="case-table" role="table" aria-label="Rooms">
+      <table class="case-table" role="table" aria-label="Units">
         <thead>
           <tr>
-            <th scope="col">Room No</th>
-            <th scope="col">Room Type</th>
-            <th scope="col">Floor</th>
-            <th scope="col">Rent</th>
-            <th scope="col">Amenities</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Short Name</th>
+            <th scope="col">Description</th>
             <th scope="col">Status</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
-
         <tbody>
-          <tr *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber"
-              class="table-row-hover">
-            <td class="f-14-m">{{ room.roomNumber }}</td>
-            <td class="f-14-r">{{ room.type }}</td>
-            <td class="f-14-r">{{ room.floor }}</td>
-            <td class="f-14-r">{{ room.monthlyRent | currency:'INR':'symbol':'1.0-0' }}</td>
-            <td class="f-14-r text-capitalize">
-              {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
+          <tr *ngFor="let unit of pagedUnits; trackBy: trackByUnitId" class="table-row-hover">
+            <td class="f-14-m">{{ unit.name }}</td>
+            <td class="f-14-r">{{ unit.shortName }}</td>
+            <td class="f-14-r" [title]="unit.description || '-'">
+              {{ unit.description || '-' }}
             </td>
             <td>
-              <span class="status-pill"
-                    [ngClass]="{
-                      'status-available': room.status === 'Available',
-                      'status-occupied': room.status === 'Occupied',
-                      'status-maintenance': room.status === 'Maintenance'
-                    }">
+              <span class="status-pill" [ngClass]="{
+                  'status-available': unit.isActive,
+                  'status-maintenance': !unit.isActive
+                }">
                 <span class="status-dot"></span>
-                {{ room.status }}
+                {{ unit.isActive ? 'Active' : 'Inactive' }}
               </span>
             </td>
             <td class="text-center">
               <div class="d-inline-flex align-items-center gap-3 action-icons">
-                <button type="button" class="icon-btn" title="Edit"
-                        (click)="onEditRoom(room)">
+                <button type="button" class="icon-btn" title="Edit" (click)="onEditUnit(unit)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button type="button" class="icon-btn" title="Delete"
-                        (click)="onDeleteRoom(room)">
+                <button type="button" class="icon-btn" title="Delete" (click)="onDeleteUnit(unit)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </div>
             </td>
           </tr>
 
-          <tr *ngIf="pagedRooms.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">No rooms found.</td>
+          <tr *ngIf="pagedUnits.length === 0">
+            <td colspan="5" class="text-center py-5 text-muted">
+              No units found.
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Footer -->
+    <!-- Mobile: Card View -->
+    <div class="mobile-cards">
+      <div *ngFor="let unit of pagedUnits; trackBy: trackByUnitId" class="mobile-card">
+        <div class="mobile-card-header d-flex justify-content-between align-items-center">
+          <div class="unit-name f-18-m fw-bold">
+            {{ unit.name }}
+          </div>
+          <span class="status-pill" [ngClass]="{
+              'status-available': unit.isActive,
+              'status-maintenance': !unit.isActive
+            }">
+            <span class="status-dot"></span>
+            {{ unit.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+
+        <div class="mobile-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <strong class="label">Short Name:</strong>
+              <span class="value">{{ unit.shortName }}</span>
+            </div>
+            <div class="detail-item full-width">
+              <strong class="label">Description:</strong>
+              <span class="value">
+                {{ unit.description || '-' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mobile-card-footer">
+          <button type="button" class="icon-btn" title="Edit" (click)="onEditUnit(unit)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button type="button" class="icon-btn" title="Delete" (click)="onDeleteUnit(unit)">
+            <i class="bi bi-trash text-danger"></i>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="pagedUnits.length === 0" class="text-center py-5 text-muted f-16-r">
+        No units found.
+      </div>
+    </div>
+
+    <!-- Footer: Pagination -->
     <div class="table-footer">
-      <div class="footer-left">
+      <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
+          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }}
+          entries
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
           <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
-          <select class="rows-per-page"
-                  [ngModel]="pageSize"
-                  (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+          <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+              {{ size }}
+            </option>
           </select>
         </div>
       </div>
@@ -105,24 +152,19 @@
       <nav aria-label="Table pagination">
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
-            <button type="button" class="page-link"
-                    (click)="prevPage()" [disabled]="currentPage === 1">
+            <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
               <i class="bi bi-chevron-left"></i> Previous
             </button>
           </li>
 
-          <li class="page-item"
-              *ngFor="let page of pageNumbers"
-              [class.active]="page === currentPage">
-            <button type="button" class="page-link"
-                    (click)="goToPage(page)">
+          <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === currentPage">
+            <button type="button" class="page-link" (click)="goToPage(page)">
               {{ page }}
             </button>
           </li>
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button type="button" class="page-link"
-                    (click)="nextPage()" [disabled]="currentPage === totalPages">
+            <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
               Next <i class="bi bi-chevron-right"></i>
             </button>
           </li>

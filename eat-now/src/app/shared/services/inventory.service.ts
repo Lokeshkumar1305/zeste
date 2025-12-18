@@ -106,6 +106,7 @@ export interface InventorySettings {
   providedIn: 'root'
 })
 export class InventoryService {
+  [x: string]: any;
   
   // ============ DATA STORES ============
   private unitsSubject = new BehaviorSubject<Unit[]>([
