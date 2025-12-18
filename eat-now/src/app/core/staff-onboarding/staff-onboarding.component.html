@@ -8,14 +8,14 @@
                 </button>
                 <div class="header-title">
                     <h1>{{ isEditMode ? 'Edit Staff' : 'Staff Onboarding' }}</h1>
-                    <p>{{ isEditMode ? 'Update staff information' : 'Add new staff member to your hostel' }}</p>
+                    <p>
+                        {{
+                        isEditMode
+                        ? 'Update staff information'
+                        : 'Add new staff member to your hostel'
+                        }}
+                    </p>
                 </div>
-            </div>
-            <div class="header-right">
-                <span class="employee-id-badge" *ngIf="staffForm.get('employeeId')?.value">
-                    <i class="bi bi-person-badge me-1"></i>
-                    {{ staffForm.get('employeeId')?.value }}
-                </span>
             </div>
         </div>
 
@@ -29,18 +29,41 @@
         <div class="main-content" *ngIf="!isLoading">
             <!-- Step Progress -->
             <div class="step-progress-container">
-                <div class="step-progress">
-                    <ng-container *ngFor="let step of steps; let i = index">
-                        <div class="step-item" [class.completed]="i < currentStep" [class.active]="i === currentStep"
-                            (click)="goToStep(i)">
-                            <div class="step-circle">
-                                <i *ngIf="i < currentStep" class="bi bi-check"></i>
-                                <span *ngIf="i >= currentStep">{{ i + 1 }}</span>
+                <!-- Desktop / tablet stepper -->
+                <div class="step-progress-desktop">
+                    <div class="step-progress">
+                        <ng-container *ngFor="let step of steps; let i = index">
+                            <div class="step-item" [class.completed]="i < currentStep"
+                                [class.active]="i === currentStep" (click)="goToStep(i)">
+                                <div class="step-circle">
+                                    <i *ngIf="i < currentStep" class="bi bi-check"></i>
+                                    <span *ngIf="i >= currentStep">{{ i + 1 }}</span>
+                                </div>
+                                <span class="step-label">{{ step.label }}</span>
                             </div>
-                            <span class="step-label">{{ step.label }}</span>
+
+                            <div *ngIf="i < steps.length - 1" class="step-line" [class.completed]="i < currentStep">
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Mobile stepper -->
+                <div class="step-progress-mobile">
+                    <div class="mobile-step-header">
+                        <div class="mobile-step-count">
+                            Step {{ currentStep + 1 }} of {{ steps.length }}
                         </div>
-                        <div *ngIf="i < steps.length - 1" class="step-line" [class.completed]="i < currentStep"></div>
-                    </ng-container>
+                        <div class="mobile-step-title">
+                            {{ steps[currentStep]?.label }}
+                        </div>
+                    </div>
+                    <div class="mobile-progress">
+                        <div class="mobile-progress-track">
+                            <div class="mobile-progress-fill"
+                                [style.width.%]="((currentStep + 1) / steps.length) * 100"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -118,8 +141,12 @@
                                         <input matInput formControlName="email" placeholder="example@email.com"
                                             type="email" />
                                         <mat-icon matSuffix>email</mat-icon>
-                                        <mat-error *ngIf="hasError('email', 'required')">Email is required</mat-error>
-                                        <mat-error *ngIf="hasError('email', 'email')">Enter valid email</mat-error>
+                                        <mat-error *ngIf="hasError('email', 'required')">
+                                            Email is required
+                                        </mat-error>
+                                        <mat-error *ngIf="hasError('email', 'email')">
+                                            Enter valid email
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
 
@@ -130,7 +157,9 @@
                                         <span matPrefix class="country-code">+91 </span>
                                         <input matInput formControlName="phone" placeholder="9876543210"
                                             maxlength="10" />
-                                        <mat-error *ngIf="hasError('phone', 'required')">Phone is required</mat-error>
+                                        <mat-error *ngIf="hasError('phone', 'required')">
+                                            Phone is required
+                                        </mat-error>
                                         <mat-error *ngIf="hasError('phone', 'pattern')">
                                             Enter valid 10-digit number
                                         </mat-error>
@@ -172,9 +201,13 @@
                                     <label class="required">Gender</label>
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="gender" placeholder="Select gender">
-                                            <mat-option *ngFor="let g of genders" [value]="g">{{ g }}</mat-option>
+                                            <mat-option *ngFor="let g of genders" [value]="g">
+                                                {{ g }}
+                                            </mat-option>
                                         </mat-select>
-                                        <mat-error *ngIf="hasError('gender', 'required')">Gender is required</mat-error>
+                                        <mat-error *ngIf="hasError('gender', 'required')">
+                                            Gender is required
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
 
@@ -183,8 +216,9 @@
                                     <label>Marital Status</label>
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="maritalStatus" placeholder="Select status">
-                                            <mat-option *ngFor="let s of maritalStatuses" [value]="s">{{ s
-                                                }}</mat-option>
+                                            <mat-option *ngFor="let s of maritalStatuses" [value]="s">
+                                                {{ s }}
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -194,8 +228,9 @@
                                     <label>Blood Group</label>
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="bloodGroup" placeholder="Select blood group">
-                                            <mat-option *ngFor="let bg of bloodGroups" [value]="bg">{{ bg
-                                                }}</mat-option>
+                                            <mat-option *ngFor="let bg of bloodGroups" [value]="bg">
+                                                {{ bg }}
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -330,7 +365,9 @@
                                     <label class="required">Department</label>
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="department" placeholder="Select department">
-                                            <mat-option *ngFor="let d of departments" [value]="d">{{ d }}</mat-option>
+                                            <mat-option *ngFor="let d of departments" [value]="d">
+                                                {{ d }}
+                                            </mat-option>
                                         </mat-select>
                                         <mat-error>Department is required</mat-error>
                                     </mat-form-field>
@@ -341,7 +378,9 @@
                                     <label class="required">Designation</label>
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="designation" placeholder="Select designation">
-                                            <mat-option *ngFor="let d of designations" [value]="d">{{ d }}</mat-option>
+                                            <mat-option *ngFor="let d of designations" [value]="d">
+                                                {{ d }}
+                                            </mat-option>
                                         </mat-select>
                                         <mat-error>Designation is required</mat-error>
                                     </mat-form-field>
@@ -352,7 +391,9 @@
                                     <label class="required">System Role</label>
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="role" placeholder="Select role">
-                                            <mat-option *ngFor="let r of roles" [value]="r">{{ r }}</mat-option>
+                                            <mat-option *ngFor="let r of roles" [value]="r">
+                                                {{ r }}
+                                            </mat-option>
                                         </mat-select>
                                         <mat-hint>Access level in the system</mat-hint>
                                         <mat-error>Role is required</mat-error>
@@ -364,8 +405,9 @@
                                     <label class="required">Employment Type</label>
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="employmentType" placeholder="Select type">
-                                            <mat-option *ngFor="let t of employmentTypes" [value]="t">{{ t
-                                                }}</mat-option>
+                                            <mat-option *ngFor="let t of employmentTypes" [value]="t">
+                                                {{ t }}
+                                            </mat-option>
                                         </mat-select>
                                         <mat-error>Employment type is required</mat-error>
                                     </mat-form-field>
@@ -414,7 +456,9 @@
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="assignedFloors" multiple
                                             placeholder="Select floors">
-                                            <mat-option *ngFor="let f of floors" [value]="f">{{ f }}</mat-option>
+                                            <mat-option *ngFor="let f of floors" [value]="f">
+                                                {{ f }}
+                                            </mat-option>
                                         </mat-select>
                                         <mat-hint>Select multiple if applicable</mat-hint>
                                     </mat-form-field>
@@ -426,8 +470,9 @@
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-select formControlName="status" placeholder="Select status">
                                             <mat-option *ngFor="let s of statuses" [value]="s">
-                                                <span class="status-dot"
-                                                    [class]="'status-' + s.toLowerCase().replace(' ', '-')"></span>
+                                                <span class="status-dot" [class]="
+                            'status-' + s.toLowerCase().replace(' ', '-')
+                          "></span>
                                                 {{ s }}
                                             </mat-option>
                                         </mat-select>
@@ -513,19 +558,35 @@
                                     <div class="summary-header">Salary Breakdown</div>
                                     <div class="summary-row">
                                         <span>Basic Salary</span>
-                                        <span>{{ formatCurrency(staffForm.get('basicSalary')?.value || 0) }}</span>
+                                        <span>
+                                            {{
+                                            formatCurrency(staffForm.get('basicSalary')?.value || 0)
+                                            }}
+                                        </span>
                                     </div>
                                     <div class="summary-row add">
                                         <span>(+) Allowances</span>
-                                        <span>{{ formatCurrency(staffForm.get('allowances')?.value || 0) }}</span>
+                                        <span>
+                                            {{
+                                            formatCurrency(staffForm.get('allowances')?.value || 0)
+                                            }}
+                                        </span>
                                     </div>
                                     <div class="summary-row subtract">
                                         <span>(-) Deductions</span>
-                                        <span>{{ formatCurrency(staffForm.get('deductions')?.value || 0) }}</span>
+                                        <span>
+                                            {{
+                                            formatCurrency(staffForm.get('deductions')?.value || 0)
+                                            }}
+                                        </span>
                                     </div>
                                     <div class="summary-row total">
                                         <span>Net Salary</span>
-                                        <span>{{ formatCurrency(staffForm.get('netSalary')?.value || 0) }}</span>
+                                        <span>
+                                            {{
+                                            formatCurrency(staffForm.get('netSalary')?.value || 0)
+                                            }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -641,7 +702,11 @@
                                                     (change)="onDocumentFileSelect($event, i)" />
                                                 <label [for]="'doc-' + i" class="file-input-label">
                                                     <i class="bi bi-cloud-upload"></i>
-                                                    <span>{{ doc.get('fileName')?.value || 'Choose file' }}</span>
+                                                    <span>
+                                                        {{
+                                                        doc.get('fileName')?.value || 'Choose file'
+                                                        }}
+                                                    </span>
                                                 </label>
                                             </div>
                                         </div>

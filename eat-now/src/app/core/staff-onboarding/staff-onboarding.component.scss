@@ -33,6 +33,10 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   min-height: 100vh;
   background: $gray-100;
   padding: 24px 16px;
+
+  @media (max-width: 768px) {
+    padding: 16px 12px;
+  }
 }
 
 .staff-onboarding-container {
@@ -57,6 +61,7 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   top: 0;
   z-index: 100;
   margin-bottom: 20px;
+  gap: 12px;
 
   .header-left {
     display: flex;
@@ -118,6 +123,7 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+    padding: 12px 14px;
   }
 }
 
@@ -161,92 +167,169 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
 
-// Step Progress
+// =========================
+// Step Progress (Desktop + Mobile)
+// =========================
+
 .step-progress-container {
   background: #fff;
   border-radius: $border-radius;
-  padding: 20px 24px;
+  padding: 14px 18px;
   margin-bottom: 20px;
   box-shadow: $box-shadow;
-  overflow-x: auto;
+  overflow: hidden; // no visible scrollbars
+}
+
+.step-progress-desktop {
+  display: block;
+}
+
+.step-progress-mobile {
+  display: none;
 }
 
 .step-progress {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.step-progress .step-item {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.step-progress .step-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid $gray-300;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 600px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $gray-500;
+  transition: all 0.2s;
 
-  .step-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s;
+  i {
+    font-size: 15px;
+  }
+}
 
-    .step-circle {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #fff;
-      border: 2px solid $gray-300;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 500;
-      color: $gray-500;
-      transition: all 0.2s;
-    }
+.step-progress .step-label {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: $gray-500;
+  text-align: center;
+  line-height: 1.3;
+  white-space: normal; // allow wrapping
+  word-break: break-word;
+}
 
-    .step-label {
-      margin-top: 8px;
-      font-size: 12px;
-      font-weight: 500;
-      color: $gray-500;
-      white-space: nowrap;
-    }
+.step-progress .step-item:hover .step-circle {
+  border-color: $primary;
+}
 
-    &:hover .step-circle {
-      border-color: $primary;
-    }
-
-    &.active {
-      .step-circle {
-        background: $primary;
-        border-color: $primary;
-        color: #fff;
-      }
-
-      .step-label {
-        color: $primary;
-        font-weight: 600;
-      }
-    }
-
-    &.completed {
-      .step-circle {
-        background: $success;
-        border-color: $success;
-        color: #fff;
-      }
-
-      .step-label {
-        color: $success;
-      }
-    }
+.step-progress .step-item.active {
+  .step-circle {
+    background: $primary;
+    border-color: $primary;
+    color: #fff;
   }
 
-  .step-line {
-    width: 60px;
-    height: 2px;
-    background: $gray-300;
-    margin: 0 8px;
-    margin-bottom: 28px;
+  .step-label {
+    color: $primary;
+    font-weight: 600;
+  }
+}
 
-    &.completed {
-      background: $success;
-    }
+.step-progress .step-item.completed {
+  .step-circle {
+    background: $success;
+    border-color: $success;
+    color: #fff;
+  }
+
+  .step-label {
+    color: $success;
+  }
+}
+
+.step-progress .step-line {
+  flex: 0 0 26px;
+  max-width: 40px;
+  height: 2px;
+  background: $gray-300;
+  margin: 14px 4px 0 4px;
+}
+
+.step-progress .step-line.completed {
+  background: $success;
+}
+
+/* Mobile stepper design */
+.step-progress-mobile {
+  .mobile-step-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+
+  .mobile-step-count {
+    font-size: 12px;
+    font-weight: 500;
+    color: $gray-600;
+  }
+
+  .mobile-step-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: $gray-900;
+  }
+
+  .mobile-progress {
+    margin-top: 6px;
+  }
+
+  .mobile-progress-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: $gray-200;
+    overflow: hidden;
+  }
+
+  .mobile-progress-fill {
+    height: 100%;
+    background: $primary;
+    width: 0;
+    border-radius: 3px;
+    transition: width 0.2s ease;
+  }
+}
+
+/* Show mobile design only on small screens */
+@media (max-width: 767.98px) {
+  .step-progress-desktop {
+    display: none;
+  }
+
+  .step-progress-mobile {
+    display: block;
+  }
+
+  .step-progress-container {
+    padding: 10px 12px;
   }
 }
 
@@ -286,6 +369,10 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   .panel-body {
     padding: 24px;
+
+    @media (max-width: 768px) {
+      padding: 16px;
+    }
   }
 }
 
@@ -354,6 +441,7 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   @media (max-width: 576px) {
     flex-direction: column;
     align-items: flex-start;
+    padding: 16px;
   }
 }
 
@@ -552,36 +640,34 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
-// File Input
-.file-input-wrapper {
-  .file-input-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: #fff;
-    border: 1px dashed $gray-300;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    color: $gray-600;
-    transition: all 0.2s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+/* File Input */
+.file-input-wrapper .file-input-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px dashed $gray-300;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  color: $gray-600;
+  transition: all 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
-    &:hover {
-      border-color: $primary;
-      color: $primary;
-    }
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+  }
 
-    i {
-      font-size: 16px;
-    }
+  i {
+    font-size: 16px;
   }
 }
 
-// Remove Buttons
+/* Remove buttons */
 .btn-remove {
   width: 36px;
   height: 36px;
@@ -620,7 +706,7 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Info Box
+/* Info box */
 .info-box {
   display: flex;
   gap: 12px;
@@ -643,10 +729,7 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
-// =========================
-// Emergency Contacts
-// =========================
-
+/* Emergency contacts */
 .contact-card {
   background: #fff;
   border-radius: $border-radius;
@@ -682,10 +765,7 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
-// =========================
-// Generic Section Block (Schedule, Skills, Languages, Notes)
-// =========================
-
+/* Generic section block (schedule, skills, languages, notes) */
 .section-block {
   margin-top: 24px;
   padding: 16px 20px;
@@ -694,7 +774,7 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 1px solid $gray-200;
 
   &:first-of-type {
-    margin-top: 0; // first block in the panel sticks to top padding only
+    margin-top: 0;
   }
 
   .section-header {
@@ -704,15 +784,12 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: 12px;
 
     .section-subtitle {
-      margin: 0; // avoid extra double margin inside the header
+      margin: 0;
     }
   }
 }
 
-// =========================
-// Work Schedule Layout
-// =========================
-
+/* Work schedule layout */
 .schedule-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
@@ -770,7 +847,7 @@ $box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
-/* On very small screens make each row vertical so times are never cramped */
+/* Stack schedule item vertically on very small screens */
 @media (max-width: 600px) {
   .schedule-item {
     flex-direction: column;
@@ -792,10 +869,7 @@ input[type='time'] {
   min-width: 0;
 }
 
-// =========================
-// Chips (Skills & Languages)
-// =========================
-
+/* Chips */
 .chip-list {
   display: flex;
   flex-wrap: wrap;
@@ -826,7 +900,7 @@ input[type='time'] {
   }
 }
 
-// Status dots
+/* Status dot helpers */
 .status-dot {
   width: 8px;
   height: 8px;
@@ -838,17 +912,13 @@ input[type='time'] {
 .status-active {
   background: $success;
 }
-
 .status-inactive,
 .status-on-leave,
 .status-terminated {
   background: $danger;
 }
 
-// =========================
-// Footer Actions
-// =========================
-
+/* Footer actions */
 .form-footer {
   display: flex;
   justify-content: space-between;
