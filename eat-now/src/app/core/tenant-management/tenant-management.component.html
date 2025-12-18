@@ -1,23 +1,22 @@
-<!-- Page container ensures fixed L/R space and max width -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="header-toolbar d-flex align-items-center justify-content-between mb-3">
       <p class="mb-0 f-18-m text-high-contrast">Tenant Details</p>
 
-      <div class="d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onFilter()">
+      <div class="toolbar-actions d-flex align-items-center gap-2">
+        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="f-12-m">Filter</span>
         </button>
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onReset()">
+
+        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
           <span class="f-12-m">Reset</span>
         </button>
+
         <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onAddNewTenant()">
+          (click)="onAddNewTenant()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Tenant</span>
         </button>
@@ -27,7 +26,7 @@
     <!-- Divider Line -->
     <div class="toolbar-divider"></div>
 
-    <!-- Table -->
+    <!-- Desktop/Tablet: Table View -->
     <div class="table-container">
       <table class="case-table" role="table" aria-label="Tenants">
         <thead>
@@ -38,7 +37,7 @@
             <th scope="col">Room No</th>
             <th scope="col">Check-in</th>
             <th scope="col">Rent (INR)</th>
-             <th scope="col">Status</th>
+            <th scope="col">Status</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
@@ -49,15 +48,14 @@
             <td class="f-14-r">{{ t.email }}</td>
             <td class="f-14-r">{{ t.phone }}</td>
             <td class="f-14-r">{{ t.roomNumber }}</td>
-            <td class="f-14-r">{{ t.checkinDate | date:'MMM d, y' }}</td>
+            <td class="f-14-r">{{ t.checkinDate | date: 'MMM d, y' }}</td>
             <td class="f-14-r">{{ t.monthlyRent | number }}</td>
-             <td>
-              <span class="status-pill"
-                    [ngClass]="{
-                      'status-active': t.status === 'Active',
-                      'status-inactive': t.status === 'Inactive',
-                      'status-pending': t.status === 'Pending'
-                    }">
+            <td>
+              <span class="status-pill" [ngClass]="{
+                  'status-active': t.status === 'Active',
+                  'status-inactive': t.status === 'Inactive',
+                  'status-pending': t.status === 'Pending'
+                }">
                 <span class="status-dot"></span>
                 {{ t.status }}
               </span>
@@ -75,10 +73,70 @@
           </tr>
 
           <tr *ngIf="pagedTenants.length === 0">
-            <td colspan="8" class="text-center py-4 text-muted">No tenants found.</td>
+            <td colspan="8" class="text-center py-4 text-muted">
+              No tenants found.
+            </td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile: Card View -->
+    <div class="mobile-cards">
+      <div *ngFor="let t of pagedTenants; trackBy: trackByTenantId" class="mobile-card">
+        <!-- Header: Name + status -->
+        <div class="mobile-card-header d-flex justify-content-between align-items-start">
+          <div class="room-title f-16-m fw-semibold">
+            {{ t.fullName }}
+          </div>
+
+          <span class="status-pill" [ngClass]="{
+              'status-active': t.status === 'Active',
+              'status-inactive': t.status === 'Inactive',
+              'status-pending': t.status === 'Pending'
+            }">
+            <span class="status-dot"></span>
+            {{ t.status }}
+          </span>
+        </div>
+
+        <!-- Body: Email, Room No, Mobile, Check-in, Rent -->
+        <div class="mobile-card-body">
+          <p class="f-14-r info-row">
+            <strong>Room No:</strong> {{ t.roomNumber || '-' }}
+          </p>
+
+          <p class="f-14-r info-row">
+            <strong>Email:</strong> {{ t.email || '-' }}
+          </p>
+
+          <p class="f-14-r info-row">
+            <strong>Mobile:</strong> {{ t.phone || '-' }}
+          </p>
+
+          <p class="f-14-r info-row">
+            <strong>Check-in:</strong> {{ t.checkinDate | date: 'MMM d, y' }}
+          </p>
+
+          <p class="f-14-r info-row">
+            <strong>Rent:</strong> ₹{{ t.monthlyRent | number }}
+          </p>
+        </div>
+
+        <!-- Footer: actions -->
+        <div class="mobile-card-footer d-flex justify-content-end gap-3">
+          <button type="button" class="icon-btn" title="Edit" (click)="onEditTenant(t)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button type="button" class="icon-btn" title="Delete" (click)="onDeleteTenant(t)">
+            <i class="bi bi-trash text-danger"></i>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="pagedTenants.length === 0" class="text-center py-5 text-muted">
+        No tenants found.
+      </div>
     </div>
 
     <!-- Footer -->
@@ -91,7 +149,9 @@
         <div class="d-inline-flex align-items-center gap-2">
           <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+              {{ size }}
+            </option>
           </select>
         </div>
       </div>
