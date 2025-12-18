@@ -96,9 +96,6 @@
         <div class="mobile-card-header d-flex justify-content-between align-items-center">
           <div class="f-18-m fw-bold">
             {{ supplier.name }}
-            <div class="f-12-r text-muted" *ngIf="supplier.phone">
-              {{ supplier.phone }}
-            </div>
           </div>
           <span class="status-pill" [ngClass]="{
               'status-available': supplier.isActive,

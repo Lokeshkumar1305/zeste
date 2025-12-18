@@ -172,7 +172,7 @@
   border-radius: 25px;
   transition: all 0.2s;
   max-width: 100%;
-  white-space: nowrap; /* desktop: keep one line */
+  white-space: nowrap; /* desktop */
 }
 
 .report-type-card .report-type-buttons button mat-icon {
@@ -234,6 +234,49 @@
   display: flex;
   gap: 12px;
   margin-bottom: 22px;
+}
+
+/* ================================
+   FIX FORM-FIELD OUTLINE COLORS
+   (remove strong colored/extra line before input)
+   ================================ */
+
+/* Idle / default: light gray border */
+.mat-mdc-form-field-appearance-outline .mdc-notched-outline__leading,
+.mat-mdc-form-field-appearance-outline .mdc-notched-outline__notch,
+.mat-mdc-form-field-appearance-outline .mdc-notched-outline__trailing {
+  border-color: #e5e7eb !important;
+}
+
+/* Remove the vertical seam (left border of the notch) */
+.mat-mdc-form-field-appearance-outline .mdc-notched-outline__notch {
+  border-left: none !important;
+}
+
+/* Hover: slightly darker gray */
+.mat-mdc-form-field-appearance-outline:hover
+  .mdc-notched-outline__leading,
+.mat-mdc-form-field-appearance-outline:hover
+  .mdc-notched-outline__notch,
+.mat-mdc-form-field-appearance-outline:hover
+  .mdc-notched-outline__trailing {
+  border-color: #c4b5fd !important;
+}
+
+/* Focus: primary purple, no inner line */
+.mat-mdc-form-field-appearance-outline.mat-focused
+  .mdc-notched-outline__leading,
+.mat-mdc-form-field-appearance-outline.mat-focused
+  .mdc-notched-outline__notch,
+.mat-mdc-form-field-appearance-outline.mat-focused
+  .mdc-notched-outline__trailing {
+  border-color: #7c3aed !important;
+  border-width: 1px;
+}
+
+.mat-mdc-form-field-appearance-outline.mat-focused
+  .mdc-notched-outline__notch {
+  border-left: none !important; /* keep notch left side hidden on focus */
 }
 
 /* ================================
@@ -623,7 +666,7 @@ mat-paginator.hidden-paginator {
    MOBILE CARDS
    ================================ */
 .desktop-table {
-  /* default visible, hidden on mobile via media query */
+  /* visible by default; hidden in mobile media query */
 }
 
 .mobile-cards {
@@ -769,7 +812,6 @@ mat-paginator.hidden-paginator {
     font-size: 22px;
   }
 
-  /* FIX: report-type buttons on mobile */
   .report-type-card .report-type-buttons {
     flex-direction: row;
     flex-wrap: wrap;
@@ -783,7 +825,7 @@ mat-paginator.hidden-paginator {
     align-items: center;
     gap: 6px;
     padding: 8px 6px;
-    white-space: normal; /* allow label to wrap */
+    white-space: normal;
     text-align: center;
     line-height: 1.2;
   }
@@ -825,7 +867,6 @@ mat-paginator.hidden-paginator {
     width: 100%;
   }
 
-  /* hide desktop tables, show cards */
   .desktop-table {
     display: none;
   }
