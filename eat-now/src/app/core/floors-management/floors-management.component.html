@@ -7,12 +7,14 @@
       <div class="toolbar-actions d-flex align-items-center gap-3">
         <!-- Filter & Reset buttons side by side -->
         <div class="d-flex gap-3">
-          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+          <button type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
             <span class="f-12-m">Filter</span>
           </button>
-          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+          <button type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
             <span class="f-12-m">Reset</span>
@@ -20,7 +22,8 @@
         </div>
 
         <!-- Add New Floor button -->
-        <button type="button" class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+        <button type="button"
+          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewFloor()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Floor</span>
@@ -66,7 +69,9 @@
             </td>
           </tr>
           <tr *ngIf="pagedFloors.length === 0">
-            <td colspan="4" class="text-center py-4 text-muted">No floors found.</td>
+            <td colspan="4" class="text-center py-4 text-muted">
+              No floors found.
+            </td>
           </tr>
         </tbody>
       </table>
@@ -87,7 +92,7 @@
         </div>
 
         <div class="mobile-card-body">
-          <p class="f-14-r mb-0">
+          <p class="f-14-r mb-0 description-text">
             <strong>Description:</strong> {{ floor.description || '-' }}
           </p>
         </div>
@@ -117,7 +122,9 @@
         <div class="d-inline-flex align-items-center gap-2">
           <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+              {{ size }}
+            </option>
           </select>
         </div>
       </div>
