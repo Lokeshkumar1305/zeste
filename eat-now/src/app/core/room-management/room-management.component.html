@@ -7,12 +7,14 @@
       <div class="toolbar-actions d-flex align-items-center gap-3">
         <!-- Filter & Reset buttons side by side -->
         <div class="d-flex gap-3">
-          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+          <button type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
             <span class="f-12-m">Filter</span>
           </button>
-          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+          <button type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
             <span class="f-12-m">Reset</span>
@@ -20,7 +22,8 @@
         </div>
 
         <!-- Add New Room button on the right -->
-        <button type="button" class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+        <button type="button"
+          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewRoom()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Room</span>
@@ -50,7 +53,7 @@
             <td class="f-14-r">{{ room.type }}</td>
             <td class="f-14-r">{{ room.floor }}</td>
             <td class="f-14-r">
-              {{ room.monthlyRent | currency:'INR':'symbol':'1.0-0' }}
+              {{ room.monthlyRent | currency: 'INR':'symbol':'1.0-0' }}
             </td>
             <td class="f-14-r text-capitalize">
               {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
@@ -86,7 +89,7 @@
       </table>
     </div>
 
-    <!-- Mobile: Card View (unchanged) -->
+    <!-- Mobile: Card View -->
     <div class="mobile-cards">
       <div *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber" class="mobile-card">
         <div class="mobile-card-header d-flex justify-content-between align-items-center">
@@ -113,7 +116,7 @@
             </div>
             <div class="detail-item">
               <strong class="label">Rent:</strong>
-              <span class="value">{{ room.monthlyRent | currency:'INR':'symbol':'1.0-0' }}</span>
+              <span class="value">{{ room.monthlyRent | currency: 'INR':'symbol':'1.0-0' }}</span>
             </div>
             <div class="detail-item full-width">
               <strong class="label">Amenities:</strong>
@@ -139,7 +142,7 @@
       </div>
     </div>
 
-    <!-- Footer: Pagination (unchanged) -->
+    <!-- Footer: Pagination -->
     <div class="table-footer">
       <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">

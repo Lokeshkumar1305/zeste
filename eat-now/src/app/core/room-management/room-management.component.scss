@@ -26,7 +26,7 @@ BUTTONS
   background: var(--background);
   border: 1px solid var(--card-border);
   border-radius: 6px;
-  padding: 8px 16px; /* Increased padding for better match */
+  padding: 8px 16px;
   font-size: 14px;
   transition: all 0.2s ease;
   min-height: 40px;
@@ -43,11 +43,11 @@ BUTTONS
   background: var(--brand-primary);
   border: 1px solid var(--brand-primary);
   border-radius: 6px;
-  padding: 8px 20px; /* Slightly more horizontal padding */
+  padding: 8px 20px;
   font-size: 14px;
   transition: all 0.2s ease;
   min-height: 40px;
-  min-width: 160px; /* Matches the wider "Add New Room" button in image */
+  min-width: 160px;
   white-space: nowrap;
 }
 
@@ -57,7 +57,7 @@ BUTTONS
 }
 
 /* ========================================
-HEADER TOOLBAR - Critical for matching the image
+HEADER TOOLBAR
 ======================================== */
 .header-toolbar {
   display: flex;
@@ -298,7 +298,7 @@ FOOTER & PAGINATION
 }
 
 /* ========================================
-MOBILE CARDS (Unchanged)
+MOBILE CARDS
 ======================================== */
 .mobile-cards {
   display: none;
@@ -363,16 +363,29 @@ MOBILE CARDS (Unchanged)
   gap: 12px;
 }
 
-/* ========================================
-RESPONSIVE - Mobile (≤768px): Stack buttons full width
-======================================== */
+
 @media (max-width: 768px) {
+  .page-container {
+    width: calc(100vw - 32px) !important;
+    margin-left: calc(50% - 50vw + 16px) !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+  }
+
   .table-container {
     display: none;
   }
 
   .mobile-cards {
     display: block;
+    width: 100%;
+  }
+
+  .mobile-card {
+    width: 100%;
+    margin-inline: 0;
   }
 
   .header-toolbar {
@@ -424,7 +437,6 @@ RESPONSIVE - Mobile (≤768px): Stack buttons full width
     display: none !important;
   }
 
-  /* Ensure consistent button height and alignment */
   .toolbar-actions button {
     display: inline-flex;
     align-items: center;
