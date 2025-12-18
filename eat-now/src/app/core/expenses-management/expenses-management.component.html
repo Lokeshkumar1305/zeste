@@ -2,22 +2,20 @@
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="header-toolbar d-flex align-items-center justify-content-between mb-3">
       <p class="mb-0 f-18-m text-high-contrast">Expenses Details</p>
 
-      <div class="d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onFilter()">
+      <div class="toolbar-actions d-flex align-items-center gap-2">
+        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="f-12-m">Filter</span>
         </button>
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onReset()">
+        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
           <span class="f-12-m">Reset</span>
         </button>
         <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onAddNewExpenses()">
+          (click)="onAddNewExpenses()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Expense</span>
         </button>
@@ -27,7 +25,7 @@
     <!-- Divider Line -->
     <div class="toolbar-divider"></div>
 
-    <!-- Table -->
+    <!-- Desktop/Tablet: Table View -->
     <div class="table-container">
       <table class="case-table" role="table" aria-label="Expenses">
         <thead>
@@ -48,8 +46,10 @@
               {{ expense.title }}
             </td>
             <td class="f-14-r">{{ expense.category }}</td>
-            <td class="f-14-r">{{ expense.amount | currency:'USD':'symbol':'1.2-2' }}</td>
-            <td class="f-14-r">{{ expense.date | date:'MMM d, y' }}</td>
+            <td class="f-14-r">
+              {{ expense.amount | currency: 'USD':'symbol':'1.2-2' }}
+            </td>
+            <td class="f-14-r">{{ expense.date | date: 'MMM d, y' }}</td>
             <td class="f-14-r">{{ expense.paymentMethod }}</td>
             <td class="f-14-r text-capitalize">{{ expense.vendor }}</td>
             <td class="text-center">
@@ -65,10 +65,59 @@
           </tr>
 
           <tr *ngIf="pagedExpenses.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">No expenses found.</td>
+            <td colspan="7" class="text-center py-4 text-muted">
+              No expenses found.
+            </td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile: Card View -->
+    <div class="mobile-cards">
+      <div *ngFor="let expense of pagedExpenses; trackBy: trackById" class="mobile-card">
+        <!-- Header: title + amount -->
+        <div class="mobile-card-header d-flex justify-content-between align-items-start">
+          <div>
+            <div class="expense-title f-16-m fw-semibold">
+              {{ expense.title }}
+            </div>
+          </div>
+          <div class="expense-amount f-14-m fw-semibold">
+            {{ expense.amount | currency: 'USD':'symbol':'1.2-2' }}
+          </div>
+        </div>
+
+        <!-- Body: Category (top) + Date + Payment Method + Vendor -->
+        <div class="mobile-card-body">
+          <p class="f-14-r info-row">
+            <strong>Category:</strong> {{ expense.category || '-' }}
+          </p>
+          <p class="f-14-r info-row">
+            <strong>Date:</strong> {{ expense.date | date: 'MMM d, y' }}
+          </p>
+          <p class="f-14-r info-row">
+            <strong>Payment Method:</strong> {{ expense.paymentMethod || '-' }}
+          </p>
+          <p class="f-14-r info-row">
+            <strong>Vendor:</strong> {{ expense.vendor || '-' }}
+          </p>
+        </div>
+
+        <!-- Footer: actions -->
+        <div class="mobile-card-footer d-flex justify-content-end gap-3">
+          <button type="button" class="icon-btn" title="Edit" (click)="onEditExpense(expense)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button type="button" class="icon-btn" title="Delete" (click)="onDeleteExpense(expense.id)">
+            <i class="bi bi-trash text-danger"></i>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="pagedExpenses.length === 0" class="text-center py-5 text-muted">
+        No expenses found.
+      </div>
     </div>
 
     <!-- Footer -->
@@ -81,7 +130,9 @@
         <div class="d-inline-flex align-items-center gap-2">
           <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+              {{ size }}
+            </option>
           </select>
         </div>
       </div>

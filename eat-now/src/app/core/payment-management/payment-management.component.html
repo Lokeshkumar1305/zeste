@@ -2,24 +2,22 @@
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="header-toolbar d-flex align-items-center justify-content-between mb-3">
       <!-- Title -->
       <p class="mb-0 f-18-m text-high-contrast">Payment Details</p>
 
       <!-- Buttons -->
-      <div class="d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onFilter()">
+      <div class="toolbar-actions d-flex align-items-center gap-2">
+        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="f-12-m">Filter</span>
         </button>
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onReset()">
+        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
           <span class="f-12-m">Reset</span>
         </button>
         <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onAddNewPayment()">
+          (click)="onAddNewPayment()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Payment</span>
         </button>
@@ -29,7 +27,7 @@
     <!-- Divider -->
     <div class="toolbar-divider"></div>
 
-    <!-- Table -->
+    <!-- Desktop/Tablet: Table View -->
     <div class="table-container">
       <table class="case-table" role="table" aria-label="Payments">
         <thead>
@@ -40,40 +38,38 @@
             <th scope="col">Payment Type</th>
             <th scope="col">Due Date</th>
             <th scope="col">Payment Method</th>
-             <th scope="col">Status</th>
+            <th scope="col">Status</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr *ngFor="let p of pagedPayments; trackBy: trackById"
-              class="table-row-hover">
+          <tr *ngFor="let p of pagedPayments; trackBy: trackById" class="table-row-hover">
             <td class="f-14-m">{{ p.tenantName }}</td>
             <td class="f-14-m">{{ p.roomNumber }}</td>
-            <td class="f-14-m">${{ p.amount | number:'1.2-2' }}</td>
+            <td class="f-14-m">${{ p.amount | number: '1.2-2' }}</td>
             <td class="f-14-r text-capitalize">{{ p.paymentType }}</td>
-            <td class="f-14-r">{{ p.dueDate | date:'MMM d, y' }}</td>
-            <td class="f-14-r text-capitalize">{{ p.paymentMethod || '-' }}</td>
-             <td>
-              <span class="status-pill"
-                    [ngClass]="{
-                      'status-pending': p.status === 'Pending',
-                      'status-paid': p.status === 'Paid',
-                      'status-overdue': p.status === 'Overdue',
-                      'status-waived': p.status === 'Waived'
-                    }">
+            <td class="f-14-r">{{ p.dueDate | date: 'MMM d, y' }}</td>
+            <td class="f-14-r text-capitalize">
+              {{ p.paymentMethod || '-' }}
+            </td>
+            <td>
+              <span class="status-pill" [ngClass]="{
+                  'status-pending': p.status === 'Pending',
+                  'status-paid': p.status === 'Paid',
+                  'status-overdue': p.status === 'Overdue',
+                  'status-waived': p.status === 'Waived'
+                }">
                 <span class="status-dot"></span>
                 {{ p.status }}
               </span>
             </td>
             <td class="text-center">
               <div class="d-inline-flex align-items-center gap-3 action-icons">
-                <button type="button" class="icon-btn" title="Edit"
-                        (click)="onEditPayment(p)">
+                <button type="button" class="icon-btn" title="Edit" (click)="onEditPayment(p)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button type="button" class="icon-btn" title="Delete"
-                        (click)="onDeletePayment(p)">
+                <button type="button" class="icon-btn" title="Delete" (click)="onDeletePayment(p)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </div>
@@ -81,10 +77,67 @@
           </tr>
 
           <tr *ngIf="pagedPayments.length === 0">
-            <td colspan="8" class="text-center py-4 text-muted">No payments found.</td>
+            <td colspan="8" class="text-center py-4 text-muted">
+              No payments found.
+            </td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile: Card View -->
+    <div class="mobile-cards">
+      <div *ngFor="let p of pagedPayments; trackBy: trackById" class="mobile-card">
+        <!-- Header: Tenant + status -->
+        <div class="mobile-card-header d-flex justify-content-between align-items-start">
+          <div class="payment-title f-16-m fw-semibold">
+            {{ p.tenantName }}
+          </div>
+
+          <span class="status-pill" [ngClass]="{
+              'status-pending': p.status === 'Pending',
+              'status-paid': p.status === 'Paid',
+              'status-overdue': p.status === 'Overdue',
+              'status-waived': p.status === 'Waived'
+            }">
+            <span class="status-dot"></span>
+            {{ p.status }}
+          </span>
+        </div>
+
+        <!-- Body: details (with extra gap between lines) -->
+        <div class="mobile-card-body">
+          <p class="f-14-r info-row">
+            <strong>Room No:</strong> {{ p.roomNumber || '-' }}
+          </p>
+          <p class="f-14-r info-row">
+            <strong>Amount:</strong> ${{ p.amount | number: '1.2-2' }}
+          </p>
+          <p class="f-14-r info-row">
+            <strong>Payment Type:</strong> {{ p.paymentType || '-' }}
+          </p>
+          <p class="f-14-r info-row">
+            <strong>Due Date:</strong> {{ p.dueDate | date: 'MMM d, y' }}
+          </p>
+          <p class="f-14-r info-row">
+            <strong>Method:</strong> {{ p.paymentMethod || '-' }}
+          </p>
+        </div>
+
+        <!-- Footer: actions -->
+        <div class="mobile-card-footer d-flex justify-content-end gap-3">
+          <button type="button" class="icon-btn" title="Edit" (click)="onEditPayment(p)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button type="button" class="icon-btn" title="Delete" (click)="onDeletePayment(p)">
+            <i class="bi bi-trash text-danger"></i>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="pagedPayments.length === 0" class="text-center py-5 text-muted">
+        No payments found.
+      </div>
     </div>
 
     <!-- Footer (pagination) -->
@@ -96,10 +149,10 @@
 
         <div class="d-inline-flex align-items-center gap-2">
           <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
-          <select class="rows-per-page"
-                  [ngModel]="pageSize"
-                  (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+          <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+              {{ size }}
+            </option>
           </select>
         </div>
       </div>
@@ -107,24 +160,19 @@
       <nav aria-label="Table pagination">
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
-            <button type="button" class="page-link"
-                    (click)="prevPage()" [disabled]="currentPage === 1">
+            <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
               <i class="bi bi-chevron-left"></i> Previous
             </button>
           </li>
 
-          <li class="page-item"
-              *ngFor="let page of pageNumbers"
-              [class.active]="page === currentPage">
-            <button type="button" class="page-link"
-                    (click)="goToPage(page)">
+          <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === currentPage">
+            <button type="button" class="page-link" (click)="goToPage(page)">
               {{ page }}
             </button>
           </li>
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button type="button" class="page-link"
-                    (click)="nextPage()" [disabled]="currentPage === totalPages">
+            <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
               Next <i class="bi bi-chevron-right"></i>
             </button>
           </li>
