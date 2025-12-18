@@ -42,7 +42,6 @@
         <!-- LEFT: builder -->
         <div class="left-panel">
             <form [formGroup]="menuForm" class="menu-filters">
-
                 <!-- DATE MODE FIELDS -->
                 <ng-container *ngIf="menuMode === 'DATE'">
                     <mat-form-field appearance="outline" class="filter-field">
@@ -148,7 +147,6 @@
             <div class="menu-grid" *ngIf="filteredItems.length; else noItems">
                 <div *ngFor="let item of filteredItems; trackBy: trackById" class="menu-card"
                     [ngClass]="{ 'selected-card': isSelected(item) }" (click)="onCardClick(item)">
-
                     <mat-checkbox class="card-checkbox" [checked]="isSelected(item)"
                         (change)="toggleSelection(item, $event)" (click)="$event.stopPropagation()">
                     </mat-checkbox>
@@ -156,10 +154,10 @@
                     <div class="image-wrapper">
                         <img [src]="item.imageUrl || defaultImage" [alt]="item.itemName" loading="lazy" />
                         <span class="item-type-badge" [ngClass]="{
-                            'veg': item.itemType === 'VEG',
-                            'nonveg': item.itemType === 'NON_VEG',
-                            'egg': item.itemType === 'EGG'
-                        }">
+                veg: item.itemType === 'VEG',
+                nonveg: item.itemType === 'NON_VEG',
+                egg: item.itemType === 'EGG'
+              }">
                             {{ item.itemType === 'VEG' ? 'VEG' : item.itemType === 'NON_VEG' ? 'NON-VEG' : 'EGG' }}
                         </span>
                     </div>
@@ -187,7 +185,6 @@
 
         <!-- RIGHT PANEL -->
         <div class="right-panel">
-
             <!-- DATE MODE RIGHT PANEL -->
             <ng-container *ngIf="menuMode === 'DATE'">
                 <div class="right-header">
@@ -197,9 +194,7 @@
                             <ng-container *ngIf="selectedDateDisplay; else noDateSelected">
                                 Menus for {{ selectedDateDisplay | date: 'EEEE, dd MMM y' }}
                             </ng-container>
-                            <ng-template #noDateSelected>
-                                Select a date
-                            </ng-template>
+                            <ng-template #noDateSelected> Select a date </ng-template>
                         </h3>
                         <p>All meals scheduled for this date.</p>
                     </div>
@@ -208,13 +203,20 @@
                 <ng-container *ngIf="menusForSelectedDate.length; else noMenusForDate">
                     <div class="menu-summary" *ngFor="let m of menusForSelectedDate; trackBy: trackByPublishedId"
                         [ngClass]="{ 'editing-highlight': editingMenuId === m.id }">
-
                         <div class="summary-header">
                             <div class="summary-left">
                                 <div class="meal-title">
-                                    <mat-icon>{{ m.mealType === 'Breakfast' ? 'free_breakfast' : m.mealType === 'Lunch'
-                                        ? 'lunch_dining' : m.mealType === 'Dinner' ? 'dinner_dining' : 'local_cafe'
-                                        }}</mat-icon>
+                                    <mat-icon>
+                                        {{
+                                        m.mealType === 'Breakfast'
+                                        ? 'free_breakfast'
+                                        : m.mealType === 'Lunch'
+                                        ? 'lunch_dining'
+                                        : m.mealType === 'Dinner'
+                                        ? 'dinner_dining'
+                                        : 'local_cafe'
+                                        }}
+                                    </mat-icon>
                                     {{ m.mealType }}
                                 </div>
                                 <div class="time-range" *ngIf="m.serveFrom || m.serveTo">
@@ -263,10 +265,10 @@
                             <div class="item-row" *ngFor="let it of getMenuItems(m.id); trackBy: trackByItemId">
                                 <span class="item-name">
                                     <span class="item-type-dot" [ngClass]="{
-                                        'veg': it.menuItem.itemType === 'VEG',
-                                        'nonveg': it.menuItem.itemType === 'NON_VEG',
-                                        'egg': it.menuItem.itemType === 'EGG'
-                                    }"></span>
+                      veg: it.menuItem.itemType === 'VEG',
+                      nonveg: it.menuItem.itemType === 'NON_VEG',
+                      egg: it.menuItem.itemType === 'EGG'
+                    }"></span>
                                     {{ it.menuItem.itemName }}
                                 </span>
                                 <mat-form-field appearance="fill" class="item-status-field">
@@ -304,9 +306,8 @@
 
                 <!-- Day tabs -->
                 <div class="day-tabs">
-                    <button *ngFor="let day of daysOfWeek; trackBy: trackByDay" mat-button 
-                        [class.active-day]="selectedViewDay === day.value"
-                        (click)="onViewDayChange(day.value)">
+                    <button *ngFor="let day of daysOfWeek; trackBy: trackByDay" mat-button
+                        [class.active-day]="selectedViewDay === day.value" (click)="onViewDayChange(day.value)">
                         <span class="day-short">{{ day.short }}</span>
                         <span class="day-badge" *ngIf="getMenuCountForDay(day.value) > 0">
                             {{ getMenuCountForDay(day.value) }}
@@ -321,13 +322,20 @@
                 <ng-container *ngIf="menusForSelectedDay.length; else noMenusForDay">
                     <div class="menu-summary" *ngFor="let m of menusForSelectedDay; trackBy: trackByPublishedId"
                         [ngClass]="{ 'editing-highlight': editingMenuId === m.id }">
-
                         <div class="summary-header">
                             <div class="summary-left">
                                 <div class="meal-title">
-                                    <mat-icon>{{ m.mealType === 'Breakfast' ? 'free_breakfast' : m.mealType === 'Lunch'
-                                        ? 'lunch_dining' : m.mealType === 'Dinner' ? 'dinner_dining' : 'local_cafe'
-                                        }}</mat-icon>
+                                    <mat-icon>
+                                        {{
+                                        m.mealType === 'Breakfast'
+                                        ? 'free_breakfast'
+                                        : m.mealType === 'Lunch'
+                                        ? 'lunch_dining'
+                                        : m.mealType === 'Dinner'
+                                        ? 'dinner_dining'
+                                        : 'local_cafe'
+                                        }}
+                                    </mat-icon>
                                     {{ m.mealType }}
                                 </div>
                                 <div class="time-range" *ngIf="m.serveFrom || m.serveTo">
@@ -369,10 +377,10 @@
                             <div class="item-row" *ngFor="let it of getMenuItems(m.id); trackBy: trackByItemId">
                                 <span class="item-name">
                                     <span class="item-type-dot" [ngClass]="{
-                                        'veg': it.menuItem.itemType === 'VEG',
-                                        'nonveg': it.menuItem.itemType === 'NON_VEG',
-                                        'egg': it.menuItem.itemType === 'EGG'
-                                    }"></span>
+                      veg: it.menuItem.itemType === 'VEG',
+                      nonveg: it.menuItem.itemType === 'NON_VEG',
+                      egg: it.menuItem.itemType === 'EGG'
+                    }"></span>
                                     {{ it.menuItem.itemName }}
                                 </span>
                                 <mat-form-field appearance="fill" class="item-status-field">
