@@ -8,7 +8,12 @@
       <div class="d-flex align-items-center gap-2 header-actions">
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
-          <span class="f-12-m">Filter</span>
+          <span class="f-12-m">
+            Filter
+            <ng-container *ngIf="selectedStatusFilter !== 'All'">
+              ({{ selectedStatusFilter }})
+            </ng-container>
+          </span>
         </button>
 
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
@@ -17,7 +22,7 @@
         </button>
 
         <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-          (click)="onAddNewRoom()">
+          (click)="onAddNewStaff()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Staff</span>
         </button>
@@ -29,55 +34,81 @@
     <!-- Desktop Table -->
     <div class="desktop-view">
       <div class="table-container">
-        <table class="case-table" role="table" aria-label="Rooms">
+        <table class="case-table" role="table" aria-label="Staff">
           <thead>
             <tr>
-              <th scope="col">Room No</th>
-              <th scope="col">Room Type</th>
-              <th scope="col">Floor</th>
-              <th scope="col">Rent</th>
-              <th scope="col">Amenities</th>
+              <th scope="col">Emp ID</th>
+              <th scope="col">Staff</th>
+              <th scope="col">Department</th>
+              <th scope="col">Designation</th>
+              <th scope="col">Contact</th>
               <th scope="col">Status</th>
               <th scope="col" class="text-center">Action</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber" class="table-row-hover">
-              <td class="f-14-m">{{ room.roomNumber }}</td>
-              <td class="f-14-r">{{ room.type }}</td>
-              <td class="f-14-r">{{ room.floor }}</td>
+            <tr *ngFor="let staff of pagedStaff; trackBy: trackByStaffId" class="table-row-hover">
+              <!-- Emp ID -->
+              <td class="f-14-m">
+                {{ staff.employeeId }}
+              </td>
+
+              <!-- Staff name + system role -->
+              <td>
+                <div class="f-14-m">
+                  {{ staff.firstName }} {{ staff.lastName }}
+                </div>
+                <div class="f-12-r text-muted">
+                  {{ staff.role }}
+                </div>
+              </td>
+
+              <!-- Department -->
               <td class="f-14-r">
-                {{ room.monthlyRent | currency: 'INR':'symbol':'1.0-0' }}
+                {{ staff.department }}
               </td>
-              <td class="f-14-r text-capitalize">
-                {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
+
+              <!-- Designation -->
+              <td class="f-14-r">
+                {{ staff.designation }}
               </td>
+
+              <!-- Contact -->
+              <td class="f-14-r">
+                <div>{{ staff.phone }}</div>
+                <div class="f-12-r text-muted">{{ staff.email }}</div>
+              </td>
+
+              <!-- Status -->
               <td>
                 <span class="status-pill" [ngClass]="{
-                    'status-available': room.status === 'Available',
-                    'status-occupied': room.status === 'Occupied',
-                    'status-maintenance': room.status === 'Maintenance'
+                    'status-active': staff.status === 'Active',
+                    'status-inactive': staff.status === 'Inactive',
+                    'status-on-leave': staff.status === 'On Leave',
+                    'status-terminated': staff.status === 'Terminated'
                   }">
                   <span class="status-dot"></span>
-                  {{ room.status }}
+                  {{ staff.status }}
                 </span>
               </td>
+
+              <!-- Actions -->
               <td class="text-center">
                 <div class="d-inline-flex align-items-center gap-3 action-icons">
-                  <button type="button" class="icon-btn" title="Edit" (click)="onEditRoom(room)">
+                  <button type="button" class="icon-btn" title="Edit" (click)="onEditStaff(staff)">
                     <i class="bi bi-pencil-square"></i>
                   </button>
-                  <button type="button" class="icon-btn" title="Delete" (click)="onDeleteRoom(room)">
+                  <button type="button" class="icon-btn" title="Delete" (click)="onDeleteStaff(staff)">
                     <i class="bi bi-trash text-danger"></i>
                   </button>
                 </div>
               </td>
             </tr>
 
-            <tr *ngIf="pagedRooms.length === 0">
+            <tr *ngIf="pagedStaff.length === 0">
               <td colspan="7" class="text-center py-4 text-muted">
-                No rooms found.
+                No staff found.
               </td>
             </tr>
           </tbody>
@@ -87,56 +118,60 @@
 
     <!-- Mobile Cards -->
     <div class="mobile-cards">
-      <div *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber" class="staff-card">
+      <div *ngFor="let staff of pagedStaff; trackBy: trackByStaffId" class="staff-card">
         <div class="staff-card-header">
           <div class="staff-main">
-            <div class="staff-title">Room {{ room.roomNumber }}</div>
-            <div class="staff-subtitle">{{ room.type }}</div>
+            <div class="staff-title">
+              {{ staff.firstName }} {{ staff.lastName }}
+            </div>
+            <div class="staff-subtitle">
+              {{ staff.designation }} • {{ staff.department }}
+            </div>
+            <div class="staff-subtitle">
+              ID: {{ staff.employeeId }}
+            </div>
           </div>
 
           <span class="status-pill" [ngClass]="{
-              'status-available': room.status === 'Available',
-              'status-occupied': room.status === 'Occupied',
-              'status-maintenance': room.status === 'Maintenance'
+              'status-active': staff.status === 'Active',
+              'status-inactive': staff.status === 'Inactive',
+              'status-on-leave': staff.status === 'On Leave',
+              'status-terminated': staff.status === 'Terminated'
             }">
             <span class="status-dot"></span>
-            {{ room.status }}
+            {{ staff.status }}
           </span>
         </div>
 
         <div class="staff-card-body">
           <p class="info-row">
-            <span class="info-label"><strong>Floor:</strong></span>
-            <span class="info-value">{{ room.floor }}</span>
+            <span class="info-label"><strong>Phone:</strong></span>
+            <span class="info-value">{{ staff.phone }}</span>
           </p>
 
           <p class="info-row">
-            <span class="info-label"><strong>Rent:</strong></span>
-            <span class="info-value">
-              {{ room.monthlyRent | currency: 'INR':'symbol':'1.0-0' }}
-            </span>
+            <span class="info-label"><strong>Email:</strong></span>
+            <span class="info-value">{{ staff.email }}</span>
           </p>
 
           <p class="info-row">
-            <span class="info-label"><strong>Amenities:</strong></span>
-            <span class="info-value">
-              {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
-            </span>
+            <span class="info-label"><strong>Role:</strong></span>
+            <span class="info-value">{{ staff.role }}</span>
           </p>
         </div>
 
         <div class="staff-card-footer">
-          <button type="button" class="action-btn edit-btn" (click)="onEditRoom(room)">
+          <button type="button" class="action-btn edit-btn" (click)="onEditStaff(staff)">
             <i class="bi bi-pencil"></i> Edit
           </button>
-          <button type="button" class="action-btn delete-btn" (click)="onDeleteRoom(room)">
+          <button type="button" class="action-btn delete-btn" (click)="onDeleteStaff(staff)">
             <i class="bi bi-trash"></i> Delete
           </button>
         </div>
       </div>
 
-      <div *ngIf="pagedRooms.length === 0" class="text-center py-4 text-muted">
-        No rooms found.
+      <div *ngIf="pagedStaff.length === 0" class="text-center py-4 text-muted">
+        No staff found.
       </div>
     </div>
 
@@ -144,11 +179,14 @@
     <div class="table-footer">
       <div class="footer-left">
         <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
+          Showing {{ showingFrom }} to {{ showingTo }} of
+          {{ totalItems }} entries
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
+          <span class="f-12-r text-muted text-high-contrast">
+            Rows per page:
+          </span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
             <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
               {{ size }}

@@ -1,30 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { OPSMenu } from '../../shared/en-common-table/en-common-table.component';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { ApiService } from '../../common-library/services/api.service';
-import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomDetails } from '../room-management-modal/room-management-modal.component';
 
+type StaffStatus = 'Active' | 'Inactive' | 'On Leave' | 'Terminated';
 
-
-
-type RoomStatus = 'Available' | 'Occupied' | 'Maintenance';
-
-
-type CaseStatus = 'Open' | 'Closed' | 'On Hold';
-type CasePriority = 'Low' | 'Medium' | 'High';
-
-export interface CaseItem {
+export interface StaffListItem {
   id: string;
-  type: string;
-  subtype: string;
-  status: CaseStatus;
-  priority: CasePriority;
-  owner: string;
-  date: Date;
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  department: string;
+  designation: string;
+  role: string;   // System role from onboarding (Admin, Staff, etc.)
+  phone: string;
+  email: string;
+  status: StaffStatus;
 }
 
 @Component({
@@ -34,8 +24,8 @@ export interface CaseItem {
 })
 export class StaffOnboardingGetAllComponent implements OnInit {
 
-  // Toolbar filters
-  public selectedStatusFilter: 'All' | RoomStatus = 'All';
+  // Toolbar filter
+  public selectedStatusFilter: 'All' | StaffStatus = 'All';
 
   // Pagination
   public pageSizeOptions: number[] = [5, 10, 25];
@@ -43,91 +33,101 @@ export class StaffOnboardingGetAllComponent implements OnInit {
   public currentPage = 1;
 
   // Data
-  private allRooms: RoomDetails[] = [];
-  public filteredRooms: RoomDetails[] = [];
-  public pagedRooms: RoomDetails[] = [];
+  private allStaff: StaffListItem[] = [];
+  public filteredStaff: StaffListItem[] = [];
+  public pagedStaff: StaffListItem[] = [];
 
-  constructor(private dialog: MatDialog,public router: Router) {}
+  constructor(
+    private dialog: MatDialog,
+    public router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Seed sample room data
-    this.allRooms = [
+    // Seed sample staff data – fields match the onboarding popup
+    this.allStaff = [
       {
-        roomNumber: '101',
-        type: 'Single',
-        monthlyRent: 8000,
-        securityDeposit: 16000,
-        floor: 'Ground',
-        beds: 1,
-        status: 'Available',
-        description: 'Spacious single room with attached bathroom',
-        amenities: ['Wi-Fi', 'AC', 'TV']
+        id: '1',
+        employeeId: 'EMP-001',
+        firstName: 'Ravi',
+        lastName: 'Kumar',
+        department: 'Front Office',
+        designation: 'Receptionist',
+        role: 'Staff',
+        phone: '9876543210',
+        email: 'ravi.kumar@example.com',
+        status: 'Active'
       },
       {
-        roomNumber: '102',
-        type: 'Double',
-        monthlyRent: 12000,
-        securityDeposit: 24000,
-        floor: 'Ground',
-        beds: 2,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi', 'AC']
+        id: '2',
+        employeeId: 'EMP-002',
+        firstName: 'Anita',
+        lastName: 'Sharma',
+        department: 'Housekeeping',
+        designation: 'Supervisor',
+        role: 'Manager',
+        phone: '9876501234',
+        email: 'anita.sharma@example.com',
+        status: 'On Leave'
       },
       {
-        roomNumber: '201',
-        type: 'Single',
-        monthlyRent: 8500,
-        securityDeposit: 17000,
-        floor: 'First',
-        beds: 1,
-        status: 'Maintenance',
-        description: '',
-        amenities: ['Wi-Fi', 'TV']
+        id: '3',
+        employeeId: 'EMP-003',
+        firstName: 'Mohit',
+        lastName: 'Verma',
+        department: 'Security',
+        designation: 'Guard',
+        role: 'Staff',
+        phone: '9811112233',
+        email: 'mohit.verma@example.com',
+        status: 'Active'
       },
       {
-        roomNumber: '202',
-        type: 'Double',
-        monthlyRent: 13000,
-        securityDeposit: 26000,
-        floor: 'First',
-        beds: 2,
-        status: 'Available',
-        description: 'Balcony view',
-        amenities: ['Wi-Fi', 'AC', 'Balcony']
+        id: '4',
+        employeeId: 'EMP-004',
+        firstName: 'Priya',
+        lastName: 'Nair',
+        department: 'Administration',
+        designation: 'Warden',
+        role: 'Admin',
+        phone: '9898989898',
+        email: 'priya.nair@example.com',
+        status: 'Inactive'
       },
       {
-        roomNumber: '301',
-        type: 'Single',
-        monthlyRent: 8200,
-        securityDeposit: 16400,
-        floor: 'Second',
-        beds: 1,
-        status: 'Occupied',
-        description: '',
-        amenities: ['Wi-Fi']
+        id: '5',
+        employeeId: 'EMP-005',
+        firstName: 'Sanjay',
+        lastName: 'Gupta',
+        department: 'Maintenance',
+        designation: 'Technician',
+        role: 'Staff',
+        phone: '9900123456',
+        email: 'sanjay.gupta@example.com',
+        status: 'Active'
       },
       {
-        roomNumber: '302',
-        type: 'Double',
-        monthlyRent: 12500,
-        securityDeposit: 25000,
-        floor: 'Second',
-        beds: 2,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi', 'AC', 'TV']
+        id: '6',
+        employeeId: 'EMP-006',
+        firstName: 'Deepa',
+        lastName: 'Rao',
+        department: 'Cafeteria',
+        designation: 'Cook',
+        role: 'Staff',
+        phone: '9877001122',
+        email: 'deepa.rao@example.com',
+        status: 'Terminated'
       },
       {
-        roomNumber: '303',
-        type: 'Single',
-        monthlyRent: 7900,
-        securityDeposit: 15800,
-        floor: 'Second',
-        beds: 1,
-        status: 'Available',
-        description: '',
-        amenities: ['Wi-Fi']
+        id: '7',
+        employeeId: 'EMP-007',
+        firstName: 'Arun',
+        lastName: 'Menon',
+        department: 'Front Office',
+        designation: 'Assistant',
+        role: 'Staff',
+        phone: '9765432109',
+        email: 'arun.menon@example.com',
+        status: 'Active'
       }
     ];
 
@@ -135,8 +135,9 @@ export class StaffOnboardingGetAllComponent implements OnInit {
   }
 
   /* -------------------  Pagination getters  ------------------- */
+
   get totalItems(): number {
-    return this.filteredRooms.length;
+    return this.filteredStaff.length;
   }
 
   get totalPages(): number {
@@ -144,7 +145,9 @@ export class StaffOnboardingGetAllComponent implements OnInit {
   }
 
   get showingFrom(): number {
-    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+    return this.totalItems === 0
+      ? 0
+      : (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get showingTo(): number {
@@ -155,15 +158,23 @@ export class StaffOnboardingGetAllComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  /* -------------------  UI Actions  ------------------- */
-  onSelectStatusChange(value: 'All' | RoomStatus): void {
+  /* -------------------  Filter / Toolbar actions  ------------------- */
+
+  onSelectStatusChange(value: 'All' | StaffStatus): void {
     this.selectedStatusFilter = value;
     this.currentPage = 1;
     this.applyAllFilters();
   }
 
+  // Demo: clicking Filter cycles through statuses
   onFilter(): void {
-    const order: Array<'All' | RoomStatus> = ['All', 'Available', 'Occupied', 'Maintenance'];
+    const order: Array<'All' | StaffStatus> = [
+      'All',
+      'Active',
+      'Inactive',
+      'On Leave',
+      'Terminated'
+    ];
     const idx = order.indexOf(this.selectedStatusFilter);
     this.onSelectStatusChange(order[(idx + 1) % order.length]);
   }
@@ -175,74 +186,80 @@ export class StaffOnboardingGetAllComponent implements OnInit {
     this.applyAllFilters();
   }
 
+  /* -------------------  Pagination actions  ------------------- */
+
   onPageSizeChange(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.updatePagedRooms();
+    this.updatePagedStaff();
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagedRooms();
+    this.updatePagedStaff();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagedRooms();
+      this.updatePagedStaff();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagedRooms();
+      this.updatePagedStaff();
     }
   }
 
-  trackByRoomNumber(_: number, room: RoomDetails): string {
-    return room.roomNumber;
+  trackByStaffId(_: number, staff: StaffListItem): string {
+    return staff.id;
   }
 
   /* -------------------  Core filtering + pagination  ------------------- */
+
   private applyAllFilters(): void {
-    this.filteredRooms = this.applyStatusFilter(this.allRooms, this.selectedStatusFilter);
-    this.updatePagedRooms();
+    this.filteredStaff = this.applyStatusFilter(
+      this.allStaff,
+      this.selectedStatusFilter
+    );
+    this.updatePagedStaff();
   }
 
-  private applyStatusFilter(list: RoomDetails[], selected: 'All' | RoomStatus): RoomDetails[] {
+  private applyStatusFilter(
+    list: StaffListItem[],
+    selected: 'All' | StaffStatus
+  ): StaffListItem[] {
     if (selected === 'All') return [...list];
-    return list.filter(r => r.status === selected);
+    return list.filter(s => s.status === selected);
   }
 
-  private updatePagedRooms(): void {
+  private updatePagedStaff(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedRooms = this.filteredRooms.slice(start, end);
+    this.pagedStaff = this.filteredStaff.slice(start, end);
   }
 
+  /* -------------------  Navigation / CRUD  ------------------- */
 
-  /* -------------------  Modal handling  ------------------- */
-  onAddNewRoom(): void {
-     this.router.navigate(['/core/staff-onboarding'], )
+  onAddNewStaff(): void {
+    // Opens your onboarding popup/page
+    this.router.navigate(['/core/staff-onboarding']);
   }
 
-  onEditRoom(room: RoomDetails): void {
-    this.router.navigate(['/core/staff-onboarding'], )
+  onEditStaff(staff: StaffListItem): void {
+    // Pass id if required by onboarding route
+    this.router.navigate(['/core/staff-onboarding'], {
+      queryParams: { id: staff.id }
+    });
   }
 
-  onDeleteRoom(room: RoomDetails): void {
-    if (confirm(`Delete room ${room.roomNumber}?`)) {
-      this.allRooms = this.allRooms.filter(r => r.roomNumber !== room.roomNumber);
+  onDeleteStaff(staff: StaffListItem): void {
+    if (confirm(`Delete staff ${staff.firstName} ${staff.lastName}?`)) {
+      this.allStaff = this.allStaff.filter(s => s.id !== staff.id);
       this.applyAllFilters();
     }
-  }
-
-  /** Helper – collect all unique amenities from existing rooms */
-  private getAllAmenities(): string[] {
-    const set = new Set<string>();
-    this.allRooms.forEach(r => r.amenities.forEach(a => set.add(a)));
-    return Array.from(set);
   }
 }

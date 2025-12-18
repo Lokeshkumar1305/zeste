@@ -155,31 +155,40 @@
   display: inline-block;
 }
 
-/* Available */
-.status-available {
-  background: rgba(32, 201, 151, 0.2);
-  color: #20c997;
+/* Active */
+.status-active {
+  background: rgba(34, 197, 94, 0.16); /* #22c55e */
+  color: #16a34a;
 }
-.status-available .status-dot {
-  background: #20c997;
-}
-
-/* Maintenance */
-.status-maintenance {
-  background: rgba(100, 116, 139, 0.2);
-  color: #94a3b8;
-}
-.status-maintenance .status-dot {
-  background: #94a3b8;
+.status-active .status-dot {
+  background: #22c55e;
 }
 
-/* Occupied */
-.status-occupied {
-  background: rgba(245, 158, 11, 0.2);
-  color: #f59e0b;
+/* Inactive */
+.status-inactive {
+  background: rgba(148, 163, 184, 0.2); /* slate/gray */
+  color: #6b7280;
 }
-.status-occupied .status-dot {
-  background: #f59e0b;
+.status-inactive .status-dot {
+  background: #9ca3af;
+}
+
+/* On Leave */
+.status-on-leave {
+  background: rgba(234, 179, 8, 0.18); /* #eab308 */
+  color: #b45309;
+}
+.status-on-leave .status-dot {
+  background: #eab308;
+}
+
+/* Terminated */
+.status-terminated {
+  background: rgba(248, 113, 113, 0.2); /* #f87171 */
+  color: #dc2626;
+}
+.status-terminated .status-dot {
+  background: #ef4444;
 }
 
 /* ========================================
@@ -446,7 +455,7 @@
   }
 }
 
-/* Tablets 768–1024px - just allow wrapping of header buttons */
+/* Tablets 768–1024px - allow wrapping of header buttons */
 @media (min-width: 768px) and (max-width: 1024px) {
   .header-actions {
     flex-wrap: wrap;
