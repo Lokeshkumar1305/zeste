@@ -1,7 +1,7 @@
 <div class="settings-container">
-  <!-- Header -->
-  <div class="settings-header">
-    <div class="header-content">
+  <div class="settings-page">
+    <!-- HEADER CARD -->
+    <div class="settings-header-card">
       <div class="header-title">
         <mat-icon class="header-icon">settings</mat-icon>
         <div>
@@ -18,58 +18,33 @@
           <mat-icon>upload</mat-icon>
           Import Settings
         </button>
-        <input 
-          #fileInput 
-          type="file" 
-          accept=".json" 
-          hidden 
-          (change)="importSettings($event)"
-        >
+        <input #fileInput type="file" accept=".json" hidden (change)="importSettings($event)" />
       </div>
     </div>
-  </div>
 
-  <!-- Settings Content -->
-  <div class="settings-content">
-    <!-- Sidebar Tabs -->
-    <div class="settings-sidebar">
-      <div class="sidebar-nav">
-        <button 
-          class="nav-item" 
-          [class.active]="activeTab === 'general'"
-          (click)="setActiveTab('general')"
-        >
+    <!-- TABS CARD -->
+    <div class="settings-tabs">
+      <div class="tabs-card">
+        <button class="tab-item" [class.active]="activeTab === 'general'" (click)="setActiveTab('general')">
           <mat-icon>tune</mat-icon>
           <span>General Settings</span>
         </button>
-        <button 
-          class="nav-item" 
-          [class.active]="activeTab === 'auto-purchase'"
-          (click)="setActiveTab('auto-purchase')"
-        >
+        <button class="tab-item" [class.active]="activeTab === 'auto-purchase'" (click)="setActiveTab('auto-purchase')">
           <mat-icon>shopping_cart</mat-icon>
           <span>Auto Purchase</span>
         </button>
-        <button 
-          class="nav-item" 
-          [class.active]="activeTab === 'notifications'"
-          (click)="setActiveTab('notifications')"
-        >
+        <button class="tab-item" [class.active]="activeTab === 'notifications'" (click)="setActiveTab('notifications')">
           <mat-icon>notifications</mat-icon>
           <span>Notifications</span>
         </button>
-        <button 
-          class="nav-item" 
-          [class.active]="activeTab === 'advanced'"
-          (click)="setActiveTab('advanced')"
-        >
+        <button class="tab-item" [class.active]="activeTab === 'advanced'" (click)="setActiveTab('advanced')">
           <mat-icon>build</mat-icon>
           <span>Advanced</span>
         </button>
       </div>
     </div>
 
-    <!-- Main Settings Panel -->
+    <!-- MAIN PANELS -->
     <div class="settings-main">
       <!-- Loading Overlay -->
       <div class="loading-overlay" *ngIf="isLoading">
@@ -91,24 +66,32 @@
               <mat-icon>inventory_2</mat-icon>
               Stock Management
             </h3>
-            
+
             <div class="form-grid">
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Default Low Stock Threshold</mat-label>
-                <input matInput type="number" formControlName="defaultLowStockThreshold">
+                <input matInput type="number" formControlName="defaultLowStockThreshold" />
                 <mat-icon matSuffix>trending_down</mat-icon>
                 <mat-hint>Alert when stock falls below this quantity</mat-hint>
-                <mat-error *ngIf="generalSettingsForm.get('defaultLowStockThreshold')?.hasError('required')">
+                <mat-error *ngIf="
+                    generalSettingsForm
+                      .get('defaultLowStockThreshold')
+                      ?.hasError('required')
+                  ">
                   This field is required
                 </mat-error>
-                <mat-error *ngIf="generalSettingsForm.get('defaultLowStockThreshold')?.hasError('min')">
+                <mat-error *ngIf="
+                    generalSettingsForm
+                      .get('defaultLowStockThreshold')
+                      ?.hasError('min')
+                  ">
                   Value must be at least 1
                 </mat-error>
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Default Reorder Quantity</mat-label>
-                <input matInput type="number" formControlName="defaultReorderQuantity">
+                <input matInput type="number" formControlName="defaultReorderQuantity" />
                 <mat-icon matSuffix>add_shopping_cart</mat-icon>
                 <mat-hint>Default quantity for reorder suggestions</mat-hint>
               </mat-form-field>
@@ -141,23 +124,24 @@
                 <mat-slide-toggle formControlName="enableBarcodeScanning" color="primary">
                   Enable Barcode Scanning
                 </mat-slide-toggle>
-                <span class="toggle-description">Scan barcodes for quick item lookup</span>
+                <span class="toggle-description">
+                  Scan barcodes for quick item lookup
+                </span>
               </div>
               <div class="toggle-item">
                 <mat-slide-toggle formControlName="enableExpiryTracking" color="primary">
                   Enable Expiry Tracking
                 </mat-slide-toggle>
-                <span class="toggle-description">Track expiration dates for perishable items</span>
+                <span class="toggle-description">
+                  Track expiration dates for perishable items
+                </span>
               </div>
             </div>
 
-            <mat-form-field 
-              appearance="outline" 
-              class="form-field expiry-field"
-              *ngIf="generalSettingsForm.get('enableExpiryTracking')?.value"
-            >
+            <mat-form-field appearance="outline" class="form-field expiry-field"
+              *ngIf="generalSettingsForm.get('enableExpiryTracking')?.value">
               <mat-label>Expiry Alert Days</mat-label>
-              <input matInput type="number" formControlName="expiryAlertDays">
+              <input matInput type="number" formControlName="expiryAlertDays" />
               <mat-icon matSuffix>event</mat-icon>
               <mat-hint>Alert days before item expiry</mat-hint>
             </mat-form-field>
@@ -169,18 +153,18 @@
               <mat-icon>receipt_long</mat-icon>
               Purchase Orders
             </h3>
-            
+
             <div class="form-grid">
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Maximum Order Value</mat-label>
-                <input matInput type="number" formControlName="maxOrderValue">
+                <input matInput type="number" formControlName="maxOrderValue" />
                 <span matPrefix>₹&nbsp;</span>
                 <mat-hint>Maximum value per purchase order</mat-hint>
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>PO Approval Threshold</mat-label>
-                <input matInput type="number" formControlName="poApprovalThreshold">
+                <input matInput type="number" formControlName="poApprovalThreshold" />
                 <span matPrefix>₹&nbsp;</span>
                 <mat-hint>Orders above this need approval</mat-hint>
               </mat-form-field>
@@ -199,7 +183,9 @@
                 <mat-slide-toggle formControlName="enableAuditLog" color="primary">
                   Enable Audit Log
                 </mat-slide-toggle>
-                <span class="toggle-description">Track all inventory changes and actions</span>
+                <span class="toggle-description">
+                  Track all inventory changes and actions
+                </span>
               </div>
             </div>
           </div>
@@ -210,7 +196,7 @@
               <mat-icon>display_settings</mat-icon>
               Display Settings
             </h3>
-            
+
             <div class="form-grid">
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Currency Symbol</mat-label>
@@ -239,13 +225,8 @@
               <mat-icon>refresh</mat-icon>
               Reset to Default
             </button>
-            <button 
-              mat-raised-button 
-              color="primary" 
-              type="submit" 
-              (click)="saveGeneralSettings()"
-              [disabled]="isLoading"
-            >
+            <button mat-raised-button color="primary" type="submit" (click)="saveGeneralSettings()"
+              [disabled]="isLoading">
               <mat-icon>save</mat-icon>
               Save Changes
             </button>
@@ -268,26 +249,28 @@
             </div>
             <div class="toggle-info">
               <h3>Enable Auto Purchase Orders</h3>
-              <p>Automatically generate purchase orders when stock falls below threshold</p>
+              <p>
+                Automatically generate purchase orders when stock falls below
+                threshold
+              </p>
             </div>
           </div>
-          <mat-slide-toggle 
-            [formControl]="$any(generalSettingsForm.get('enableAutoPurchase'))"
-            color="primary"
-          ></mat-slide-toggle>
+          <mat-slide-toggle [formControl]="
+              $any(generalSettingsForm.get('enableAutoPurchase'))
+            " color="primary"></mat-slide-toggle>
         </div>
 
         <div class="auto-purchase-content" *ngIf="generalSettingsForm.get('enableAutoPurchase')?.value">
           <!-- Approval Toggle -->
           <div class="approval-toggle">
-            <mat-slide-toggle 
-              [formControl]="$any(generalSettingsForm.get('autoPurchaseApprovalRequired'))"
-              color="primary"
-            >
+            <mat-slide-toggle [formControl]="
+                $any(generalSettingsForm.get('autoPurchaseApprovalRequired'))
+              " color="primary">
               Require Approval for Auto-Generated Orders
             </mat-slide-toggle>
             <span class="toggle-hint">
-              When enabled, auto-generated orders will be created as drafts pending approval
+              When enabled, auto-generated orders will be created as drafts
+              pending approval
             </span>
           </div>
 
@@ -302,11 +285,7 @@
             </div>
 
             <div class="rules-list" *ngIf="autoPurchaseRules.length > 0; else noRules">
-              <div 
-                class="rule-card" 
-                *ngFor="let rule of autoPurchaseRules"
-                [class.inactive]="!rule.isActive"
-              >
+              <div class="rule-card" *ngFor="let rule of autoPurchaseRules" [class.inactive]="!rule.isActive">
                 <div class="rule-status">
                   <span class="status-badge" [class.active]="rule.isActive">
                     {{ rule.isActive ? 'Active' : 'Inactive' }}
@@ -323,17 +302,24 @@
                   <div class="rule-details">
                     <div class="detail-item">
                       <span class="label">Trigger At</span>
-                      <span class="value">{{ rule.triggerThreshold }} units</span>
+                      <span class="value">
+                        {{ rule.triggerThreshold }} units
+                      </span>
                     </div>
                     <div class="detail-item">
                       <span class="label">Order Qty</span>
-                      <span class="value">{{ rule.orderQuantity }} units</span>
+                      <span class="value">
+                        {{ rule.orderQuantity }} units
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div class="rule-actions">
-                  <button mat-icon-button (click)="toggleRuleStatus(rule)" [matTooltip]="rule.isActive ? 'Deactivate' : 'Activate'">
-                    <mat-icon>{{ rule.isActive ? 'pause_circle' : 'play_circle' }}</mat-icon>
+                  <button mat-icon-button (click)="toggleRuleStatus(rule)"
+                    [matTooltip]="rule.isActive ? 'Deactivate' : 'Activate'">
+                    <mat-icon>
+                      {{ rule.isActive ? 'pause_circle' : 'play_circle' }}
+                    </mat-icon>
                   </button>
                   <button mat-icon-button (click)="openEditRuleDialog(rule)" matTooltip="Edit">
                     <mat-icon>edit</mat-icon>
@@ -349,7 +335,10 @@
               <div class="empty-state">
                 <mat-icon>rule</mat-icon>
                 <h4>No Auto Purchase Rules</h4>
-                <p>Create rules to automatically generate purchase orders when stock is low</p>
+                <p>
+                  Create rules to automatically generate purchase orders when
+                  stock is low
+                </p>
                 <button mat-raised-button color="primary" (click)="openAddRuleDialog()">
                   <mat-icon>add</mat-icon>
                   Create First Rule
@@ -363,7 +352,9 @@
         <div class="disabled-state" *ngIf="!generalSettingsForm.get('enableAutoPurchase')?.value">
           <mat-icon>shopping_cart_off</mat-icon>
           <h3>Auto Purchase is Disabled</h3>
-          <p>Enable auto purchase orders to configure automatic reordering rules</p>
+          <p>
+            Enable auto purchase orders to configure automatic reordering rules
+          </p>
         </div>
       </div>
 
@@ -380,7 +371,9 @@
             <mat-icon>email</mat-icon>
             Email Recipients
           </h3>
-          <p class="section-description">Manage who receives inventory notification emails</p>
+          <p class="section-description">
+            Manage who receives inventory notification emails
+          </p>
 
           <div class="recipients-list">
             <div class="recipient-chip" *ngFor="let email of emailRecipients">
@@ -395,16 +388,11 @@
           <div class="add-recipient">
             <mat-form-field appearance="outline" class="email-field">
               <mat-label>Add Email Recipient</mat-label>
-              <input 
-                matInput 
-                type="email" 
-                [(ngModel)]="newEmail" 
-                placeholder="email@example.com"
-                (keyup.enter)="addEmailRecipient()"
-              >
+              <input matInput type="email" [(ngModel)]="newEmail" placeholder="email@example.com"
+                (keyup.enter)="addEmailRecipient()" />
               <mat-icon matSuffix>alternate_email</mat-icon>
             </mat-form-field>
-            <button mat-raised-button color="primary" (click)="addEmailRecipient()">
+            <button mat-raised-button color="primary" type="button" (click)="addEmailRecipient()">
               <mat-icon>add</mat-icon>
               Add
             </button>
@@ -421,30 +409,21 @@
           <div class="notification-item" *ngFor="let setting of notificationSettings">
             <div class="notification-info">
               <div class="notification-header">
-                <mat-slide-toggle 
-                  [checked]="setting.enabled"
-                  (change)="toggleNotification(setting)"
-                  color="primary"
-                >
+                <mat-slide-toggle [checked]="setting.enabled" (change)="toggleNotification(setting)" color="primary">
                   {{ setting.name }}
                 </mat-slide-toggle>
               </div>
-              <p class="notification-description">{{ setting.description }}</p>
+              <p class="notification-description">
+                {{ setting.description }}
+              </p>
             </div>
             <div class="notification-channels" *ngIf="setting.enabled">
-              <button 
-                mat-stroked-button 
-                [class.active]="setting.emailEnabled"
-                (click)="toggleEmailNotification(setting)"
-              >
+              <button mat-stroked-button [class.active]="setting.emailEnabled"
+                (click)="toggleEmailNotification(setting)">
                 <mat-icon>email</mat-icon>
                 Email
               </button>
-              <button 
-                mat-stroked-button 
-                [class.active]="setting.smsEnabled"
-                (click)="toggleSmsNotification(setting)"
-              >
+              <button mat-stroked-button [class.active]="setting.smsEnabled" (click)="toggleSmsNotification(setting)">
                 <mat-icon>sms</mat-icon>
                 SMS
               </button>
@@ -470,7 +449,10 @@
               <div class="danger-item">
                 <div class="danger-info">
                   <h4>Reset All Inventory Data</h4>
-                  <p>This will delete all inventory items, movements, and purchase orders</p>
+                  <p>
+                    This will delete all inventory items, movements, and
+                    purchase orders
+                  </p>
                 </div>
                 <button mat-stroked-button color="warn">
                   Reset Data
@@ -479,7 +461,10 @@
               <div class="danger-item">
                 <div class="danger-info">
                   <h4>Clear Movement History</h4>
-                  <p>Remove all historical movement records while keeping current stock</p>
+                  <p>
+                    Remove all historical movement records while keeping current
+                    stock
+                  </p>
                 </div>
                 <button mat-stroked-button color="warn">
                   Clear History
@@ -498,67 +483,67 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+    </div> <!-- settings-main -->
+  </div> <!-- settings-page -->
 
-<!-- Add/Edit Rule Dialog -->
-<div class="dialog-overlay" *ngIf="showAddRuleDialog" (click)="closeRuleDialog()">
-  <div class="dialog-content" (click)="$event.stopPropagation()">
-    <div class="dialog-header">
-      <h2>{{ editingRule ? 'Edit' : 'Add' }} Auto Purchase Rule</h2>
-      <button mat-icon-button (click)="closeRuleDialog()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-    
-    <form [formGroup]="autoPurchaseForm" class="dialog-form">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Category</mat-label>
-        <mat-select formControlName="categoryId">
-          <mat-option *ngFor="let category of categories" [value]="category.id">
-            {{ category.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error>Please select a category</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Default Supplier</mat-label>
-        <mat-select formControlName="supplierId">
-          <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
-            {{ supplier.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error>Please select a supplier</mat-error>
-      </mat-form-field>
-
-      <div class="form-row">
-        <mat-form-field appearance="outline">
-          <mat-label>Trigger Threshold</mat-label>
-          <input matInput type="number" formControlName="triggerThreshold">
-          <mat-hint>Stock level to trigger order</mat-hint>
-          <mat-error>Enter a valid threshold</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Order Quantity</mat-label>
-          <input matInput type="number" formControlName="orderQuantity">
-          <mat-hint>Quantity to order</mat-hint>
-          <mat-error>Enter a valid quantity</mat-error>
-        </mat-form-field>
+  <!-- Add/Edit Rule Dialog -->
+  <div class="dialog-overlay" *ngIf="showAddRuleDialog" (click)="closeRuleDialog()">
+    <div class="dialog-content" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <h2>{{ editingRule ? 'Edit' : 'Add' }} Auto Purchase Rule</h2>
+        <button mat-icon-button (click)="closeRuleDialog()">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
 
-      <mat-slide-toggle formControlName="isActive" color="primary">
-        Rule Active
-      </mat-slide-toggle>
-    </form>
+      <form [formGroup]="autoPurchaseForm" class="dialog-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="categoryId">
+            <mat-option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Please select a category</mat-error>
+        </mat-form-field>
 
-    <div class="dialog-actions">
-      <button mat-stroked-button (click)="closeRuleDialog()">Cancel</button>
-      <button mat-raised-button color="primary" (click)="saveRule()">
-        {{ editingRule ? 'Update' : 'Create' }} Rule
-      </button>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Default Supplier</mat-label>
+          <mat-select formControlName="supplierId">
+            <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+              {{ supplier.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Please select a supplier</mat-error>
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Trigger Threshold</mat-label>
+            <input matInput type="number" formControlName="triggerThreshold" />
+            <mat-hint>Stock level to trigger order</mat-hint>
+            <mat-error>Enter a valid threshold</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Order Quantity</mat-label>
+            <input matInput type="number" formControlName="orderQuantity" />
+            <mat-hint>Quantity to order</mat-hint>
+            <mat-error>Enter a valid quantity</mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-slide-toggle formControlName="isActive" color="primary">
+          Rule Active
+        </mat-slide-toggle>
+      </form>
+
+      <div class="dialog-actions">
+        <button mat-stroked-button (click)="closeRuleDialog()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="saveRule()">
+          {{ editingRule ? 'Update' : 'Create' }} Rule
+        </button>
+      </div>
     </div>
   </div>
 </div>
