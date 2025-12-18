@@ -7,20 +7,23 @@
       <div class="toolbar-actions d-flex align-items-center gap-3">
         <!-- Filter & Reset buttons side by side -->
         <div class="d-flex gap-3">
-          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+          <button type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
             <span class="f-12-m">Filter</span>
           </button>
-          <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+          <button type="button"
+            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
             <span class="f-12-m">Reset</span>
           </button>
         </div>
 
-        <!-- Add New Room button on the right -->
-        <button type="button" class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+        <!-- Add New Room Type button -->
+        <button type="button"
+          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewRoom()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add Room Type</span>
@@ -60,24 +63,30 @@
             </td>
           </tr>
           <tr *ngIf="pagedRoomTypes.length === 0">
-            <td colspan="4" class="text-center py-4 text-muted">No room types found.</td>
+            <td colspan="4" class="text-center py-4 text-muted">
+              No room types found.
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Mobile: Card View (Matching Your Image) -->
+    <!-- Mobile: Card View -->
     <div class="mobile-cards">
       <div *ngFor="let room of pagedRoomTypes; trackBy: trackByRoomType" class="mobile-card">
+        <!-- Header: room type on left, beds on right -->
         <div class="mobile-card-header">
-          <div class="room-title f-16-m fw-semibold">{{ room.roomType }}</div>
-          <div class="room-subtitle f-14-r text-muted mt-1">
-           <p class="f-14-r text-muted mt-1 mb-0">{{ room.beds }} Bed{{ +room.beds > 1 ? 's' : '' }}</p>
+          <div class="room-title f-16-m fw-semibold">
+            {{ room.roomType }}
+          </div>
+          <div class="room-subtitle f-14-r text-muted">
+            {{ room.beds }} Bed{{ +room.beds > 1 ? 's' : '' }}
           </div>
         </div>
 
+        <!-- Description with better line spacing -->
         <div class="mobile-card-body">
-          <p class="f-14-r mb-0">
+          <p class="f-14-r description-text mb-0">
             <strong>Description:</strong> {{ room.description || '-' }}
           </p>
         </div>
@@ -97,7 +106,7 @@
       </div>
     </div>
 
-    <!-- Footer (Visible on Both Desktop & Mobile) -->
+    <!-- Footer (Desktop & Mobile) -->
     <div class="table-footer">
       <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
@@ -107,7 +116,9 @@
         <div class="d-inline-flex align-items-center gap-2">
           <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+              {{ size }}
+            </option>
           </select>
         </div>
       </div>

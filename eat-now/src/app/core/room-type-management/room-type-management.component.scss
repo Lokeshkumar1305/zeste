@@ -26,7 +26,7 @@ BUTTONS
   background: var(--background);
   border: 1px solid var(--card-border);
   border-radius: 6px;
-  padding: 8px 16px; /* Increased padding for better match */
+  padding: 8px 16px;
   font-size: 14px;
   transition: all 0.2s ease;
   min-height: 40px;
@@ -43,11 +43,11 @@ BUTTONS
   background: var(--brand-primary);
   border: 1px solid var(--brand-primary);
   border-radius: 6px;
-  padding: 8px 20px; /* Slightly more horizontal padding */
+  padding: 8px 20px;
   font-size: 14px;
   transition: all 0.2s ease;
   min-height: 40px;
-  min-width: 160px; /* Matches the wider "Add New Room" button in image */
+  min-width: 160px;
   white-space: nowrap;
 }
 
@@ -57,7 +57,7 @@ BUTTONS
 }
 
 /* ========================================
-HEADER TOOLBAR - Critical for matching the image
+HEADER TOOLBAR
 ======================================== */
 .header-toolbar {
   display: flex;
@@ -75,7 +75,6 @@ HEADER TOOLBAR - Critical for matching the image
   flex-shrink: 0;
 }
 
-/* Ensure Filter & Reset are side by side with consistent size */
 .toolbar-actions .d-flex.gap-3 {
   display: flex;
   gap: 12px;
@@ -142,7 +141,7 @@ TABLE
   background: var(--input-background);
 }
 
-.case-table tbody tr + tr td {
+.case-table tbody tr+tr td {
   border-top: 1px solid var(--card-border);
 }
 
@@ -154,7 +153,7 @@ TABLE
 }
 
 /* ========================================
-STATUS PILLS
+STATUS PILLS (if needed later)
 ======================================== */
 .status-pill {
   display: inline-flex;
@@ -172,33 +171,6 @@ STATUS PILLS
   height: 8px;
   border-radius: 50%;
   display: inline-block;
-}
-
-.status-available {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
-}
-
-.status-available .status-dot {
-  background: #22c55e;
-}
-
-.status-occupied {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-}
-
-.status-occupied .status-dot {
-  background: #ef4444;
-}
-
-.status-maintenance {
-  background: rgba(245, 158, 11, 0.2);
-  color: #f59e0b;
-}
-
-.status-maintenance .status-dot {
-  background: #f59e0b;
 }
 
 /* ========================================
@@ -298,7 +270,7 @@ FOOTER & PAGINATION
 }
 
 /* ========================================
-MOBILE CARDS (Unchanged)
+MOBILE CARDS
 ======================================== */
 .mobile-cards {
   display: none;
@@ -312,46 +284,40 @@ MOBILE CARDS (Unchanged)
   margin-bottom: 16px;
 }
 
+/* Header: title left, beds right */
 .mobile-card-header {
-  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.room-number {
-  font-size: 22px;
-  font-weight: bold;
+/* Extra styles for room-type card header */
+.room-title {
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-color);
+  flex: 1 1 auto;
+  margin-right: 8px;
 }
 
+.room-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Body & description spacing */
 .mobile-card-body {
   border-top: 1px dashed var(--card-border);
   padding-top: 12px;
   margin-top: 12px;
 }
 
-.detail-grid {
-  display: grid;
-  gap: 12px;
-}
-
-.detail-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.detail-item.full-width {
-  grid-column: 1 / -1;
-}
-
-.label {
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.value {
-  color: var(--text-color);
-  font-size: 14px;
-  font-weight: 500;
+.mobile-card-body .description-text {
+  line-height: 1.6 !important;
+  /* more gap between wrapped lines */
 }
 
 .mobile-card-footer {
@@ -364,15 +330,32 @@ MOBILE CARDS (Unchanged)
 }
 
 /* ========================================
-RESPONSIVE - Mobile (≤768px): Stack buttons full width
+RESPONSIVE - Mobile (≤768px)
+Match Room screen width & layout
 ======================================== */
 @media (max-width: 768px) {
+  .page-container {
+    width: calc(100vw - 32px) !important;
+    max-width: none !important;
+    margin-left: calc(50% - 50vw + 16px) !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+  }
+
   .table-container {
     display: none;
   }
 
   .mobile-cards {
     display: block;
+    width: 100%;
+  }
+
+  .mobile-card {
+    width: 100%;
+    margin-inline: 0;
   }
 
   .header-toolbar {
@@ -418,13 +401,14 @@ RESPONSIVE - Mobile (≤768px): Stack buttons full width
   }
 }
 
-/* Desktop & Tablet (≥769px): Table view + inline buttons */
+/* ========================================
+Desktop & Tablet (≥769px)
+======================================== */
 @media (min-width: 769px) {
   .mobile-cards {
     display: none !important;
   }
 
-  /* Ensure consistent button height and alignment */
   .toolbar-actions button {
     display: inline-flex;
     align-items: center;
