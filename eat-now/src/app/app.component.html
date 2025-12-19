@@ -2,18 +2,15 @@
   <!-- Sidenav -->
   <app-sidenav [isCollapsed]="sidebarCollapsed" (toggle)="onSidebarToggle()">
   </app-sidenav>
-
   <!-- Main Content Area -->
   <div class="main-area">
     <!-- Header -->
     <app-header [sidebarCollapsed]="sidebarCollapsed" (sidebarToggle)="onSidebarToggle()">
     </app-header>
-
     <!-- Breadcrumb -->
     <app-breadcrumb [sidebarCollapsed]="sidebarCollapsed">
       <ng-content select="[breadcrumb-actions]" breadcrumb-actions></ng-content>
     </app-breadcrumb>
-
     <!-- Page Content -->
     <main class="page-content">
       <div class="content-container">

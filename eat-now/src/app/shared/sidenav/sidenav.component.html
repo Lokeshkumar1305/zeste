@@ -1,27 +1,22 @@
 <div class="sidenav-wrapper">
-
   <nav class="sidenav" [class.collapsed]="isCollapsed && !isMobile" [class.mobile-open]="!isCollapsed && isMobile"
     [class.mobile-closed]="isCollapsed && isMobile" role="navigation" aria-label="Main navigation">
-
     <!-- Logo -->
     <div class="logo-section">
       <img src="../../../assets/Images/zeste logo.png" alt="Zeste" class="logo-img" />
       <span class="logo-text" *ngIf="!isCollapsed || isMobile">ZESTE</span>
-
       <!-- Mobile close button -->
       <button class="mobile-close-btn" *ngIf="isMobile && !isCollapsed" (click)="toggleSidenav()"
         aria-label="Close menu">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
-
     <div class="menu-container">
       <!-- GENERAL -->
       <div class="section">
         <span class="section-title" *ngIf="!isCollapsed || isMobile">
           GENERAL
         </span>
-
         <!-- Dashboard -->
         <div class="menu-item dashboard-item" [class.active]="selectedMenu === 'dashboard'"
           (click)="navigateTo('/core/outlet-onboarding')" role="button" tabindex="0"
@@ -30,7 +25,6 @@
           <span *ngIf="!isCollapsed || isMobile">Dashboard</span>
         </div>
         <div class="menu-divider"></div>
-
         <!-- Collapsible Groups -->
         <ng-container *ngFor="let group of collapsibleGroups; trackBy: trackByGroupKey">
           <div class="collapsible-group" [class.has-active]="isGroupActive(group)">
@@ -49,7 +43,6 @@
                 *ngIf="!isCollapsed || isMobile">
               </i>
             </div>
-
             <!-- FLOATING CARD (Only in collapsed desktop mode) -->
             <div class="floating-card" *ngIf="!isMobile && isCollapsed && openedGroup === group.key"
               [style.top.px]="floatingCardTop" (click)="$event.stopPropagation()" role="menu">
@@ -62,7 +55,6 @@
                 </li>
               </ul>
             </div>
-
             <!-- Regular submenu (expanded mode or mobile) -->
             <ul class="submenu" *ngIf="!isCollapsed || isMobile" [class.open]="openedGroup === group.key" role="menu">
               <li *ngFor="let item of group.items; trackBy: trackByRoute" class="submenu-item"
@@ -73,18 +65,15 @@
               </li>
             </ul>
           </div>
-
           <!-- Divider under each top-level group -->
           <div class="menu-divider"></div>
         </ng-container>
       </div>
-
       <!-- Announcements -->
       <div class="section misc-section">
         <span class="section-title" *ngIf="!isCollapsed || isMobile">
           Announcements
         </span>
-
         <div class="menu-item" [class.active]="isRouteActive('/core/announcements')"
           (click)="navigateTo('/core/announcements')" role="button" tabindex="0"
           (keydown.enter)="navigateTo('/core/announcements')">
@@ -93,13 +82,11 @@
         </div>
         <div class="menu-divider"></div>
       </div>
-
       <!-- MISCELLANEOUS -->
       <div class="section misc-section">
         <span class="section-title" *ngIf="!isCollapsed || isMobile">
           MISCELLANEOUS
         </span>
-
         <div class="menu-item" [class.active]="isRouteActive('/core/audit-logs')"
           (click)="navigateTo('/core/audit-logs')" role="button" tabindex="0"
           (keydown.enter)="navigateTo('/core/audit-logs')">
@@ -109,14 +96,12 @@
         <div class="menu-divider"></div>
       </div>
     </div>
-
     <!-- Collapse Toggle (Desktop only) -->
     <div class="collapse-toggle" (click)="toggleSidenav()" *ngIf="!isMobile" role="button" tabindex="0"
       [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'" (keydown.enter)="toggleSidenav()">
       <i class="bi" [class.bi-chevron-left]="!isCollapsed" [class.bi-chevron-right]="isCollapsed"></i>
     </div>
   </nav>
-
   <!-- Overlay - ONLY for mobile -->
   <div class="overlay" *ngIf="isMobile && !isCollapsed" (click)="toggleSidenav()" role="button" aria-label="Close menu">
   </div>

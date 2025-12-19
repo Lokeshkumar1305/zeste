@@ -4,12 +4,10 @@
     aria-label="Toggle sidebar" type="button">
     <mat-icon>menu</mat-icon>
   </button>
-
   <!-- Center: breadcrumb / title placeholder -->
   <div class="header-center">
     <!-- Optional breadcrumb / title -->
   </div>
-
   <!-- Right: icons + user -->
   <div class="header-actions">
     <!-- Icons -->
@@ -19,7 +17,6 @@
         type="button">
         <mat-icon>crop_free</mat-icon>
       </button>
-
       <!-- Notifications -->
       <button mat-icon-button class="action-btn circle-icon-btn notification-btn" [matMenuTriggerFor]="notificationMenu"
         aria-label="Notifications" type="button">
@@ -29,7 +26,6 @@
         </mat-icon>
       </button>
     </div>
-
     <!-- ===== USER PROFILE ===== -->
     <div class="user-wrapper">
       <button mat-button class="profile-btn" [matMenuTriggerFor]="profileMenu" aria-label="User menu" type="button">
@@ -38,10 +34,8 @@
             <img *ngIf="userAvatar; else initialsTemplate" [src]="userAvatar" [alt]="userName" class="avatar-img" />
             <ng-template #initialsTemplate>{{ userInitials }}</ng-template>
           </div>
-
           <div class="profile-info">
             <span class="profile-name">{{ userName }}</span>
-
             <div class="profile-meta">
               <span class="profile-role">{{ userRole }}</span>
               <i class="bi bi-chevron-down profile-chevron"></i>
@@ -52,7 +46,6 @@
     </div>
   </div>
 </mat-toolbar>
-
 <!-- ================= NOTIFICATION MENU ================= -->
 <mat-menu #notificationMenu="matMenu" xPosition="before" class="notification-menu">
   <div class="menu-header" (click)="$event.stopPropagation()">
@@ -66,21 +59,17 @@
       <span class="mark-read-text">Mark all read</span>
     </button>
   </div>
-
   <mat-divider></mat-divider>
-
   <div class="notification-list" (click)="$event.stopPropagation()">
     <div *ngIf="notifications.length === 0" class="empty-state">
       <i class="bi bi-bell-slash"></i>
       <p>No new notifications</p>
     </div>
-
     <button mat-menu-item *ngFor="let notif of notifications" class="notification-item" [class.unread]="!notif.read"
       (click)="onNotificationClick(notif)" type="button">
       <div class="notif-icon" [ngClass]="notif.type">
         <i class="bi" [ngClass]="getNotificationIcon(notif.type)"></i>
       </div>
-
       <div class="notif-content">
         <span class="notif-title">{{ notif.title }}</span>
         <span class="notif-description">{{ notif.description }}</span>
@@ -89,7 +78,6 @@
           {{ notif.time }}
         </span>
       </div>
-
       <!-- Dismiss as span, not a nested button -->
       <span class="notif-dismiss" (click)="dismissNotification(notif, $event)" aria-label="Dismiss notification"
         role="button">
@@ -97,16 +85,13 @@
       </span>
     </button>
   </div>
-
   <mat-divider *ngIf="notifications.length > 0"></mat-divider>
-
   <button mat-menu-item class="view-all-btn" *ngIf="notifications.length > 0" (click)="viewAllNotifications()"
     type="button">
     <span>View all</span>
     <i class="bi bi-arrow-right"></i>
   </button>
 </mat-menu>
-
 <!-- ================= PROFILE MENU (PROFILE CARD) ================= -->
 <mat-menu #profileMenu="matMenu" xPosition="before" class="profile-menu">
   <!-- Top: avatar + name + email -->
@@ -115,28 +100,22 @@
       <img *ngIf="userAvatar; else largeInitialsTemplate" [src]="userAvatar" [alt]="userName" class="avatar-img" />
       <ng-template #largeInitialsTemplate>{{ userInitials }}</ng-template>
     </div>
-
     <div class="profile-details">
       <span class="name">{{ userName }}</span>
       <span class="email">{{ userEmail }}</span>
     </div>
   </div>
-
   <mat-divider class="profile-divider"></mat-divider>
-
   <!-- Middle actions -->
   <button mat-menu-item class="profile-item" (click)="goToProfile()" type="button">
     <i class="bi bi-person"></i>
     <span>Profile Details</span>
   </button>
-
   <button mat-menu-item class="profile-item" (click)="psdChange()" type="button">
     <i class="bi bi-arrow-clockwise"></i>
     <span>Change Password</span>
   </button>
-
   <mat-divider class="profile-divider"></mat-divider>
-
   <!-- Bottom: log out -->
   <button mat-menu-item class="profile-item logout-btn" (click)="logout()" type="button">
     <i class="bi bi-box-arrow-right"></i>

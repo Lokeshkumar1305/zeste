@@ -7,7 +7,6 @@ import { ApiService } from './common-library/services/api.service';
 import { LoginService } from './auth/login.service';
 import { ThemeService } from './shared/services/theme.service';
 import { LayoutService } from './shared/services/layout.service';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,24 +14,19 @@ import { LayoutService } from './shared/services/layout.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'zeste';
-
   // Sidebar state
   sidebarCollapsed = false;
-  
+ 
   // User info
   loggedInUser = '';
   userName = '';
-
   // Screen size tracking
   isMobile = false;
   isTablet = false;
-
   // Breakpoints
   private readonly MOBILE_BREAKPOINT = 768;
   private readonly TABLET_BREAKPOINT = 1024;
-
   private destroy$ = new Subject<void>();
-
   constructor(
     public loginService: LoginService,
     private router: Router,
@@ -41,7 +35,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private theme: ThemeService,
     public layout: LayoutService
   ) {}
-
   ngOnInit(): void {
     this.initializeUser();
     this.initializeTheme();
@@ -49,17 +42,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscribeToLayoutChanges();
     this.subscribeToRouteChanges();
   }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
   @HostListener('window:resize')
   onResize(): void {
     this.checkScreenSize();
   }
-
   /**
    * Initialize user information
    */
@@ -67,37 +57,32 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loggedInUser = sessionStorage.getItem('loggedInUser') || 'eatnow@gmail.com';
     this.userName = this.formatUserName(this.loggedInUser);
   }
-
   /**
    * Initialize theme settings
    */
   private initializeTheme(): void {
     this.theme.init();
   }
-
   /**
    * Check and set screen size flags
    */
   private checkScreenSize(): void {
     const width = window.innerWidth;
     const wasMobile = this.isMobile;
-    
+   
     this.isMobile = width < this.MOBILE_BREAKPOINT;
     this.isTablet = width >= this.MOBILE_BREAKPOINT && width < this.TABLET_BREAKPOINT;
-
-    // Auto-collapse on mobile/tablet
-    if ((this.isMobile || this.isTablet) && !wasMobile) {
+    // Auto-collapse on mobile only
+    if (this.isMobile && !wasMobile) {
       this.sidebarCollapsed = true;
       this.layout.setCollapsed(true);
     }
-
-    // Auto-expand on desktop (if coming from mobile/tablet)
-    if (!this.isMobile && !this.isTablet && wasMobile) {
+    // Auto-expand on non-mobile (tablet/desktop)
+    if (!this.isMobile && wasMobile) {
       this.sidebarCollapsed = false;
       this.layout.setCollapsed(false);
     }
   }
-
   /**
    * Subscribe to layout service changes
    */
@@ -108,7 +93,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.sidebarCollapsed = collapsed;
       });
   }
-
   /**
    * Subscribe to route changes
    */
@@ -126,7 +110,6 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
   }
-
   /**
    * Format username from email
    */
@@ -139,7 +122,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
   }
-
   /**
    * Toggle sidebar state - FIXED: This is the method called from template
    */
@@ -147,14 +129,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sidebarCollapsed = !this.sidebarCollapsed;
     this.layout.setCollapsed(this.sidebarCollapsed);
   }
-
   /**
    * Handle sidebar toggle from child components - FIXED: Added this method
    */
   onSidebarToggle(): void {
     this.toggleSidebar();
   }
-
   /**
    * Logout user
    */
@@ -168,21 +148,18 @@ export class AppComponent implements OnInit, OnDestroy {
       verticalPosition: 'top'
     });
   }
-
   /**
    * Navigate to password change
    */
   psdChange(): void {
     this.router.navigate(['/core/change-password']);
   }
-
   /**
    * Navigate to user profile
    */
   goToProfile(): void {
     this.router.navigate(['/uam/user-profile/1']);
   }
-
   /**
    * Navigate to a route
    */
@@ -191,7 +168,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.navigate([route]);
     }
   }
-
   /**
    * Check if user is authenticated
    */

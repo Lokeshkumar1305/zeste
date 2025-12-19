@@ -1,11 +1,9 @@
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
-
 // ===== Variables =====
 $sidenav-width: 260px;
 $sidenav-width-tablet: 240px;
 $collapsed-width: 72px;
 $mobile-sidenav-width: 280px;
-
 $primary-color: #1e40af;
 $active-bg: #ecfdf5;
 $active-text: #059669;
@@ -14,10 +12,8 @@ $border-color: #e5e7eb;
 $text-primary: #1f2937;
 $text-secondary: #6b7280;
 $text-muted: #9ca3af;
-
 $transition-speed: 0.3s;
 $transition-fast: 0.2s;
-
 // ===== Breakpoints =====
 $mobile-breakpoint: 768px;
 $tablet-breakpoint: 1024px;
@@ -184,15 +180,14 @@ $desktop-breakpoint: 1280px;
   overflow-y: auto;
   overflow-x: visible;
   padding: 12px 0;
-
   // hide scrollbar but keep scrolling
-  scrollbar-width: none;        // Firefox
-  -ms-overflow-style: none;     // IE / Edge legacy
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE / Edge legacy
 
   &::-webkit-scrollbar {
     width: 0;
     height: 0;
-    background: transparent;    // Chrome, Safari, Edge
+    background: transparent; // Chrome, Safari, Edge
   }
 
   &::-webkit-scrollbar-track {
