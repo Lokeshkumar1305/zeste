@@ -8,7 +8,7 @@
       <div class="d-flex align-items-center gap-2 header-actions">
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
-          <span class="f-12-m">
+          <span class="btn-text f-12-m">
             Filter
             <ng-container *ngIf="selectedStatusFilter !== 'All'">
               ({{ selectedStatusFilter }})
@@ -18,13 +18,13 @@
 
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
-          <span class="f-12-m">Reset</span>
+          <span class="btn-text f-12-m">Reset</span>
         </button>
 
         <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
           (click)="onAddNewStaff()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Staff</span>
+          <span class="btn-text-primary f-14-m">Add New Staff</span>
         </button>
       </div>
     </div>
@@ -50,38 +50,38 @@
           <tbody>
             <tr *ngFor="let staff of pagedStaff; trackBy: trackByStaffId" class="table-row-hover">
               <!-- Emp ID -->
-              <td class="f-14-m">
-                {{ staff.employeeId }}
+              <td class="f-14-m col-emp-id">
+                <span class="text-truncate-cell">{{ staff.employeeId }}</span>
               </td>
 
               <!-- Staff name + system role -->
-              <td>
-                <div class="f-14-m">
+              <td class="col-staff">
+                <div class="f-14-m text-truncate-cell">
                   {{ staff.firstName }} {{ staff.lastName }}
                 </div>
-                <div class="f-12-r text-muted">
+                <div class="f-12-r text-muted text-truncate-cell">
                   {{ staff.role }}
                 </div>
               </td>
 
               <!-- Department -->
-              <td class="f-14-r">
-                {{ staff.department }}
+              <td class="f-14-r col-department">
+                <span class="text-truncate-cell">{{ staff.department }}</span>
               </td>
 
               <!-- Designation -->
-              <td class="f-14-r">
-                {{ staff.designation }}
+              <td class="f-14-r col-designation">
+                <span class="text-truncate-cell">{{ staff.designation }}</span>
               </td>
 
               <!-- Contact -->
-              <td class="f-14-r">
-                <div>{{ staff.phone }}</div>
-                <div class="f-12-r text-muted">{{ staff.email }}</div>
+              <td class="f-14-r col-contact">
+                <div class="text-truncate-cell">{{ staff.phone }}</div>
+                <div class="f-12-r text-muted text-truncate-cell">{{ staff.email }}</div>
               </td>
 
               <!-- Status -->
-              <td>
+              <td class="col-status">
                 <span class="status-pill" [ngClass]="{
                     'status-active': staff.status === 'Active',
                     'status-inactive': staff.status === 'Inactive',
@@ -89,13 +89,13 @@
                     'status-terminated': staff.status === 'Terminated'
                   }">
                   <span class="status-dot"></span>
-                  {{ staff.status }}
+                  <span class="status-text">{{ staff.status }}</span>
                 </span>
               </td>
 
               <!-- Actions -->
-              <td class="text-center">
-                <div class="d-inline-flex align-items-center gap-3 action-icons">
+              <td class="text-center col-action">
+                <div class="d-inline-flex align-items-center gap-2 action-icons">
                   <button type="button" class="icon-btn" title="Edit" (click)="onEditStaff(staff)">
                     <i class="bi bi-pencil-square"></i>
                   </button>
@@ -199,7 +199,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -211,7 +211,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

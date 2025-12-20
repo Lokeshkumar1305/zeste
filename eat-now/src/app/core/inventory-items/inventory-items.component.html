@@ -11,13 +11,13 @@
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
-            <span class="f-12-m">Filter ({{ selectedStatusFilter }})</span>
+            <span class="btn-text f-12-m">Filter</span>
           </button>
           <button type="button"
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
-            <span class="f-12-m">Reset</span>
+            <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
@@ -26,7 +26,7 @@
           class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewItem()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Item</span>
+          <span class="f-14-m">Add Item</span>
         </button>
       </div>
     </div>
@@ -42,7 +42,7 @@
             <th scope="col">Category</th>
             <th scope="col">Unit</th>
             <th scope="col">Min Stock</th>
-            <th scope="col">Cost Price (per unit)</th>
+            <th scope="col">Cost Price</th>
             <th scope="col">Status</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
@@ -50,30 +50,30 @@
         <tbody>
           <tr *ngFor="let item of pagedItems; trackBy: trackByItemId" class="table-row-hover">
             <!-- Item name + SKU -->
-            <td class="f-14-m">
-              <div>{{ item.name }}</div>
-              <div class="f-12-r text-muted" *ngIf="item.sku">
+            <td class="f-14-m col-item">
+              <div class="text-truncate-cell" [title]="item.name">{{ item.name }}</div>
+              <div class="f-12-r text-muted sku-text" *ngIf="item.sku">
                 SKU: {{ item.sku }}
               </div>
             </td>
 
             <!-- Category -->
-            <td class="f-14-r">
-              {{ getCategoryName(item.categoryId) || '-' }}
+            <td class="f-14-r col-category">
+              <span class="text-truncate-cell">{{ getCategoryName(item.categoryId) || '-' }}</span>
             </td>
 
             <!-- Unit -->
-            <td class="f-14-r">
-              {{ getUnitDisplay(item.unitId) || '-' }}
+            <td class="f-14-r col-unit">
+              <span class="text-truncate-cell">{{ getUnitDisplay(item.unitId) || '-' }}</span>
             </td>
 
             <!-- Min stock -->
-            <td class="f-14-r">
+            <td class="f-14-r col-stock">
               {{ item.minStockLevel || 0 }}
             </td>
 
             <!-- Cost price -->
-            <td class="f-14-r">
+            <td class="f-14-r col-price">
               <ng-container *ngIf="item.costPrice != null; else noCost">
                 {{ item.costPrice | currency: 'INR':'symbol':'1.0-0' }}
               </ng-container>
@@ -81,19 +81,19 @@
             </td>
 
             <!-- Status -->
-            <td>
+            <td class="col-status">
               <span class="status-pill" [ngClass]="{
                   'status-available': item.isActive,
                   'status-maintenance': !item.isActive
                 }">
                 <span class="status-dot"></span>
-                {{ item.isActive ? 'Active' : 'Inactive' }}
+                <span class="status-text">{{ item.isActive ? 'Active' : 'Inactive' }}</span>
               </span>
             </td>
 
             <!-- Action -->
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Edit" (click)="onEditItem(item)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -185,8 +185,7 @@
     <div class="table-footer">
       <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of
-          {{ totalItems }} entries
+          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
@@ -203,7 +202,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -215,7 +214,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

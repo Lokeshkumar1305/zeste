@@ -11,13 +11,13 @@
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
-            <span class="f-12-m">Filter ({{ selectedStatusFilter }})</span>
+            <span class="btn-text f-12-m">Filter ({{ selectedStatusFilter }})</span>
           </button>
           <button type="button"
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
-            <span class="f-12-m">Reset</span>
+            <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
@@ -26,7 +26,7 @@
           class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewSupplier()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Supplier</span>
+          <span class="f-14-m">Add Supplier</span>
         </button>
       </div>
     </div>
@@ -48,29 +48,44 @@
         </thead>
         <tbody>
           <tr *ngFor="let supplier of pagedSuppliers; trackBy: trackBySupplierId" class="table-row-hover">
-            <td class="f-14-m">
-              {{ supplier.name }}
+            <!-- Supplier Name -->
+            <td class="f-14-m col-name">
+              <span class="text-truncate-cell" [title]="supplier.name">{{ supplier.name }}</span>
             </td>
-            <td class="f-14-r">
-              {{ supplier.contactPerson || '-' }}
+
+            <!-- Contact Person -->
+            <td class="f-14-r col-contact">
+              <span class="text-truncate-cell" [title]="supplier.contactPerson || '-'">
+                {{ supplier.contactPerson || '-' }}
+              </span>
             </td>
-            <td class="f-14-r">
-              {{ supplier.phone }}
+
+            <!-- Phone -->
+            <td class="f-14-r col-phone">
+              <span class="text-truncate-cell">{{ supplier.phone }}</span>
             </td>
-            <td class="f-14-r">
-              {{ supplier.email || '-' }}
+
+            <!-- Email -->
+            <td class="f-14-r col-email">
+              <span class="text-truncate-cell" [title]="supplier.email || '-'">
+                {{ supplier.email || '-' }}
+              </span>
             </td>
-            <td>
+
+            <!-- Status -->
+            <td class="col-status">
               <span class="status-pill" [ngClass]="{
                   'status-available': supplier.isActive,
                   'status-maintenance': !supplier.isActive
                 }">
                 <span class="status-dot"></span>
-                {{ supplier.isActive ? 'Active' : 'Inactive' }}
+                <span class="status-text">{{ supplier.isActive ? 'Active' : 'Inactive' }}</span>
               </span>
             </td>
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
+
+            <!-- Action -->
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Edit" (click)="onEditSupplier(supplier)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -94,7 +109,7 @@
     <div class="mobile-cards">
       <div *ngFor="let supplier of pagedSuppliers; trackBy: trackBySupplierId" class="mobile-card">
         <div class="mobile-card-header d-flex justify-content-between align-items-center">
-          <div class="f-18-m fw-bold">
+          <div class="f-16-m fw-bold">
             {{ supplier.name }}
           </div>
           <span class="status-pill" [ngClass]="{
@@ -154,8 +169,7 @@
     <div class="table-footer">
       <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of
-          {{ totalItems }} entries
+          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
@@ -172,7 +186,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -184,7 +198,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

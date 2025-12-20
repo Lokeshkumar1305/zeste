@@ -1,9 +1,9 @@
 <div class="page-container">
     <section class="case-card">
         <!-- Header & Toolbar -->
-        <div class="d-flex align-items-center justify-content-between mb-3 header-row">
+        <div class="header-toolbar d-flex align-items-center justify-content-between mb-3">
             <p class="mb-0 f-18-m text-high-contrast">Amenities Management</p>
-            <div class="d-flex align-items-center gap-2 header-actions">
+            <div class="toolbar-actions d-flex align-items-center gap-2">
                 <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
                     (click)="onAddNewAmenity()">
                     <i class="bi bi-plus-circle"></i>
@@ -43,11 +43,11 @@
                     <div class="amenity-card-footer">
                         <button type="button" class="btn-action btn-edit" (click)="onEditAmenity(amenity)">
                             <i class="bi bi-pencil-square"></i>
-                            <span>Edit</span>
+                            <span class="btn-action-text">Edit</span>
                         </button>
                         <button type="button" class="btn-action btn-delete" (click)="onDeleteAmenity(amenity.id)">
                             <i class="bi bi-trash"></i>
-                            <span>Delete</span>
+                            <span class="btn-action-text">Delete</span>
                         </button>
                     </div>
                 </div>
@@ -70,5 +70,4 @@
             </div>
         </ng-template>
     </section>
-
 </div>

@@ -1,6 +1,6 @@
 /* ========================================
-PAGE CONTAINER
-======================================== */
+   PAGE CONTAINER
+   ======================================== */
 .page-container {
   --page-gutter: 24px;
   --page-max: 1280px;
@@ -9,8 +9,8 @@ PAGE CONTAINER
 }
 
 /* ========================================
-CASE CARD
-======================================== */
+   CASE CARD
+   ======================================== */
 .case-card {
   border: 1px solid var(--card-border);
   background: var(--card-background);
@@ -19,8 +19,32 @@ CASE CARD
 }
 
 /* ========================================
-BUTTONS
-======================================== */
+   HEADER TOOLBAR
+   ======================================== */
+.header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.toolbar-actions .d-flex.gap-3 {
+  display: flex;
+  gap: 12px;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
 .btn-secondary {
   color: var(--text-color);
   background: var(--background);
@@ -47,7 +71,6 @@ BUTTONS
   font-size: 14px;
   transition: all 0.2s ease;
   min-height: 40px;
-  min-width: 160px;
   white-space: nowrap;
 }
 
@@ -57,33 +80,8 @@ BUTTONS
 }
 
 /* ========================================
-HEADER TOOLBAR
-======================================== */
-.header-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.toolbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
-}
-
-/* Ensure Filter & Reset are side by side with consistent size */
-.toolbar-actions .d-flex.gap-3 {
-  display: flex;
-  gap: 12px;
-}
-
-/* ========================================
-DIVIDER
-======================================== */
+   DIVIDER
+   ======================================== */
 .toolbar-divider {
   height: 1px;
   background: var(--card-border);
@@ -91,31 +89,20 @@ DIVIDER
 }
 
 /* ========================================
-ROWS PER PAGE
-======================================== */
-.rows-per-page {
-  min-width: 72px;
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 6px 28px 6px 10px;
-  font-size: 14px;
-}
-
-/* ========================================
-TABLE
-======================================== */
+   TABLE - FIXED FOR ALL SCREENS
+   ======================================== */
 .table-container {
-  overflow: auto;
+  overflow-x: auto;
   border-radius: 8px;
   border: 1px solid var(--card-border);
+  -webkit-overflow-scrolling: touch;
 }
 
 .case-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
 }
 
 .case-table thead {
@@ -128,9 +115,11 @@ TABLE
   letter-spacing: 0.3px;
   font-weight: 600;
   font-size: 12px;
-  padding: 12px 16px;
+  padding: 12px 10px;
   border: none;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .case-table tbody tr {
@@ -147,31 +136,81 @@ TABLE
 }
 
 .case-table tbody td {
-  padding: 16px;
+  padding: 12px 10px;
   color: var(--text-color);
   vertical-align: middle;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Column Width Distribution - Desktop (8 columns) */
+.case-table th:nth-child(1),
+.case-table td:nth-child(1) { width: 12%; } /* Date */
+
+.case-table th:nth-child(2),
+.case-table td:nth-child(2) { width: 16%; } /* Item */
+
+.case-table th:nth-child(3),
+.case-table td:nth-child(3) { width: 10%; } /* Type */
+
+.case-table th:nth-child(4),
+.case-table td:nth-child(4) { width: 8%; }  /* Qty */
+
+.case-table th:nth-child(5),
+.case-table td:nth-child(5) { width: 18%; } /* Reason */
+
+.case-table th:nth-child(6),
+.case-table td:nth-child(6) { width: 12%; } /* Reference */
+
+.case-table th:nth-child(7),
+.case-table td:nth-child(7) { width: 12%; } /* By */
+
+.case-table th:nth-child(8),
+.case-table td:nth-child(8) { width: 12%; } /* Action */
+
+/* Text Truncation */
+.text-truncate-cell {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.time-text,
+.unit-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ========================================
-STATUS PILLS
-======================================== */
+   STATUS PILLS
+   ======================================== */
 .status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border-radius: 999px;
   font-weight: 600;
-  font-size: 12px;
-  padding: 6px 12px;
+  font-size: 11px;
+  padding: 5px 10px;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0;
+}
+
+.status-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status-available {
@@ -202,20 +241,24 @@ STATUS PILLS
 }
 
 /* ========================================
-ACTION ICONS
-======================================== */
+   ACTION ICONS
+   ======================================== */
 .icon-btn {
   border: 0;
   background: transparent;
-  padding: 0;
+  padding: 4px;
   cursor: pointer;
   color: var(--brand-primary);
-  font-size: 16px;
+  font-size: 15px;
   transition: color 0.2s ease;
 }
 
 .icon-btn:hover {
   color: var(--brand-primary-700);
+}
+
+.action-icons {
+  gap: 6px !important;
 }
 
 .action-icons .bi-trash {
@@ -227,8 +270,21 @@ ACTION ICONS
 }
 
 /* ========================================
-FOOTER & PAGINATION
-======================================== */
+   ROWS PER PAGE
+   ======================================== */
+.rows-per-page {
+  min-width: 65px;
+  color: var(--text-color);
+  background: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 6px 24px 6px 10px;
+  font-size: 13px;
+}
+
+/* ========================================
+   FOOTER & PAGINATION
+   ======================================== */
 .table-footer {
   display: flex;
   flex-wrap: wrap;
@@ -250,7 +306,7 @@ FOOTER & PAGINATION
   list-style: none;
   padding: 0;
   margin: 0;
-  gap: 6px;
+  gap: 4px;
 }
 
 .page-item {
@@ -260,16 +316,17 @@ FOOTER & PAGINATION
 .page-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   color: var(--text-color);
   background-color: var(--background);
   border: 1px solid var(--card-border);
-  min-width: 36px;
+  min-width: 32px;
   min-height: 32px;
   border-radius: 4px;
-  padding: 6px 15px;
-  font-size: 14px;
+  padding: 6px 10px;
+  font-size: 13px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .page-item.active .page-link {
@@ -298,8 +355,8 @@ FOOTER & PAGINATION
 }
 
 /* ========================================
-MOBILE CARDS
-======================================== */
+   MOBILE CARDS
+   ======================================== */
 .mobile-cards {
   display: none;
 }
@@ -314,12 +371,6 @@ MOBILE CARDS
 
 .mobile-card-header {
   margin-bottom: 12px;
-}
-
-.room-number {
-  font-size: 22px;
-  font-weight: bold;
-  color: var(--text-color);
 }
 
 .mobile-card-body {
@@ -337,10 +388,6 @@ MOBILE CARDS
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.detail-item.full-width {
-  grid-column: 1 / -1;
 }
 
 .label {
@@ -363,7 +410,214 @@ MOBILE CARDS
   gap: 12px;
 }
 
+/* ========================================
+   TABLET SPECIFIC STYLES (769px - 1024px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page-container {
+    --page-gutter: 16px;
+  }
 
+  .case-card {
+    padding: 14px;
+  }
+
+  /* Header adjustments */
+  .header-toolbar {
+    gap: 12px;
+  }
+
+  .header-toolbar > p {
+    font-size: 16px;
+  }
+
+  .toolbar-actions {
+    gap: 8px;
+  }
+
+  .toolbar-actions .d-flex.gap-3 {
+    gap: 6px;
+  }
+
+  .btn-secondary {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  /* Hide button text on tablet */
+  .btn-secondary .btn-text {
+    display: none;
+  }
+
+  .btn-primary {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .btn-primary span {
+    font-size: 11px;
+  }
+
+  /* Table adjustments - NO SCROLL */
+  .table-container {
+    overflow-x: hidden;
+  }
+
+  .case-table thead th {
+    font-size: 9px;
+    padding: 10px 5px;
+    letter-spacing: 0.1px;
+  }
+
+  .case-table tbody td {
+    font-size: 11px;
+    padding: 10px 5px;
+  }
+
+  /* Adjusted column widths for tablet - 8 columns */
+  .case-table th:nth-child(1),
+  .case-table td:nth-child(1) { width: 11%; } /* Date */
+
+  .case-table th:nth-child(2),
+  .case-table td:nth-child(2) { width: 15%; } /* Item */
+
+  .case-table th:nth-child(3),
+  .case-table td:nth-child(3) { width: 10%; } /* Type */
+
+  .case-table th:nth-child(4),
+  .case-table td:nth-child(4) { width: 7%; }  /* Qty */
+
+  .case-table th:nth-child(5),
+  .case-table td:nth-child(5) { width: 18%; } /* Reason */
+
+  .case-table th:nth-child(6),
+  .case-table td:nth-child(6) { width: 12%; } /* Reference */
+
+  .case-table th:nth-child(7),
+  .case-table td:nth-child(7) { width: 12%; } /* By */
+
+  .case-table th:nth-child(8),
+  .case-table td:nth-child(8) { width: 15%; } /* Action */
+
+  /* Time and unit text smaller */
+  .time-text,
+  .unit-text {
+    font-size: 9px;
+  }
+
+  /* Status pill compact */
+  .status-pill {
+    font-size: 9px;
+    padding: 3px 7px;
+    gap: 4px;
+  }
+
+  .status-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* Action icons compact */
+  .icon-btn {
+    font-size: 13px;
+    padding: 2px;
+  }
+
+  /* Footer adjustments */
+  .table-footer {
+    gap: 8px;
+  }
+
+  .footer-left {
+    gap: 10px;
+  }
+
+  .pagination {
+    gap: 3px;
+  }
+
+  .page-link {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  /* Hide Previous/Next text */
+  .prev-next-text {
+    display: none;
+  }
+
+  .rows-per-page {
+    min-width: 55px;
+    padding: 4px 18px 4px 8px;
+    font-size: 11px;
+  }
+}
+
+/* ========================================
+   SMALL TABLET (769px - 850px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 850px) {
+  .case-table thead th {
+    font-size: 8px;
+    padding: 8px 4px;
+  }
+
+  .case-table tbody td {
+    font-size: 10px;
+    padding: 8px 4px;
+  }
+
+  /* Even more compact column widths */
+  .case-table th:nth-child(1),
+  .case-table td:nth-child(1) { width: 10%; }
+
+  .case-table th:nth-child(2),
+  .case-table td:nth-child(2) { width: 14%; }
+
+  .case-table th:nth-child(3),
+  .case-table td:nth-child(3) { width: 9%; }
+
+  .case-table th:nth-child(4),
+  .case-table td:nth-child(4) { width: 6%; }
+
+  .case-table th:nth-child(5),
+  .case-table td:nth-child(5) { width: 18%; }
+
+  .case-table th:nth-child(6),
+  .case-table td:nth-child(6) { width: 12%; }
+
+  .case-table th:nth-child(7),
+  .case-table td:nth-child(7) { width: 13%; }
+
+  .case-table th:nth-child(8),
+  .case-table td:nth-child(8) { width: 18%; }
+
+  .status-pill {
+    font-size: 8px;
+    padding: 3px 5px;
+  }
+
+  .icon-btn {
+    font-size: 12px;
+  }
+
+  .btn-primary span {
+    font-size: 10px;
+  }
+
+  .time-text,
+  .unit-text {
+    font-size: 8px;
+  }
+}
+
+/* ========================================
+   MOBILE (≤768px)
+   ======================================== */
 @media (max-width: 768px) {
   .page-container {
     width: calc(100vw - 32px) !important;
@@ -412,6 +666,11 @@ MOBILE CARDS
     padding: 10px 16px;
   }
 
+  /* Show button text on mobile */
+  .btn-secondary .btn-text {
+    display: inline;
+  }
+
   .table-footer {
     flex-direction: column;
     align-items: stretch;
@@ -429,17 +688,53 @@ MOBILE CARDS
     justify-content: center;
     width: 100%;
   }
+
+  /* Show Previous/Next text on mobile */
+  .prev-next-text {
+    display: inline;
+  }
 }
 
-/* Desktop & Tablet (≥769px): Table view + inline buttons */
-@media (min-width: 769px) {
+/* ========================================
+   DESKTOP (≥1025px)
+   ======================================== */
+@media (min-width: 1025px) {
   .mobile-cards {
     display: none !important;
   }
 
-  .toolbar-actions button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .case-table thead th {
+    font-size: 12px;
+    padding: 12px 12px;
+  }
+
+  .case-table tbody td {
+    font-size: 14px;
+    padding: 14px 12px;
+  }
+
+  .status-pill {
+    font-size: 12px;
+    padding: 6px 12px;
+    gap: 8px;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .icon-btn {
+    font-size: 16px;
+    padding: 4px;
+  }
+
+  .action-icons {
+    gap: 10px !important;
+  }
+
+  /* Show button text on desktop */
+  .btn-secondary .btn-text {
+    display: inline;
   }
 }

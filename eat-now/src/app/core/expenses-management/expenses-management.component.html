@@ -1,4 +1,3 @@
-<!-- Page container ensures fixed L/R space and max width -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
@@ -8,16 +7,16 @@
       <div class="toolbar-actions d-flex align-items-center gap-2">
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
-          <span class="f-12-m">Filter</span>
+          <span class="btn-text f-12-m">Filter</span>
         </button>
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
-          <span class="f-12-m">Reset</span>
+          <span class="btn-text f-12-m">Reset</span>
         </button>
         <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
           (click)="onAddNewExpenses()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Expense</span>
+          <span class="f-14-m">Add Expense</span>
         </button>
       </div>
     </div>
@@ -42,18 +41,24 @@
 
         <tbody>
           <tr *ngFor="let expense of pagedExpenses; trackBy: trackById" class="table-row-hover">
-            <td class="f-14-m text-truncate" style="max-width: 180px;" [title]="expense.title">
-              {{ expense.title }}
+            <td class="f-14-m col-title">
+              <span class="text-truncate-cell" [title]="expense.title">{{ expense.title }}</span>
             </td>
-            <td class="f-14-r">{{ expense.category }}</td>
-            <td class="f-14-r">
+            <td class="f-14-r col-category">
+              <span class="text-truncate-cell">{{ expense.category }}</span>
+            </td>
+            <td class="f-14-r col-amount">
               {{ expense.amount | currency: 'USD':'symbol':'1.2-2' }}
             </td>
-            <td class="f-14-r">{{ expense.date | date: 'MMM d, y' }}</td>
-            <td class="f-14-r">{{ expense.paymentMethod }}</td>
-            <td class="f-14-r text-capitalize">{{ expense.vendor }}</td>
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
+            <td class="f-14-r col-date">{{ expense.date | date: 'MMM d, y' }}</td>
+            <td class="f-14-r col-method">
+              <span class="text-truncate-cell">{{ expense.paymentMethod }}</span>
+            </td>
+            <td class="f-14-r col-vendor text-capitalize">
+              <span class="text-truncate-cell">{{ expense.vendor }}</span>
+            </td>
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Edit" (click)="onEditExpense(expense)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -86,7 +91,7 @@
           </div>
         </div>
 
-        <!-- Body: Category (top) + Date + Payment Method + Vendor -->
+        <!-- Body: Category + Date + Payment Method + Vendor -->
         <div class="mobile-card-body">
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Category:</strong></span>
@@ -124,7 +129,7 @@
 
     <!-- Footer -->
     <div class="table-footer">
-      <div class="footer-left">
+      <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
           Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>
@@ -143,7 +148,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -155,7 +160,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

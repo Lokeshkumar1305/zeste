@@ -19,6 +19,7 @@
 .btn-create {
   padding: 10px 24px;
   font-size: 1rem;
+  white-space: nowrap;
 }
 
 /* Stats Cards */
@@ -50,6 +51,7 @@
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+    flex-shrink: 0;
 
     i {
       font-size: 1.8rem;
@@ -58,6 +60,8 @@
   }
 
   .stat-info {
+    min-width: 0;
+
     h3 {
       font-size: 1.8rem;
       font-weight: 700;
@@ -69,6 +73,9 @@
       margin: 0;
       color: #6b7280;
       font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -248,6 +255,7 @@
 .table-responsive {
   width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tenant-table {
@@ -299,6 +307,22 @@
   opacity: 0.85;
 }
 
+.tenant-name {
+  font-weight: 600;
+  color: #111827;
+  display: block;
+}
+
+.tenant-subtext {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin: 2px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
 /* Shared pills and badges */
 .type-badge {
   display: inline-flex;
@@ -309,6 +333,7 @@
   font-weight: 500;
   color: #ffffff;
   box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+  white-space: nowrap;
 
   i {
     font-size: 0.85rem;
@@ -322,6 +347,7 @@
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 500;
+  white-space: nowrap;
 
   &.priority-success {
     background-color: #dcfce7;
@@ -351,12 +377,14 @@
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 500;
+  white-space: nowrap;
 
   .status-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
     margin-right: 6px;
+    flex-shrink: 0;
   }
 
   &.status-active {
@@ -416,6 +444,8 @@
   padding: 8px 16px 12px;
   border-top: 1px solid #f3f4f6;
   background-color: #ffffff;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .page-nav {
@@ -435,6 +465,7 @@
   outline: none;
   transition: background-color 0.15s ease, color 0.15s ease,
     border-color 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
 
   &:disabled {
     cursor: default;
@@ -469,6 +500,15 @@
   }
 }
 
+/* Text & icon for prev/next buttons */
+.page-btn-text {
+  display: inline;
+}
+
+.page-btn-icon {
+  display: none; // default hidden; will be shown on tablet
+}
+
 /* Mobile table cards */
 .table-view-mobile {
   display: none;
@@ -498,7 +538,7 @@
 .table-card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 8px;
 
@@ -564,7 +604,278 @@
   font-weight: 500;
 }
 
-/* ------------ MOBILE (full-width stat cards + stacked layout) ------------ */
+/* ========================================
+   TABLET SPECIFIC STYLES (769px - 1024px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .announcements-container {
+    --page-gutter: 16px;
+  }
+
+  /* Page Header */
+  .page-header .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-header .text-muted {
+    font-size: 0.85rem;
+  }
+
+  .btn-create {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+
+  /* Stats Cards - 2x2 grid on tablet */
+  .stats-row > div[class^='col-'] {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .stat-card mat-card-content {
+    padding: 14px;
+  }
+
+  .stat-card .stat-icon {
+    width: 50px;
+    height: 50px;
+
+    i {
+      font-size: 1.5rem;
+    }
+  }
+
+  .stat-card .stat-info {
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+    }
+  }
+
+  /* Filter Card layout on tablet:
+     - first 4 filters: 2 per row (50%)
+     - last col (clear + toggles): full width */
+  .filter-card mat-card-content .row {
+    row-gap: 10px;
+  }
+
+  .filter-card .row > .col-md-3,
+  .filter-card .row > .col-md-2 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .filter-card .row > .text-md-end {
+    flex: 0 0 100%;
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .filter-card .row > .text-md-end .d-flex {
+    justify-content: flex-start;
+  }
+
+  .filter-card mat-form-field {
+    font-size: 0.85rem;
+  }
+
+  /* Cards view - 2 per row on tablet */
+  .cards-view .col-lg-4 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .announcement-card {
+    mat-card-title {
+      font-size: 1rem;
+    }
+
+    .announcement-message {
+      font-size: 0.85rem;
+      -webkit-line-clamp: 2;
+    }
+
+    .announcement-meta {
+      font-size: 0.8rem;
+    }
+  }
+
+  /* Table View */
+  .tenant-card-header {
+    padding: 12px 16px;
+  }
+
+  .tenant-card-title {
+    font-size: 1rem;
+  }
+
+  .tenant-card-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .tenant-table th,
+  .tenant-table td {
+    font-size: 0.78rem;
+    padding: 10px 12px;
+  }
+
+  .tenant-subtext {
+    max-width: 150px;
+    font-size: 0.72rem;
+  }
+
+  /* Compact pills for tablet */
+  .type-badge {
+    padding: 3px 8px;
+    font-size: 0.72rem;
+
+    i {
+      font-size: 0.75rem;
+    }
+  }
+
+  .priority-pill {
+    padding: 3px 8px;
+    font-size: 0.72rem;
+  }
+
+  .status-pill {
+    padding: 3px 8px;
+    font-size: 0.72rem;
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      margin-right: 4px;
+    }
+  }
+
+  /* Icon buttons compact */
+  .table-view-desktop .icon-btn {
+    width: 28px;
+    height: 28px;
+    margin-right: 2px;
+
+    i {
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Pagination on tablet */
+  .tenant-pagination-bar {
+    padding: 6px 12px 10px;
+  }
+
+  .page-btn {
+    padding: 4px 10px;
+    font-size: 0.72rem;
+
+    &.number {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  /* On tablet: hide text, show only arrow icons */
+  .page-btn-text {
+    display: none;
+  }
+
+  .page-btn-icon {
+    display: inline;
+  }
+
+  .page-nav {
+    gap: 3px;
+  }
+}
+
+/* ========================================
+   SMALL TABLET (769px - 850px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 850px) {
+  .page-header .page-title {
+    font-size: 1.4rem;
+  }
+
+  .btn-create {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Stats Cards - even more compact */
+  .stat-card mat-card-content {
+    padding: 12px;
+  }
+
+  .stat-card .stat-icon {
+    width: 44px;
+    height: 44px;
+    margin-right: 8px;
+
+    i {
+      font-size: 1.3rem;
+    }
+  }
+
+  .stat-card .stat-info {
+    h3 {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Table - smaller text */
+  .tenant-table th,
+  .tenant-table td {
+    font-size: 0.72rem;
+    padding: 8px 10px;
+  }
+
+  .tenant-subtext {
+    max-width: 120px;
+  }
+
+  .type-badge {
+    padding: 2px 6px;
+    font-size: 0.68rem;
+
+    i {
+      font-size: 0.7rem;
+      margin-right: 2px !important;
+    }
+  }
+
+  .priority-pill,
+  .status-pill {
+    padding: 2px 6px;
+    font-size: 0.68rem;
+  }
+
+  .status-pill .status-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .table-view-desktop .icon-btn {
+    width: 26px;
+    height: 26px;
+
+    i {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+/* ========================================
+   MOBILE (≤768px)
+   ======================================== */
 @media (max-width: 768px) {
   .announcements-container {
     --page-gutter: 16px;
@@ -584,7 +895,7 @@
   }
 
   /* Stat cards: one per row, full width */
-  .stats-row>div[class^='col-'] {
+  .stats-row > div[class^='col-'] {
     flex: 0 0 100%;
     max-width: 100%;
   }
@@ -625,6 +936,37 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+
+  /* On mobile: show text, hide icons */
+  .page-btn-text {
+    display: inline;
+  }
+
+  .page-btn-icon {
+    display: none;
+  }
+}
+
+/* ========================================
+   DESKTOP (≥1025px)
+   ======================================== */
+@media (min-width: 1025px) {
+  .table-view-mobile {
+    display: none !important;
+  }
+
+  .table-view-desktop {
+    display: block !important;
+  }
+
+  /* On desktop: show text, hide icons */
+  .page-btn-text {
+    display: inline;
+  }
+
+  .page-btn-icon {
+    display: none;
   }
 }
 
@@ -696,6 +1038,35 @@
     .mat-mdc-paginator-navigation-next,
     .mat-mdc-paginator-navigation-last {
       display: none !important;
+    }
+  }
+
+  /* Tablet-specific paginator adjustments */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .tenant-paginator {
+      .mat-mdc-paginator-container {
+        min-height: 36px;
+        gap: 10px;
+      }
+
+      .mat-mdc-paginator-range-label {
+        font-size: 0.72rem;
+        margin-right: 8px;
+      }
+
+      .mat-mdc-paginator-page-size-label {
+        font-size: 0.72rem;
+      }
+
+      .mat-mdc-paginator-page-size {
+        .mat-mdc-text-field-wrapper {
+          height: 28px;
+        }
+
+        .mat-mdc-select-trigger {
+          font-size: 0.72rem;
+        }
+      }
     }
   }
 }

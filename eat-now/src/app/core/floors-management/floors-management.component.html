@@ -11,13 +11,13 @@
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
-            <span class="f-12-m">Filter</span>
+            <span class="btn-text f-12-m">Filter</span>
           </button>
           <button type="button"
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
-            <span class="f-12-m">Reset</span>
+            <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
@@ -46,19 +46,23 @@
         </thead>
         <tbody>
           <tr *ngFor="let floor of pagedFloors; trackBy: trackByFloorNo" class="table-row-hover">
-            <td class="f-14-m">{{ floor.floorNo }}</td>
-            <td class="f-14-r">{{ floor.description || '-' }}</td>
-            <td>
+            <td class="f-14-m col-floor-no">{{ floor.floorNo }}</td>
+            <td class="f-14-r col-description">
+              <span class="description-text" [title]="floor.description">
+                {{ floor.description || '-' }}
+              </span>
+            </td>
+            <td class="col-status">
               <span class="status-pill" [ngClass]="{
                   'status-active': floor.status === 'Active',
                   'status-inactive': floor.status === 'Inactive'
                 }">
                 <span class="status-dot"></span>
-                {{ floor.status }}
+                <span class="status-text">{{ floor.status }}</span>
               </span>
             </td>
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Edit" (click)="openEditModal(floor)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -133,7 +137,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -145,7 +149,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

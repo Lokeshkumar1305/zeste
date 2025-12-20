@@ -1,6 +1,6 @@
 /* ========================================
-1) PAGE CONTAINER
-======================================== */
+   PAGE CONTAINER
+   ======================================== */
 .page-container {
   --page-gutter: 24px;
   --page-max: 1280px;
@@ -9,8 +9,8 @@
 }
 
 /* ========================================
-2) CASE CARD
-======================================== */
+   CASE CARD
+   ======================================== */
 .case-card {
   border: 1px solid var(--card-border);
   background: var(--card-background);
@@ -19,38 +19,8 @@
 }
 
 /* ========================================
-3) BUTTONS
-======================================== */
-.btn-secondary {
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-.btn-secondary:hover {
-  background: var(--input-background);
-  border-color: var(--brand-primary-light);
-}
-.btn-primary {
-  color: #fff;
-  background: var(--brand-primary);
-  border: 1px solid var(--brand-primary);
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-.btn-primary:hover {
-  background: var(--brand-primary-700);
-  border-color: var(--brand-primary-700);
-}
-
-/* ========================================
-4) HEADER TOOLBAR
-======================================== */
+   HEADER TOOLBAR
+   ======================================== */
 .header-toolbar {
   display: flex;
   align-items: center;
@@ -59,6 +29,7 @@
   flex-wrap: wrap;
   gap: 16px;
 }
+
 .toolbar-actions {
   display: flex;
   align-items: center;
@@ -67,8 +38,45 @@
 }
 
 /* ========================================
-5) DIVIDER
-======================================== */
+   BUTTONS
+   ======================================== */
+.btn-secondary {
+  color: var(--text-color);
+  background: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.btn-secondary:hover {
+  background: var(--input-background);
+  border-color: var(--brand-primary-light);
+}
+
+.btn-primary {
+  color: #fff;
+  background: var(--brand-primary);
+  border: 1px solid var(--brand-primary);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background: var(--brand-primary-700);
+  border-color: var(--brand-primary-700);
+}
+
+/* ========================================
+   DIVIDER
+   ======================================== */
 .toolbar-divider {
   height: 1px;
   background: var(--card-border);
@@ -76,108 +84,162 @@
 }
 
 /* ========================================
-6) ROWS PER PAGE
-======================================== */
-.rows-per-page {
-  min-width: 72px;
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 6px 28px 6px 10px;
-  font-size: 14px;
-}
-
-/* ========================================
-7) TABLE
-======================================== */
+   TABLE - FIXED FOR ALL SCREENS
+   ======================================== */
 .table-container {
-  overflow: auto;
+  overflow-x: auto;
   border-radius: 8px;
   border: 1px solid var(--card-border);
+  -webkit-overflow-scrolling: touch;
 }
+
 .case-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
 }
+
 .case-table thead {
   background: var(--brand-primary);
 }
+
 .case-table thead th {
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.3px;
   font-weight: 600;
   font-size: 12px;
-  padding: 12px 16px;
+  padding: 12px 12px;
   border: none;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .case-table tbody tr {
   background: var(--card-background);
   transition: background 0.2s ease;
 }
+
 .case-table tbody tr:hover {
   background: var(--input-background);
 }
+
 .case-table tbody tr + tr td {
   border-top: 1px solid var(--card-border);
 }
+
 .case-table tbody td {
-  padding: 16px;
+  padding: 14px 12px;
   color: var(--text-color);
   vertical-align: middle;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Column Width Distribution - Desktop (7 columns) */
+.case-table th:nth-child(1),
+.case-table td:nth-child(1) { width: 18%; } /* Title */
+
+.case-table th:nth-child(2),
+.case-table td:nth-child(2) { width: 14%; } /* Category */
+
+.case-table th:nth-child(3),
+.case-table td:nth-child(3) { width: 12%; } /* Amount */
+
+.case-table th:nth-child(4),
+.case-table td:nth-child(4) { width: 12%; } /* Date */
+
+.case-table th:nth-child(5),
+.case-table td:nth-child(5) { width: 16%; } /* Payment Method */
+
+.case-table th:nth-child(6),
+.case-table td:nth-child(6) { width: 14%; } /* Vendor */
+
+.case-table th:nth-child(7),
+.case-table td:nth-child(7) { width: 14%; } /* Action */
+
+/* Text Truncation */
+.text-truncate-cell {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* ========================================
-8) STATUS PILL (kept for reuse)
-======================================== */
+   STATUS PILL (kept for reuse)
+   ======================================== */
 .status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border-radius: 999px;
   font-weight: 600;
-  font-size: 12px;
-  padding: 6px 12px;
+  font-size: 11px;
+  padding: 5px 10px;
   line-height: 1;
+  white-space: nowrap;
 }
+
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 /* ========================================
-9) ACTION ICONS
-======================================== */
+   ACTION ICONS
+   ======================================== */
 .icon-btn {
   border: 0;
   background: transparent;
-  padding: 0;
+  padding: 4px;
   cursor: pointer;
   color: var(--brand-primary);
-  font-size: 16px;
+  font-size: 15px;
   transition: color 0.2s ease;
 }
+
 .icon-btn:hover {
   color: var(--brand-primary-700);
 }
+
+.action-icons {
+  gap: 6px !important;
+}
+
 .action-icons .bi-trash,
 .mobile-card-footer .bi-trash {
   color: #ef4444;
 }
+
 .action-icons .bi-trash:hover,
 .mobile-card-footer .bi-trash:hover {
   color: #dc2626;
 }
 
 /* ========================================
-10) FOOTER & PAGINATION
-======================================== */
+   ROWS PER PAGE
+   ======================================== */
+.rows-per-page {
+  min-width: 65px;
+  color: var(--text-color);
+  background: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 6px 24px 6px 10px;
+  font-size: 13px;
+}
+
+/* ========================================
+   FOOTER & PAGINATION
+   ======================================== */
 .table-footer {
   display: flex;
   flex-wrap: wrap;
@@ -187,41 +249,48 @@
   margin-top: 12px;
   color: var(--text-secondary);
 }
+
 .footer-left {
   display: inline-flex;
   align-items: center;
   gap: 16px;
 }
+
 .pagination {
   display: inline-flex;
   list-style: none;
   padding: 0;
   margin: 0;
-  gap: 6px;
+  gap: 4px;
 }
+
 .page-item {
   display: inline-flex;
 }
+
 .page-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   color: var(--text-color);
   background-color: var(--background);
   border: 1px solid var(--card-border);
-  min-width: 36px;
+  min-width: 32px;
   min-height: 32px;
   border-radius: 4px;
-  padding: 6px 15px;
-  font-size: 14px;
+  padding: 6px 10px;
+  font-size: 13px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
+
 .page-item.active .page-link {
   color: #fff;
   background-color: var(--brand-primary);
   border-color: var(--brand-primary);
   font-weight: 600;
 }
+
 .page-item.disabled .page-link {
   color: var(--text-muted);
   background-color: var(--background);
@@ -229,21 +298,24 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
 .page-item:not(.disabled) .page-link:hover {
   border-color: var(--brand-primary);
   background: var(--input-background);
 }
+
 .text-high-contrast {
   color: var(--text-color) !important;
   opacity: 1 !important;
 }
 
 /* ========================================
-11) MOBILE CARDS
-======================================== */
+   MOBILE CARDS
+   ======================================== */
 .mobile-cards {
   display: none;
 }
+
 .mobile-card {
   background: var(--card-background);
   border: 1px solid var(--card-border);
@@ -251,6 +323,7 @@
   padding: 16px;
   margin-bottom: 16px;
 }
+
 .mobile-card-header {
   margin-bottom: 12px;
   display: flex;
@@ -258,23 +331,28 @@
   align-items: flex-start;
   gap: 12px;
 }
+
 .expense-title {
   font-size: 16px;
   font-weight: 600;
   color: var(--text-color);
+  flex: 1;
+  word-break: break-word;
 }
+
 .expense-amount {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-color);
+  color: var(--brand-primary);
+  white-space: nowrap;
 }
 
-/* Body rows: label left, value right */
 .mobile-card-body {
   border-top: 1px dashed var(--card-border);
   padding-top: 12px;
   margin-top: 12px;
 }
+
 .mobile-card-body .info-row {
   display: flex;
   justify-content: space-between;
@@ -283,12 +361,15 @@
   line-height: 1.5;
   margin-bottom: 8px;
 }
+
 .mobile-card-body .info-row:last-child {
   margin-bottom: 0;
 }
+
 .mobile-card-body .info-label {
   flex: 0 0 auto;
 }
+
 .mobile-card-body .info-value {
   flex: 1 1 auto;
   text-align: right;
@@ -305,8 +386,179 @@
 }
 
 /* ========================================
-12) RESPONSIVE
-======================================== */
+   TABLET SPECIFIC STYLES (769px - 1024px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page-container {
+    --page-gutter: 16px;
+  }
+
+  .case-card {
+    padding: 14px;
+  }
+
+  /* Header adjustments */
+  .header-toolbar {
+    gap: 12px;
+  }
+
+  .header-toolbar > p {
+    font-size: 16px;
+  }
+
+  .toolbar-actions {
+    gap: 6px;
+  }
+
+  .btn-secondary {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  /* Hide button text on tablet */
+  .btn-secondary .btn-text {
+    display: none;
+  }
+
+  .btn-primary {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .btn-primary span {
+    font-size: 11px;
+  }
+
+  /* Table adjustments - NO SCROLL */
+  .table-container {
+    overflow-x: hidden;
+  }
+
+  .case-table thead th {
+    font-size: 10px;
+    padding: 10px 6px;
+    letter-spacing: 0.2px;
+  }
+
+  .case-table tbody td {
+    font-size: 12px;
+    padding: 10px 6px;
+  }
+
+  /* Adjusted column widths for tablet - 7 columns */
+  .case-table th:nth-child(1),
+  .case-table td:nth-child(1) { width: 17%; } /* Title */
+
+  .case-table th:nth-child(2),
+  .case-table td:nth-child(2) { width: 13%; } /* Category */
+
+  .case-table th:nth-child(3),
+  .case-table td:nth-child(3) { width: 12%; } /* Amount */
+
+  .case-table th:nth-child(4),
+  .case-table td:nth-child(4) { width: 12%; } /* Date */
+
+  .case-table th:nth-child(5),
+  .case-table td:nth-child(5) { width: 15%; } /* Payment Method */
+
+  .case-table th:nth-child(6),
+  .case-table td:nth-child(6) { width: 14%; } /* Vendor */
+
+  .case-table th:nth-child(7),
+  .case-table td:nth-child(7) { width: 17%; } /* Action */
+
+  /* Action icons compact */
+  .icon-btn {
+    font-size: 13px;
+    padding: 2px;
+  }
+
+  .action-icons {
+    gap: 4px !important;
+  }
+
+  /* Footer adjustments */
+  .table-footer {
+    gap: 8px;
+  }
+
+  .footer-left {
+    gap: 10px;
+  }
+
+  .pagination {
+    gap: 3px;
+  }
+
+  .page-link {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  /* Hide Previous/Next text */
+  .prev-next-text {
+    display: none;
+  }
+
+  .rows-per-page {
+    min-width: 55px;
+    padding: 4px 18px 4px 8px;
+    font-size: 11px;
+  }
+}
+
+/* ========================================
+   SMALL TABLET (769px - 850px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 850px) {
+  .case-table thead th {
+    font-size: 9px;
+    padding: 8px 4px;
+  }
+
+  .case-table tbody td {
+    font-size: 11px;
+    padding: 8px 4px;
+  }
+
+  /* Even more compact column widths */
+  .case-table th:nth-child(1),
+  .case-table td:nth-child(1) { width: 16%; }
+
+  .case-table th:nth-child(2),
+  .case-table td:nth-child(2) { width: 12%; }
+
+  .case-table th:nth-child(3),
+  .case-table td:nth-child(3) { width: 11%; }
+
+  .case-table th:nth-child(4),
+  .case-table td:nth-child(4) { width: 12%; }
+
+  .case-table th:nth-child(5),
+  .case-table td:nth-child(5) { width: 15%; }
+
+  .case-table th:nth-child(6),
+  .case-table td:nth-child(6) { width: 14%; }
+
+  .case-table th:nth-child(7),
+  .case-table td:nth-child(7) { width: 20%; }
+
+  .icon-btn {
+    font-size: 12px;
+  }
+
+  .btn-primary span {
+    font-size: 10px;
+  }
+}
+
+/* ========================================
+   MOBILE (≤768px)
+   ======================================== */
 @media (max-width: 768px) {
   .page-container {
     width: calc(100vw - 32px) !important;
@@ -352,6 +604,11 @@
     padding: 10px 16px;
   }
 
+  /* Show button text on mobile */
+  .btn-secondary .btn-text {
+    display: inline;
+  }
+
   .table-footer {
     flex-direction: column;
     align-items: stretch;
@@ -369,16 +626,42 @@
     justify-content: center;
     width: 100%;
   }
+
+  /* Show Previous/Next text on mobile */
+  .prev-next-text {
+    display: inline;
+  }
 }
 
-@media (min-width: 769px) {
+/* ========================================
+   DESKTOP (≥1025px)
+   ======================================== */
+@media (min-width: 1025px) {
   .mobile-cards {
     display: none !important;
   }
 
-  .toolbar-actions button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .case-table thead th {
+    font-size: 12px;
+    padding: 12px 14px;
+  }
+
+  .case-table tbody td {
+    font-size: 14px;
+    padding: 16px 14px;
+  }
+
+  .icon-btn {
+    font-size: 16px;
+    padding: 4px;
+  }
+
+  .action-icons {
+    gap: 10px !important;
+  }
+
+  /* Show button text on desktop */
+  .btn-secondary .btn-text {
+    display: inline;
   }
 }

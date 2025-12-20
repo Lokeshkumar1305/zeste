@@ -1,6 +1,6 @@
 /* ========================================
-PAGE CONTAINER
-======================================== */
+   PAGE CONTAINER
+   ======================================== */
 .page-container {
   --page-gutter: 24px;
   --page-max: 1280px;
@@ -9,8 +9,8 @@ PAGE CONTAINER
 }
 
 /* ========================================
-CASE CARD
-======================================== */
+   CASE CARD
+   ======================================== */
 .case-card {
   border: 1px solid var(--card-border);
   background: var(--card-background);
@@ -19,8 +19,8 @@ CASE CARD
 }
 
 /* ========================================
-BUTTONS
-======================================== */
+   BUTTONS
+   ======================================== */
 .btn-secondary {
   color: var(--text-color);
   background: var(--background);
@@ -57,8 +57,8 @@ BUTTONS
 }
 
 /* ========================================
-HEADER TOOLBAR
-======================================== */
+   HEADER TOOLBAR
+   ======================================== */
 .header-toolbar {
   display: flex;
   align-items: center;
@@ -81,8 +81,8 @@ HEADER TOOLBAR
 }
 
 /* ========================================
-DIVIDER
-======================================== */
+   DIVIDER
+   ======================================== */
 .toolbar-divider {
   height: 1px;
   background: var(--card-border);
@@ -90,8 +90,8 @@ DIVIDER
 }
 
 /* ========================================
-ROWS PER PAGE
-======================================== */
+   ROWS PER PAGE
+   ======================================== */
 .rows-per-page {
   min-width: 72px;
   color: var(--text-color);
@@ -103,18 +103,20 @@ ROWS PER PAGE
 }
 
 /* ========================================
-TABLE
-======================================== */
+   TABLE - FIXED FOR ALL SCREENS
+   ======================================== */
 .table-container {
-  overflow: auto;
+  overflow-x: auto;
   border-radius: 8px;
   border: 1px solid var(--card-border);
+  -webkit-overflow-scrolling: touch;
 }
 
 .case-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
 }
 
 .case-table thead {
@@ -130,6 +132,8 @@ TABLE
   padding: 12px 16px;
   border: none;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .case-table tbody tr {
@@ -141,7 +145,7 @@ TABLE
   background: var(--input-background);
 }
 
-.case-table tbody tr+tr td {
+.case-table tbody tr + tr td {
   border-top: 1px solid var(--card-border);
 }
 
@@ -150,11 +154,43 @@ TABLE
   color: var(--text-color);
   vertical-align: middle;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Column Width Distribution - Desktop */
+.case-table th:nth-child(1),
+.case-table td:nth-child(1) {
+  width: 20%;
+}
+
+.case-table th:nth-child(2),
+.case-table td:nth-child(2) {
+  width: 15%;
+}
+
+.case-table th:nth-child(3),
+.case-table td:nth-child(3) {
+  width: 50%;
+}
+
+.case-table th:nth-child(4),
+.case-table td:nth-child(4) {
+  width: 15%;
+}
+
+/* Description Column - Truncate with Ellipsis */
+.col-description .description-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* ========================================
-STATUS PILLS (if needed later)
-======================================== */
+   STATUS PILLS (if needed later)
+   ======================================== */
 .status-pill {
   display: inline-flex;
   align-items: center;
@@ -174,12 +210,12 @@ STATUS PILLS (if needed later)
 }
 
 /* ========================================
-ACTION ICONS
-======================================== */
+   ACTION ICONS
+   ======================================== */
 .icon-btn {
   border: 0;
   background: transparent;
-  padding: 0;
+  padding: 4px;
   cursor: pointer;
   color: var(--brand-primary);
   font-size: 16px;
@@ -188,6 +224,10 @@ ACTION ICONS
 
 .icon-btn:hover {
   color: var(--brand-primary-700);
+}
+
+.action-icons {
+  gap: 8px !important;
 }
 
 .action-icons .bi-trash {
@@ -199,8 +239,8 @@ ACTION ICONS
 }
 
 /* ========================================
-FOOTER & PAGINATION
-======================================== */
+   FOOTER & PAGINATION
+   ======================================== */
 .table-footer {
   display: flex;
   flex-wrap: wrap;
@@ -222,7 +262,7 @@ FOOTER & PAGINATION
   list-style: none;
   padding: 0;
   margin: 0;
-  gap: 6px;
+  gap: 4px;
 }
 
 .page-item {
@@ -232,16 +272,17 @@ FOOTER & PAGINATION
 .page-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   color: var(--text-color);
   background-color: var(--background);
   border: 1px solid var(--card-border);
-  min-width: 36px;
+  min-width: 32px;
   min-height: 32px;
   border-radius: 4px;
-  padding: 6px 15px;
+  padding: 6px 12px;
   font-size: 14px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .page-item.active .page-link {
@@ -270,8 +311,8 @@ FOOTER & PAGINATION
 }
 
 /* ========================================
-MOBILE CARDS
-======================================== */
+   MOBILE CARDS
+   ======================================== */
 .mobile-cards {
   display: none;
 }
@@ -317,7 +358,6 @@ MOBILE CARDS
 
 .mobile-card-body .description-text {
   line-height: 1.6 !important;
-  /* more gap between wrapped lines */
 }
 
 .mobile-card-footer {
@@ -330,9 +370,188 @@ MOBILE CARDS
 }
 
 /* ========================================
-RESPONSIVE - Mobile (≤768px)
-Match Room screen width & layout
-======================================== */
+   TABLET SPECIFIC STYLES (769px - 1024px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page-container {
+    --page-gutter: 16px;
+  }
+
+  .case-card {
+    padding: 12px;
+  }
+
+  /* Compact header for tablet */
+  .header-toolbar {
+    gap: 12px;
+  }
+
+  .header-toolbar > p {
+    font-size: 16px;
+  }
+
+  .toolbar-actions {
+    gap: 8px;
+  }
+
+  .toolbar-actions .d-flex.gap-3 {
+    gap: 8px;
+  }
+
+  .btn-secondary {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  /* Hide button text on tablet, show only icons */
+  .btn-secondary .btn-text {
+    display: none;
+  }
+
+  .btn-primary {
+    padding: 6px 14px;
+    font-size: 12px;
+    min-height: 36px;
+    min-width: auto;
+  }
+
+  .btn-primary span {
+    font-size: 12px;
+  }
+
+  /* Table adjustments for tablet - NO SCROLL */
+  .table-container {
+    overflow-x: hidden;
+  }
+
+  .case-table {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .case-table thead th {
+    font-size: 11px;
+    padding: 10px 8px;
+    letter-spacing: 0.2px;
+  }
+
+  .case-table tbody td {
+    font-size: 13px;
+    padding: 12px 8px;
+  }
+
+  /* Adjusted column widths for tablet */
+  .case-table th:nth-child(1),
+  .case-table td:nth-child(1) {
+    width: 22%;
+  }
+
+  .case-table th:nth-child(2),
+  .case-table td:nth-child(2) {
+    width: 15%;
+  }
+
+  .case-table th:nth-child(3),
+  .case-table td:nth-child(3) {
+    width: 45%;
+  }
+
+  .case-table th:nth-child(4),
+  .case-table td:nth-child(4) {
+    width: 18%;
+  }
+
+  /* Action icons compact */
+  .icon-btn {
+    font-size: 14px;
+    padding: 2px;
+  }
+
+  .action-icons {
+    gap: 6px !important;
+  }
+
+  /* Footer adjustments */
+  .table-footer {
+    gap: 8px;
+  }
+
+  .footer-left {
+    gap: 12px;
+  }
+
+  .pagination {
+    gap: 3px;
+  }
+
+  .page-link {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  /* Hide Previous/Next text on tablet */
+  .prev-next-text {
+    display: none;
+  }
+
+  .rows-per-page {
+    min-width: 60px;
+    padding: 4px 20px 4px 8px;
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   SMALL TABLET (769px - 850px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 850px) {
+  .case-table thead th {
+    font-size: 10px;
+    padding: 8px 6px;
+  }
+
+  .case-table tbody td {
+    font-size: 12px;
+    padding: 10px 6px;
+  }
+
+  /* Even more compact column widths for small tablets */
+  .case-table th:nth-child(1),
+  .case-table td:nth-child(1) {
+    width: 24%;
+  }
+
+  .case-table th:nth-child(2),
+  .case-table td:nth-child(2) {
+    width: 14%;
+  }
+
+  .case-table th:nth-child(3),
+  .case-table td:nth-child(3) {
+    width: 42%;
+  }
+
+  .case-table th:nth-child(4),
+  .case-table td:nth-child(4) {
+    width: 20%;
+  }
+
+  .icon-btn {
+    font-size: 13px;
+  }
+
+  /* Compact button text */
+  .btn-primary .f-14-m {
+    font-size: 11px;
+  }
+}
+
+/* ========================================
+   MOBILE (≤768px)
+   ======================================== */
 @media (max-width: 768px) {
   .page-container {
     width: calc(100vw - 32px) !important;
@@ -382,6 +601,11 @@ Match Room screen width & layout
     padding: 10px 16px;
   }
 
+  /* Show button text on mobile */
+  .btn-secondary .btn-text {
+    display: inline;
+  }
+
   .table-footer {
     flex-direction: column;
     align-items: stretch;
@@ -399,19 +623,42 @@ Match Room screen width & layout
     justify-content: center;
     width: 100%;
   }
+
+  /* Show Previous/Next text on mobile */
+  .prev-next-text {
+    display: inline;
+  }
 }
 
 /* ========================================
-Desktop & Tablet (≥769px)
-======================================== */
-@media (min-width: 769px) {
+   DESKTOP (≥1025px)
+   ======================================== */
+@media (min-width: 1025px) {
   .mobile-cards {
     display: none !important;
   }
 
-  .toolbar-actions button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .case-table thead th {
+    font-size: 12px;
+    padding: 12px 16px;
+  }
+
+  .case-table tbody td {
+    font-size: 14px;
+    padding: 16px;
+  }
+
+  .icon-btn {
+    font-size: 16px;
+    padding: 4px;
+  }
+
+  .action-icons {
+    gap: 12px !important;
+  }
+
+  /* Show button text on desktop */
+  .btn-secondary .btn-text {
+    display: inline;
   }
 }

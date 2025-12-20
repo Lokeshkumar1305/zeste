@@ -1,6 +1,6 @@
 /* ========================================
-1) PAGE CONTAINER
-======================================== */
+   PAGE CONTAINER
+   ======================================== */
 .page-container {
   --page-gutter: 24px;
   --page-max: 1280px;
@@ -9,8 +9,8 @@
 }
 
 /* ========================================
-2) CASE CARD
-======================================== */
+   CASE CARD
+   ======================================== */
 .case-card {
   border: 1px solid var(--card-border);
   background: var(--card-background);
@@ -18,25 +18,36 @@
   padding: 16px;
 }
 
-/* HEADER ROW / BUTTONS */
-.header-row {
+/* ========================================
+   HEADER TOOLBAR
+   ======================================== */
+.header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
-.header-actions {
+.toolbar-actions {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+/* ========================================
+   BUTTONS
+   ======================================== */
 .btn-secondary {
   color: var(--text-color);
   background: var(--background);
   border: 1px solid var(--card-border);
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 8px 14px;
   font-size: 14px;
   transition: all 0.2s ease;
+  min-height: 40px;
+  white-space: nowrap;
 }
 
 .btn-secondary:hover {
@@ -49,9 +60,11 @@
   background: var(--brand-primary);
   border: 1px solid var(--brand-primary);
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 8px 16px;
   font-size: 14px;
   transition: all 0.2s ease;
+  min-height: 40px;
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -60,8 +73,8 @@
 }
 
 /* ========================================
-DIVIDER
-======================================== */
+   DIVIDER
+   ======================================== */
 .toolbar-divider {
   height: 1px;
   background: var(--card-border);
@@ -69,10 +82,10 @@ DIVIDER
 }
 
 /* ========================================
-AMENITIES SECTION
-======================================== */
+   AMENITIES SECTION
+   ======================================== */
 .amenities-section {
-  padding: 20px 0;
+  padding: 16px 0;
 }
 
 .amenities-grid {
@@ -88,6 +101,8 @@ AMENITIES SECTION
   padding: 20px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
 }
 
 .amenity-card:hover {
@@ -121,6 +136,7 @@ AMENITIES SECTION
 
 .amenity-info {
   flex: 1;
+  min-width: 0;
 }
 
 .amenity-title {
@@ -128,6 +144,9 @@ AMENITIES SECTION
   font-weight: 600;
   color: var(--text-color);
   margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .amenity-count {
@@ -137,6 +156,7 @@ AMENITIES SECTION
 }
 
 .amenity-card-body {
+  flex: 1;
   margin-bottom: 16px;
 }
 
@@ -184,7 +204,7 @@ AMENITIES SECTION
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
@@ -215,8 +235,8 @@ AMENITIES SECTION
 }
 
 /* ========================================
-EMPTY STATE
-======================================== */
+   EMPTY STATE
+   ======================================== */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -251,390 +271,137 @@ EMPTY STATE
   margin: 0 0 24px 0;
 }
 
-/* ========================================
-ROWS PER PAGE
-======================================== */
-.rows-per-page {
-  min-width: 72px;
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 6px 28px 6px 10px;
-  font-size: 14px;
-}
-
-/* ========================================
-TABLE
-======================================== */
-.table-container {
-  overflow: auto;
-  border-radius: 8px;
-  border: 1px solid var(--card-border);
-}
-
-.case-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.case-table thead {
-  background: var(--brand-primary);
-}
-
-.case-table thead th {
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 12px 16px;
-  border: none;
-  white-space: nowrap;
-}
-
-.case-table tbody tr {
-  background: var(--card-background);
-  transition: background 0.2s ease;
-}
-
-.case-table tbody tr:hover {
-  background: var(--input-background);
-}
-
-.case-table tbody tr+tr td {
-  border-top: 1px solid var(--card-border);
-}
-
-.case-table tbody td {
-  padding: 16px;
-  color: var(--text-color);
-  vertical-align: middle;
-  font-size: 14px;
-}
-
-/* ========================================
-STATUS PILLS (rooms)
-======================================== */
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 6px 12px;
-  line-height: 1;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.status-available {
-  background: rgba(32, 201, 151, 0.2);
-  color: #20c997;
-}
-
-.status-available .status-dot {
-  background: #20c997;
-}
-
-.status-occupied {
-  background: rgba(100, 116, 139, 0.2);
-  color: #94a3b8;
-}
-
-.status-occupied .status-dot {
-  background: #94a3b8;
-}
-
-.status-maintenance {
-  background: rgba(245, 158, 11, 0.2);
-  color: #f59e0b;
-}
-
-.status-maintenance .status-dot {
-  background: #f59e0b;
-}
-
-/* ========================================
-ACTION ICONS
-======================================== */
-.icon-btn {
-  border: 0;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-  color: var(--brand-primary);
-  font-size: 16px;
-  transition: color 0.2s ease;
-}
-
-.icon-btn:hover {
-  color: var(--brand-primary-700);
-}
-
-.action-icons .bi-trash {
-  color: #ef4444;
-}
-
-.action-icons .bi-trash:hover {
-  color: #dc2626;
-}
-
-/* ========================================
-FOOTER & PAGINATION
-======================================== */
-.table-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
-  color: var(--text-secondary);
-}
-
-.footer-left {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.pagination {
-  display: inline-flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 6px;
-}
-
-.page-item {
-  display: inline-flex;
-}
-
-.page-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-color);
-  background-color: var(--background);
-  border: 1px solid var(--card-border);
-  min-width: 36px;
-  min-height: 32px;
-  border-radius: 4px;
-  padding: 6px 15px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.page-item.active .page-link {
-  color: #fff;
-  background-color: var(--brand-primary);
-  border-color: var(--brand-primary);
-  font-weight: 600;
-}
-
-.page-item.disabled .page-link {
-  color: var(--text-muted);
-  background-color: var(--background);
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.page-item:not(.disabled) .page-link:hover {
-  border-color: var(--brand-primary);
-  background: var(--input-background);
-}
-
 .text-high-contrast {
   color: var(--text-color) !important;
   opacity: 1 !important;
 }
 
 /* ========================================
-ROOM CARDS (MOBILE)
-======================================== */
-.rooms-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  margin-bottom: 24px;
-}
+   TABLET SPECIFIC STYLES (769px - 1024px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page-container {
+    --page-gutter: 16px;
+  }
 
-.room-card {
-  border: 1px solid var(--card-border);
-  background: var(--card-background);
-  border-radius: 10px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+  .case-card {
+    padding: 14px;
+  }
 
-.room-card:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
+  /* Header adjustments */
+  .header-toolbar > p {
+    font-size: 16px;
+  }
 
-.room-card-header {
-  padding: 12px;
-  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-700) 100%);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-}
+  .btn-primary {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
 
-.room-icon-wrapper {
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .btn-primary span {
+    font-size: 12px;
+  }
 
-.room-icon-wrapper i {
-  font-size: 20px;
-  color: #fff;
-}
+  /* Amenities grid - 2 columns on tablet */
+  .amenities-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
 
-.room-id {
-  flex: 1;
-  color: #fff;
-  font-weight: 600;
-  font-size: 16px;
-}
+  .amenity-card {
+    padding: 16px;
+  }
 
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #1f2937;
-}
+  .amenity-icon {
+    width: 40px;
+    height: 40px;
+  }
 
-.room-card-body {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  .amenity-icon i {
+    font-size: 18px;
+  }
 
-.room-info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--card-border);
-}
+  .amenity-title {
+    font-size: 16px;
+  }
 
-.room-info-row:last-child {
-  border-bottom: none;
-}
+  .amenity-count {
+    font-size: 12px;
+  }
 
-.info-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11.5px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
+  .amenity-tag {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 
-.info-label i {
-  font-size: 13px;
-  color: var(--brand-primary);
-}
+  .btn-action {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 
-.info-value {
-  font-size: 13px;
-  color: var(--text-color);
-  font-weight: 600;
-}
+  /* Hide button text on tablet, show only icons */
+  .btn-action-text {
+    display: none;
+  }
 
-.rent-value {
-  color: var(--brand-primary);
-  font-size: 15px;
-}
+  .btn-action {
+    gap: 0;
+  }
 
-.amenities-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  max-width: 60%;
-  justify-content: flex-end;
-}
-
-.room-card-footer {
-  margin-top: 16px;
-  padding: 10px 12px;
-  border-top: 1px solid var(--card-border);
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.action-btn {
-  flex: 1;
-  padding: 6px 12px;
-  border: 1px solid var(--card-border);
-  background: var(--card-background);
-  color: var(--text-color);
-  border-radius: 6px;
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-.edit-btn:hover {
-  background: var(--brand-primary);
-  border-color: var(--brand-primary);
-  color: #fff;
-}
-
-.delete-btn:hover {
-  background: #ef4444;
-  border-color: #ef4444;
-  color: #fff;
-}
-
-/* Desktop/Mobile toggles */
-.desktop-view {
-  display: block;
-}
-
-.mobile-view {
-  display: none;
+  .btn-action i {
+    font-size: 14px;
+  }
 }
 
 /* ========================================
-RESPONSIVE BREAKPOINTS
-======================================== */
+   SMALL TABLET (769px - 850px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 850px) {
+  .amenities-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
 
-/* Mobile ≤767px */
-@media (max-width: 767px) {
+  .amenity-card {
+    padding: 14px;
+  }
+
+  .amenity-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .amenity-icon i {
+    font-size: 16px;
+  }
+
+  .amenity-title {
+    font-size: 14px;
+  }
+
+  .amenity-tag {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .btn-action {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+}
+
+/* ========================================
+   MOBILE (≤768px)
+   ======================================== */
+@media (max-width: 768px) {
   .page-container {
-    width: calc(100vw - 32px);
-    max-width: none;
-    margin-left: calc(50% - 50vw + 16px);
-    margin-right: auto;
-    padding-inline: 0;
+    width: calc(100vw - 32px) !important;
+    max-width: none !important;
+    margin-left: calc(50% - 50vw + 16px) !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     box-sizing: border-box;
   }
 
@@ -642,18 +409,16 @@ RESPONSIVE BREAKPOINTS
     padding: 14px;
   }
 
-  .header-row {
+  .header-toolbar {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .header-actions {
+  .toolbar-actions {
     width: 100%;
-    justify-content: stretch;
   }
 
-  .header-actions .btn-primary,
-  .header-actions .btn-secondary {
+  .btn-primary {
     width: 100%;
     justify-content: center;
   }
@@ -662,51 +427,38 @@ RESPONSIVE BREAKPOINTS
     grid-template-columns: 1fr;
   }
 
-  .desktop-view {
-    display: none;
-  }
-
-  .mobile-view {
-    display: block;
-  }
-
-  .rooms-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .amenity-card-footer,
-  .room-card-footer {
+  .amenity-card-footer {
     flex-direction: column;
   }
 
-  .btn-action,
-  .action-btn {
+  .btn-action {
     width: 100%;
   }
 
-  .table-footer {
-    flex-direction: column;
-    align-items: flex-start;
+  /* Show button text on mobile */
+  .btn-action-text {
+    display: inline;
   }
 
-  .footer-left {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .pagination {
-    justify-content: center;
-    width: 100%;
+  .btn-action {
+    gap: 6px;
   }
 }
 
-/* Tablets 768–1024px – keep two columns but adjust grids */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* ========================================
+   DESKTOP (≥1025px)
+   ======================================== */
+@media (min-width: 1025px) {
   .amenities-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
 
-  .rooms-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  /* Show button text on desktop */
+  .btn-action-text {
+    display: inline;
+  }
+
+  .btn-action {
+    gap: 6px;
   }
 }

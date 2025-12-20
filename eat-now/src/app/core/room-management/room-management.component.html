@@ -39,7 +39,7 @@
         <thead>
           <tr>
             <th scope="col">Room No</th>
-            <th scope="col">Room Type</th>
+            <th scope="col">Type</th>
             <th scope="col">Floor</th>
             <th scope="col">Rent</th>
             <th scope="col">Amenities</th>
@@ -49,27 +49,27 @@
         </thead>
         <tbody>
           <tr *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber" class="table-row-hover">
-            <td class="f-14-m">{{ room.roomNumber }}</td>
-            <td class="f-14-r">{{ room.type }}</td>
-            <td class="f-14-r">{{ room.floor }}</td>
-            <td class="f-14-r">
+            <td class="f-14-m col-room-no">{{ room.roomNumber }}</td>
+            <td class="f-14-r col-type">{{ room.type }}</td>
+            <td class="f-14-r col-floor">{{ room.floor }}</td>
+            <td class="f-14-r col-rent">
               {{ room.monthlyRent | currency: 'INR':'symbol':'1.0-0' }}
             </td>
-            <td class="f-14-r text-capitalize">
-              {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
+            <td class="f-14-r col-amenities text-capitalize">
+              <span class="amenities-text">{{ room.amenities.length ? room.amenities.join(', ') : '-' }}</span>
             </td>
-            <td>
+            <td class="col-status">
               <span class="status-pill" [ngClass]="{
                   'status-available': room.status === 'Available',
                   'status-occupied': room.status === 'Occupied',
                   'status-maintenance': room.status === 'Maintenance'
                 }">
                 <span class="status-dot"></span>
-                {{ room.status }}
+                <span class="status-text">{{ room.status }}</span>
               </span>
             </td>
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Edit" (click)="onEditRoom(room)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -161,7 +161,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -173,7 +173,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

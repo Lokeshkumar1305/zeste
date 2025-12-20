@@ -212,9 +212,7 @@
             </button>
             <button mat-icon-button [color]="announcement.isActive ? 'warn' : 'primary'"
               [matTooltip]="announcement.isActive ? 'Deactivate' : 'Activate'" (click)="toggleStatus(announcement)">
-              <i class="bi" [ngClass]="
-                  announcement.isActive ? 'bi-pause-circle' : 'bi-play-circle'
-                "></i>
+              <i class="bi" [ngClass]="announcement.isActive ? 'bi-pause-circle' : 'bi-play-circle'"></i>
             </button>
             <button mat-icon-button color="warn" matTooltip="Delete" (click)="deleteAnnouncement(announcement)">
               <i class="bi bi-trash"></i>
@@ -314,9 +312,7 @@
                   </button>
                   <button mat-icon-button class="icon-btn status"
                     [matTooltip]="row.isActive ? 'Deactivate' : 'Activate'" (click)="toggleStatus(row)">
-                    <i class="bi" [ngClass]="
-                        row.isActive ? 'bi-pause-circle' : 'bi-play-circle'
-                      "></i>
+                    <i class="bi" [ngClass]="row.isActive ? 'bi-pause-circle' : 'bi-play-circle'"></i>
                   </button>
                   <button mat-icon-button class="icon-btn delete" color="warn" matTooltip="Delete"
                     (click)="deleteAnnouncement(row)">
@@ -338,8 +334,10 @@
             </mat-paginator>
 
             <div class="page-nav">
+              <!-- NOTE: removed d-none from page-btn-icon so we can control via CSS -->
               <button class="page-btn prev" [disabled]="pageIndex === 0" (click)="goToPreviousPage()">
-                ‹ Previous
+                <span class="page-btn-text">‹ Previous</span>
+                <span class="page-btn-icon">‹</span>
               </button>
 
               <ng-container *ngFor="let p of pages">
@@ -349,7 +347,8 @@
               </ng-container>
 
               <button class="page-btn next" [disabled]="pageIndex >= totalPages - 1" (click)="goToNextPage()">
-                Next ›
+                <span class="page-btn-text">Next ›</span>
+                <span class="page-btn-icon">›</span>
               </button>
             </div>
           </div>

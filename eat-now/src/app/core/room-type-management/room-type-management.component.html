@@ -11,13 +11,13 @@
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
-            <span class="f-12-m">Filter</span>
+            <span class="btn-text f-12-m">Filter</span>
           </button>
           <button type="button"
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
-            <span class="f-12-m">Reset</span>
+            <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
@@ -46,13 +46,15 @@
         </thead>
         <tbody>
           <tr *ngFor="let room of pagedRoomTypes; trackBy: trackByRoomType" class="table-row-hover">
-            <td class="f-14-m">{{ room.roomType }}</td>
-            <td class="f-14-r">{{ room.beds }}</td>
-            <td class="f-14-r text-truncate" style="max-width: 300px;" [title]="room.description">
-              {{ room.description || '-' }}
+            <td class="f-14-m col-room-type">{{ room.roomType }}</td>
+            <td class="f-14-r col-beds">{{ room.beds }}</td>
+            <td class="f-14-r col-description">
+              <span class="description-text" [title]="room.description">
+                {{ room.description || '-' }}
+              </span>
             </td>
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Edit" (click)="onEdit(room)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -127,7 +129,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -139,7 +141,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

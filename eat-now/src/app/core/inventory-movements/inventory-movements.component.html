@@ -11,13 +11,13 @@
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
-            <span class="f-12-m">Filter ({{ selectedTypeFilter }})</span>
+            <span class="btn-text f-12-m">Filter</span>
           </button>
           <button type="button"
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
-            <span class="f-12-m">Reset</span>
+            <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
@@ -26,7 +26,7 @@
           class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewMovement()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Movement</span>
+          <span class="f-14-m">Add Movement</span>
         </button>
       </div>
     </div>
@@ -38,71 +38,68 @@
       <table class="case-table" role="table" aria-label="Inventory Movements">
         <thead>
           <tr>
-            <th scope="col">Date &amp; Time</th>
+            <th scope="col">Date</th>
             <th scope="col">Item</th>
             <th scope="col">Type</th>
-            <th scope="col">Quantity</th>
+            <th scope="col">Qty</th>
             <th scope="col">Reason</th>
             <th scope="col">Reference</th>
-            <th scope="col">Performed By</th>
+            <th scope="col">By</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let mv of pagedMovements; trackBy: trackByMovementId" class="table-row-hover">
             <!-- Date -->
-            <td class="f-14-r">
-              {{ mv.date | date: 'dd MMM yyyy, h:mm a' }}
+            <td class="f-14-r col-date">
+              <span class="text-truncate-cell">{{ mv.date | date: 'dd MMM yy' }}</span>
+              <div class="f-11-r text-muted time-text">{{ mv.date | date: 'h:mm a' }}</div>
             </td>
 
             <!-- Item -->
-            <td class="f-14-m">
-              <div>
-                {{ mv.itemName || getItemName(mv.itemId) || 'Unknown item' }}
+            <td class="f-14-m col-item">
+              <div class="text-truncate-cell" [title]="mv.itemName || getItemName(mv.itemId)">
+                {{ mv.itemName || getItemName(mv.itemId) || 'Unknown' }}
               </div>
-              <div class="f-12-r text-muted" *ngIf="getItemUnitName(mv.itemId)">
-                Unit: {{ getItemUnitName(mv.itemId) }}
+              <div class="f-11-r text-muted unit-text" *ngIf="getItemUnitName(mv.itemId)">
+                {{ getItemUnitName(mv.itemId) }}
               </div>
             </td>
 
             <!-- Type -->
-            <td>
+            <td class="col-type">
               <span class="status-pill" [ngClass]="{
                   'status-available': mv.type === 'IN',
                   'status-occupied': mv.type === 'OUT'
                 }">
                 <span class="status-dot"></span>
-                {{ mv.type === 'IN' ? 'Stock In' : 'Stock Out' }}
+                <span class="status-text">{{ mv.type === 'IN' ? 'In' : 'Out' }}</span>
               </span>
             </td>
 
             <!-- Quantity -->
-            <td class="f-14-r">
+            <td class="f-14-r col-qty">
               {{ mv.quantity }}
-              <span *ngIf="getItemUnitName(mv.itemId)">
-                {{ getItemUnitName(mv.itemId) }}
-              </span>
             </td>
 
             <!-- Reason -->
-            <td class="f-14-r" [title]="mv.reason">
-              {{ mv.reason }}
+            <td class="f-14-r col-reason">
+              <span class="text-truncate-cell" [title]="mv.reason">{{ mv.reason }}</span>
             </td>
 
             <!-- Reference -->
-            <td class="f-14-r">
-              {{ mv.reference || '-' }}
+            <td class="f-14-r col-ref">
+              <span class="text-truncate-cell">{{ mv.reference || '-' }}</span>
             </td>
 
             <!-- Performed By -->
-            <td class="f-14-r">
-              {{ mv.performedBy || '-' }}
+            <td class="f-14-r col-by">
+              <span class="text-truncate-cell">{{ mv.performedBy || '-' }}</span>
             </td>
 
             <!-- Action -->
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
-                <!-- For movements, usually we only allow delete/cancel -->
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Delete Movement" (click)="onDeleteMovement(mv)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
@@ -184,8 +181,7 @@
     <div class="table-footer">
       <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of
-          {{ totalItems }} entries
+          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
@@ -202,7 +198,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -214,7 +210,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

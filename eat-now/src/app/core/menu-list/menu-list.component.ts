@@ -171,6 +171,19 @@ export class MenuListComponent implements OnInit {
   private nextMenuId = 1;
   editingMenuId: number | null = null;
 
+  // ========================================
+  // PAGINATION & LIST VIEW PROPERTIES
+  // ========================================
+  
+  // Pagination
+  currentPage = 1;
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
+  
+  // Filter
+  selectedMealTypeFilter = 'All';
+  mealTypeFilterOptions: string[] = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Beverages'];
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -205,6 +218,156 @@ export class MenuListComponent implements OnInit {
     this.applyFilters();
     this.refreshMenusForSelectedDate();
     this.refreshMenusForSelectedDay();
+  }
+
+  // ========================================
+  // PAGINATION COMPUTED PROPERTIES
+  // ========================================
+
+  /** Get filtered menu items based on meal type filter */
+  get filteredMenuItems(): MenuItem[] {
+    if (this.selectedMealTypeFilter === 'All') {
+      return this.allMenuItems;
+    }
+    return this.allMenuItems.filter(item => item.mealType === this.selectedMealTypeFilter);
+  }
+
+  /** Get paginated menu items for current page */
+  get pagedMenuItems(): MenuItem[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filteredMenuItems.slice(startIndex, endIndex);
+  }
+
+  /** Total number of filtered items */
+  get totalItems(): number {
+    return this.filteredMenuItems.length;
+  }
+
+  /** Total number of pages */
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize) || 1;
+  }
+
+  /** Starting item number for current page */
+  get showingFrom(): number {
+    if (this.totalItems === 0) return 0;
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  /** Ending item number for current page */
+  get showingTo(): number {
+    const end = this.currentPage * this.pageSize;
+    return Math.min(end, this.totalItems);
+  }
+
+  /** Array of page numbers for pagination */
+  get pageNumbers(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5;
+    
+    if (this.totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      let startPage = Math.max(1, this.currentPage - 2);
+      let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+      
+      if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+    }
+    
+    return pages;
+  }
+
+  // ========================================
+  // PAGINATION METHODS
+  // ========================================
+
+  /** Go to previous page */
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  /** Go to next page */
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  /** Go to specific page */
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  /** Handle page size change */
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1; // Reset to first page
+  }
+
+  // ========================================
+  // FILTER METHODS
+  // ========================================
+
+  /** Open filter dropdown/modal */
+  onFilter(): void {
+    // Cycle through filter options or open a dropdown
+    const currentIndex = this.mealTypeFilterOptions.indexOf(this.selectedMealTypeFilter);
+    const nextIndex = (currentIndex + 1) % this.mealTypeFilterOptions.length;
+    this.selectedMealTypeFilter = this.mealTypeFilterOptions[nextIndex];
+    this.currentPage = 1; // Reset to first page when filter changes
+  }
+
+  /** Reset all filters */
+  onReset(): void {
+    this.selectedMealTypeFilter = 'All';
+    this.currentPage = 1;
+    this.pageSize = 10;
+  }
+
+  // ========================================
+  // CRUD METHODS FOR LIST VIEW
+  // ========================================
+
+  /** Add new menu item */
+  onAddNewMenu(): void {
+    // Navigate to add menu form or open modal
+    console.log('Add new menu item');
+    // Example: this.router.navigate(['/menu/add']);
+    // Or open a dialog/modal
+  }
+
+  /** Edit menu item */
+  onEditMenu(item: MenuItem): void {
+    console.log('Edit menu item:', item);
+    // Navigate to edit form or open modal
+    // Example: this.router.navigate(['/menu/edit', item.id]);
+  }
+
+  /** Delete menu item */
+  onDeleteMenu(id: string): void {
+    if (confirm('Are you sure you want to delete this menu item?')) {
+      this.allMenuItems = this.allMenuItems.filter(item => item.id !== id);
+      
+      // Adjust current page if necessary
+      if (this.pagedMenuItems.length === 0 && this.currentPage > 1) {
+        this.currentPage--;
+      }
+      
+      console.log('Deleted menu item with id:', id);
+    }
   }
 
   // ---------- MODE SWITCHING ----------
@@ -343,7 +506,6 @@ export class MenuListComponent implements OnInit {
       if (idx > -1) {
         const currentStatus = this.publishedMenus[idx].status;
         this.publishedMenus[idx] = { ...payload, id: this.editingMenuId, status: currentStatus };
-        // Update cache
         delete this.menuItemsCache[this.editingMenuId];
       }
     } else {

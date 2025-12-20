@@ -2,9 +2,9 @@
   <section class="case-card">
     <!-- Header & Toolbar -->
     <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
-      <div>
+      <div class="header-title">
         <p class="mb-0 f-18-m text-high-contrast">Units</p>
-        <small class="text-muted">Define how items are measured (kg, pcs, liters, etc.)</small>
+        <small class="text-muted header-subtitle">Define how items are measured (kg, pcs, liters, etc.)</small>
       </div>
 
       <div class="toolbar-actions d-flex align-items-center gap-3">
@@ -14,13 +14,13 @@
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
-            <span class="f-12-m">Filter ({{ selectedStatusFilter }})</span>
+            <span class="btn-text f-12-m">Filter ({{ selectedStatusFilter }})</span>
           </button>
           <button type="button"
             class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
-            <span class="f-12-m">Reset</span>
+            <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
@@ -29,7 +29,7 @@
           class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewUnit()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Unit</span>
+          <span class="f-14-m">Add Unit</span>
         </button>
       </div>
     </div>
@@ -50,22 +50,37 @@
         </thead>
         <tbody>
           <tr *ngFor="let unit of pagedUnits; trackBy: trackByUnitId" class="table-row-hover">
-            <td class="f-14-m">{{ unit.name }}</td>
-            <td class="f-14-r">{{ unit.shortName }}</td>
-            <td class="f-14-r" [title]="unit.description || '-'">
-              {{ unit.description || '-' }}
+            <!-- Full Name -->
+            <td class="f-14-m col-name">
+              <span class="text-truncate-cell" [title]="unit.name">{{ unit.name }}</span>
             </td>
-            <td>
+
+            <!-- Short Name -->
+            <td class="f-14-r col-short">
+              <span class="text-truncate-cell">{{ unit.shortName }}</span>
+            </td>
+
+            <!-- Description -->
+            <td class="f-14-r col-desc">
+              <span class="text-truncate-cell" [title]="unit.description || '-'">
+                {{ unit.description || '-' }}
+              </span>
+            </td>
+
+            <!-- Status -->
+            <td class="col-status">
               <span class="status-pill" [ngClass]="{
                   'status-available': unit.isActive,
                   'status-maintenance': !unit.isActive
                 }">
                 <span class="status-dot"></span>
-                {{ unit.isActive ? 'Active' : 'Inactive' }}
+                <span class="status-text">{{ unit.isActive ? 'Active' : 'Inactive' }}</span>
               </span>
             </td>
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
+
+            <!-- Action -->
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Edit" (click)="onEditUnit(unit)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -89,8 +104,9 @@
     <div class="mobile-cards">
       <div *ngFor="let unit of pagedUnits; trackBy: trackByUnitId" class="mobile-card">
         <div class="mobile-card-header d-flex justify-content-between align-items-center">
-          <div class="unit-name f-18-m fw-bold">
+          <div class="f-16-m fw-bold">
             {{ unit.name }}
+            <div class="f-12-r text-muted">{{ unit.shortName }}</div>
           </div>
           <span class="status-pill" [ngClass]="{
               'status-available': unit.isActive,
@@ -103,15 +119,9 @@
 
         <div class="mobile-card-body">
           <div class="detail-grid">
-            <div class="detail-item">
-              <strong class="label">Short Name:</strong>
-              <span class="value">{{ unit.shortName }}</span>
-            </div>
-            <div class="detail-item full-width">
+            <div class="detail-item full-width" *ngIf="unit.description">
               <strong class="label">Description:</strong>
-              <span class="value">
-                {{ unit.description || '-' }}
-              </span>
+              <span class="value">{{ unit.description }}</span>
             </div>
           </div>
         </div>
@@ -135,8 +145,7 @@
     <div class="table-footer">
       <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }}
-          entries
+          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
@@ -153,7 +162,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -165,7 +174,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

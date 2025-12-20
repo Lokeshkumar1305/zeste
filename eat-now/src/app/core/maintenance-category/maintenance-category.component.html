@@ -1,4 +1,3 @@
-<!-- src/app/maintenance/maintenance-category/maintenance-category.component.html -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
@@ -8,18 +7,18 @@
       <div class="toolbar-actions d-flex align-items-center gap-2">
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
           <i class="bi bi-funnel"></i>
-          <span class="f-12-m">Filter</span>
+          <span class="btn-text f-12-m">Filter</span>
         </button>
 
         <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
-          <span class="f-12-m">Reset</span>
+          <span class="btn-text f-12-m">Reset</span>
         </button>
 
         <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
           (click)="onAddNewMaintenance()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add New Category</span>
+          <span class="f-14-m">Add Category</span>
         </button>
       </div>
     </div>
@@ -41,19 +40,21 @@
 
         <tbody>
           <tr *ngFor="let cat of pagedCategories; trackBy: trackById" class="table-row-hover">
-            <td class="f-14-m">{{ cat.id }}</td>
-            <td class="f-14-r">{{ cat.name }}</td>
-            <td class="f-14-r text-truncate" style="max-width: 250px;" [title]="cat.description">
-              {{ cat.description || '-' }}
+            <td class="f-14-m col-id">{{ cat.id }}</td>
+            <td class="f-14-r col-name">
+              <span class="text-truncate-cell" [title]="cat.name">{{ cat.name }}</span>
             </td>
-            <td>
+            <td class="f-14-r col-description">
+              <span class="text-truncate-cell" [title]="cat.description">{{ cat.description || '-' }}</span>
+            </td>
+            <td class="col-status">
               <span class="status-pill" [ngClass]="{ 'status-open': cat.open, 'status-closed': !cat.open }">
                 <span class="status-dot"></span>
-                {{ cat.open ? 'Open' : 'Closed' }}
+                <span class="status-text">{{ cat.open ? 'Open' : 'Closed' }}</span>
               </span>
             </td>
-            <td class="text-center">
-              <div class="d-inline-flex align-items-center gap-3 action-icons">
+            <td class="text-center col-action">
+              <div class="d-inline-flex align-items-center gap-2 action-icons">
                 <button type="button" class="icon-btn" title="Edit" (click)="onEditCategory(cat)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -91,10 +92,12 @@
         <!-- Body: ID + description -->
         <div class="mobile-card-body">
           <p class="f-14-r info-row">
-            <strong>Category ID:</strong> {{ cat.id }}
+            <span class="info-label"><strong>Category ID:</strong></span>
+            <span class="info-value">{{ cat.id }}</span>
           </p>
           <p class="f-14-r info-row">
-            <strong>Description:</strong> {{ cat.description || '-' }}
+            <span class="info-label"><strong>Description:</strong></span>
+            <span class="info-value">{{ cat.description || '-' }}</span>
           </p>
         </div>
 
@@ -116,7 +119,7 @@
 
     <!-- Footer -->
     <div class="table-footer">
-      <div class="footer-left">
+      <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
         <div class="f-12-r text-muted text-high-contrast">
           Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
         </div>
@@ -135,7 +138,7 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              Previous
+              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -147,7 +150,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              Next
+              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>
