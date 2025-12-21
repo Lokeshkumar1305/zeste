@@ -1,3 +1,4 @@
+// core.module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -8,6 +9,10 @@ import { SharedRoutingModule } from '../shared/shared-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { MaterialModule } from '../material/material.module';
 
+// ng2-charts - Import BaseChartDirective for this module
+import { BaseChartDirective } from 'ng2-charts';
+
+// All your component imports...
 import { OutletOnboardingComponent } from './outlet-onboarding/outlet-onboarding.component';
 import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
 import { OutletsComponent } from './outlets/outlets.component';
@@ -45,19 +50,7 @@ import { BedsManagementComponent } from './beds-management/beds-management.compo
 import { BedsManagementModalComponent } from './beds-management-modal/beds-management-modal.component';
 import { FloorsManagementComponent } from './floors-management/floors-management.component';
 import { FloorsManagementModalComponent } from './floors-management-modal/floors-management-modal.component';
-
-/* ---------- NEW COMPONENT ---------- */
 import { AmenitiesManagementModalComponent } from './amenities-management-modal/amenities-management-modal.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AmenitiesManagementComponent } from './amenities-management/amenities-management.component';
 import { MaintenanceCategoryComponent } from './maintenance-category/maintenance-category.component';
 import { MaintenanceManagementModalComponent } from './maintenance-management-modal/maintenance-management-modal.component';
@@ -88,10 +81,16 @@ import { SubscriptionBillingHistoryComponent } from './subscription-billing-hist
 import { AnnouncementsComponent } from './announcements/announcements.component';
 import { AnnouncementsModalComponent } from './announcements-modal/announcements-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
-
-
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -135,51 +134,44 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AmenitiesManagementModalComponent,
     AmenitiesManagementComponent,
     MaintenanceCategoryComponent,
- MaintenanceManagementModalComponent,
- MaintenanceCategoryModalComponent,
- ExpensesCategoryComponent,
- ExpensesCategoryModalComponent,
- MenuListComponent,
- InventoryDashboardComponent,
- InventoryUnitsComponent,
- InventoryItemsComponent,
- InventoryItemsCategoriesComponent,
- InventoryStocksComponent,
- InventoryMovementsComponent,
- InventoryPurchaseOrdersComponent,
- InventorySuppliersComponent,
- InventoryReportsComponent,
- InventorySettingsComponent,
- SubscriptionPackagesComponent,
- SubscriptionPackagesModalComponent,
- InventoryUnitsPopupComponent,
- InventoryItemsModalComponent,
- InventoryItemsCategoriesModalComponent,
- InventoryStocksModalComponent,
- InventoryMovementsModalComponent,
- InventoryPurchaseOrdersModalComponent,
- InventorySuppliersModalComponent,
- SubscriptionBillingHistoryComponent,
- AnnouncementsComponent,
- AnnouncementsModalComponent,
- DashboardComponent
- 
- 
- 
-
-
+    MaintenanceManagementModalComponent,
+    MaintenanceCategoryModalComponent,
+    ExpensesCategoryComponent,
+    ExpensesCategoryModalComponent,
+    MenuListComponent,
+    InventoryDashboardComponent,
+    InventoryUnitsComponent,
+    InventoryItemsComponent,
+    InventoryItemsCategoriesComponent,
+    InventoryStocksComponent,
+    InventoryMovementsComponent,
+    InventoryPurchaseOrdersComponent,
+    InventorySuppliersComponent,
+    InventoryReportsComponent,
+    InventorySettingsComponent,
+    SubscriptionPackagesComponent,
+    SubscriptionPackagesModalComponent,
+    InventoryUnitsPopupComponent,
+    InventoryItemsModalComponent,
+    InventoryItemsCategoriesModalComponent,
+    InventoryStocksModalComponent,
+    InventoryMovementsModalComponent,
+    InventoryPurchaseOrdersModalComponent,
+    InventorySuppliersModalComponent,
+    SubscriptionBillingHistoryComponent,
+    AnnouncementsComponent,
+    AnnouncementsModalComponent,
+    DashboardComponent  
   ],
   imports: [
     CommonModule,
     CoreRoutingModule,
     SharedRoutingModule,
     FormsModule,
-    ReactiveFormsModule,   // optional but useful for mat-form-field
+    ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
-    MaterialModule,        // your custom material wrapper (keep if you have one)
-
-    /* ---- Material modules (keep only once) ---- */
+    MaterialModule,
     MatCardModule,
     MatSlideToggleModule,
     MatFormFieldModule,
@@ -190,11 +182,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatButtonModule,
     MatIconModule,
     MatChipsModule,
-    MatChipsModule,
-
+    BaseChartDirective
   ],
   exports: [
-    /* Export the modal so it can be used as an entryComponent from other modules */
     AmenitiesManagementModalComponent,
   ],
 })

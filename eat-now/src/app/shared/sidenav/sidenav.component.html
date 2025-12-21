@@ -19,7 +19,7 @@
         </span>
         <!-- Dashboard -->
         <div class="menu-item dashboard-item" [class.active]="selectedMenu === 'dashboard'"
-          (click)="navigateTo('/core/outlet-onboarding')" role="button" tabindex="0"
+          (click)="navigateTo('/core/dashboard')" role="button" tabindex="0"
           (keydown.enter)="navigateTo('/core/outlet-onboarding')">
           <i class="bi bi-speedometer2"></i>
           <span *ngIf="!isCollapsed || isMobile">Dashboard</span>

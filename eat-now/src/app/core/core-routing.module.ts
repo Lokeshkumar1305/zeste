@@ -41,8 +41,10 @@ import { SubscriptionPackagesComponent } from './subscription-packages/subscript
 import { SubscriptionPackagesModalComponent } from './subscription-packages-modal/subscription-packages-modal.component';
 import { SubscriptionBillingHistoryComponent } from './subscription-billing-history/subscription-billing-history.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
   { path: 'merchant-staff-onboarding', component: MerchantStaffOnboardingComponent },
   { path: 'staff-onboarding', component: StaffOnboardingComponent },
