@@ -87,6 +87,7 @@ import { InventorySuppliersModalComponent } from './inventory-suppliers-modal/in
 import { SubscriptionBillingHistoryComponent } from './subscription-billing-history/subscription-billing-history.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
 import { AnnouncementsModalComponent } from './announcements-modal/announcements-modal.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 
@@ -160,7 +161,8 @@ import { AnnouncementsModalComponent } from './announcements-modal/announcements
  InventorySuppliersModalComponent,
  SubscriptionBillingHistoryComponent,
  AnnouncementsComponent,
- AnnouncementsModalComponent
+ AnnouncementsModalComponent,
+ DashboardComponent
  
  
  
