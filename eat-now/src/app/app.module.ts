@@ -1,4 +1,3 @@
-// app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -9,7 +8,11 @@ import { MaterialModule } from './material/material.module';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+
+import { BaseChartDirective } from 'ng2-charts';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 @NgModule({
   declarations: [
@@ -23,12 +26,12 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
     MaterialModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BaseChartDirective  
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync(),
-    provideCharts(withDefaultRegisterables())  
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
