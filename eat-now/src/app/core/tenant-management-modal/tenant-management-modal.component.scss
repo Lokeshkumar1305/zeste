@@ -225,20 +225,10 @@
 
 .camera-frame {
   width: 85%;
-  height: 60%;
+  height: 65%;
   border: 3px solid rgba(255, 255, 255, 0.8);
   border-radius: 12px;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    border-color: #fff;
-    border-style: solid;
-  }
 }
 
 .camera-controls {
