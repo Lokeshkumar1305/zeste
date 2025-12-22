@@ -173,28 +173,33 @@ export class MaintenanceManagementModalComponent implements OnInit, OnDestroy {
 
   captureImage(): void {
     const video = document.getElementById('cameraPreview') as HTMLVideoElement;
+    if (!video || video.videoWidth === 0) return;
+
     const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-    if (video) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    if (!context) return;
 
-      const context = canvas.getContext('2d');
-      if (context) {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const fileName = `damage_capture_${Date.now()}.jpg`;
-            this.issue.imageFile = new File([blob], fileName, { type: 'image/jpeg' });
-            this.issue.imageName = fileName;
-            this.issue.imagePreview = canvas.toDataURL('image/jpeg', 0.9);
-            this.capturedImageUrl = this.issue.imagePreview;
-            this.stopCamera();
-          }
-        }, 'image/jpeg', 0.9);
-      }
-    }
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+
+      const fileName = `damage_capture_${Date.now()}.jpg`;
+      const file = new File([blob], fileName, { type: 'image/jpeg' });
+
+      const imageUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+      this.issue.imageFile = file;
+      this.issue.imageName = fileName;
+      this.issue.imagePreview = imageUrl;
+      this.capturedImageUrl = imageUrl;
+
+      // Hide camera only after preview is set
+      this.stopCamera();
+    }, 'image/jpeg', 0.9);
   }
 
   stopCamera(): void {

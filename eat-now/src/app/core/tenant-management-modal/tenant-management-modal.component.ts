@@ -162,27 +162,31 @@ export class TenantManagementModalComponent implements OnInit {
 
   captureImage(): void {
     const video = document.getElementById('cameraPreview') as HTMLVideoElement;
+    if (!video || video.videoWidth === 0) return;
+
     const canvas = document.createElement('canvas');
-    
-    if (video) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      
-      const context = canvas.getContext('2d');
-      if (context) {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        // Convert to blob and create file
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const fileName = `${this.tenant.idProofType?.replace(/\s/g, '_')}_${Date.now()}.jpg`;
-            this.tenant.idProofFile = new File([blob], fileName, { type: 'image/jpeg' });
-            this.capturedImageUrl = canvas.toDataURL('image/jpeg', 0.9);
-            this.stopCamera();
-          }
-        }, 'image/jpeg', 0.9);
-      }
-    }
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+
+      const fileName = `${this.tenant.idProofType?.replace(/\s/g, '_') || 'id'}_capture_${Date.now()}.jpg`;
+      const file = new File([blob], fileName, { type: 'image/jpeg' });
+
+      const imageUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+      this.tenant.idProofFile = file;
+      this.capturedImageUrl = imageUrl;
+
+      // Hide camera after setting preview
+      this.stopCamera();
+    }, 'image/jpeg', 0.9);
   }
 
   stopCamera(): void {

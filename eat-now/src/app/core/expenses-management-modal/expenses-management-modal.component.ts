@@ -43,11 +43,11 @@ export class ExpensesManagementModalComponent implements OnInit, OnDestroy {
   attachmentName = '';
   attachmentSize: number = 0;
 
-  // ===== Screen Detection =====
+  // Screen Detection
   isMobileOrTablet: boolean = false;
   private readonly TABLET_BREAKPOINT = 1024;
 
-  // ===== Camera Related =====
+  // Camera Related
   showCameraPreview: boolean = false;
   videoStream: MediaStream | null = null;
   capturedImageUrl: string | null = null;
@@ -112,12 +112,13 @@ export class ExpensesManagementModalComponent implements OnInit, OnDestroy {
     if (this.isImage) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(e.target.result);
-        this.capturedImageUrl = e.target.result;
+        const url = e.target.result;
+        this.capturedImageUrl = url;
+        this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(url);
       };
       reader.readAsDataURL(file);
     } else {
-      this.imagePreviewUrl = 'pdf';
+      this.imagePreviewUrl = null;
       this.capturedImageUrl = null;
     }
   }
@@ -186,7 +187,7 @@ export class ExpensesManagementModalComponent implements OnInit, OnDestroy {
 
       setTimeout(() => {
         const video = document.getElementById('cameraPreview') as HTMLVideoElement;
-        if (video) {
+        if (video && this.videoStream) {
           video.srcObject = this.videoStream;
           video.play();
         }
@@ -200,31 +201,37 @@ export class ExpensesManagementModalComponent implements OnInit, OnDestroy {
 
   captureImage(): void {
     const video = document.getElementById('cameraPreview') as HTMLVideoElement;
+    if (!video || video.videoWidth === 0) return;
+
     const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-    if (video) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    if (!context) return;
 
-      const context = canvas.getContext('2d');
-      if (context) {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const fileName = `receipt_capture_${Date.now()}.jpg`;
-            this.expense.receiptFile = new File([blob], fileName, { type: 'image/jpeg' });
-            this.expense.receiptFileName = fileName;
-            this.attachmentName = fileName;
-            this.attachmentSize = blob.size;
-            this.isImage = true;
-            this.capturedImageUrl = canvas.toDataURL('image/jpeg', 0.9);
-            this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(this.capturedImageUrl);
-            this.stopCamera();
-          }
-        }, 'image/jpeg', 0.9);
-      }
-    }
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+
+      const fileName = `receipt_capture_${Date.now()}.jpg`;
+      const file = new File([blob], fileName, { type: 'image/jpeg' });
+
+      const imageUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+      // Update all required fields
+      this.expense.receiptFile = file;
+      this.expense.receiptFileName = fileName;
+      this.attachmentName = fileName;
+      this.attachmentSize = blob.size;
+      this.isImage = true;
+      this.capturedImageUrl = imageUrl;
+      this.imagePreviewUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+
+      // Now hide camera - preview will show immediately
+      this.stopCamera();
+    }, 'image/jpeg', 0.9);
   }
 
   stopCamera(): void {
