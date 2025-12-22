@@ -120,37 +120,155 @@
                     </mat-form-field>
                 </div>
 
-                <!-- ID Proof Upload -->
+                <!-- ID Proof Upload Section -->
                 <div class="col-12" *ngIf="tenant.idProofType">
-                    <mat-label class="required d-block mb-1">{{ tenant.idProofType }} Upload</mat-label>
-                    <div class="upload-container">
-                        <div *ngIf="!tenant.idProofFile; else filePreview">
-                            <input #idFileInput type="file" (change)="onIdFileSelected($event)"
-                                accept=".pdf,.jpg,.jpeg,.png" style="display: none">
-                            <button mat-stroked-button color="primary" (click)="idFileInput.click()">
-                                <i class="bi bi-upload me-2"></i> Choose File
-                            </button>
-                            <small class="text-muted d-block mt-2">PDF, JPG, PNG • Max 5MB</small>
+                    <mat-label class="required d-block mb-2">{{ tenant.idProofType }} Upload</mat-label>
+                    
+                    <!-- Camera Preview -->
+                    <div class="camera-preview-container" *ngIf="showCameraPreview">
+                        <div class="camera-preview-wrapper">
+                            <video id="cameraPreview" autoplay playsinline muted></video>
+                            <div class="camera-overlay">
+                                <div class="camera-frame"></div>
+                            </div>
                         </div>
+                        <div class="camera-controls">
+                            <button mat-fab color="warn" (click)="stopCamera()" class="camera-btn">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                            <button mat-fab color="primary" (click)="captureImage()" class="camera-btn capture-btn">
+                                <i class="bi bi-camera"></i>
+                            </button>
+                            <button mat-fab color="accent" (click)="switchCamera()" class="camera-btn" 
+                                    *ngIf="isMobileOrTablet">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </button>
+                        </div>
+                        <p class="camera-hint">Position the document within the frame and tap capture</p>
+                    </div>
 
-                        <ng-template #filePreview>
-                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <i class="bi bi-file-earmark-check text-success fs-4"></i>
-                                    <div>
-                                        <div class="fw-medium text-truncate" style="max-width: 200px;">
-                                            {{ tenant.idProofFile?.name }}
+                    <!-- Upload Options Container -->
+                    <div class="upload-container" *ngIf="!showCameraPreview">
+                        <!-- No file selected state -->
+                        <div *ngIf="!tenant.idProofFile && !capturedImageUrl; else filePreview">
+                            
+                            <!-- Desktop View - Only File Upload -->
+                            <div *ngIf="!isMobileOrTablet" class="desktop-upload">
+                                <input #idFileInput type="file" (change)="onIdFileSelected($event)"
+                                    accept=".pdf,.jpg,.jpeg,.png" style="display: none">
+                                <div class="upload-icon-wrapper">
+                                    <i class="bi bi-cloud-arrow-up"></i>
+                                </div>
+                                <p class="upload-title">Drag & drop your file here</p>
+                                <p class="upload-subtitle">or</p>
+                                <button mat-stroked-button color="primary" (click)="idFileInput.click()">
+                                    <i class="bi bi-upload me-2"></i> Browse Files
+                                </button>
+                                <small class="text-muted d-block mt-3">
+                                    Supported formats: PDF, JPG, PNG • Max size: 5MB
+                                </small>
+                            </div>
+
+                            <!-- Mobile/Tablet View - Both Options -->
+                            <div *ngIf="isMobileOrTablet" class="mobile-upload">
+                                <div class="upload-options">
+                                    <!-- File Upload Option -->
+                                    <div class="upload-option" (click)="mobileFileInput.click()">
+                                        <input #mobileFileInput type="file" (change)="onIdFileSelected($event)"
+                                            accept=".pdf,.jpg,.jpeg,.png" style="display: none">
+                                        <div class="option-icon file-icon">
+                                            <i class="bi bi-folder2-open"></i>
                                         </div>
-                                        <small class="text-muted">{{ formatFileSize(tenant.idProofFile?.size) }}</small>
+                                        <span class="option-label">Upload File</span>
+                                        <small class="option-hint">From device storage</small>
+                                    </div>
+
+                                    <div class="option-divider">
+                                        <span>OR</span>
+                                    </div>
+
+                                    <!-- Camera Capture Option -->
+                                    <div class="upload-option" (click)="openCamera()" *ngIf="isCameraAvailable">
+                                        <div class="option-icon camera-icon">
+                                            <i class="bi bi-camera"></i>
+                                        </div>
+                                        <span class="option-label">Take Photo</span>
+                                        <small class="option-hint">Use device camera</small>
+                                    </div>
+
+                                    <!-- Native Camera Fallback (if MediaDevices not available) -->
+                                    <div class="upload-option" *ngIf="!isCameraAvailable" 
+                                         (click)="nativeCameraInput.click()">
+                                        <input #nativeCameraInput type="file" accept="image/*" capture="environment"
+                                            (change)="onNativeCameraCapture($event)" style="display: none">
+                                        <div class="option-icon camera-icon">
+                                            <i class="bi bi-camera"></i>
+                                        </div>
+                                        <span class="option-label">Take Photo</span>
+                                        <small class="option-hint">Use device camera</small>
                                     </div>
                                 </div>
-                                <div class="d-flex gap-2">
-                                    <button mat-icon-button color="primary" (click)="downloadFile(tenant.idProofFile)"
-                                        title="Download">
-                                        <i class="bi bi-download"></i>
+
+                                <small class="text-muted d-block mt-3 text-center">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Supported: PDF, JPG, PNG • Max: 5MB
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- File/Image Preview -->
+                        <ng-template #filePreview>
+                            <div class="file-preview-container">
+                                <!-- Image Preview -->
+                                <div *ngIf="capturedImageUrl" class="image-preview">
+                                    <img [src]="capturedImageUrl" alt="ID Proof Preview" class="preview-image">
+                                    <div class="preview-badge" *ngIf="showCameraPreview === false">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>{{ tenant.idProofFile?.name?.includes('capture') ? 'Captured' : 'Uploaded' }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- PDF/Non-image Preview -->
+                                <div *ngIf="!capturedImageUrl && tenant.idProofFile" class="pdf-preview">
+                                    <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
+                                </div>
+
+                                <!-- File Info -->
+                                <div class="file-info">
+                                    <div class="file-details">
+                                        <div class="file-name text-truncate">
+                                            {{ tenant.idProofFile?.name || 'Captured Image' }}
+                                        </div>
+                                        <small class="file-size text-muted">
+                                            {{ formatFileSize(tenant.idProofFile?.size) }}
+                                        </small>
+                                    </div>
+                                    
+                                    <div class="file-actions">
+                                        <button mat-icon-button color="primary" 
+                                                (click)="downloadFile(tenant.idProofFile)"
+                                                matTooltip="Download">
+                                            <i class="bi bi-download"></i>
+                                        </button>
+                                        <button mat-icon-button color="warn" 
+                                                (click)="removeIdProof()"
+                                                matTooltip="Remove">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Re-upload/Re-capture Options for Mobile -->
+                                <div class="retake-options" *ngIf="isMobileOrTablet">
+                                    <button mat-stroked-button color="primary" (click)="mobileRetakeInput.click()">
+                                        <i class="bi bi-upload me-1"></i> Re-upload
                                     </button>
-                                    <button mat-icon-button color="warn" (click)="removeIdProof()" title="Remove">
-                                        <i class="bi bi-trash"></i>
+                                    <input #mobileRetakeInput type="file" (change)="onIdFileSelected($event)"
+                                        accept=".pdf,.jpg,.jpeg,.png" style="display: none">
+                                    
+                                    <button mat-stroked-button color="accent" (click)="openCamera()" 
+                                            *ngIf="isCameraAvailable">
+                                        <i class="bi bi-camera me-1"></i> Retake
                                     </button>
                                 </div>
                             </div>
