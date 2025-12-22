@@ -91,6 +91,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
+import { TenantComplaintsComponent } from './tenant-complaints/tenant-complaints.component';
+import { TenantAnnouncementsComponent } from './tenant-announcements/tenant-announcements.component';
 
 @NgModule({
   declarations: [
@@ -161,7 +164,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     SubscriptionBillingHistoryComponent,
     AnnouncementsComponent,
     AnnouncementsModalComponent,
-    DashboardComponent  
+    DashboardComponent,
+    TenantMenuComponent,
+    TenantComplaintsComponent,
+    TenantAnnouncementsComponent  
   ],
   imports: [
     CommonModule,

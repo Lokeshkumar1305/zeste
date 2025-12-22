@@ -137,7 +137,19 @@ export class SidenavComponent implements OnInit, OnDestroy {
         { title: 'My Subscription', route: '/core/subscription-packages' },
         { title: 'Billing History', route: '/core/subscription-billing-history' }
       ]
-    }
+    },
+    {
+      key: 'tenants',
+      title: 'TENANTS',
+      icon: 'people',
+      items: [
+        { title: 'Announcements', route: '/core/tenant-announcements' },
+           { title: 'Complaints', route: '/core/tenant-complaints' },
+         { title: 'Menu', route: '/core/tenant-menu' },
+
+      ]
+      
+    },
   ];
   constructor(
     private router: Router,

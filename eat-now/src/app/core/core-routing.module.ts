@@ -42,6 +42,9 @@ import { SubscriptionPackagesModalComponent } from './subscription-packages-moda
 import { SubscriptionBillingHistoryComponent } from './subscription-billing-history/subscription-billing-history.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { TenantAnnouncementsComponent } from './tenant-announcements/tenant-announcements.component';
+import { TenantComplaintsComponent } from './tenant-complaints/tenant-complaints.component';
+import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -84,6 +87,9 @@ const routes: Routes = [
   { path: 'subscription-packages-modal', component: SubscriptionPackagesModalComponent },
   { path: 'subscription-billing-history', component: SubscriptionBillingHistoryComponent },
   { path: 'announcements', component: AnnouncementsComponent },
+  { path: 'tenant-announcements', component: TenantAnnouncementsComponent },
+  { path: 'tenant-complaints', component: TenantComplaintsComponent },
+  { path: 'tenant-menu', component: TenantMenuComponent },
 
 ];
 
