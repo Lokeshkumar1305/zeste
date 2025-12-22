@@ -1,1 +1,333 @@
-<p>inventory-dashboard works!</p>
+<div class="inventory-dashboard">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="title-block">
+      <h2 class="page-title">
+        <i class="bi bi-graph-up-arrow me-2"></i>
+        Inventory Dashboard
+      </h2>
+      <p class="page-subtitle">
+        Quick overview of your items, stock health, suppliers and purchase orders
+      </p>
+    </div>
+
+    <!-- Desktop/Tablet quick actions -->
+    <div class="quick-actions d-none d-md-flex">
+      <button mat-flat-button color="primary" (click)="onAddItem()" matTooltip="Add new inventory item">
+        <i class="bi bi-box-seam me-1"></i> Add Item
+      </button>
+      <button mat-stroked-button color="primary" (click)="onStockMovement()" matTooltip="Stock IN / OUT">
+        <i class="bi bi-arrow-left-right me-1"></i> Stock Movement
+      </button>
+      <button mat-stroked-button (click)="onCreatePO()" matTooltip="Create purchase order">
+        <i class="bi bi-file-earmark-plus me-1"></i> Purchase Order
+      </button>
+    </div>
+
+    <!-- Mobile quick actions menu -->
+    <div class="quick-actions-mobile d-md-none">
+      <button mat-icon-button [matMenuTriggerFor]="quickMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #quickMenu="matMenu">
+        <button mat-menu-item (click)="onAddItem()">
+          <i class="bi bi-box-seam me-2"></i> Add Item
+        </button>
+        <button mat-menu-item (click)="onStockMovement()">
+          <i class="bi bi-arrow-left-right me-2"></i> Stock Movement
+        </button>
+        <button mat-menu-item (click)="onCreatePO()">
+          <i class="bi bi-file-earmark-plus me-2"></i> Purchase Order
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="onAddCategory()">
+          <i class="bi bi-folder-plus me-2"></i> Add Category
+        </button>
+        <button mat-menu-item (click)="onAddSupplier()">
+          <i class="bi bi-building-add me-2"></i> Add Supplier
+        </button>
+        <button mat-menu-item (click)="onAddUnit()">
+          <i class="bi bi-rulers me-2"></i> Add Unit
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+    <div class="summary-card summary-primary">
+      <div class="summary-icon">
+        <i class="bi bi-box-seam"></i>
+      </div>
+      <div class="summary-content">
+        <span class="summary-label">Total Items</span>
+        <span class="summary-value">{{ totalItems }}</span>
+        <span class="summary-hint">Across all categories</span>
+      </div>
+    </div>
+
+    <div class="summary-card summary-accent">
+      <div class="summary-icon">
+        <i class="bi bi-folder"></i>
+      </div>
+      <div class="summary-content">
+        <span class="summary-label">Categories</span>
+        <span class="summary-value">{{ totalCategories }}</span>
+        <span class="summary-hint">Organize items better</span>
+      </div>
+    </div>
+
+    <div class="summary-card summary-info">
+      <div class="summary-icon">
+        <i class="bi bi-building"></i>
+      </div>
+      <div class="summary-content">
+        <span class="summary-label">Suppliers</span>
+        <span class="summary-value">{{ totalSuppliers }}</span>
+        <span class="summary-hint">Active purchase partners</span>
+      </div>
+    </div>
+
+    <div class="summary-card summary-success">
+      <div class="summary-icon">
+        <i class="bi bi-cash-stack"></i>
+      </div>
+      <div class="summary-content">
+        <span class="summary-label">Stock Value</span>
+        <span class="summary-value">
+          ₹ {{ totalStockValue | number: '1.0-0' }}
+        </span>
+        <span class="summary-hint">Approx. current value</span>
+      </div>
+    </div>
+
+    <div class="summary-card summary-warning">
+      <div class="summary-icon">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+      <div class="summary-content">
+        <span class="summary-label">Low Stock</span>
+        <span class="summary-value">{{ lowStockCount }}</span>
+        <span class="summary-hint">Needs attention soon</span>
+      </div>
+    </div>
+
+    <div class="summary-card summary-danger">
+      <div class="summary-icon">
+        <i class="bi bi-x-circle"></i>
+      </div>
+      <div class="summary-content">
+        <span class="summary-label">Out of Stock</span>
+        <span class="summary-value">{{ outOfStockCount }}</span>
+        <span class="summary-hint">Order immediately</span>
+      </div>
+    </div>
+
+    <div class="summary-card summary-secondary">
+      <div class="summary-icon">
+        <i class="bi bi-clipboard-check"></i>
+      </div>
+      <div class="summary-content">
+        <span class="summary-label">Open Purchase Orders</span>
+        <span class="summary-value">{{ pendingOrderCount }}</span>
+        <span class="summary-hint">Pending / Approved / Ordered</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT GRID -->
+  <div class="content-grid">
+    <!-- LEFT: charts -->
+    <div class="left-column">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">
+            <i class="bi bi-bar-chart me-1"></i>
+            Stock by Category
+          </span>
+        </div>
+        <div class="panel-body panel-chart">
+          <canvas
+            baseChart
+            [data]="stockByCategoryData"
+            [options]="stockByCategoryOptions"
+            [type]="'bar'">
+          </canvas>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">
+            <i class="bi bi-pie-chart me-1"></i>
+            Stock Health (OK / Low / Out)
+          </span>
+        </div>
+        <div class="panel-body panel-chart">
+          <canvas
+            baseChart
+            [data]="stockStatusData"
+            [options]="stockStatusOptions"
+            [type]="'doughnut'">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: lists -->
+    <div class="right-column">
+      <!-- Low Stock Items -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            Low & Out of Stock Items
+          </span>
+          <button
+            mat-button
+            color="primary"
+            class="panel-action"
+            (click)="onCreatePO()">
+            <i class="bi bi-cart-plus me-1"></i> Create PO
+          </button>
+        </div>
+        <div class="panel-body list-body">
+          <div
+            class="stock-item-row"
+            *ngFor="let item of alertItems">
+            <div class="item-main">
+              <div class="name-row">
+                <span class="item-name">{{ item.name }}</span>
+                <span
+                  class="status-chip"
+                  [ngClass]="'status-' + getStockStatus(item)">
+                  {{ getStockStatusText(item) }}
+                </span>
+              </div>
+              <div class="meta-row">
+                <span class="category">
+                  <i class="bi bi-folder2 me-1"></i>
+                  {{ item.categoryName || 'Uncategorized' }}
+                </span>
+                <span class="min-level">
+                  Min: {{ item.minStockLevel }} {{ item.unitName }}
+                </span>
+              </div>
+            </div>
+            <div class="item-stock">
+              <span class="stock-value">{{ item.currentStock }}</span>
+              <span class="stock-unit">{{ item.unitName }}</span>
+            </div>
+          </div>
+
+          <div class="empty-state" *ngIf="alertItems.length === 0">
+            <i class="bi bi-check-circle text-success fs-3 mb-2"></i>
+            <p class="mb-0">All items are above minimum stock levels.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Purchase Orders -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">
+            <i class="bi bi-file-earmark-text me-1"></i>
+            Recent Purchase Orders
+          </span>
+          <button
+            mat-button
+            color="primary"
+            class="panel-action"
+            (click)="onCreatePO()">
+            <i class="bi bi-plus-lg me-1"></i> New PO
+          </button>
+        </div>
+        <div class="panel-body list-body">
+          <div class="po-row" *ngFor="let po of recentPurchaseOrders">
+            <div class="po-main">
+              <div class="po-top">
+                <span class="po-id">#{{ po.id }}</span>
+                <span
+                  class="po-status"
+                  [ngClass]="'status-' + po.status.toLowerCase()">
+                  {{ po.status }}
+                </span>
+              </div>
+              <div class="po-meta">
+                <span class="supplier">
+                  <i class="bi bi-building me-1"></i>
+                  {{ po.supplierName }}
+                </span>
+                <span class="date">
+                  <i class="bi bi-calendar3 me-1"></i>
+                  {{ po.orderDate | date: 'd MMM, y' }}
+                </span>
+              </div>
+            </div>
+            <div class="po-amount">
+              ₹ {{ po.totalAmount | number: '1.0-0' }}
+            </div>
+          </div>
+
+          <div class="empty-state" *ngIf="recentPurchaseOrders.length === 0">
+            <i class="bi bi-inbox fs-3 mb-2"></i>
+            <p class="mb-0">No purchase orders yet.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Stock Movements -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">
+            <i class="bi bi-clock-history me-1"></i>
+            Recent Stock Movements
+          </span>
+          <button
+            mat-button
+            color="primary"
+            class="panel-action"
+            (click)="onStockMovement()">
+            <i class="bi bi-arrow-left-right me-1"></i> Add Movement
+          </button>
+        </div>
+        <div class="panel-body list-body">
+          <div class="movement-row" *ngFor="let m of recentMovements">
+            <div class="movement-main">
+              <div class="movement-top">
+                <span class="movement-item">{{ m.itemName }}</span>
+                <span
+                  class="movement-type"
+                  [ngClass]="{
+                    'type-in': m.type === 'IN',
+                    'type-out': m.type === 'OUT'
+                  }">
+                  <i
+                    class="bi"
+                    [ngClass]="{
+                      'bi-arrow-down-circle': m.type === 'IN',
+                      'bi-arrow-up-circle': m.type === 'OUT'
+                    }"></i>
+                  {{ m.type === 'IN' ? 'Stock IN' : 'Stock OUT' }}
+                </span>
+              </div>
+              <div class="movement-meta">
+                <span class="qty">
+                  {{ m.quantity }}
+                </span>
+                <span class="date">
+                  {{ m.date | date: 'd MMM, y, h:mm a' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="empty-state" *ngIf="recentMovements.length === 0">
+            <i class="bi bi-activity fs-3 mb-2"></i>
+            <p class="mb-0">No stock movements recorded yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
