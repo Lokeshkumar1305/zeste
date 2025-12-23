@@ -1,7 +1,6 @@
-<!-- tenant-announcements.component.html -->
 <div class="announcements-page">
   
-  <!-- SIMPLE HEADER -->
+  <!-- HEADER -->
   <div class="page-header">
     <div class="container">
       <div class="header-top">
@@ -16,21 +15,39 @@
         </div>
       </div>
 
-      <!-- SIMPLE STATS -->
-      <div class="stats-row">
-        <div class="stat-item">
-          <span class="stat-number">{{ stats.total }}</span>
-          <span class="stat-label">Total</span>
+      <!-- STATS CARDS -->
+      <div class="stats-cards">
+        <!-- Total -->
+        <div class="stat-card total">
+          <div class="stat-icon">
+            <i class="bi bi-megaphone-fill"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number">{{ stats.total }}</div>
+            <div class="stat-label">Total</div>
+          </div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item highlight">
-          <span class="stat-number">{{ stats.unread }}</span>
-          <span class="stat-label">Unread</span>
+
+        <!-- Unread -->
+        <div class="stat-card unread">
+          <div class="stat-icon">
+            <i class="bi bi-envelope-open-fill"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number">{{ stats.unread }}</div>
+            <div class="stat-label">Unread</div>
+          </div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-number">{{ stats.important }}</span>
-          <span class="stat-label">Important</span>
+
+        <!-- Important -->
+        <div class="stat-card important">
+          <div class="stat-icon">
+            <i class="bi bi-exclamation-diamond-fill"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number">{{ stats.important }}</div>
+            <div class="stat-label">Important</div>
+          </div>
         </div>
       </div>
     </div>
