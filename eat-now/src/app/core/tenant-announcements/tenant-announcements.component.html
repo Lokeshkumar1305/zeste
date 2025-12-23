@@ -1,1 +1,213 @@
-<p>tenant-announcements works!</p>
+<!-- tenant-announcements.component.html -->
+<div class="announcements-page">
+  
+  <!-- SIMPLE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <div class="header-top">
+        <div class="header-left">
+          <h1 class="page-title">📢 Announcements</h1>
+          <p class="page-description">Stay informed with the latest updates</p>
+        </div>
+        <div class="header-right">
+          <button class="btn-refresh" (click)="refreshAnnouncements()" [disabled]="isLoading">
+            <i class="bi bi-arrow-clockwise" [class.spinning]="isLoading"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- SIMPLE STATS -->
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-number">{{ stats.total }}</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item highlight">
+          <span class="stat-number">{{ stats.unread }}</span>
+          <span class="stat-label">Unread</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">{{ stats.important }}</span>
+          <span class="stat-label">Important</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH AND FILTERS -->
+  <div class="search-filter-section">
+    <div class="container">
+      
+      <!-- Search Bar -->
+      <div class="search-box">
+        <i class="bi bi-search search-icon"></i>
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search announcements..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearch($event)">
+        <button class="clear-search" *ngIf="searchTerm" (click)="clearSearch()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button 
+          *ngFor="let filter of filterOptions"
+          class="filter-tab"
+          [class.active]="selectedFilter === filter.value"
+          (click)="onFilterChange(filter.value)">
+          <i class="bi {{ filter.icon }}"></i>
+          <span>{{ filter.label }}</span>
+        </button>
+      </div>
+
+      <!-- Mark All as Read -->
+      <button 
+        class="btn-mark-all" 
+        *ngIf="stats.unread > 0"
+        (click)="markAllAsRead()">
+        <i class="bi bi-check-all"></i>
+        Mark all as read
+      </button>
+    </div>
+  </div>
+
+  <!-- ANNOUNCEMENTS LIST -->
+  <div class="announcements-section">
+    <div class="container">
+
+      <!-- Loading State -->
+      <div class="loading-state" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading announcements...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="!isLoading && filteredAnnouncements.length === 0">
+        <div class="empty-icon">📭</div>
+        <h3>No announcements found</h3>
+        <p>{{ searchTerm ? 'Try a different search term' : 'Check back later for updates' }}</p>
+      </div>
+
+      <!-- Announcements List -->
+      <div class="announcements-list" *ngIf="!isLoading && filteredAnnouncements.length > 0">
+        <div 
+          *ngFor="let announcement of filteredAnnouncements"
+          class="announcement-item"
+          [class.unread]="!announcement.isRead"
+          [class.important]="announcement.priority === 'urgent' || announcement.priority === 'high'"
+          (click)="viewAnnouncement(announcement)">
+          
+          <!-- Left Side: Icon & Content -->
+          <div class="announcement-main">
+            <div class="announcement-icon" [style.background]="getTypeColor(announcement.type)">
+              <i class="bi {{ getTypeIcon(announcement.type) }}"></i>
+            </div>
+
+            <div class="announcement-content">
+              <div class="announcement-header">
+                <h3 class="announcement-title">
+                  <span class="unread-dot" *ngIf="!announcement.isRead"></span>
+                  {{ announcement.title }}
+                </h3>
+                <span class="announcement-priority" [class]="getPriorityClass(announcement.priority)">
+                  {{ announcement.priority }}
+                </span>
+              </div>
+
+              <p class="announcement-message">{{ announcement.message }}</p>
+
+              <div class="announcement-meta">
+                <span class="meta-item">
+                  <i class="bi bi-person"></i>
+                  {{ announcement.author }}
+                </span>
+                <span class="meta-item">
+                  <i class="bi bi-calendar3"></i>
+                  {{ announcement.createdAt | date:'MMM d, y' }}
+                </span>
+                <span class="meta-item" *ngIf="announcement.expiryDate">
+                  <i class="bi bi-clock"></i>
+                  {{ getDaysUntilExpiry(announcement) }} days left
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side: Actions -->
+          <div class="announcement-actions">
+            <button class="btn-action" (click)="markAsRead(announcement, $event)" *ngIf="!announcement.isRead">
+              <i class="bi bi-check-lg"></i>
+            </button>
+            <i class="bi bi-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ANNOUNCEMENT DETAIL MODAL -->
+  <div class="modal-overlay" *ngIf="selectedAnnouncement" (click)="closeAnnouncementDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-type-badge" [style.background]="getTypeColor(selectedAnnouncement.type)">
+          <i class="bi {{ getTypeIcon(selectedAnnouncement.type) }}"></i>
+          {{ selectedAnnouncement.type }}
+        </div>
+        <button class="btn-close-modal" (click)="closeAnnouncementDetail()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <h2 class="modal-title">{{ selectedAnnouncement.title }}</h2>
+
+        <div class="modal-info">
+          <div class="info-row">
+            <i class="bi bi-person-circle"></i>
+            <span><strong>Posted by:</strong> {{ selectedAnnouncement.author }}</span>
+          </div>
+          <div class="info-row">
+            <i class="bi bi-calendar3"></i>
+            <span><strong>Date:</strong> {{ selectedAnnouncement.createdAt | date:'EEEE, MMMM d, y' }}</span>
+          </div>
+          <div class="info-row" *ngIf="selectedAnnouncement.expiryDate">
+            <i class="bi bi-hourglass-split"></i>
+            <span><strong>Expires:</strong> {{ selectedAnnouncement.expiryDate | date:'MMMM d, y' }}</span>
+          </div>
+        </div>
+
+        <div class="modal-message">
+          {{ selectedAnnouncement.message }}
+        </div>
+
+        <div class="expiry-warning" *ngIf="isExpiringSoon(selectedAnnouncement)">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <span>This announcement expires in {{ getDaysUntilExpiry(selectedAnnouncement) }} days</span>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeAnnouncementDetail()">
+          Close
+        </button>
+        <button class="btn-primary" *ngIf="!selectedAnnouncement.isRead" (click)="markAsRead(selectedAnnouncement); closeAnnouncementDetail()">
+          <i class="bi bi-check-lg"></i>
+          Mark as Read
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
