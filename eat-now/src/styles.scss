@@ -1,10 +1,46 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Font: Plus Jakarta Sans */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* ------------------------------------------------------------------
-   MIXIN DEFINITION – MUST COME FIRST!
+   SASS TOKENS – COLORS & TYPOGRAPHY
 ------------------------------------------------------------------ */
+
+$plus-font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont,
+  'Segoe UI', Roboto, sans-serif;
+
+/* Primary palette from your color system */
+$color-primary-50:  #E5F1F8;
+$color-primary-100: #E5E9F2;
+$color-primary-200: #376DAA;
+$color-primary-300: #2D5A90;
+$color-primary-400: #234B76;
+$color-primary-500: #003B8A; // main primary
+$color-primary-600: #1A315D;
+$color-primary-700: #002B61;
+$color-primary-800: #001B30;
+$color-primary-900: #000D1F;
+
+/* Secondary (teal) palette */
+$color-secondary-50:  #E3F7F3;
+$color-secondary-300: #12B293;
+$color-secondary-500: #0B8777;
+$color-secondary-700: #046F68;
+$color-secondary-900: #045B40;
+
+/* Neutral palette */
+$color-neutral-100: #1A1A1A;
+$color-neutral-300: #4D4D4D;
+$color-neutral-500: #808080;
+$color-neutral-700: #B3B3B3;
+$color-neutral-900: #F2F2F2;
+
+/* ------------------------------------------------------------------
+   MIXINS
+------------------------------------------------------------------ */
+
 @mixin brand-overrides($primary, $dark, $light, $active) {
   --brand-primary: #{$primary};
   --brand-primary-dark: #{$dark};
@@ -16,67 +52,128 @@
 }
 
 /* ------------------------------------------------------------------
-   ROOT VARIABLES – LIGHT MODE (default)
+   ROOT VARIABLES – LIGHT THEME
 ------------------------------------------------------------------ */
+
 :root {
-  --brand-primary: #1A365D;
-  --brand-primary-700: #14294A;
-  --brand-primary-dark: #14294A;
-  --brand-primary-light: #E0E7F5;
-  --brand-green: #20C997;
-  --text-muted: #6c757d;
-  --bg-page: #F9FAFB;
+  /* Font */
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+
+  /* Primary palette */
+  --color-primary-50:  #{$color-primary-50};
+  --color-primary-100: #{$color-primary-100};
+  --color-primary-200: #{$color-primary-200};
+  --color-primary-300: #{$color-primary-300};
+  --color-primary-400: #{$color-primary-400};
+  --color-primary-500: #{$color-primary-500};
+  --color-primary-600: #{$color-primary-600};
+  --color-primary-700: #{$color-primary-700};
+  --color-primary-800: #{$color-primary-800};
+  --color-primary-900: #{$color-primary-900};
+
+  /* Secondary palette */
+  --color-secondary-50:  #{$color-secondary-50};
+  --color-secondary-300: #{$color-secondary-300};
+  --color-secondary-500: #{$color-secondary-500};
+  --color-secondary-700: #{$color-secondary-700};
+  --color-secondary-900: #{$color-secondary-900};
+
+  /* Neutrals */
+  --color-neutral-100: #{$color-neutral-100};
+  --color-neutral-300: #{$color-neutral-300};
+  --color-neutral-500: #{$color-neutral-500};
+  --color-neutral-700: #{$color-neutral-700};
+  --color-neutral-900: #{$color-neutral-900};
+
+  /* Semantic aliases */
+  --brand-primary: var(--color-primary-500);
+  --brand-primary-700: var(--color-primary-700);
+  --brand-primary-dark: var(--color-primary-700);
+  --brand-primary-light: var(--color-primary-50);
+
+  --brand-accent: var(--color-secondary-500);
+  --brand-green: var(--color-secondary-500);
+
+  --text-color: var(--color-neutral-100);
+  --text-secondary: var(--color-neutral-300);
+  --text-muted: var(--color-neutral-500);
+
+  --bg-page: #ffffff;
   --background: #ffffff;
-  --text-color: #1f2937;
-  --text-secondary: #6b7280;
   --card-background: #ffffff;
-  --card-border: #e5e7eb;
-  --input-background: #F4F5F7;
+  --card-border: #E5E7EB;
+
+  --input-background: #F5F7FB;
   --input-border: var(--brand-primary);
+
+  --button-background: var(--brand-primary);
+  --button-text: #ffffff;
+  --button-hover: var(--color-primary-700);
+  --button-active: var(--color-primary-800);
+
+  --scrollbar-track: #F3F4F6;
+  --scrollbar-thumb: #D1D5DB;
+  --scrollbar-thumb-hover: #9CA3AF;
+
+  --header-bg: #ffffff;
+  --sidenav-bg: #111827;
+
+  /* Status tokens */
+  --status-available-color: var(--brand-green);
+  --status-available-bg: rgba(11, 135, 119, 0.12);
+  --status-maintenance-color: #94a3b8;
+  --status-maintenance-bg: rgba(148, 163, 184, 0.16);
+  --status-occupied-color: #f59e0b;
+  --status-occupied-bg: rgba(245, 158, 11, 0.16);
+}
+
+/* ------------------------------------------------------------------
+   DARK THEME
+------------------------------------------------------------------ */
+
+[data-theme='dark'] {
+  --bg-page: #020617;
+  --background: #020617;
+  --card-background: #030712;
+  --card-border: #111827;
+
+  --text-color: var(--color-neutral-900);
+  --text-secondary: #E5E7EB;
+  --text-muted: #9CA3AF;
+
+  --brand-primary: var(--color-primary-300);
+  --brand-primary-700: var(--color-primary-500);
+  --brand-primary-dark: var(--color-primary-700);
+  --brand-primary-light: #111827;
+
+  --brand-accent: var(--color-secondary-500);
+  --brand-green: var(--color-secondary-500);
+
+  --input-background: #020617;
+  --input-border: var(--brand-primary);
+
   --button-background: var(--brand-primary);
   --button-text: #ffffff;
   --button-hover: var(--brand-primary-700);
   --button-active: var(--brand-primary-dark);
-  --scrollbar-track: #f4f4f4;
-  --scrollbar-thumb: #DEE0E1;
-  --scrollbar-thumb-hover: #BDC1C6;
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --header-bg: #ffffff;
-  --sidenav-bg: #ffffff;
+
+  --scrollbar-track: #020617;
+  --scrollbar-thumb: #374151;
+  --scrollbar-thumb-hover: #4B5563;
+
+  --header-bg: #020617;
+  --sidenav-bg: #020617;
+
+  --status-available-bg: rgba(11, 135, 119, 0.24);
+  --status-maintenance-bg: rgba(148, 163, 184, 0.28);
+  --status-occupied-bg: rgba(245, 158, 11, 0.28);
 }
 
 /* ------------------------------------------------------------------
-   DARK MODE
+   BRAND COLOR OVERRIDES
 ------------------------------------------------------------------ */
-[data-theme='dark'] {
-  --brand-primary: #3B5A8C;
-  --brand-primary-700: #2A456F;
-  --brand-primary-dark: #2A456F;
-  --brand-primary-light: #8BA4D0;
-  --brand-green: #17A589;
-  --text-color: #e2e8f0;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --bg-page: #0f172a;
-  --background: #1e293b;
-  --card-background: #1f2937;
-  --card-border: #374151;
-  --input-background: #111827;
-  --input-border: var(--brand-primary);
-  --button-background: var(--brand-primary);
-  --button-text: #e2e8f0;
-  --button-hover: #4A6B9E;
-  --button-active: #3B5A8C;
-  --scrollbar-track: #1e293b;
-  --scrollbar-thumb: #334155;
-  --scrollbar-thumb-hover: #475569;
-  --header-bg: #1e293b;
-  --sidenav-bg: #1e293b;
-}
 
-/* ------------------------------------------------------------------
-   BRAND-COLOR OVERRIDES
------------------------------------------------------------------- */
 [data-brand-color='#1A365D'] {
   @include brand-overrides(#1A365D, #14294A, #E0E7F5, #0F1E35);
 }
@@ -104,6 +201,7 @@
 /* ------------------------------------------------------------------
    GLOBAL RESET & BASE
 ------------------------------------------------------------------ */
+
 *,
 *::before,
 *::after {
@@ -134,11 +232,27 @@ body {
   height: 100%;
 }
 
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
 /* ------------------------------------------------------------------
    FOCUS, SCROLL, TOUCH
 ------------------------------------------------------------------ */
+
 :focus-visible {
-  outline: 2px solid #1e40af;
+  outline: 2px solid var(--color-primary-500);
   outline-offset: 2px;
 }
 
@@ -149,10 +263,9 @@ body {
 }
 
 @media (hover: none) and (pointer: coarse) {
-
   button,
   a,
-  [role="button"] {
+  [role='button'] {
     min-height: 44px;
     min-width: 44px;
   }
@@ -165,29 +278,134 @@ body {
 }
 
 /* ------------------------------------------------------------------
-   TYPOGRAPHY SCALE
+   TYPOGRAPHY UTILITIES
 ------------------------------------------------------------------ */
+
 h1 {
-  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-size: 3rem;
+  line-height: 3.5rem;
+  font-weight: 500;
 }
 
 h2 {
-  font-size: clamp(1.5rem, 3.5vw, 1.875rem);
+  font-size: 2.5rem;
+  line-height: 3rem;
+  font-weight: 500;
 }
 
 h3 {
-  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-weight: 500;
 }
 
 h4 {
-  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+  font-size: 1.75rem;
+  line-height: 2.25rem;
+  font-weight: 500;
 }
 
-/* ------------------------------------------------------------------
-   PRINT STYLES
------------------------------------------------------------------- */
-@media print {
+h5 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 500;
+}
 
+.title-1 {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+
+.title-2 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+
+.body-text {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
+.caption {
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+/* Full scale utilities (same as original, adapted to Plus Jakarta) */
+.f-128-r { font-size: 8rem; line-height: 8rem; font-weight: 400; font-family: var(--font-family); }
+.f-128-m { font-size: 8rem; line-height: 8rem; font-weight: 500; font-family: var(--font-family); }
+.f-128-b { font-size: 8rem; line-height: 8rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-96-r  { font-size: 6rem; line-height: 6rem; font-weight: 400; font-family: var(--font-family); }
+.f-96-m  { font-size: 6rem; line-height: 6rem; font-weight: 500; font-family: var(--font-family); }
+.f-96-b  { font-size: 6rem; line-height: 6rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-64-r  { font-size: 4rem; line-height: 4rem; font-weight: 400; font-family: var(--font-family); }
+.f-64-m  { font-size: 4rem; line-height: 4rem; font-weight: 500; font-family: var(--font-family); }
+.f-64-b  { font-size: 4rem; line-height: 4rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-48-r  { font-size: 3rem; line-height: 3.5rem; font-weight: 400; font-family: var(--font-family); }
+.f-48-m  { font-size: 3rem; line-height: 3.5rem; font-weight: 500; font-family: var(--font-family); }
+.f-48-b  { font-size: 3rem; line-height: 3.5rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-40-r  { font-size: 2.5rem; line-height: 3rem; font-weight: 400; font-family: var(--font-family); }
+.f-40-m  { font-size: 2.5rem; line-height: 3rem; font-weight: 500; font-family: var(--font-family); }
+.f-40-b  { font-size: 2.5rem; line-height: 3rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-36-r  { font-size: 2.25rem; line-height: 2.5rem; font-weight: 400; font-family: var(--font-family); }
+.f-36-m  { font-size: 2.25rem; line-height: 2.5rem; font-weight: 500; font-family: var(--font-family); }
+.f-36-b  { font-size: 2.25rem; line-height: 2.5rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-32-r  { font-size: 2rem; line-height: 2.5rem; font-weight: 400; font-family: var(--font-family); }
+.f-32-m  { font-size: 2rem; line-height: 2.5rem; font-weight: 500; font-family: var(--font-family); }
+.f-32-b  { font-size: 2rem; line-height: 2.5rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-28-r  { font-size: 1.75rem; line-height: 2.25rem; font-weight: 400; font-family: var(--font-family); }
+.f-28-m  { font-size: 1.75rem; line-height: 2.25rem; font-weight: 500; font-family: var(--font-family); }
+.f-28-b  { font-size: 1.75rem; line-height: 2.25rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-24-r  { font-size: 1.5rem; line-height: 2rem; font-weight: 400; font-family: var(--font-family); }
+.f-24-m  { font-size: 1.5rem; line-height: 2rem; font-weight: 500; font-family: var(--font-family); }
+.f-24-b  { font-size: 1.5rem; line-height: 2rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-20-r  { font-size: 1.25rem; line-height: 1.75rem; font-weight: 400; font-family: var(--font-family); }
+.f-20-m  { font-size: 1.25rem; line-height: 1.75rem; font-weight: 500; font-family: var(--font-family); }
+.f-20-b  { font-size: 1.25rem; line-height: 1.75rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-18-r  { font-size: 1.125rem; line-height: 1.75rem; font-weight: 400; font-family: var(--font-family); }
+.f-18-m  { font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; font-family: var(--font-family); }
+.f-18-b  { font-size: 1.125rem; line-height: 1.75rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-16-r  { font-size: 1rem; line-height: 1.5rem; font-weight: 400; font-family: var(--font-family); }
+.f-16-m  { font-size: 1rem; line-height: 1.5rem; font-weight: 500; font-family: var(--font-family); }
+.f-16-b  { font-size: 1rem; line-height: 1.5rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-14-r  { font-size: 0.875rem; line-height: 1.5rem; font-weight: 400; font-family: var(--font-family); }
+.f-14-m  { font-size: 0.875rem; line-height: 1.5rem; font-weight: 500; font-family: var(--font-family); }
+.f-14-b  { font-size: 0.875rem; line-height: 1.5rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-12-r  { font-size: 0.75rem; line-height: 1.25rem; font-weight: 400; font-family: var(--font-family); }
+.f-12-m  { font-size: 0.75rem; line-height: 1.25rem; font-weight: 500; font-family: var(--font-family); }
+.f-12-b  { font-size: 0.75rem; line-height: 1.25rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-10-r  { font-size: 0.625rem; line-height: 1rem; font-weight: 400; font-family: var(--font-family); }
+.f-10-m  { font-size: 0.625rem; line-height: 1rem; font-weight: 500; font-family: var(--font-family); }
+.f-10-b  { font-size: 0.625rem; line-height: 1rem; font-weight: 700; font-family: var(--font-family); }
+
+.f-14-r-07 { @extend .f-14-r; opacity: 0.7; }
+.f-14-m-07 { @extend .f-14-m; opacity: 0.7; }
+.f-12-r-07 { @extend .f-12-r; opacity: 0.7; }
+.f-12-m-07 { @extend .f-12-m; opacity: 0.7; }
+
+/* ------------------------------------------------------------------
+   PRINT
+------------------------------------------------------------------ */
+
+@media print {
   .sidenav,
   .app-header,
   .breadcrumb-bar {
@@ -206,19 +424,21 @@ h4 {
 /* ------------------------------------------------------------------
    BACKGROUND FIXES
 ------------------------------------------------------------------ */
+
 app-root,
 app-layout,
 .mat-drawer-container,
 .mat-drawer-content,
 .mat-sidenav-content,
 main,
-.router-outlet+* {
+.router-outlet + * {
   background: var(--bg-page) !important;
 }
 
 /* ------------------------------------------------------------------
    SCROLLBAR
 ------------------------------------------------------------------ */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -238,52 +458,131 @@ main,
 }
 
 /* ------------------------------------------------------------------
-   MATERIAL THEME
+   ANGULAR MATERIAL THEME
 ------------------------------------------------------------------ */
-$eat-now-primary-palette: (
-  100: #E0E7F5,
-  300: #8BA4D0,
-  500: #4A6B9E,
-  700: #2A456F,
-  900: #1A365D,
-  contrast: (100: #1A365D, 300: #1A1A1A, 500: #ffffff, 700: #ffffff, 900: #ffffff)
-);
-$eat-now-accent-palette: (
-  100: #E8EFF6,
-  300: #376DAA,
-  500: #2D5A90,
-  700: #234876,
-  900: #1A365D,
-  contrast: (100: #001B3D, 300: #ffffff, 500: #ffffff, 700: #F2F2F2, 900: #F2F2F2)
+
+$app-primary-palette: (
+  50:  $color-primary-50,
+  100: $color-primary-100,
+  200: $color-primary-200,
+  300: $color-primary-300,
+  400: $color-primary-400,
+  500: $color-primary-500,
+  600: $color-primary-600,
+  700: $color-primary-700,
+  800: $color-primary-800,
+  900: $color-primary-900,
+  A100: $color-primary-100,
+  A200: $color-primary-300,
+  A400: $color-primary-500,
+  A700: $color-primary-700,
+  contrast: (
+    50:  $color-neutral-100,
+    100: $color-neutral-100,
+    200: #ffffff,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: $color-neutral-100,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff
+  )
 );
 
-$eat-now-primary: mat.define-palette($eat-now-primary-palette, 900);
-$eat-now-accent : mat.define-palette($eat-now-accent-palette, 900);
-$eat-now-warn : mat.define-palette(mat.$red-palette);
-$eat-now-typography: mat.define-typography-config($font-family: var(--font-family));
+$app-accent-palette: (
+  50:  $color-secondary-50,
+  100: $color-secondary-50,
+  200: $color-secondary-300,
+  300: $color-secondary-300,
+  400: $color-secondary-500,
+  500: $color-secondary-500,
+  600: $color-secondary-700,
+  700: $color-secondary-700,
+  800: $color-secondary-900,
+  900: $color-secondary-900,
+  A100: $color-secondary-50,
+  A200: $color-secondary-300,
+  A400: $color-secondary-500,
+  A700: $color-secondary-700,
+  contrast: (
+    50:  $color-neutral-100,
+    100: $color-neutral-100,
+    200: #ffffff,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: $color-neutral-100,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff
+  )
+);
 
-$eat-now-theme-light: mat.define-light-theme((color: (primary: $eat-now-primary, accent: $eat-now-accent, warn: $eat-now-warn),
-      typography: $eat-now-typography,
-      density: 0));
-$eat-now-theme-dark: mat.define-dark-theme((color: (primary: $eat-now-primary, accent: $eat-now-accent, warn: $eat-now-warn),
-      typography: $eat-now-typography,
-      density: 0));
+$app-primary: mat.define-palette($app-primary-palette, 500);
+$app-accent:  mat.define-palette($app-accent-palette, 500);
+$app-warn:    mat.define-palette(mat.$red-palette);
+
+$app-typography: mat.define-typography-config(
+  $font-family: $plus-font-family,
+  $headline-1: mat.define-typography-level(48px, 56px, 500),
+  $headline-2: mat.define-typography-level(40px, 48px, 500),
+  $headline-3: mat.define-typography-level(32px, 40px, 500),
+  $headline-4: mat.define-typography-level(28px, 36px, 500),
+  $headline-5: mat.define-typography-level(24px, 32px, 500),
+  $subtitle-1: mat.define-typography-level(18px, 28px, 500),
+  $subtitle-2: mat.define-typography-level(16px, 24px, 500),
+  $body-1:     mat.define-typography-level(14px, 22px, 400),
+  $body-2:     mat.define-typography-level(12px, 18px, 400),
+  $button:     mat.define-typography-level(14px, 20px, 600),
+  $caption:    mat.define-typography-level(12px, 18px, 400),
+  $overline:   mat.define-typography-level(10px, 16px, 500)
+);
+
+$app-theme-light: mat.define-light-theme((
+  color: (
+    primary: $app-primary,
+    accent:  $app-accent,
+    warn:    $app-warn
+  ),
+  typography: $app-typography,
+  density: 0
+));
+
+$app-theme-dark: mat.define-dark-theme((
+  color: (
+    primary: $app-primary,
+    accent:  $app-accent,
+    warn:    $app-warn
+  ),
+  typography: $app-typography,
+  density: 0
+));
 
 :root {
-  @include mat.all-component-colors($eat-now-theme-light);
-  @include mat.all-component-typographies($eat-now-theme-light);
+  @include mat.all-component-colors($app-theme-light);
+  @include mat.all-component-typographies($app-theme-light);
   @include mat.all-component-densities(-3);
   @include mat.button-density(-1);
   @include mat.form-field-density(-3);
 }
 
 [data-theme='dark'] {
-  @include mat.all-component-colors($eat-now-theme-dark);
+  @include mat.all-component-colors($app-theme-dark);
 }
 
 /* ------------------------------------------------------------------
    MATERIAL COMPONENT TWEAKS
 ------------------------------------------------------------------ */
+
 .mat-mdc-table .mdc-data-table__cell,
 .mat-mdc-table .mdc-data-table__header-cell {
   color: var(--text-color) !important;
@@ -330,59 +629,340 @@ $eat-now-theme-dark: mat.define-dark-theme((color: (primary: $eat-now-primary, a
   box-shadow: none !important;
 }
 
-/* Buttons */
-.mat-mdc-raised-button.mat-primary,
-.mat-mdc-unelevated-button.mat-primary,
+/* ------------------------------------------------------------------
+   APP BUTTONS (.btn) – OVERRIDING BOOTSTRAP WITH PRIMARY PALETTE
+------------------------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  cursor: pointer;
+  white-space: nowrap;
+  background-color: transparent;
+  color: var(--text-color) !important;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1.125rem;
+}
+
+.btn:disabled,
+.btn[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+/* Primary button -> your primary color */
 .btn-primary,
 .btn-create,
 .btn-login {
-  background-color: var(--button-background) !important;
+  background-color: var(--brand-primary) !important;
   color: var(--button-text) !important;
-  border-radius: 6px !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.3px !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.14);
 }
 
-.mat-mdc-raised-button.mat-primary:hover,
-.mat-mdc-unelevated-button.mat-primary:hover,
-.btn-primary:hover,
-.btn-create:hover,
-.btn-login:hover {
+.btn-primary:hover:not(:disabled),
+.btn-create:hover:not(:disabled),
+.btn-login:hover:not(:disabled) {
   background-color: var(--button-hover) !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border-color: var(--button-hover) !important;
+  box-shadow: 0 3px 6px rgba(15, 23, 42, 0.18);
   transform: translateY(-1px);
 }
 
-.mat-mdc-raised-button.mat-primary:active,
-.mat-mdc-unelevated-button.mat-primary:active,
-.btn-primary:active,
-.btn-create:active,
-.btn-login:active {
+.btn-primary:active:not(:disabled),
+.btn-create:active:not(:disabled),
+.btn-login:active:not(:disabled) {
   background-color: var(--button-active) !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  border-color: var(--button-active) !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
   transform: translateY(0);
 }
 
-/* Header background */
-app-header {
-  background: var(--header-bg);
+/* Secondary / outlined */
+.btn-secondary {
+  background-color: var(--background) !important;
+  color: var(--text-color) !important;
+  border-color: var(--card-border) !important;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--input-background) !important;
+  border-color: var(--brand-primary-light) !important;
+}
+
+.btn-secondary:active:not(:disabled) {
+  background-color: var(--background) !important;
+  border-color: var(--brand-primary) !important;
+}
+
+/* Icon buttons */
+.btn-icon,
+.icon-btn {
+  border-radius: 999px;
+  padding: 0.25rem;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: var(--brand-primary) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-icon:hover,
+.icon-btn:hover {
+  color: var(--brand-primary-700) !important;
+  background-color: var(--brand-primary-light) !important;
 }
 
 /* ------------------------------------------------------------------
-   RESPONSIVE FONT SIZE ADJUSTMENTS (especially for tablets)
+   LAYOUT – PAGE CONTAINER & CARD
 ------------------------------------------------------------------ */
-@media (max-width: 1023px) and (min-width: 768px) {
-  html {
-    font-size: 15px;
-  }
 
-  /* Slightly smaller base font on tablets */
+.page-container {
+  --page-gutter: 24px;
+  --page-max: 1280px;
+  width: min(var(--page-max), 100% - (var(--page-gutter) * 2));
+  margin-inline: auto;
+}
+
+.case-card {
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  border-radius: 8px;
+  padding: 16px;
 }
 
 /* ------------------------------------------------------------------
-   REMAINING COMPONENT-SPECIFIC STYLES (unchanged from your original)
+   TABLE PATTERN (INCLUDING HEADER COLOR)
 ------------------------------------------------------------------ */
+
+.toolbar-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 16px 0;
+}
+
+.table-container {
+  width: 100%;
+  overflow: auto;
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+  background-color: var(--card-background);
+}
+
+.table-data,
+.case-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* force header to use your primary (over Bootstrap/Material) */
+.table-data thead,
+.case-table thead {
+  background: var(--brand-primary) !important;
+}
+
+.table-data thead th,
+.case-table thead th {
+  color: #fff !important;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  white-space: nowrap;
+}
+
+.table-data tbody tr,
+.case-table tbody tr {
+  background: var(--card-background);
+  transition: background 0.2s ease;
+}
+
+.table-data tbody tr:hover,
+.case-table tbody tr:hover,
+.table-row-hover:hover {
+  background: var(--input-background);
+}
+
+.table-data tbody tr + tr td,
+.case-table tbody tr + tr td {
+  border-top: 1px solid var(--card-border);
+}
+
+.table-data tbody td,
+.case-table tbody td {
+  padding: 1rem;
+  color: var(--text-color);
+  vertical-align: middle;
+  font-size: 0.875rem;
+}
+
+/* Status pills */
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  line-height: 1;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-available {
+  background: var(--status-available-bg);
+  color: var(--status-available-color);
+}
+.status-available .status-dot {
+  background: var(--status-available-color);
+}
+
+.status-maintenance {
+  background: var(--status-maintenance-bg);
+  color: var(--status-maintenance-color);
+}
+.status-maintenance .status-dot {
+  background: var(--status-maintenance-color);
+}
+
+.status-occupied {
+  background: var(--status-occupied-bg);
+  color: var(--status-occupied-color);
+}
+.status-occupied .status-dot {
+  background: var(--status-occupied-color);
+}
+
+/* ------------------------------------------------------------------
+   FOOTER & PAGINATION – OVERRIDE BOOTSTRAP BLUE
+------------------------------------------------------------------ */
+
+.table-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  color: var(--text-secondary);
+}
+
+.footer-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rows-per-page {
+  min-width: 72px;
+  color: var(--text-color);
+  background: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 6px 28px 6px 10px;
+  font-size: 0.875rem;
+}
+
+/* Pagination */
+
+.pagination {
+  display: inline-flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 6px;
+}
+
+.page-item {
+  display: inline-flex;
+}
+
+/* override Bootstrap blue link color */
+.page-link,
+.page-link:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-color) !important;
+  background-color: var(--background) !important;
+  border: 1px solid var(--card-border) !important;
+  min-width: 36px;
+  min-height: 32px;
+  border-radius: 4px;
+  padding: 6px 15px;
+  font-size: 0.875rem;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.page-item.active .page-link,
+.page-item.active .page-link:visited {
+  color: #fff !important;
+  background-color: var(--brand-primary) !important;
+  border-color: var(--brand-primary) !important;
+  font-weight: 600;
+}
+
+.page-item.disabled .page-link,
+.page-item.disabled .page-link:visited {
+  color: var(--text-muted) !important;
+  background-color: var(--background) !important;
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.page-item:not(.disabled) .page-link:hover,
+.page-item:not(.disabled) .page-link:hover:visited {
+  border-color: var(--brand-primary) !important;
+  background: var(--input-background) !important;
+}
+
+.text-high-contrast {
+  color: var(--text-color) !important;
+  opacity: 1 !important;
+}
+
+/* ------------------------------------------------------------------
+   EXISTING GLOBAL STYLES (login, sidenav, utilities) – unchanged
+------------------------------------------------------------------ */
+
 .feature-accordion .mat-expansion-panel {
   border: 1px solid var(--card-border);
   border-radius: 8px !important;
@@ -390,12 +970,16 @@ app-header {
   background: var(--card-background);
 }
 
-.feature-accordion .mat-expansion-panel.mat-expanded .mat-expansion-panel-header {
+.feature-accordion
+  .mat-expansion-panel.mat-expanded
+  .mat-expansion-panel-header {
   background: var(--brand-primary-light) !important;
   color: var(--brand-primary) !important;
 }
 
-.feature-accordion .mat-expansion-panel:not(.mat-expanded):hover .mat-expansion-panel-header {
+.feature-accordion
+  .mat-expansion-panel:not(.mat-expanded):hover
+  .mat-expansion-panel-header {
   background: var(--input-background) !important;
 }
 
@@ -417,8 +1001,7 @@ app-header {
   background: var(--background);
 }
 
-/* Add any other component-specific styles you had below this line */
-
+/* Duplicate scrollbar block (kept from original) */
 ::-webkit-scrollbar {
   width: 8px;
   scroll-behavior: smooth;
@@ -440,17 +1023,27 @@ app-header {
 
 .primarySideNav {
   transition: width ease 0.5s;
-  background: #1A365D;
+  background: var(--brand-primary);
 }
 
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator {
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-expansion-indicator {
   transform: rotate(0deg) !important;
 }
 
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-panel-header-title,
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-mdc-list-item-title,
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-icon,
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after {
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-expansion-panel-header-title,
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-mdc-list-item-title,
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-icon,
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-expansion-indicator::after {
   color: var(--button-text);
 }
 
@@ -585,17 +1178,6 @@ app-header {
 
 .left-pane .bi {
   color: #fff;
-}
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  padding: 0;
 }
 
 .mat-drawer-container {
@@ -736,27 +1318,33 @@ app-header {
 }
 
 .bch-widget::before {
-  content: "";
+  content: '';
   height: 300px;
   width: 300px;
   border-radius: 50%;
   position: absolute;
   z-index: -1;
-  background: linear-gradient(225deg, var(--brand-primary) 6%, var(--brand-primary) 56%);
+  background: linear-gradient(
+    225deg,
+    var(--brand-primary) 6%,
+    var(--brand-primary) 56%
+  );
   top: 45px;
   right: -1rem;
   box-shadow: 0px 10px 50px 10px rgba(153, 159, 172, 0.2);
 }
 
-.back-button.mat-mdc-button>.mat-icon {
+.back-button.mat-mdc-button > .mat-icon {
   margin: 0;
 }
 
+/* Snackbars */
 .snackBar-success.mat-mdc-snack-bar-container .mdc-snackbar__surface {
   background-color: #2EA651;
 }
 
-.snackBar-success.mat-mdc-snack-bar-container .mdc-button.mat-mdc-button {
+.snackBar-success.mat-mdc-snack-bar-container
+  .mdc-button.mat-mdc-button {
   color: #fff;
 }
 
@@ -764,7 +1352,8 @@ app-header {
   background-color: #DA1D27;
 }
 
-.snackBar-error.mat-mdc-snack-bar-container .mdc-button.mat-mdc-button {
+.snackBar-error.mat-mdc-snack-bar-container
+  .mdc-button.mat-mdc-button {
   color: #fff;
 }
 
@@ -773,7 +1362,8 @@ app-header {
 }
 
 .snackBar-warn.mat-mdc-snack-bar-container .mdc-snackbar__label,
-.snackBar-warn.mat-mdc-snack-bar-container .mdc-button.mat-mdc-button {
+.snackBar-warn.mat-mdc-snack-bar-container
+  .mdc-button.mat-mdc-button {
   color: #333;
 }
 
@@ -782,31 +1372,44 @@ app-header {
 }
 
 .snackBar-info.mat-mdc-snack-bar-container .mdc-snackbar__label,
-.snackBar-info.mat-mdc-snack-bar-container .mdc-button.mat-mdc-button {
+.snackBar-info.mat-mdc-snack-bar-container
+  .mdc-button.mat-mdc-button {
   color: var(--text-color);
 }
 
-.snackBar-notification.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+.snackBar-notification.mat-mdc-snack-bar-container
+  .mdc-snackbar__surface {
   background-color: var(--card-background);
 }
 
-.snackBar-notification.mat-mdc-snack-bar-container .mdc-snackbar__label {
+.snackBar-notification.mat-mdc-snack-bar-container
+  .mdc-snackbar__label {
   color: var(--text-color);
 }
 
 .primarySideNav {
   transition: width ease 0.5s;
-  background: #1A365D;
+  background: var(--brand-primary);
 }
 
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator {
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-expansion-indicator {
   transform: rotate(0deg) !important;
 }
 
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-panel-header-title,
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-mdc-list-item-title,
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-icon,
-.primarySideNav .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after {
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-expansion-panel-header-title,
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-mdc-list-item-title,
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-icon,
+.primarySideNav
+  .mat-expansion-panel-header.mat-expanded
+  .mat-expansion-indicator::after {
   color: var(--button-text);
 }
 
@@ -828,19 +1431,27 @@ app-header {
   background: var(--input-background);
 }
 
-.primarySideNav .mdc-list-item:hover .mat-expansion-panel-header-title,
+.primarySideNav
+  .mdc-list-item:hover
+  .mat-expansion-panel-header-title,
 .primarySideNav .mdc-list-item:hover .mat-mdc-list-item-title,
 .primarySideNav .mdc-list-item:hover .mat-icon,
 .primarySideNav .mdc-list-item:hover .mat-expansion-indicator::after {
   color: var(--brand-primary-700);
 }
 
-.primarySideNav .mdc-list-item .mat-mdc-list-item-title,
-.primarySideNav .mat-expansion-panel-header-title .mdc-list-item__primary-text {
+.primarySideNav
+  .mdc-list-item
+  .mat-mdc-list-item-title,
+.primarySideNav
+  .mat-expansion-panel-header-title
+  .mdc-list-item__primary-text {
   font-size: 14px;
 }
 
-::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+::ng-deep
+  .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label {
   transform: translateY(-1.1em) scale(0.75);
 }
 
@@ -854,6 +1465,7 @@ app-header {
   max-width: 100%;
 }
 
+/* Spacing helpers */
 .spc-0 {
   padding: 0;
 }
@@ -896,364 +1508,6 @@ app-header {
 
 .mt-70 {
   margin-top: 70px !important;
-}
-
-.f-128-r {
-  font-size: 128px;
-  line-height: 8rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-128-m {
-  font-size: 128px;
-  line-height: 8rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-128-b {
-  font-size: 128px;
-  line-height: 8rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-96-r,
-h1 {
-  font-size: 96px;
-  line-height: 6rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-96-m {
-  font-size: 96px;
-  line-height: 6rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-96-b {
-  font-size: 96px;
-  line-height: 6rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-64-r,
-h2 {
-  font-size: 64px;
-  line-height: 4rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-64-m {
-  font-size: 64px;
-  line-height: 4rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-64-b {
-  font-size: 64px;
-  line-height: 4rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-48-r {
-  font-size: 48px;
-  line-height: 3rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-48-m,
-h3 {
-  font-size: 48px;
-  line-height: 3rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-48-b {
-  font-size: 48px;
-  line-height: 3rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-40-r {
-  font-size: 40px;
-  line-height: 3rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-40-m,
-h4 {
-  font-size: 40px;
-  line-height: 3rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-40-b {
-  font-size: 40px;
-  line-height: 3rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-36-r {
-  font-size: 36px;
-  line-height: 2.5rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-36-m,
-h5 {
-  font-size: 36px;
-  line-height: 2.5rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-36-b {
-  font-size: 36px;
-  line-height: 2.5rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-32-r {
-  font-size: 32px;
-  line-height: 2rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-32-m {
-  font-size: 32px;
-  line-height: 2rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-32-b {
-  font-size: 32px;
-  line-height: 2rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-28-r {
-  font-size: 28px;
-  line-height: 1.5rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-28-m,
-h6 {
-  font-size: 28px;
-  line-height: 1.5rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-28-b {
-  font-size: 28px;
-  line-height: 1.5rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-24-r {
-  font-size: 24px;
-  line-height: 1.5rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-24-m,
-h6 {
-  font-size: 24px;
-  line-height: 1.5rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-24-b {
-  font-size: 24px;
-  line-height: 1.5rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-20-r {
-  font-size: 20px;
-  line-height: 1.25rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-20-m {
-  font-size: 20px;
-  line-height: 1.25rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-20-b {
-  font-size: 20px;
-  line-height: 1.25rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-18-r {
-  font-size: 18px;
-  line-height: 1rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-18-m {
-  font-size: 18px;
-  line-height: 1rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-18-b {
-  font-size: 18px;
-  line-height: 1rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-16-r {
-  font-size: 16px;
-  line-height: 1rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-16-m {
-  font-size: 16px;
-  line-height: 1rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-16-b {
-  font-size: 16px;
-  line-height: 1rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-14-r {
-  font-size: 14px;
-  line-height: 0.875rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-14-r-07 {
-  font-size: 14px;
-  line-height: 0.875rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-  opacity: 0.7;
-}
-
-.f-14-m {
-  font-size: 14px;
-  line-height: 0.875rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-14-m-07 {
-  font-size: 14px;
-  line-height: 0.875rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-  opacity: 0.7;
-}
-
-.f-14-b {
-  font-size: 14px;
-  line-height: 0.875rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-}
-
-.f-12-r {
-  font-size: 12px;
-  line-height: 1.1rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-}
-
-.f-12-r-07 {
-  font-size: 12px;
-  line-height: 1.1rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-  opacity: 0.7;
-}
-
-.f-12-m {
-  font-size: 12px;
-  line-height: 1.2rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.f-12-m-07 {
-  font-size: 12px;
-  line-height: 1.2rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-  opacity: 0.7;
-}
-
-.f-12-b {
-  font-size: 12px;
-  line-height: 1.2rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-  opacity: 0.87;
-}
-
-.f-10-r {
-  font-size: 10px;
-  line-height: 1rem;
-  font-weight: 400;
-  font-family: var(--font-family);
-  opacity: 0.87;
-}
-
-.f-10-m {
-  font-size: 10px;
-  line-height: 1rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-  opacity: 0.87;
-}
-
-.f-10-b {
-  font-size: 10px;
-  line-height: 1rem;
-  font-weight: 700;
-  font-family: var(--font-family);
-  opacity: 0.87;
 }
 
 .idlePopupBg {
@@ -1310,11 +1564,10 @@ h6 {
   background: rgba(0, 0, 0, 0.4);
 }
 
+/* ------------------------------------------------------------------
+   HEADER & BREADCRUMB (MOBILE GAP REMOVAL)
+------------------------------------------------------------------ */
 
-
-
-
-/* Remove all gaps - Header & Breadcrumb */
 @media (max-width: 767px) {
   app-header {
     margin: 0 !important;
@@ -1343,8 +1596,6 @@ h6 {
   }
 }
 
-
-
 app-header,
 app-breadcrumb,
 .app-header,
@@ -1353,15 +1604,13 @@ app-breadcrumb,
   width: 100%;
 }
 
+/* ------------------------------------------------------------------
+   RESPONSIVE ADJUSTMENTS
+------------------------------------------------------------------ */
 
-
-
-
-/* Additional global responsive adjustments */
 @media (max-width: 767px) {
   html {
     font-size: 14px;
-    /* Slightly smaller base font for mobile */
   }
 
   .page-container {
@@ -1372,28 +1621,28 @@ app-breadcrumb,
     padding: 12px;
   }
 
-  /* Adjust typography for smaller screens */
   h1,
-  .f-96-r {
-    font-size: 48px;
+  .f-48-m {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
   }
 
   h2,
-  .f-64-r {
-    font-size: 36px;
+  .f-40-m {
+    font-size: 2rem;
+    line-height: 2.5rem;
   }
 
   h3,
-  .f-48-m {
-    font-size: 28px;
+  .f-32-m {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
   }
 
-  /* Sidenav on mobile */
   .primarySideNav {
     width: 80vw !important;
   }
 
-  /* Dialogs */
   .custom-dialog-container .cdk-overlay-pane {
     max-width: 100vw !important;
   }
@@ -1404,15 +1653,18 @@ app-breadcrumb,
     --page-gutter: 20px;
   }
 
-  /* Tablet specific */
   .case-card {
     padding: 16px;
   }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 1023px) and (min-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
 
-  /* Laptops */
+@media (min-width: 1024px) {
   html {
     font-size: 16px;
   }
