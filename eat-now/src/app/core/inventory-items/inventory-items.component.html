@@ -1,32 +1,33 @@
+<!-- inventory-item-list.component.html -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
-      <p class="mb-0 f-18-m text-high-contrast">Inventory Item Details</p>
+    <div class="page-header d-flex align-items-center justify-content-between mb-4">
+      <p class="page-header-title mb-0 f-18-m text-high-contrast">
+        Inventory Item Details
+      </p>
 
-      <div class="toolbar-actions d-flex align-items-center gap-3">
-        <!-- Filter & Reset buttons side by side -->
+      <div class="page-header-actions d-flex align-items-center gap-3">
+        <!-- Filter & Reset buttons -->
         <div class="d-flex gap-3">
-          <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+          <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
             <span class="btn-text f-12-m">Filter</span>
           </button>
-          <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+
+          <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
             <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
-        <!-- Add New Item button on the right -->
-        <button type="button"
-          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+        <!-- Add New Item button -->
+        <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2"
           (click)="onAddNewItem()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add Item</span>
+          <span class="btn-text-primary f-14-m">Add Item</span>
         </button>
       </div>
     </div>
@@ -34,83 +35,93 @@
     <div class="toolbar-divider"></div>
 
     <!-- Desktop/Tablet: Table View -->
-    <div class="table-container">
-      <table class="case-table" role="table" aria-label="Inventory Items">
-        <thead>
-          <tr>
-            <th scope="col">Item</th>
-            <th scope="col">Category</th>
-            <th scope="col">Unit</th>
-            <th scope="col">Min Stock</th>
-            <th scope="col">Cost Price</th>
-            <th scope="col">Status</th>
-            <th scope="col" class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of pagedItems; trackBy: trackByItemId" class="table-row-hover">
-            <!-- Item name + SKU -->
-            <td class="f-14-m col-item">
-              <div class="text-truncate-cell" [title]="item.name">{{ item.name }}</div>
-              <div class="f-12-r text-muted sku-text" *ngIf="item.sku">
-                SKU: {{ item.sku }}
-              </div>
-            </td>
+    <div class="desktop-view">
+      <div class="table-container">
+        <table class="case-table table-inventory-items" role="table" aria-label="Inventory Items">
+          <thead>
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Category</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Min Stock</th>
+              <th scope="col">Cost Price</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of pagedItems; trackBy: trackByItemId" class="table-row-hover">
+              <!-- Item name + SKU -->
+              <td class="f-14-m col-item">
+                <div class="text-truncate-cell" [title]="item.name">
+                  {{ item.name }}
+                </div>
+                <div class="f-12-r text-muted sku-text" *ngIf="item.sku">
+                  SKU: {{ item.sku }}
+                </div>
+              </td>
 
-            <!-- Category -->
-            <td class="f-14-r col-category">
-              <span class="text-truncate-cell">{{ getCategoryName(item.categoryId) || '-' }}</span>
-            </td>
+              <!-- Category -->
+              <td class="f-14-r col-category">
+                <span class="text-truncate-cell">
+                  {{ getCategoryName(item.categoryId) || '-' }}
+                </span>
+              </td>
 
-            <!-- Unit -->
-            <td class="f-14-r col-unit">
-              <span class="text-truncate-cell">{{ getUnitDisplay(item.unitId) || '-' }}</span>
-            </td>
+              <!-- Unit -->
+              <td class="f-14-r col-unit">
+                <span class="text-truncate-cell">
+                  {{ getUnitDisplay(item.unitId) || '-' }}
+                </span>
+              </td>
 
-            <!-- Min stock -->
-            <td class="f-14-r col-stock">
-              {{ item.minStockLevel || 0 }}
-            </td>
+              <!-- Min stock -->
+              <td class="f-14-r col-stock">
+                {{ item.minStockLevel || 0 }}
+              </td>
 
-            <!-- Cost price -->
-            <td class="f-14-r col-price">
-              <ng-container *ngIf="item.costPrice != null; else noCost">
-                {{ item.costPrice | currency: 'INR':'symbol':'1.0-0' }}
-              </ng-container>
-              <ng-template #noCost>-</ng-template>
-            </td>
+              <!-- Cost price -->
+              <td class="f-14-r col-price">
+                <ng-container *ngIf="item.costPrice != null; else noCost">
+                  {{ item.costPrice | currency: 'INR':'symbol':'1.0-0' }}
+                </ng-container>
+                <ng-template #noCost>-</ng-template>
+              </td>
 
-            <!-- Status -->
-            <td class="col-status">
-              <span class="status-pill" [ngClass]="{
-                  'status-available': item.isActive,
-                  'status-maintenance': !item.isActive
-                }">
-                <span class="status-dot"></span>
-                <span class="status-text">{{ item.isActive ? 'Active' : 'Inactive' }}</span>
-              </span>
-            </td>
+              <!-- Status -->
+              <td class="col-status">
+                <span class="status-pill" [ngClass]="{
+                    'status-available': item.isActive,
+                    'status-maintenance': !item.isActive
+                  }">
+                  <span class="status-dot"></span>
+                  <span class="status-text">
+                    {{ item.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </span>
+              </td>
 
-            <!-- Action -->
-            <td class="text-center col-action">
-              <div class="d-inline-flex align-items-center gap-2 action-icons">
-                <button type="button" class="icon-btn" title="Edit" (click)="onEditItem(item)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button type="button" class="icon-btn" title="Delete" (click)="onDeleteItem(item)">
-                  <i class="bi bi-trash text-danger"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+              <!-- Action -->
+              <td class="text-center col-action">
+                <div class="d-inline-flex align-items-center gap-2 action-icons">
+                  <button type="button" class="icon-btn" title="Edit" (click)="onEditItem(item)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button type="button" class="icon-btn" title="Delete" (click)="onDeleteItem(item)">
+                    <i class="bi bi-trash text-danger"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
 
-          <tr *ngIf="pagedItems.length === 0">
-            <td colspan="7" class="text-center py-5 text-muted">
-              No items found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tr *ngIf="pagedItems.length === 0">
+              <td colspan="7" class="text-center py-5 text-muted">
+                No items found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Mobile: Card View -->
@@ -151,7 +162,9 @@
 
             <div class="detail-item">
               <strong class="label">Min Stock:</strong>
-              <span class="value">{{ item.minStockLevel || 0 }}</span>
+              <span class="value">
+                {{ item.minStockLevel || 0 }}
+              </span>
             </div>
 
             <div class="detail-item">
@@ -189,7 +202,9 @@
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
+          <span class="f-12-r text-muted text-high-contrast">
+            Rows per page:
+          </span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
             <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
               {{ size }}
@@ -202,7 +217,8 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
+              <i class="bi bi-chevron-left"></i>
+              <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -214,7 +230,8 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span>
+              <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

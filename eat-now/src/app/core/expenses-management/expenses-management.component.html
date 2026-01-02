@@ -1,22 +1,29 @@
+<!-- expenses-list.component.html -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="header-toolbar d-flex align-items-center justify-content-between mb-3">
-      <p class="mb-0 f-18-m text-high-contrast">Expenses Details</p>
+    <div class="page-header d-flex align-items-center justify-content-between mb-3">
+      <p class="page-header-title mb-0 f-18-m text-high-contrast">
+        Expenses Details
+      </p>
 
-      <div class="toolbar-actions d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
+      <div class="page-header-actions d-flex align-items-center gap-2">
+        <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="btn-text f-12-m">Filter</span>
         </button>
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
+
+        <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
           <span class="btn-text f-12-m">Reset</span>
         </button>
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
+
+        <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2"
           (click)="onAddNewExpenses()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add Expense</span>
+          <span class="btn-text-primary f-14-m">Add Expense</span>
         </button>
       </div>
     </div>
@@ -25,57 +32,69 @@
     <div class="toolbar-divider"></div>
 
     <!-- Desktop/Tablet: Table View -->
-    <div class="table-container">
-      <table class="case-table" role="table" aria-label="Expenses">
-        <thead>
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Category</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Date</th>
-            <th scope="col">Payment Method</th>
-            <th scope="col">Vendor</th>
-            <th scope="col" class="text-center">Action</th>
-          </tr>
-        </thead>
+    <div class="desktop-view">
+      <div class="table-container">
+        <table class="case-table table-7col table-expenses" role="table" aria-label="Expenses">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Category</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Date</th>
+              <th scope="col">Payment Method</th>
+              <th scope="col">Vendor</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr *ngFor="let expense of pagedExpenses; trackBy: trackById" class="table-row-hover">
-            <td class="f-14-m col-title">
-              <span class="text-truncate-cell" [title]="expense.title">{{ expense.title }}</span>
-            </td>
-            <td class="f-14-r col-category">
-              <span class="text-truncate-cell">{{ expense.category }}</span>
-            </td>
-            <td class="f-14-r col-amount">
-              {{ expense.amount | currency: 'USD':'symbol':'1.2-2' }}
-            </td>
-            <td class="f-14-r col-date">{{ expense.date | date: 'MMM d, y' }}</td>
-            <td class="f-14-r col-method">
-              <span class="text-truncate-cell">{{ expense.paymentMethod }}</span>
-            </td>
-            <td class="f-14-r col-vendor text-capitalize">
-              <span class="text-truncate-cell">{{ expense.vendor }}</span>
-            </td>
-            <td class="text-center col-action">
-              <div class="d-inline-flex align-items-center gap-2 action-icons">
-                <button type="button" class="icon-btn" title="Edit" (click)="onEditExpense(expense)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button type="button" class="icon-btn" title="Delete" (click)="onDeleteExpense(expense.id)">
-                  <i class="bi bi-trash text-danger"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+          <tbody>
+            <tr *ngFor="let expense of pagedExpenses; trackBy: trackById" class="table-row-hover">
+              <td class="f-14-m col-title">
+                <span class="text-truncate-cell" [title]="expense.title">
+                  {{ expense.title }}
+                </span>
+              </td>
+              <td class="f-14-r col-category">
+                <span class="text-truncate-cell">
+                  {{ expense.category }}
+                </span>
+              </td>
+              <td class="f-14-r col-amount">
+                {{ expense.amount | currency: 'USD':'symbol':'1.2-2' }}
+              </td>
+              <td class="f-14-r col-date">
+                {{ expense.date | date: 'MMM d, y' }}
+              </td>
+              <td class="f-14-r col-method">
+                <span class="text-truncate-cell">
+                  {{ expense.paymentMethod }}
+                </span>
+              </td>
+              <td class="f-14-r col-vendor text-capitalize">
+                <span class="text-truncate-cell">
+                  {{ expense.vendor }}
+                </span>
+              </td>
+              <td class="text-center col-action">
+                <div class="d-inline-flex align-items-center gap-2 action-icons">
+                  <button type="button" class="icon-btn" title="Edit" (click)="onEditExpense(expense)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button type="button" class="icon-btn" title="Delete" (click)="onDeleteExpense(expense.id)">
+                    <i class="bi bi-trash text-danger"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
 
-          <tr *ngIf="pagedExpenses.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">
-              No expenses found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tr *ngIf="pagedExpenses.length === 0">
+              <td colspan="7" class="text-center py-4 text-muted">
+                No expenses found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Mobile: Card View -->
@@ -95,19 +114,27 @@
         <div class="mobile-card-body">
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Category:</strong></span>
-            <span class="info-value">{{ expense.category || '-' }}</span>
+            <span class="info-value">
+              {{ expense.category || '-' }}
+            </span>
           </p>
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Date:</strong></span>
-            <span class="info-value">{{ expense.date | date: 'MMM d, y' }}</span>
+            <span class="info-value">
+              {{ expense.date | date: 'MMM d, y' }}
+            </span>
           </p>
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Payment Method:</strong></span>
-            <span class="info-value">{{ expense.paymentMethod || '-' }}</span>
+            <span class="info-value">
+              {{ expense.paymentMethod || '-' }}
+            </span>
           </p>
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Vendor:</strong></span>
-            <span class="info-value">{{ expense.vendor || '-' }}</span>
+            <span class="info-value">
+              {{ expense.vendor || '-' }}
+            </span>
           </p>
         </div>
 
@@ -135,7 +162,9 @@
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
+          <span class="f-12-r text-muted text-high-contrast">
+            Rows per page:
+          </span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
             <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
               {{ size }}
@@ -148,7 +177,8 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
+              <i class="bi bi-chevron-left"></i>
+              <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -160,7 +190,8 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span>
+              <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

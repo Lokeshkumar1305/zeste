@@ -1,6 +1,6 @@
 /* ========================================
-   PAGE CONTAINER
-   ======================================== */
+PAGE CONTAINER
+======================================== */
 .page-container {
   --page-gutter: 24px;
   --page-max: 1280px;
@@ -9,8 +9,8 @@
 }
 
 /* ========================================
-   CASE CARD
-   ======================================== */
+CASE CARD
+======================================== */
 .case-card {
   background: var(--card-background);
   border: 1px solid var(--card-border);
@@ -20,8 +20,8 @@
 }
 
 /* ========================================
-   HEADER TOOLBAR
-   ======================================== */
+HEADER TOOLBAR
+======================================== */
 .header-toolbar {
   display: flex;
   align-items: center;
@@ -38,8 +38,8 @@
 }
 
 /* ========================================
-   DIVIDER
-   ======================================== */
+DIVIDER
+======================================== */
 .toolbar-divider {
   height: 1px;
   background: var(--card-border);
@@ -47,8 +47,8 @@
 }
 
 /* ========================================
-   BUTTONS
-   ======================================== */
+BUTTONS
+======================================== */
 .btn-primary,
 .btn-secondary {
   display: inline-flex;
@@ -87,8 +87,8 @@
 }
 
 /* ========================================
-   FILTER SECTION & PILLS
-   ======================================== */
+FILTER SECTION & PILLS
+======================================== */
 .filter-section {
   padding: 12px 16px;
   background: var(--input-background);
@@ -126,8 +126,8 @@
 }
 
 /* ========================================
-   TABLE - FIXED FOR ALL SCREENS
-   ======================================== */
+TABLE - FIXED FOR ALL SCREENS
+======================================== */
 .table-container {
   overflow-x: auto;
   border: 1px solid var(--card-border);
@@ -177,28 +177,44 @@
 
 /* Column Width Distribution - Desktop */
 .case-table th:nth-child(1),
-.case-table td:nth-child(1) { width: 10%; }
+.case-table td:nth-child(1) {
+  width: 10%;
+}
 
 .case-table th:nth-child(2),
-.case-table td:nth-child(2) { width: 10%; }
+.case-table td:nth-child(2) {
+  width: 10%;
+}
 
 .case-table th:nth-child(3),
-.case-table td:nth-child(3) { width: 8%; }
+.case-table td:nth-child(3) {
+  width: 8%;
+}
 
 .case-table th:nth-child(4),
-.case-table td:nth-child(4) { width: 12%; }
+.case-table td:nth-child(4) {
+  width: 12%;
+}
 
 .case-table th:nth-child(5),
-.case-table td:nth-child(5) { width: 10%; }
+.case-table td:nth-child(5) {
+  width: 10%;
+}
 
 .case-table th:nth-child(6),
-.case-table td:nth-child(6) { width: 22%; }
+.case-table td:nth-child(6) {
+  width: 22%;
+}
 
 .case-table th:nth-child(7),
-.case-table td:nth-child(7) { width: 14%; }
+.case-table td:nth-child(7) {
+  width: 14%;
+}
 
 .case-table th:nth-child(8),
-.case-table td:nth-child(8) { width: 14%; }
+.case-table td:nth-child(8) {
+  width: 14%;
+}
 
 /* Amenities Tags in Table */
 .amenity-tags-wrapper {
@@ -225,8 +241,8 @@
 }
 
 /* ========================================
-   STATUS PILLS
-   ======================================== */
+STATUS PILLS
+======================================== */
 .status-pill {
   display: inline-flex;
   align-items: center;
@@ -254,23 +270,29 @@
   background: rgba(32, 201, 151, 0.2);
   color: #20c997;
 }
-.status-available .status-dot { background: #20c997; }
+.status-available .status-dot {
+  background: #20c997;
+}
 
 .status-occupied {
   background: rgba(100, 116, 139, 0.2);
   color: #64748b;
 }
-.status-occupied .status-dot { background: #64748b; }
+.status-occupied .status-dot {
+  background: #64748b;
+}
 
 .status-maintenance {
   background: rgba(245, 158, 11, 0.2);
   color: #f59e0b;
 }
-.status-maintenance .status-dot { background: #f59e0b; }
+.status-maintenance .status-dot {
+  background: #f59e0b;
+}
 
 /* ========================================
-   ACTION ICONS
-   ======================================== */
+ACTION ICONS
+======================================== */
 .icon-btn {
   background: none;
   border: none;
@@ -296,8 +318,8 @@
 }
 
 /* ========================================
-   MOBILE CARD VIEW
-   ======================================== */
+MOBILE CARD VIEW
+======================================== */
 .desktop-view {
   display: block;
 }
@@ -459,8 +481,8 @@
 }
 
 /* ========================================
-   EMPTY STATE
-   ======================================== */
+EMPTY STATE
+======================================== */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -497,8 +519,8 @@
 }
 
 /* ========================================
-   PAGINATION FOOTER
-   ======================================== */
+PAGINATION FOOTER
+======================================== */
 .table-footer {
   display: flex;
   flex-wrap: wrap;
@@ -573,8 +595,8 @@
 }
 
 /* ========================================
-   TABLET SPECIFIC STYLES (769px - 1024px)
-   ======================================== */
+TABLET SPECIFIC STYLES (769px - 1024px)
+======================================== */
 @media (min-width: 769px) and (max-width: 1024px) {
   .page-container {
     --page-gutter: 16px;
@@ -646,28 +668,44 @@
 
   /* Adjusted column widths for tablet */
   .case-table th:nth-child(1),
-  .case-table td:nth-child(1) { width: 10%; }
+  .case-table td:nth-child(1) {
+    width: 10%;
+  }
 
   .case-table th:nth-child(2),
-  .case-table td:nth-child(2) { width: 10%; }
+  .case-table td:nth-child(2) {
+    width: 10%;
+  }
 
   .case-table th:nth-child(3),
-  .case-table td:nth-child(3) { width: 7%; }
+  .case-table td:nth-child(3) {
+    width: 7%;
+  }
 
   .case-table th:nth-child(4),
-  .case-table td:nth-child(4) { width: 11%; }
+  .case-table td:nth-child(4) {
+    width: 11%;
+  }
 
   .case-table th:nth-child(5),
-  .case-table td:nth-child(5) { width: 10%; }
+  .case-table td:nth-child(5) {
+    width: 10%;
+  }
 
   .case-table th:nth-child(6),
-  .case-table td:nth-child(6) { width: 22%; }
+  .case-table td:nth-child(6) {
+    width: 22%;
+  }
 
   .case-table th:nth-child(7),
-  .case-table td:nth-child(7) { width: 15%; }
+  .case-table td:nth-child(7) {
+    width: 15%;
+  }
 
   .case-table th:nth-child(8),
-  .case-table td:nth-child(8) { width: 15%; }
+  .case-table td:nth-child(8) {
+    width: 15%;
+  }
 
   /* Amenity tags compact */
   .amenity-tag {
@@ -730,8 +768,8 @@
 }
 
 /* ========================================
-   SMALL TABLET (769px - 850px)
-   ======================================== */
+SMALL TABLET (769px - 850px)
+======================================== */
 @media (min-width: 769px) and (max-width: 850px) {
   .case-table thead th {
     font-size: 9px;
@@ -745,28 +783,44 @@
 
   /* Even more compact column widths */
   .case-table th:nth-child(1),
-  .case-table td:nth-child(1) { width: 9%; }
+  .case-table td:nth-child(1) {
+    width: 9%;
+  }
 
   .case-table th:nth-child(2),
-  .case-table td:nth-child(2) { width: 9%; }
+  .case-table td:nth-child(2) {
+    width: 9%;
+  }
 
   .case-table th:nth-child(3),
-  .case-table td:nth-child(3) { width: 6%; }
+  .case-table td:nth-child(3) {
+    width: 6%;
+  }
 
   .case-table th:nth-child(4),
-  .case-table td:nth-child(4) { width: 10%; }
+  .case-table td:nth-child(4) {
+    width: 10%;
+  }
 
   .case-table th:nth-child(5),
-  .case-table td:nth-child(5) { width: 10%; }
+  .case-table td:nth-child(5) {
+    width: 10%;
+  }
 
   .case-table th:nth-child(6),
-  .case-table td:nth-child(6) { width: 24%; }
+  .case-table td:nth-child(6) {
+    width: 24%;
+  }
 
   .case-table th:nth-child(7),
-  .case-table td:nth-child(7) { width: 16%; }
+  .case-table td:nth-child(7) {
+    width: 16%;
+  }
 
   .case-table th:nth-child(8),
-  .case-table td:nth-child(8) { width: 16%; }
+  .case-table td:nth-child(8) {
+    width: 16%;
+  }
 
   .status-pill {
     font-size: 8px;
@@ -788,8 +842,8 @@
 }
 
 /* ========================================
-   MOBILE (≤768px)
-   ======================================== */
+MOBILE (≤768px)
+======================================== */
 @media (max-width: 768px) {
   .page-container {
     width: calc(100vw - 32px) !important;
@@ -879,8 +933,8 @@
 }
 
 /* ========================================
-   DESKTOP (≥1025px)
-   ======================================== */
+DESKTOP (≥1025px)
+======================================== */
 @media (min-width: 1025px) {
   .mobile-view {
     display: none !important;

@@ -1,21 +1,27 @@
+<!-- menu-config-list.component.html -->
 <div class="page-container">
     <section class="case-card">
         <!-- Header & Toolbar -->
-        <div class="header-toolbar d-flex align-items-center justify-content-between mb-3">
-            <p class="mb-0 f-18-m text-high-contrast">Menu Config List</p>
+        <div class="page-header d-flex align-items-center justify-content-between mb-3">
+            <p class="page-header-title mb-0 f-18-m text-high-contrast">
+                Menu Config List
+            </p>
 
-            <div class="toolbar-actions d-flex align-items-center gap-2">
-                <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
+            <div class="page-header-actions d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+                    (click)="onFilter()">
                     <i class="bi bi-funnel"></i>
                     <span class="btn-text f-12-m">{{ selectedMealTypeFilter }}</span>
                 </button>
 
-                <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
+                <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+                    (click)="onReset()">
                     <i class="bi bi-arrow-counterclockwise"></i>
                     <span class="btn-text f-12-m">Reset</span>
                 </button>
 
-                <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2" (click)="onAddNewMenu()">
+                <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2"
+                    (click)="onAddNewMenu()">
                     <i class="bi bi-plus-circle"></i>
                     <span class="btn-text-primary f-14-m">Add Menu Item</span>
                 </button>
@@ -25,73 +31,89 @@
         <div class="toolbar-divider"></div>
 
         <!-- Desktop/Tablet: Table View -->
-        <div class="table-container">
-            <table class="case-table" role="table" aria-label="Menu Items">
-                <thead>
-                    <tr>
-                        <th scope="col">Item Name</th>
-                        <th scope="col">Meal Type</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Status</th>
-                        <th scope="col" class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of pagedMenuItems; trackBy: trackById" class="table-row-hover">
-                        <td class="f-14-m col-name">
-                            <span class="text-truncate-cell" [title]="item.itemName">{{ item.itemName }}</span>
-                        </td>
+        <div class="desktop-view">
+            <div class="table-container">
+                <table class="case-table table-menu" role="table" aria-label="Menu Items">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Meal Type</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of pagedMenuItems; trackBy: trackById" class="table-row-hover">
+                            <td class="f-14-m col-name">
+                                <span class="text-truncate-cell" [title]="item.itemName">
+                                    {{ item.itemName }}
+                                </span>
+                            </td>
 
-                        <td class="f-14-r col-meal-type">
-                            <span class="text-truncate-cell">{{ item.mealType }}</span>
-                        </td>
+                            <td class="f-14-r col-meal-type">
+                                <span class="text-truncate-cell">
+                                    {{ item.mealType }}
+                                </span>
+                            </td>
 
-                        <!-- Type -->
-                        <td class="col-type">
-                            <span class="type-badge d-inline-flex align-items-center gap-1" [ngClass]="{
-                                'type-veg': item.itemType === 'VEG',
-                                'type-nonveg': item.itemType === 'NON_VEG',
-                                'type-egg': item.itemType === 'EGG'
-                            }">
-                                <i class="bi type-icon" 
-                                   [class.bi-circle-fill]="item.itemType === 'VEG'"
-                                   [class.bi-square-fill]="item.itemType === 'NON_VEG'"
-                                   [class.bi-egg-fill]="item.itemType === 'EGG'"></i>
-                                <span class="type-text">{{ item.itemType === 'VEG' ? 'Veg' : item.itemType === 'NON_VEG' ? 'Non-Veg' : 'Egg' }}</span>
-                            </span>
-                        </td>
+                            <!-- Type -->
+                            <td class="col-type">
+                                <span class="type-badge d-inline-flex align-items-center gap-1" [ngClass]="{
+                    'type-veg': item.itemType === 'VEG',
+                    'type-nonveg': item.itemType === 'NON_VEG',
+                    'type-egg': item.itemType === 'EGG'
+                  }">
+                                    <i class="bi type-icon" [class.bi-circle-fill]="item.itemType === 'VEG'"
+                                        [class.bi-square-fill]="item.itemType === 'NON_VEG'"
+                                        [class.bi-egg-fill]="item.itemType === 'EGG'"></i>
+                                    <span class="type-text">
+                                        {{
+                                        item.itemType === 'VEG'
+                                        ? 'Veg'
+                                        : item.itemType === 'NON_VEG'
+                                        ? 'Non-Veg'
+                                        : 'Egg'
+                                        }}
+                                    </span>
+                                </span>
+                            </td>
 
-                        <!-- Status -->
-                        <td class="col-status">
-                            <span class="status-pill" [ngClass]="{
-                                'status-active': item.isAvailable,
-                                'status-inactive': !item.isAvailable
-                            }">
-                                <span class="status-dot"></span>
-                                <span class="status-text">{{ item.isAvailable ? 'Active' : 'Inactive' }}</span>
-                            </span>
-                        </td>
+                            <!-- Status -->
+                            <td class="col-status">
+                                <span class="status-pill" [ngClass]="{
+                    'status-active': item.isAvailable,
+                    'status-inactive': !item.isAvailable
+                  }">
+                                    <span class="status-dot"></span>
+                                    <span class="status-text">
+                                        {{ item.isAvailable ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </span>
+                            </td>
 
-                        <!-- Actions -->
-                        <td class="text-center col-action">
-                            <div class="d-inline-flex align-items-center gap-2 action-icons">
-                                <button type="button" class="icon-btn" title="Edit" (click)="onEditMenu(item)">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button type="button" class="icon-btn" title="Delete" (click)="onDeleteMenu(item.id)">
-                                    <i class="bi bi-trash text-danger"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                            <!-- Actions -->
+                            <td class="text-center col-action">
+                                <div class="d-inline-flex align-items-center gap-2 action-icons">
+                                    <button type="button" class="icon-btn" title="Edit" (click)="onEditMenu(item)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button type="button" class="icon-btn" title="Delete"
+                                        (click)="onDeleteMenu(item.id)">
+                                        <i class="bi bi-trash text-danger"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
 
-                    <tr *ngIf="pagedMenuItems.length === 0">
-                        <td colspan="5" class="text-center py-4 text-muted">
-                            No menu items found.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        <tr *ngIf="pagedMenuItems.length === 0">
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                No menu items found.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Mobile: Card View -->
@@ -104,9 +126,9 @@
                     </div>
 
                     <span class="status-pill" [ngClass]="{
-                        'status-active': item.isAvailable,
-                        'status-inactive': !item.isAvailable
-                    }">
+              'status-active': item.isAvailable,
+              'status-inactive': !item.isAvailable
+            }">
                         <span class="status-dot"></span>
                         {{ item.isAvailable ? 'Active' : 'Inactive' }}
                     </span>
@@ -116,22 +138,31 @@
                 <div class="mobile-card-body">
                     <p class="f-14-r info-row">
                         <span class="info-label"><strong>Meal Type:</strong></span>
-                        <span class="info-value">{{ item.mealType || '-' }}</span>
+                        <span class="info-value">
+                            {{ item.mealType || '-' }}
+                        </span>
                     </p>
 
                     <p class="f-14-r info-row">
                         <span class="info-label"><strong>Type:</strong></span>
                         <span class="info-value">
                             <span class="type-badge d-inline-flex align-items-center gap-1" [ngClass]="{
-                                'type-veg': item.itemType === 'VEG',
-                                'type-nonveg': item.itemType === 'NON_VEG',
-                                'type-egg': item.itemType === 'EGG'
-                            }">
-                                <i class="bi type-icon" 
-                                   [class.bi-circle-fill]="item.itemType === 'VEG'"
-                                   [class.bi-square-fill]="item.itemType === 'NON_VEG'"
-                                   [class.bi-egg-fill]="item.itemType === 'EGG'"></i>
-                                <span class="type-text">{{ item.itemType === 'VEG' ? 'Veg' : item.itemType === 'NON_VEG' ? 'Non-Veg' : 'Egg' }}</span>
+                  'type-veg': item.itemType === 'VEG',
+                  'type-nonveg': item.itemType === 'NON_VEG',
+                  'type-egg': item.itemType === 'EGG'
+                }">
+                                <i class="bi type-icon" [class.bi-circle-fill]="item.itemType === 'VEG'"
+                                    [class.bi-square-fill]="item.itemType === 'NON_VEG'"
+                                    [class.bi-egg-fill]="item.itemType === 'EGG'"></i>
+                                <span class="type-text">
+                                    {{
+                                    item.itemType === 'VEG'
+                                    ? 'Veg'
+                                    : item.itemType === 'NON_VEG'
+                                    ? 'Non-Veg'
+                                    : 'Egg'
+                                    }}
+                                </span>
                             </span>
                         </span>
                     </p>
@@ -160,7 +191,9 @@
                     Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} items
                 </div>
                 <div class="d-inline-flex align-items-center gap-2">
-                    <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
+                    <span class="f-12-r text-muted text-high-contrast">
+                        Rows per page:
+                    </span>
                     <select class="rows-per-page" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
                         <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
                             {{ size }}
@@ -173,7 +206,8 @@
                 <ul class="pagination pagination-sm mb-0">
                     <li class="page-item" [class.disabled]="currentPage === 1">
                         <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-                            <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
+                            <i class="bi bi-chevron-left"></i>
+                            <span class="prev-next-text">Previous</span>
                         </button>
                     </li>
                     <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === currentPage">
@@ -182,8 +216,10 @@
                         </button>
                     </li>
                     <li class="page-item" [class.disabled]="currentPage === totalPages">
-                        <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-                            <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
+                        <button type="button" class="page-link" (click)="nextPage()"
+                            [disabled]="currentPage === totalPages">
+                            <span class="prev-next-text">Next</span>
+                            <i class="bi bi-chevron-right"></i>
                         </button>
                     </li>
                 </ul>

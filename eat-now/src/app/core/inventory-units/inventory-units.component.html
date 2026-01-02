@@ -1,35 +1,41 @@
+<!-- units-list.component.html -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
+    <div class="page-header d-flex align-items-center justify-content-between mb-4">
       <div class="header-title">
-        <p class="mb-0 f-18-m text-high-contrast">Units</p>
-        <small class="text-muted header-subtitle">Define how items are measured (kg, pcs, liters, etc.)</small>
+        <p class="page-header-title mb-0 f-18-m text-high-contrast">Units</p>
+        <small class="text-muted header-subtitle">
+          Define how items are measured (kg, pcs, liters, etc.)
+        </small>
       </div>
 
-      <div class="toolbar-actions d-flex align-items-center gap-3">
-        <!-- Filter & Reset buttons side by side -->
+      <div class="page-header-actions d-flex align-items-center gap-3">
+        <!-- Filter & Reset buttons -->
         <div class="d-flex gap-3">
           <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            class="btn btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
-            <span class="btn-text f-12-m">Filter ({{ selectedStatusFilter }})</span>
+            <span class="btn-text f-12-m">
+              Filter ({{ selectedStatusFilter }})
+            </span>
           </button>
+
           <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            class="btn btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
             <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
-        <!-- Add New Unit button on the right -->
+        <!-- Add New Unit button -->
         <button type="button"
-          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+          class="btn btn-primary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
           (click)="onAddNewUnit()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add Unit</span>
+          <span class="btn-text-primary f-14-m">Add Unit</span>
         </button>
       </div>
     </div>
@@ -37,67 +43,75 @@
     <div class="toolbar-divider"></div>
 
     <!-- Desktop/Tablet: Table View -->
-    <div class="table-container">
-      <table class="case-table" role="table" aria-label="Units">
-        <thead>
-          <tr>
-            <th scope="col">Full Name</th>
-            <th scope="col">Short Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Status</th>
-            <th scope="col" class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let unit of pagedUnits; trackBy: trackByUnitId" class="table-row-hover">
-            <!-- Full Name -->
-            <td class="f-14-m col-name">
-              <span class="text-truncate-cell" [title]="unit.name">{{ unit.name }}</span>
-            </td>
+    <div class="desktop-view">
+      <div class="table-container">
+        <table class="case-table table-units" role="table" aria-label="Units">
+          <thead>
+            <tr>
+              <th scope="col">Full Name</th>
+              <th scope="col">Short Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let unit of pagedUnits; trackBy: trackByUnitId" class="table-row-hover">
+              <!-- Full Name -->
+              <td class="f-14-m col-name">
+                <span class="text-truncate-cell" [title]="unit.name">
+                  {{ unit.name }}
+                </span>
+              </td>
 
-            <!-- Short Name -->
-            <td class="f-14-r col-short">
-              <span class="text-truncate-cell">{{ unit.shortName }}</span>
-            </td>
+              <!-- Short Name -->
+              <td class="f-14-r col-short">
+                <span class="text-truncate-cell">
+                  {{ unit.shortName }}
+                </span>
+              </td>
 
-            <!-- Description -->
-            <td class="f-14-r col-desc">
-              <span class="text-truncate-cell" [title]="unit.description || '-'">
-                {{ unit.description || '-' }}
-              </span>
-            </td>
+              <!-- Description -->
+              <td class="f-14-r col-desc">
+                <span class="text-truncate-cell" [title]="unit.description || '-'">
+                  {{ unit.description || '-' }}
+                </span>
+              </td>
 
-            <!-- Status -->
-            <td class="col-status">
-              <span class="status-pill" [ngClass]="{
-                  'status-available': unit.isActive,
-                  'status-maintenance': !unit.isActive
-                }">
-                <span class="status-dot"></span>
-                <span class="status-text">{{ unit.isActive ? 'Active' : 'Inactive' }}</span>
-              </span>
-            </td>
+              <!-- Status -->
+              <td class="col-status">
+                <span class="status-pill" [ngClass]="{
+                    'status-available': unit.isActive,
+                    'status-maintenance': !unit.isActive
+                  }">
+                  <span class="status-dot"></span>
+                  <span class="status-text">
+                    {{ unit.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </span>
+              </td>
 
-            <!-- Action -->
-            <td class="text-center col-action">
-              <div class="d-inline-flex align-items-center gap-2 action-icons">
-                <button type="button" class="icon-btn" title="Edit" (click)="onEditUnit(unit)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button type="button" class="icon-btn" title="Delete" (click)="onDeleteUnit(unit)">
-                  <i class="bi bi-trash text-danger"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+              <!-- Action -->
+              <td class="text-center col-action">
+                <div class="d-inline-flex align-items-center gap-2 action-icons">
+                  <button type="button" class="icon-btn" title="Edit" (click)="onEditUnit(unit)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button type="button" class="icon-btn" title="Delete" (click)="onDeleteUnit(unit)">
+                    <i class="bi bi-trash text-danger"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
 
-          <tr *ngIf="pagedUnits.length === 0">
-            <td colspan="5" class="text-center py-5 text-muted">
-              No units found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tr *ngIf="pagedUnits.length === 0">
+              <td colspan="5" class="text-center py-5 text-muted">
+                No units found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Mobile: Card View -->
@@ -106,7 +120,9 @@
         <div class="mobile-card-header d-flex justify-content-between align-items-center">
           <div class="f-16-m fw-bold">
             {{ unit.name }}
-            <div class="f-12-r text-muted">{{ unit.shortName }}</div>
+            <div class="f-12-r text-muted">
+              {{ unit.shortName }}
+            </div>
           </div>
           <span class="status-pill" [ngClass]="{
               'status-available': unit.isActive,
@@ -149,7 +165,9 @@
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
+          <span class="f-12-r text-muted text-high-contrast">
+            Rows per page:
+          </span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
             <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
               {{ size }}
@@ -162,7 +180,8 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
+              <i class="bi bi-chevron-left"></i>
+              <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -174,7 +193,8 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span>
+              <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

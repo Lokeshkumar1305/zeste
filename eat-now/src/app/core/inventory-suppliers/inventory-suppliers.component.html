@@ -1,32 +1,37 @@
+<!-- suppliers-list.component.html -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
-      <p class="mb-0 f-18-m text-high-contrast">Suppliers Details</p>
+    <div class="page-header d-flex align-items-center justify-content-between mb-4">
+      <p class="page-header-title mb-0 f-18-m text-high-contrast">
+        Suppliers Details
+      </p>
 
-      <div class="toolbar-actions d-flex align-items-center gap-3">
-        <!-- Filter & Reset buttons side by side -->
+      <div class="page-header-actions d-flex align-items-center gap-3">
+        <!-- Filter & Reset buttons -->
         <div class="d-flex gap-3">
           <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            class="btn btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
-            <span class="btn-text f-12-m">Filter ({{ selectedStatusFilter }})</span>
+            <span class="btn-text f-12-m">
+              Filter ({{ selectedStatusFilter }})
+            </span>
           </button>
           <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            class="btn btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
             <span class="btn-text f-12-m">Reset</span>
           </button>
         </div>
 
-        <!-- Add New Supplier button on the right -->
+        <!-- Add New Supplier button -->
         <button type="button"
-          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+          class="btn btn-primary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
           (click)="onAddNewSupplier()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add Supplier</span>
+          <span class="btn-text-primary f-14-m">Add Supplier</span>
         </button>
       </div>
     </div>
@@ -34,75 +39,83 @@
     <div class="toolbar-divider"></div>
 
     <!-- Desktop/Tablet: Table View -->
-    <div class="table-container">
-      <table class="case-table" role="table" aria-label="Suppliers">
-        <thead>
-          <tr>
-            <th scope="col">Supplier Name</th>
-            <th scope="col">Contact Person</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Email</th>
-            <th scope="col">Status</th>
-            <th scope="col" class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let supplier of pagedSuppliers; trackBy: trackBySupplierId" class="table-row-hover">
-            <!-- Supplier Name -->
-            <td class="f-14-m col-name">
-              <span class="text-truncate-cell" [title]="supplier.name">{{ supplier.name }}</span>
-            </td>
+    <div class="desktop-view">
+      <div class="table-container">
+        <table class="case-table table-suppliers" role="table" aria-label="Suppliers">
+          <thead>
+            <tr>
+              <th scope="col">Supplier Name</th>
+              <th scope="col">Contact Person</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Email</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let supplier of pagedSuppliers; trackBy: trackBySupplierId" class="table-row-hover">
+              <!-- Supplier Name -->
+              <td class="f-14-m col-name">
+                <span class="text-truncate-cell" [title]="supplier.name">
+                  {{ supplier.name }}
+                </span>
+              </td>
 
-            <!-- Contact Person -->
-            <td class="f-14-r col-contact">
-              <span class="text-truncate-cell" [title]="supplier.contactPerson || '-'">
-                {{ supplier.contactPerson || '-' }}
-              </span>
-            </td>
+              <!-- Contact Person -->
+              <td class="f-14-r col-contact">
+                <span class="text-truncate-cell" [title]="supplier.contactPerson || '-'">
+                  {{ supplier.contactPerson || '-' }}
+                </span>
+              </td>
 
-            <!-- Phone -->
-            <td class="f-14-r col-phone">
-              <span class="text-truncate-cell">{{ supplier.phone }}</span>
-            </td>
+              <!-- Phone -->
+              <td class="f-14-r col-phone">
+                <span class="text-truncate-cell">
+                  {{ supplier.phone }}
+                </span>
+              </td>
 
-            <!-- Email -->
-            <td class="f-14-r col-email">
-              <span class="text-truncate-cell" [title]="supplier.email || '-'">
-                {{ supplier.email || '-' }}
-              </span>
-            </td>
+              <!-- Email -->
+              <td class="f-14-r col-email">
+                <span class="text-truncate-cell" [title]="supplier.email || '-'">
+                  {{ supplier.email || '-' }}
+                </span>
+              </td>
 
-            <!-- Status -->
-            <td class="col-status">
-              <span class="status-pill" [ngClass]="{
-                  'status-available': supplier.isActive,
-                  'status-maintenance': !supplier.isActive
-                }">
-                <span class="status-dot"></span>
-                <span class="status-text">{{ supplier.isActive ? 'Active' : 'Inactive' }}</span>
-              </span>
-            </td>
+              <!-- Status -->
+              <td class="col-status">
+                <span class="status-pill" [ngClass]="{
+                    'status-available': supplier.isActive,
+                    'status-maintenance': !supplier.isActive
+                  }">
+                  <span class="status-dot"></span>
+                  <span class="status-text">
+                    {{ supplier.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </span>
+              </td>
 
-            <!-- Action -->
-            <td class="text-center col-action">
-              <div class="d-inline-flex align-items-center gap-2 action-icons">
-                <button type="button" class="icon-btn" title="Edit" (click)="onEditSupplier(supplier)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button type="button" class="icon-btn" title="Delete" (click)="onDeleteSupplier(supplier)">
-                  <i class="bi bi-trash text-danger"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+              <!-- Action -->
+              <td class="text-center col-action">
+                <div class="d-inline-flex align-items-center gap-2 action-icons">
+                  <button type="button" class="icon-btn" title="Edit" (click)="onEditSupplier(supplier)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button type="button" class="icon-btn" title="Delete" (click)="onDeleteSupplier(supplier)">
+                    <i class="bi bi-trash text-danger"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
 
-          <tr *ngIf="pagedSuppliers.length === 0">
-            <td colspan="6" class="text-center py-5 text-muted">
-              No suppliers found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tr *ngIf="pagedSuppliers.length === 0">
+              <td colspan="6" class="text-center py-5 text-muted">
+                No suppliers found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Mobile: Card View -->
@@ -173,7 +186,9 @@
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
+          <span class="f-12-r text-muted text-high-contrast">
+            Rows per page:
+          </span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
             <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
               {{ size }}
@@ -186,7 +201,8 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
+              <i class="bi bi-chevron-left"></i>
+              <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -198,7 +214,8 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span>
+              <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

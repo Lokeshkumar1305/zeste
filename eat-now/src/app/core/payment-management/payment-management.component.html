@@ -1,22 +1,29 @@
+<!-- payment-list.component.html -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="header-toolbar d-flex align-items-center justify-content-between mb-3">
-      <p class="mb-0 f-18-m text-high-contrast">Payment Details</p>
+    <div class="page-header d-flex align-items-center justify-content-between mb-3">
+      <p class="page-header-title mb-0 f-18-m text-high-contrast">
+        Payment Details
+      </p>
 
-      <div class="toolbar-actions d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
+      <div class="page-header-actions d-flex align-items-center gap-2">
+        <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="btn-text f-12-m">Filter</span>
         </button>
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
+
+        <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
           <span class="btn-text f-12-m">Reset</span>
         </button>
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
+
+        <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2"
           (click)="onAddNewPayment()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add Payment</span>
+          <span class="btn-text-primary f-14-m">Add Payment</span>
         </button>
       </div>
     </div>
@@ -25,65 +32,79 @@
     <div class="toolbar-divider"></div>
 
     <!-- Desktop/Tablet: Table View -->
-    <div class="table-container">
-      <table class="case-table" role="table" aria-label="Payments">
-        <thead>
-          <tr>
-            <th scope="col">Tenant</th>
-            <th scope="col">Room</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Type</th>
-            <th scope="col">Due Date</th>
-            <th scope="col">Method</th>
-            <th scope="col">Status</th>
-            <th scope="col" class="text-center">Action</th>
-          </tr>
-        </thead>
+    <div class="desktop-view">
+      <div class="table-container">
+        <table class="case-table table-payments" role="table" aria-label="Payments">
+          <thead>
+            <tr>
+              <th scope="col">Tenant</th>
+              <th scope="col">Room</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Type</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Method</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr *ngFor="let p of pagedPayments; trackBy: trackById" class="table-row-hover">
-            <td class="f-14-m col-tenant">
-              <span class="text-truncate-cell" [title]="p.tenantName">{{ p.tenantName }}</span>
-            </td>
-            <td class="f-14-m col-room">{{ p.roomNumber }}</td>
-            <td class="f-14-m col-amount">₹{{ p.amount | number: '1.0-0' }}</td>
-            <td class="f-14-r col-type text-capitalize">
-              <span class="text-truncate-cell">{{ p.paymentType }}</span>
-            </td>
-            <td class="f-14-r col-due">{{ p.dueDate | date: 'MMM d, y' }}</td>
-            <td class="f-14-r col-method text-capitalize">
-              <span class="text-truncate-cell">{{ p.paymentMethod || '-' }}</span>
-            </td>
-            <td class="col-status">
-              <span class="status-pill" [ngClass]="{
-                  'status-pending': p.status === 'Pending',
-                  'status-paid': p.status === 'Paid',
-                  'status-overdue': p.status === 'Overdue',
-                  'status-waived': p.status === 'Waived'
-                }">
-                <span class="status-dot"></span>
-                <span class="status-text">{{ p.status }}</span>
-              </span>
-            </td>
-            <td class="text-center col-action">
-              <div class="d-inline-flex align-items-center gap-2 action-icons">
-                <button type="button" class="icon-btn" title="Edit" (click)="onEditPayment(p)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button type="button" class="icon-btn" title="Delete" (click)="onDeletePayment(p)">
-                  <i class="bi bi-trash text-danger"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+          <tbody>
+            <tr *ngFor="let p of pagedPayments; trackBy: trackById" class="table-row-hover">
+              <td class="f-14-m col-tenant">
+                <span class="text-truncate-cell" [title]="p.tenantName">
+                  {{ p.tenantName }}
+                </span>
+              </td>
+              <td class="f-14-m col-room">
+                {{ p.roomNumber }}
+              </td>
+              <td class="f-14-m col-amount">
+                ₹{{ p.amount | number: '1.0-0' }}
+              </td>
+              <td class="f-14-r col-type text-capitalize">
+                <span class="text-truncate-cell">
+                  {{ p.paymentType }}
+                </span>
+              </td>
+              <td class="f-14-r col-due">
+                {{ p.dueDate | date: 'MMM d, y' }}
+              </td>
+              <td class="f-14-r col-method text-capitalize">
+                <span class="text-truncate-cell">
+                  {{ p.paymentMethod || '-' }}
+                </span>
+              </td>
+              <td class="col-status">
+                <span class="status-pill" [ngClass]="{
+                    'status-pending': p.status === 'Pending',
+                    'status-paid': p.status === 'Paid',
+                    'status-overdue': p.status === 'Overdue',
+                    'status-waived': p.status === 'Waived'
+                  }">
+                  <span class="status-dot"></span>
+                  <span class="status-text">{{ p.status }}</span>
+                </span>
+              </td>
+              <td class="text-center col-action">
+                <div class="d-inline-flex align-items-center gap-2 action-icons">
+                  <button type="button" class="icon-btn" title="Edit" (click)="onEditPayment(p)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button type="button" class="icon-btn" title="Delete" (click)="onDeletePayment(p)">
+                    <i class="bi bi-trash text-danger"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
 
-          <tr *ngIf="pagedPayments.length === 0">
-            <td colspan="8" class="text-center py-4 text-muted">
-              No payments found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tr *ngIf="pagedPayments.length === 0">
+              <td colspan="8" class="text-center py-4 text-muted">
+                No payments found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Mobile: Card View -->
@@ -114,19 +135,27 @@
           </p>
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Amount:</strong></span>
-            <span class="info-value">₹{{ p.amount | number: '1.0-0' }}</span>
+            <span class="info-value">
+              ₹{{ p.amount | number: '1.0-0' }}
+            </span>
           </p>
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Payment Type:</strong></span>
-            <span class="info-value">{{ p.paymentType || '-' }}</span>
+            <span class="info-value">
+              {{ p.paymentType || '-' }}
+            </span>
           </p>
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Due Date:</strong></span>
-            <span class="info-value">{{ p.dueDate | date: 'MMM d, y' }}</span>
+            <span class="info-value">
+              {{ p.dueDate | date: 'MMM d, y' }}
+            </span>
           </p>
           <p class="f-14-r info-row">
             <span class="info-label"><strong>Method:</strong></span>
-            <span class="info-value">{{ p.paymentMethod || '-' }}</span>
+            <span class="info-value">
+              {{ p.paymentMethod || '-' }}
+            </span>
           </p>
         </div>
 
@@ -154,7 +183,9 @@
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
+          <span class="f-12-r text-muted text-high-contrast">
+            Rows per page:
+          </span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
             <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
               {{ size }}
@@ -167,7 +198,8 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
+              <i class="bi bi-chevron-left"></i>
+              <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -179,7 +211,8 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span>
+              <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

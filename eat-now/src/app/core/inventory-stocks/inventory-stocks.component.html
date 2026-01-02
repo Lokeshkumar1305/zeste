@@ -1,183 +1,163 @@
-<div class="page-container">
-  <section class="case-card">
-    <!-- Header & Toolbar -->
-    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
-      <p class="mb-0 f-18-m text-high-contrast">Inventory Stock Details</p>
-
-      <div class="toolbar-actions d-flex align-items-center gap-3">
-        <!-- Filter & Reset buttons side by side -->
-        <div class="d-flex gap-3">
-          <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
-            (click)="onFilter()">
-            <i class="bi bi-funnel"></i>
-            <span class="btn-text f-12-m">Filter ({{ selectedStockFilter }})</span>
-          </button>
-          <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
-            (click)="onReset()">
-            <i class="bi bi-arrow-counterclockwise"></i>
-            <span class="btn-text f-12-m">Reset</span>
-          </button>
-        </div>
-
-        <!-- Stock Overview button on the right -->
-        <button type="button"
-          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
-          (click)="onOpenStockOverview()">
-          <i class="bi bi-bar-chart"></i>
-          <span class="f-14-m">Stock Overview</span>
-        </button>
+<div class="inventory-stocks-page">
+  <!-- Everything (heading + content) is inside the same centered container -->
+  <div class="page-inner">
+    <!-- Page header -->
+    <div class="page-header">
+      <div>
+        <p class="page-title mb-0">
+          <i class="bi bi-boxes me-2"></i>
+          Stock Overview
+        </p>
+        <small class="text-muted">
+          See how much stock you have for each item
+        </small>
       </div>
     </div>
 
-    <div class="toolbar-divider"></div>
+    <!-- SUMMARY CARDS -->
+    <section class="section summary-section">
+      <div class="summary-cards">
+        <!-- Total Items -->
+        <div class="summary-card total">
+          <div class="left-stripe"></div>
+          <div class="content">
+            <div class="icon-circle">
+              <i class="bi bi-box"></i>
+            </div>
+            <div class="text">
+              <div class="label">Total Items</div>
+              <div class="value">{{ items.length }}</div>
+            </div>
+          </div>
+        </div>
 
-    <!-- Desktop/Tablet: Table View -->
-    <div class="table-container">
-      <table class="case-table" role="table" aria-label="Inventory Stock">
-        <thead>
-          <tr>
-            <th scope="col">Item</th>
-            <th scope="col">Category</th>
-            <th scope="col">Unit</th>
-            <th scope="col">Current Stock</th>
-            <th scope="col">Min Stock</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of pagedItems; trackBy: trackByItemId" class="table-row-hover">
-            <!-- Item name -->
-            <td class="f-14-m col-item">
-              <span class="text-truncate-cell" [title]="item.name">{{ item.name }}</span>
-            </td>
+        <!-- In Stock -->
+        <div class="summary-card ok">
+          <div class="left-stripe"></div>
+          <div class="content">
+            <div class="icon-circle">
+              <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="text">
+              <div class="label">In Stock</div>
+              <div class="value">{{ inStockCount }}</div>
+            </div>
+          </div>
+        </div>
 
-            <!-- Category -->
-            <td class="f-14-r col-category">
-              <span class="text-truncate-cell" [title]="item.categoryName || 'Uncategorized'">
-                {{ item.categoryName || 'Uncategorized' }}
-              </span>
-            </td>
+        <!-- Low Stock -->
+        <div class="summary-card low">
+          <div class="left-stripe"></div>
+          <div class="content">
+            <div class="icon-circle">
+              <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <div class="text">
+              <div class="label">Low Stock</div>
+              <div class="value">{{ lowStockCount }}</div>
+            </div>
+          </div>
+        </div>
 
-            <!-- Unit -->
-            <td class="f-14-r col-unit">
-              <span class="text-truncate-cell">{{ item.unitName || 'units' }}</span>
-            </td>
+        <!-- Out of Stock -->
+        <div class="summary-card out">
+          <div class="left-stripe"></div>
+          <div class="content">
+            <div class="icon-circle">
+              <i class="bi bi-x-circle"></i>
+            </div>
+            <div class="text">
+              <div class="label">Out of Stock</div>
+              <div class="value">{{ outOfStockCount }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <!-- Current stock -->
-            <td class="f-14-r col-current-stock">
-              {{ item.currentStock }}
-            </td>
+    <!-- LEGEND -->
+    <section class="section">
+      <div class="help-box-inline">
+        <i class="bi bi-info-circle"></i>
+        <span>
+          <strong class="text-danger">Red</strong> = Out of stock |
+          <strong class="text-warning">Yellow</strong> = Low stock |
+          <strong class="text-success">Green</strong> = Enough stock
+        </span>
+      </div>
+    </section>
 
-            <!-- Min stock -->
-            <td class="f-14-r col-min-stock">
-              {{ item.minStockLevel || 0 }}
-            </td>
+    <!-- FILTERS -->
+    <section class="section">
+      <div class="filter-bar">
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterItems()" placeholder="Search items..." />
+        </div>
 
-            <!-- Status -->
-            <td class="col-status">
-              <span class="status-pill" [ngClass]="{
-                  'status-available': getStockStatus(item) === 'ok',
-                  'status-maintenance': getStockStatus(item) === 'low',
-                  'status-occupied': getStockStatus(item) === 'out'
-                }">
-                <span class="status-dot"></span>
-                <span class="status-text">{{ getStockStatusText(item) }}</span>
-              </span>
-            </td>
-          </tr>
+        <select [(ngModel)]="filterCategory" (ngModelChange)="filterItems()" class="filter-select">
+          <option value="">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">
+            {{ cat.name }}
+          </option>
+        </select>
 
-          <tr *ngIf="pagedItems.length === 0">
-            <td colspan="6" class="text-center py-5 text-muted">
-              No items found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <select [(ngModel)]="filterStatus" (ngModelChange)="filterItems()" class="filter-select">
+          <option value="all">All Status</option>
+          <option value="ok">In Stock</option>
+          <option value="low">Low Stock</option>
+          <option value="out">Out of Stock</option>
+        </select>
+      </div>
+    </section>
 
-    <!-- Mobile: Card View -->
-    <div class="mobile-cards">
-      <div *ngFor="let item of pagedItems; trackBy: trackByItemId" class="mobile-card">
-        <div class="mobile-card-header d-flex justify-content-between align-items-center">
-          <div class="f-16-m fw-bold">
-            {{ item.name }}
-            <div class="f-12-r text-muted">
+    <!-- STOCK LIST -->
+    <section class="section">
+      <div class="stock-list" *ngIf="filteredItems.length; else noItemsTpl">
+        <div class="stock-item" *ngFor="let item of filteredItems; trackBy: trackByItemId"
+          [class.status-ok]="getStockStatus(item) === 'ok'" [class.status-low]="getStockStatus(item) === 'low'"
+          [class.status-out]="getStockStatus(item) === 'out'">
+          <div class="item-info">
+            <span class="item-name">{{ item.name }}</span>
+            <span class="item-category">
               {{ item.categoryName || 'Uncategorized' }}
-            </div>
+            </span>
           </div>
-          <span class="status-pill" [ngClass]="{
-              'status-available': getStockStatus(item) === 'ok',
-              'status-maintenance': getStockStatus(item) === 'low',
-              'status-occupied': getStockStatus(item) === 'out'
-            }">
-            <span class="status-dot"></span>
-            {{ getStockStatusText(item) }}
-          </span>
-        </div>
 
-        <div class="mobile-card-body">
-          <div class="detail-grid">
-            <div class="detail-item">
-              <strong class="label">Unit:</strong>
-              <span class="value">{{ item.unitName || 'units' }}</span>
+          <div class="stock-info">
+            <div class="current-stock">
+              <span class="stock-number">{{ item.currentStock }}</span>
+              <span class="unit">{{ item.unitName || 'units' }}</span>
             </div>
-            <div class="detail-item">
-              <strong class="label">Current Stock:</strong>
-              <span class="value">{{ item.currentStock }}</span>
-            </div>
-            <div class="detail-item">
-              <strong class="label">Min Stock:</strong>
-              <span class="value">{{ item.minStockLevel || 0 }}</span>
+            <div class="stock-meta">
+              <span class="min-level">
+                Min: {{ item.minStockLevel }}
+              </span>
+              <span class="status-badge" [ngClass]="'status-' + getStockStatus(item)">
+                {{ getStockStatusText(item) }}
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      <div *ngIf="pagedItems.length === 0" class="text-center py-5 text-muted f-16-r">
-        No items found.
-      </div>
-    </div>
-
-    <!-- Footer: Pagination -->
-    <div class="table-footer">
-      <div class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
-        <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
+      <ng-template #noItemsTpl>
+        <div class="no-items">
+          <i class="bi bi-inbox"></i>
+          <p>No items found</p>
+          <small>Try adjusting your search or filters</small>
         </div>
+      </ng-template>
+    </section>
 
-        <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
-          <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
-              {{ size }}
-            </option>
-          </select>
-        </div>
+    <!-- TOTAL VALUE -->
+    <section class="section" *ngIf="filteredItems.length">
+      <div class="total-value-bar">
+        <span class="label">Total Stock Value:</span>
+        <span class="value">
+          ₹ {{ getTotalValue() | number: '1.2-2' }}
+        </span>
       </div>
-
-      <nav aria-label="Table pagination">
-        <ul class="pagination pagination-sm mb-0">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
-            </button>
-          </li>
-
-          <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === currentPage">
-            <button type="button" class="page-link" (click)="goToPage(page)">
-              {{ page }}
-            </button>
-          </li>
-
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>

@@ -1,182 +1,64 @@
-/* ========================================
-   PAGE CONTAINER
+/* inventory-movement-list.component.scss
+   ========================================
+   INVENTORY MOVEMENT LIST – SCREEN SPECIFIC
+   Reuses global:
+   - .page-container, .case-card
+   - .page-header, .page-header-actions, .toolbar-divider
+   - .btn, .btn-primary, .btn-secondary, .btn-sm
+   - .table-container, .case-table
+   - .table-footer, .rows-per-page, pagination, .icon-btn, .action-icons
+   - .status-pill base (.status-available, .status-occupied),
+     .desktop-view / .mobile-cards, .text-truncate-cell, etc.
    ======================================== */
-.page-container {
-  --page-gutter: 24px;
-  --page-max: 1280px;
-  width: min(var(--page-max), 100% - (var(--page-gutter) * 2));
-  margin-inline: auto;
-}
 
-/* ========================================
-   CASE CARD
-   ======================================== */
-.case-card {
-  border: 1px solid var(--card-border);
-  background: var(--card-background);
-  border-radius: 8px;
-  padding: 16px;
-}
+/* TABLE LAYOUT – 8 COLUMNS */
 
-/* ========================================
-   HEADER TOOLBAR
-   ======================================== */
-.header-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.toolbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
-}
-
-.toolbar-actions .d-flex.gap-3 {
-  display: flex;
-  gap: 12px;
-}
-
-/* ========================================
-   BUTTONS
-   ======================================== */
-.btn-secondary {
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  min-height: 40px;
-  white-space: nowrap;
-}
-
-.btn-secondary:hover {
-  background: var(--input-background);
-  border-color: var(--brand-primary-light);
-}
-
-.btn-primary {
-  color: #fff;
-  background: var(--brand-primary);
-  border: 1px solid var(--brand-primary);
-  border-radius: 6px;
-  padding: 8px 20px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  min-height: 40px;
-  white-space: nowrap;
-}
-
-.btn-primary:hover {
-  background: var(--brand-primary-700);
-  border-color: var(--brand-primary-700);
-}
-
-/* ========================================
-   DIVIDER
-   ======================================== */
-.toolbar-divider {
-  height: 1px;
-  background: var(--card-border);
-  margin: 16px 0;
-}
-
-/* ========================================
-   TABLE - FIXED FOR ALL SCREENS
-   ======================================== */
-.table-container {
-  overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid var(--card-border);
-  -webkit-overflow-scrolling: touch;
-}
-
-.case-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+.case-table.table-inventory-movements {
   table-layout: fixed;
 }
 
-.case-table thead {
-  background: var(--brand-primary);
-}
+/* Column widths – desktop */
+.case-table.table-inventory-movements th:nth-child(1),
+.case-table.table-inventory-movements td:nth-child(1) {
+  width: 12%;
+} /* Date */
 
-.case-table thead th {
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 12px 10px;
-  border: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.case-table.table-inventory-movements th:nth-child(2),
+.case-table.table-inventory-movements td:nth-child(2) {
+  width: 16%;
+} /* Item */
 
-.case-table tbody tr {
-  background: var(--card-background);
-  transition: background 0.2s ease;
-}
+.case-table.table-inventory-movements th:nth-child(3),
+.case-table.table-inventory-movements td:nth-child(3) {
+  width: 10%;
+} /* Type */
 
-.case-table tbody tr:hover {
-  background: var(--input-background);
-}
+.case-table.table-inventory-movements th:nth-child(4),
+.case-table.table-inventory-movements td:nth-child(4) {
+  width: 8%;
+} /* Qty */
 
-.case-table tbody tr + tr td {
-  border-top: 1px solid var(--card-border);
-}
+.case-table.table-inventory-movements th:nth-child(5),
+.case-table.table-inventory-movements td:nth-child(5) {
+  width: 18%;
+} /* Reason */
 
-.case-table tbody td {
-  padding: 12px 10px;
-  color: var(--text-color);
-  vertical-align: middle;
-  font-size: 14px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.case-table.table-inventory-movements th:nth-child(6),
+.case-table.table-inventory-movements td:nth-child(6) {
+  width: 12%;
+} /* Reference */
 
-/* Column Width Distribution - Desktop (8 columns) */
-.case-table th:nth-child(1),
-.case-table td:nth-child(1) { width: 12%; } /* Date */
+.case-table.table-inventory-movements th:nth-child(7),
+.case-table.table-inventory-movements td:nth-child(7) {
+  width: 12%;
+} /* By */
 
-.case-table th:nth-child(2),
-.case-table td:nth-child(2) { width: 16%; } /* Item */
+.case-table.table-inventory-movements th:nth-child(8),
+.case-table.table-inventory-movements td:nth-child(8) {
+  width: 12%;
+} /* Action */
 
-.case-table th:nth-child(3),
-.case-table td:nth-child(3) { width: 10%; } /* Type */
-
-.case-table th:nth-child(4),
-.case-table td:nth-child(4) { width: 8%; }  /* Qty */
-
-.case-table th:nth-child(5),
-.case-table td:nth-child(5) { width: 18%; } /* Reason */
-
-.case-table th:nth-child(6),
-.case-table td:nth-child(6) { width: 12%; } /* Reference */
-
-.case-table th:nth-child(7),
-.case-table td:nth-child(7) { width: 12%; } /* By */
-
-.case-table th:nth-child(8),
-.case-table td:nth-child(8) { width: 12%; } /* Action */
-
-/* Text Truncation */
-.text-truncate-cell {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
+/* Date time & unit text */
 
 .time-text,
 .unit-text {
@@ -185,181 +67,7 @@
   text-overflow: ellipsis;
 }
 
-/* ========================================
-   STATUS PILLS
-   ======================================== */
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 11px;
-  padding: 5px 10px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.status-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.status-available {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
-}
-
-.status-available .status-dot {
-  background: #22c55e;
-}
-
-.status-occupied {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-}
-
-.status-occupied .status-dot {
-  background: #ef4444;
-}
-
-.status-maintenance {
-  background: rgba(245, 158, 11, 0.2);
-  color: #f59e0b;
-}
-
-.status-maintenance .status-dot {
-  background: #f59e0b;
-}
-
-/* ========================================
-   ACTION ICONS
-   ======================================== */
-.icon-btn {
-  border: 0;
-  background: transparent;
-  padding: 4px;
-  cursor: pointer;
-  color: var(--brand-primary);
-  font-size: 15px;
-  transition: color 0.2s ease;
-}
-
-.icon-btn:hover {
-  color: var(--brand-primary-700);
-}
-
-.action-icons {
-  gap: 6px !important;
-}
-
-.action-icons .bi-trash {
-  color: #ef4444;
-}
-
-.action-icons .bi-trash:hover {
-  color: #dc2626;
-}
-
-/* ========================================
-   ROWS PER PAGE
-   ======================================== */
-.rows-per-page {
-  min-width: 65px;
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 6px 24px 6px 10px;
-  font-size: 13px;
-}
-
-/* ========================================
-   FOOTER & PAGINATION
-   ======================================== */
-.table-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
-  color: var(--text-secondary);
-}
-
-.footer-left {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.pagination {
-  display: inline-flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 4px;
-}
-
-.page-item {
-  display: inline-flex;
-}
-
-.page-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--text-color);
-  background-color: var(--background);
-  border: 1px solid var(--card-border);
-  min-width: 32px;
-  min-height: 32px;
-  border-radius: 4px;
-  padding: 6px 10px;
-  font-size: 13px;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.page-item.active .page-link {
-  color: #fff;
-  background-color: var(--brand-primary);
-  border-color: var(--brand-primary);
-  font-weight: 600;
-}
-
-.page-item.disabled .page-link {
-  color: var(--text-muted);
-  background-color: var(--background);
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.page-item:not(.disabled) .page-link:hover {
-  border-color: var(--brand-primary);
-  background: var(--input-background);
-}
-
-.text-high-contrast {
-  color: var(--text-color) !important;
-  opacity: 1 !important;
-}
-
-/* ========================================
-   MOBILE CARDS
-   ======================================== */
-.mobile-cards {
-  display: none;
-}
+/* Mobile cards */
 
 .mobile-card {
   background: var(--card-background);
@@ -367,6 +75,7 @@
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 16px;
+  width: 100%;
 }
 
 .mobile-card-header {
@@ -408,333 +117,4 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-}
-
-/* ========================================
-   TABLET SPECIFIC STYLES (769px - 1024px)
-   ======================================== */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .page-container {
-    --page-gutter: 16px;
-  }
-
-  .case-card {
-    padding: 14px;
-  }
-
-  /* Header adjustments */
-  .header-toolbar {
-    gap: 12px;
-  }
-
-  .header-toolbar > p {
-    font-size: 16px;
-  }
-
-  .toolbar-actions {
-    gap: 8px;
-  }
-
-  .toolbar-actions .d-flex.gap-3 {
-    gap: 6px;
-  }
-
-  .btn-secondary {
-    padding: 6px 10px;
-    font-size: 12px;
-    min-height: 36px;
-  }
-
-  /* Hide button text on tablet */
-  .btn-secondary .btn-text {
-    display: none;
-  }
-
-  .btn-primary {
-    padding: 6px 12px;
-    font-size: 12px;
-    min-height: 36px;
-  }
-
-  .btn-primary span {
-    font-size: 11px;
-  }
-
-  /* Table adjustments - NO SCROLL */
-  .table-container {
-    overflow-x: hidden;
-  }
-
-  .case-table thead th {
-    font-size: 9px;
-    padding: 10px 5px;
-    letter-spacing: 0.1px;
-  }
-
-  .case-table tbody td {
-    font-size: 11px;
-    padding: 10px 5px;
-  }
-
-  /* Adjusted column widths for tablet - 8 columns */
-  .case-table th:nth-child(1),
-  .case-table td:nth-child(1) { width: 11%; } /* Date */
-
-  .case-table th:nth-child(2),
-  .case-table td:nth-child(2) { width: 15%; } /* Item */
-
-  .case-table th:nth-child(3),
-  .case-table td:nth-child(3) { width: 10%; } /* Type */
-
-  .case-table th:nth-child(4),
-  .case-table td:nth-child(4) { width: 7%; }  /* Qty */
-
-  .case-table th:nth-child(5),
-  .case-table td:nth-child(5) { width: 18%; } /* Reason */
-
-  .case-table th:nth-child(6),
-  .case-table td:nth-child(6) { width: 12%; } /* Reference */
-
-  .case-table th:nth-child(7),
-  .case-table td:nth-child(7) { width: 12%; } /* By */
-
-  .case-table th:nth-child(8),
-  .case-table td:nth-child(8) { width: 15%; } /* Action */
-
-  /* Time and unit text smaller */
-  .time-text,
-  .unit-text {
-    font-size: 9px;
-  }
-
-  /* Status pill compact */
-  .status-pill {
-    font-size: 9px;
-    padding: 3px 7px;
-    gap: 4px;
-  }
-
-  .status-dot {
-    width: 5px;
-    height: 5px;
-  }
-
-  /* Action icons compact */
-  .icon-btn {
-    font-size: 13px;
-    padding: 2px;
-  }
-
-  /* Footer adjustments */
-  .table-footer {
-    gap: 8px;
-  }
-
-  .footer-left {
-    gap: 10px;
-  }
-
-  .pagination {
-    gap: 3px;
-  }
-
-  .page-link {
-    min-width: 28px;
-    min-height: 28px;
-    padding: 4px 8px;
-    font-size: 11px;
-  }
-
-  /* Hide Previous/Next text */
-  .prev-next-text {
-    display: none;
-  }
-
-  .rows-per-page {
-    min-width: 55px;
-    padding: 4px 18px 4px 8px;
-    font-size: 11px;
-  }
-}
-
-/* ========================================
-   SMALL TABLET (769px - 850px)
-   ======================================== */
-@media (min-width: 769px) and (max-width: 850px) {
-  .case-table thead th {
-    font-size: 8px;
-    padding: 8px 4px;
-  }
-
-  .case-table tbody td {
-    font-size: 10px;
-    padding: 8px 4px;
-  }
-
-  /* Even more compact column widths */
-  .case-table th:nth-child(1),
-  .case-table td:nth-child(1) { width: 10%; }
-
-  .case-table th:nth-child(2),
-  .case-table td:nth-child(2) { width: 14%; }
-
-  .case-table th:nth-child(3),
-  .case-table td:nth-child(3) { width: 9%; }
-
-  .case-table th:nth-child(4),
-  .case-table td:nth-child(4) { width: 6%; }
-
-  .case-table th:nth-child(5),
-  .case-table td:nth-child(5) { width: 18%; }
-
-  .case-table th:nth-child(6),
-  .case-table td:nth-child(6) { width: 12%; }
-
-  .case-table th:nth-child(7),
-  .case-table td:nth-child(7) { width: 13%; }
-
-  .case-table th:nth-child(8),
-  .case-table td:nth-child(8) { width: 18%; }
-
-  .status-pill {
-    font-size: 8px;
-    padding: 3px 5px;
-  }
-
-  .icon-btn {
-    font-size: 12px;
-  }
-
-  .btn-primary span {
-    font-size: 10px;
-  }
-
-  .time-text,
-  .unit-text {
-    font-size: 8px;
-  }
-}
-
-/* ========================================
-   MOBILE (≤768px)
-   ======================================== */
-@media (max-width: 768px) {
-  .page-container {
-    width: calc(100vw - 32px) !important;
-    margin-left: calc(50% - 50vw + 16px) !important;
-    margin-right: auto !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    box-sizing: border-box;
-  }
-
-  .table-container {
-    display: none;
-  }
-
-  .mobile-cards {
-    display: block;
-    width: 100%;
-  }
-
-  .mobile-card {
-    width: 100%;
-    margin-inline: 0;
-  }
-
-  .header-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  .toolbar-actions {
-    flex-direction: column;
-    width: 100%;
-    gap: 12px;
-  }
-
-  .toolbar-actions .d-flex.gap-3 {
-    width: 100%;
-    justify-content: stretch;
-  }
-
-  .btn-secondary,
-  .btn-primary {
-    width: 100%;
-    justify-content: center;
-    padding: 10px 16px;
-  }
-
-  /* Show button text on mobile */
-  .btn-secondary .btn-text {
-    display: inline;
-  }
-
-  .table-footer {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-    margin-top: 24px;
-  }
-
-  .footer-left {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  .pagination {
-    justify-content: center;
-    width: 100%;
-  }
-
-  /* Show Previous/Next text on mobile */
-  .prev-next-text {
-    display: inline;
-  }
-}
-
-/* ========================================
-   DESKTOP (≥1025px)
-   ======================================== */
-@media (min-width: 1025px) {
-  .mobile-cards {
-    display: none !important;
-  }
-
-  .case-table thead th {
-    font-size: 12px;
-    padding: 12px 12px;
-  }
-
-  .case-table tbody td {
-    font-size: 14px;
-    padding: 14px 12px;
-  }
-
-  .status-pill {
-    font-size: 12px;
-    padding: 6px 12px;
-    gap: 8px;
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-  }
-
-  .icon-btn {
-    font-size: 16px;
-    padding: 4px;
-  }
-
-  .action-icons {
-    gap: 10px !important;
-  }
-
-  /* Show button text on desktop */
-  .btn-secondary .btn-text {
-    display: inline;
-  }
 }

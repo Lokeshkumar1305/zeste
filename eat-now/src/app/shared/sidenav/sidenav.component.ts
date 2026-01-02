@@ -118,8 +118,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
       items: [
         { title: 'Dashboard', route: '/core/inventory-dashboard' },
         { title: 'Units', route: '/core/inventory-unit' },
-        { title: 'Inventory Items', route: '/core/inventory-items' },
         { title: 'Items Categories', route: '/core/inventory-items-categories' },
+        { title: 'Inventory Items', route: '/core/inventory-items' },
         { title: 'Inventory Stocks', route: '/core/inventory-stocks' },
         { title: 'Inventory Movements', route: '/core/inventory-movements' },
         { title: 'Purchase Orders', route: '/core/inventory-purchase-orders' },

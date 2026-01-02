@@ -1,77 +1,93 @@
+<!-- expense-categories.component.html -->
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="header-toolbar d-flex align-items-center justify-content-between mb-3">
-      <p class="mb-0 f-18-m text-high-contrast">Expenses Category Details</p>
+    <div class="page-header d-flex align-items-center justify-content-between mb-3">
+      <p class="page-header-title mb-0 f-18-m text-high-contrast">
+        Expenses Category Details
+      </p>
 
-      <div class="toolbar-actions d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onFilter()">
+      <div class="page-header-actions d-flex align-items-center gap-2">
+        <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="btn-text f-12-m">Filter</span>
         </button>
 
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2" (click)="onReset()">
+        <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
           <span class="btn-text f-12-m">Reset</span>
         </button>
 
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
+        <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2"
           (click)="onAddNewMaintenance()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add Category</span>
+          <span class="btn-text-primary f-14-m">Add Category</span>
         </button>
       </div>
     </div>
 
+    <!-- Divider -->
     <div class="toolbar-divider"></div>
 
     <!-- Desktop/Tablet: Table View -->
-    <div class="table-container">
-      <table class="case-table" role="table" aria-label="Expense Categories">
-        <thead>
-          <tr>
-            <th scope="col">Category ID</th>
-            <th scope="col">Category Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Status</th>
-            <th scope="col" class="text-center">Action</th>
-          </tr>
-        </thead>
+    <div class="desktop-view">
+      <div class="table-container">
+        <table class="case-table table-expense-categories" role="table" aria-label="Expense Categories">
+          <thead>
+            <tr>
+              <th scope="col">Category ID</th>
+              <th scope="col">Category Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr *ngFor="let cat of pagedCategories; trackBy: trackById" class="table-row-hover">
-            <td class="f-14-m col-id">{{ cat.id }}</td>
-            <td class="f-14-r col-name">
-              <span class="text-truncate-cell" [title]="cat.name">{{ cat.name }}</span>
-            </td>
-            <td class="f-14-r col-description">
-              <span class="text-truncate-cell" [title]="cat.description">{{ cat.description || '-' }}</span>
-            </td>
-            <td class="col-status">
-              <span class="status-pill" [ngClass]="{ 'status-open': cat.open, 'status-closed': !cat.open }">
-                <span class="status-dot"></span>
-                <span class="status-text">{{ cat.open ? 'Open' : 'Closed' }}</span>
-              </span>
-            </td>
-            <td class="text-center col-action">
-              <div class="d-inline-flex align-items-center gap-2 action-icons">
-                <button type="button" class="icon-btn" title="Edit" (click)="onEditCategory(cat)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button type="button" class="icon-btn" title="Delete" (click)="onDeleteCategory(cat)">
-                  <i class="bi bi-trash text-danger"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+          <tbody>
+            <tr *ngFor="let cat of pagedCategories; trackBy: trackById" class="table-row-hover">
+              <td class="f-14-m col-id">
+                {{ cat.id }}
+              </td>
+              <td class="f-14-r col-name">
+                <span class="text-truncate-cell" [title]="cat.name">
+                  {{ cat.name }}
+                </span>
+              </td>
+              <td class="f-14-r col-description">
+                <span class="text-truncate-cell" [title]="cat.description">
+                  {{ cat.description || '-' }}
+                </span>
+              </td>
+              <td class="col-status">
+                <span class="status-pill" [ngClass]="{ 'status-open': cat.open, 'status-closed': !cat.open }">
+                  <span class="status-dot"></span>
+                  <span class="status-text">
+                    {{ cat.open ? 'Open' : 'Closed' }}
+                  </span>
+                </span>
+              </td>
+              <td class="text-center col-action">
+                <div class="d-inline-flex align-items-center gap-2 action-icons">
+                  <button type="button" class="icon-btn" title="Edit" (click)="onEditCategory(cat)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button type="button" class="icon-btn" title="Delete" (click)="onDeleteCategory(cat)">
+                    <i class="bi bi-trash text-danger"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
 
-          <tr *ngIf="pagedCategories.length === 0">
-            <td colspan="5" class="text-center py-4 text-muted">
-              No categories found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tr *ngIf="pagedCategories.length === 0">
+              <td colspan="5" class="text-center py-4 text-muted">
+                No categories found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Mobile: Card View -->
@@ -125,7 +141,9 @@
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
+          <span class="f-12-r text-muted text-high-contrast">
+            Rows per page:
+          </span>
           <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
             <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
               {{ size }}
@@ -138,7 +156,8 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
+              <i class="bi bi-chevron-left"></i>
+              <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -150,7 +169,8 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span>
+              <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>
