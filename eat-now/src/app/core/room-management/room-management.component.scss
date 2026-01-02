@@ -1,64 +1,8 @@
-/* ========================================
-   PAGE CONTAINER
-   ======================================== */
-.page-container {
-  --page-gutter: 24px;
-  --page-max: 1280px;
-  width: min(var(--page-max), 100% - (var(--page-gutter) * 2));
-  margin-inline: auto;
+:host {
+  display: block;
 }
 
-/* ========================================
-   CASE CARD
-   ======================================== */
-.case-card {
-  border: 1px solid var(--card-border);
-  background: var(--card-background);
-  border-radius: 8px;
-  padding: 16px;
-}
-
-/* ========================================
-   BUTTONS
-   ======================================== */
-.btn-secondary {
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  min-height: 40px;
-  white-space: nowrap;
-}
-
-.btn-secondary:hover {
-  background: var(--input-background);
-  border-color: var(--brand-primary-light);
-}
-
-.btn-primary {
-  color: #fff;
-  background: var(--brand-primary);
-  border: 1px solid var(--brand-primary);
-  border-radius: 6px;
-  padding: 8px 20px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  min-height: 40px;
-  min-width: 160px;
-  white-space: nowrap;
-}
-
-.btn-primary:hover {
-  background: var(--brand-primary-700);
-  border-color: var(--brand-primary-700);
-}
-
-/* ========================================
-   HEADER TOOLBAR
-   ======================================== */
+/* HEADER TOOLBAR */
 .header-toolbar {
   display: flex;
   align-items: center;
@@ -80,295 +24,8 @@
   gap: 12px;
 }
 
-/* ========================================
-   DIVIDER
-   ======================================== */
-.toolbar-divider {
-  height: 1px;
-  background: var(--card-border);
-  margin: 16px 0;
-}
+/* MOBILE CARDS */
 
-/* ========================================
-   ROWS PER PAGE
-   ======================================== */
-.rows-per-page {
-  min-width: 72px;
-  color: var(--text-color);
-  background: var(--background);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 6px 28px 6px 10px;
-  font-size: 14px;
-}
-
-/* ========================================
-   TABLE - FIXED FOR TABLETS
-   ======================================== */
-.table-container {
-  overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid var(--card-border);
-  -webkit-overflow-scrolling: touch;
-}
-
-.case-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  table-layout: fixed;
-}
-
-.case-table thead {
-  background: var(--brand-primary);
-}
-
-.case-table thead th {
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  font-weight: 600;
-  font-size: 11px;
-  padding: 12px 8px;
-  border: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.case-table tbody tr {
-  background: var(--card-background);
-  transition: background 0.2s ease;
-}
-
-.case-table tbody tr:hover {
-  background: var(--input-background);
-}
-
-.case-table tbody tr+tr td {
-  border-top: 1px solid var(--card-border);
-}
-
-.case-table tbody td {
-  padding: 12px 8px;
-  color: var(--text-color);
-  vertical-align: middle;
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Column Width Distribution - Optimized for Tablets */
-.case-table th:nth-child(1),
-.case-table td:nth-child(1) {
-  width: 10%;
-  min-width: 70px;
-}
-
-.case-table th:nth-child(2),
-.case-table td:nth-child(2) {
-  width: 12%;
-  min-width: 80px;
-}
-
-.case-table th:nth-child(3),
-.case-table td:nth-child(3) {
-  width: 8%;
-  min-width: 50px;
-}
-
-.case-table th:nth-child(4),
-.case-table td:nth-child(4) {
-  width: 12%;
-  min-width: 80px;
-}
-
-.case-table th:nth-child(5),
-.case-table td:nth-child(5) {
-  width: 28%;
-  min-width: 120px;
-}
-
-.case-table th:nth-child(6),
-.case-table td:nth-child(6) {
-  width: 15%;
-  min-width: 100px;
-}
-
-.case-table th:nth-child(7),
-.case-table td:nth-child(7) {
-  width: 15%;
-  min-width: 80px;
-}
-
-/* Amenities Column - Truncate with Ellipsis */
-.amenities-text {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-/* ========================================
-   STATUS PILLS - COMPACT FOR TABLET
-   ======================================== */
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 11px;
-  padding: 4px 10px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.status-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.status-available {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
-}
-
-.status-available .status-dot {
-  background: #22c55e;
-}
-
-.status-occupied {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-}
-
-.status-occupied .status-dot {
-  background: #ef4444;
-}
-
-.status-maintenance {
-  background: rgba(245, 158, 11, 0.2);
-  color: #f59e0b;
-}
-
-.status-maintenance .status-dot {
-  background: #f59e0b;
-}
-
-/* ========================================
-   ACTION ICONS - COMPACT
-   ======================================== */
-.icon-btn {
-  border: 0;
-  background: transparent;
-  padding: 4px;
-  cursor: pointer;
-  color: var(--brand-primary);
-  font-size: 15px;
-  transition: color 0.2s ease;
-}
-
-.icon-btn:hover {
-  color: var(--brand-primary-700);
-}
-
-.action-icons {
-  gap: 8px !important;
-}
-
-.action-icons .bi-trash {
-  color: #ef4444;
-}
-
-.action-icons .bi-trash:hover {
-  color: #dc2626;
-}
-
-/* ========================================
-   FOOTER & PAGINATION
-   ======================================== */
-.table-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
-  color: var(--text-secondary);
-}
-
-.footer-left {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.pagination {
-  display: inline-flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 4px;
-}
-
-.page-item {
-  display: inline-flex;
-}
-
-.page-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--text-color);
-  background-color: var(--background);
-  border: 1px solid var(--card-border);
-  min-width: 32px;
-  min-height: 32px;
-  border-radius: 4px;
-  padding: 4px 10px;
-  font-size: 13px;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.page-item.active .page-link {
-  color: #fff;
-  background-color: var(--brand-primary);
-  border-color: var(--brand-primary);
-  font-weight: 600;
-}
-
-.page-item.disabled .page-link {
-  color: var(--text-muted);
-  background-color: var(--background);
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.page-item:not(.disabled) .page-link:hover {
-  border-color: var(--brand-primary);
-  background: var(--input-background);
-}
-
-.text-high-contrast {
-  color: var(--text-color) !important;
-  opacity: 1 !important;
-}
-
-/* ========================================
-   MOBILE CARDS
-   ======================================== */
 .mobile-cards {
   display: none;
 }
@@ -382,6 +39,9 @@
 }
 
 .mobile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 12px;
 }
 
@@ -432,24 +92,13 @@
   gap: 12px;
 }
 
-/* ========================================
-   TABLET SPECIFIC STYLES (769px - 1024px)
-   ======================================== */
+/* TABLET (769–1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .page-container {
-    --page-gutter: 16px;
-  }
-
-  .case-card {
-    padding: 12px;
-  }
-
-  /* Compact header for tablet */
   .header-toolbar {
     gap: 12px;
   }
 
-  .header-toolbar>p {
+  .header-toolbar > p {
     font-size: 16px;
   }
 
@@ -461,41 +110,38 @@
     gap: 8px;
   }
 
-  .btn-secondary {
+  .btn.btn-secondary {
     padding: 6px 12px;
     font-size: 12px;
     min-height: 36px;
   }
 
-  .btn-secondary span {
+  .btn.btn-secondary .btn-text {
     display: none;
   }
 
-  .btn-primary {
+  .btn.btn-primary {
     padding: 6px 14px;
     font-size: 12px;
     min-height: 36px;
     min-width: auto;
   }
 
-  .btn-primary span {
+  .btn.btn-primary .btn-text-primary {
     font-size: 12px;
   }
 
-  /* Table adjustments for tablet */
   .table-container {
     overflow-x: hidden;
   }
 
   .case-table {
     table-layout: fixed;
-    width: 100%;
   }
 
   .case-table thead th {
     font-size: 10px;
     padding: 10px 6px;
-    letter-spacing: 0.2px;
   }
 
   .case-table tbody td {
@@ -503,43 +149,6 @@
     padding: 10px 6px;
   }
 
-  /* Adjusted column widths for tablet */
-  .case-table th:nth-child(1),
-  .case-table td:nth-child(1) {
-    width: 9%;
-  }
-
-  .case-table th:nth-child(2),
-  .case-table td:nth-child(2) {
-    width: 11%;
-  }
-
-  .case-table th:nth-child(3),
-  .case-table td:nth-child(3) {
-    width: 7%;
-  }
-
-  .case-table th:nth-child(4),
-  .case-table td:nth-child(4) {
-    width: 12%;
-  }
-
-  .case-table th:nth-child(5),
-  .case-table td:nth-child(5) {
-    width: 28%;
-  }
-
-  .case-table th:nth-child(6),
-  .case-table td:nth-child(6) {
-    width: 18%;
-  }
-
-  .case-table th:nth-child(7),
-  .case-table td:nth-child(7) {
-    width: 15%;
-  }
-
-  /* Status pill compact */
   .status-pill {
     font-size: 10px;
     padding: 3px 8px;
@@ -551,7 +160,6 @@
     height: 5px;
   }
 
-  /* Action icons compact */
   .icon-btn {
     font-size: 14px;
     padding: 2px;
@@ -561,7 +169,6 @@
     gap: 6px !important;
   }
 
-  /* Footer adjustments */
   .table-footer {
     gap: 8px;
   }
@@ -592,9 +199,7 @@
   }
 }
 
-/* ========================================
-   SMALL TABLET (769px - 850px)
-   ======================================== */
+/* SMALL TABLET (769–850px) */
 @media (min-width: 769px) and (max-width: 850px) {
   .case-table thead th {
     font-size: 9px;
@@ -606,42 +211,6 @@
     padding: 8px 4px;
   }
 
-  /* Even more compact column widths */
-  .case-table th:nth-child(1),
-  .case-table td:nth-child(1) {
-    width: 10%;
-  }
-
-  .case-table th:nth-child(2),
-  .case-table td:nth-child(2) {
-    width: 12%;
-  }
-
-  .case-table th:nth-child(3),
-  .case-table td:nth-child(3) {
-    width: 6%;
-  }
-
-  .case-table th:nth-child(4),
-  .case-table td:nth-child(4) {
-    width: 13%;
-  }
-
-  .case-table th:nth-child(5),
-  .case-table td:nth-child(5) {
-    width: 25%;
-  }
-
-  .case-table th:nth-child(6),
-  .case-table td:nth-child(6) {
-    width: 18%;
-  }
-
-  .case-table th:nth-child(7),
-  .case-table td:nth-child(7) {
-    width: 16%;
-  }
-
   .status-pill {
     font-size: 9px;
     padding: 3px 6px;
@@ -651,15 +220,12 @@
     font-size: 13px;
   }
 
-  /* Hide Add New Room text, show only icon */
-  .btn-primary .f-14-m {
+  .btn.btn-primary .f-14-m {
     font-size: 11px;
   }
 }
 
-/* ========================================
-   MOBILE (≤768px)
-   ======================================== */
+/* MOBILE (≤768px) */
 @media (max-width: 768px) {
   .page-container {
     width: calc(100vw - 32px) !important;
@@ -668,6 +234,10 @@
     padding-left: 0 !important;
     padding-right: 0 !important;
     box-sizing: border-box;
+  }
+
+  .case-card {
+    padding: 14px;
   }
 
   .table-container {
@@ -701,15 +271,15 @@
     justify-content: stretch;
   }
 
-  .btn-secondary,
-  .btn-primary {
+  .btn.btn-secondary,
+  .btn.btn-primary {
     width: 100%;
     justify-content: center;
     padding: 10px 16px;
   }
 
-  .btn-secondary span,
-  .btn-primary span {
+  .btn.btn-secondary .btn-text,
+  .btn.btn-primary .btn-text-primary {
     display: inline;
   }
 
@@ -736,9 +306,7 @@
   }
 }
 
-/* ========================================
-   DESKTOP (≥1025px)
-   ======================================== */
+/* DESKTOP (≥1025px) */
 @media (min-width: 1025px) {
   .mobile-cards {
     display: none !important;
@@ -772,5 +340,9 @@
 
   .action-icons {
     gap: 12px !important;
+  }
+
+  .btn.btn-secondary .btn-text {
+    display: inline;
   }
 }

@@ -1,3 +1,7 @@
+:host {
+  display: block;
+}
+
 /* ========================================
    PAGE CONTAINER
    ======================================== */
@@ -19,7 +23,7 @@
 }
 
 /* ========================================
-   BUTTONS
+   BUTTONS (screen-level overrides)
    ======================================== */
 .btn-secondary {
   color: var(--text-color);
@@ -103,7 +107,7 @@
 }
 
 /* ========================================
-   TABLE - FIXED FOR ALL SCREENS
+   TABLE
    ======================================== */
 .table-container {
   overflow-x: auto;
@@ -119,46 +123,9 @@
   table-layout: fixed;
 }
 
-.case-table thead {
-  background: var(--brand-primary);
-}
+/* header background, text, borders are from global styles */
 
-.case-table thead th {
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 12px 16px;
-  border: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.case-table tbody tr {
-  background: var(--card-background);
-  transition: background 0.2s ease;
-}
-
-.case-table tbody tr:hover {
-  background: var(--input-background);
-}
-
-.case-table tbody tr + tr td {
-  border-top: 1px solid var(--card-border);
-}
-
-.case-table tbody td {
-  padding: 16px;
-  color: var(--text-color);
-  vertical-align: middle;
-  font-size: 14px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Column Width Distribution - Desktop */
+/* Column width distribution */
 .case-table th:nth-child(1),
 .case-table td:nth-child(1) {
   width: 20%;
@@ -179,34 +146,13 @@
   width: 15%;
 }
 
-/* Description Column - Truncate with Ellipsis */
+/* Description truncation */
 .col-description .description-text {
   display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-}
-
-/* ========================================
-   STATUS PILLS (if needed later)
-   ======================================== */
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 6px 12px;
-  line-height: 1;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
 }
 
 /* ========================================
@@ -333,7 +279,6 @@
   gap: 8px;
 }
 
-/* Extra styles for room-type card header */
 .room-title {
   font-size: 16px;
   font-weight: 600;
@@ -381,7 +326,6 @@
     padding: 12px;
   }
 
-  /* Compact header for tablet */
   .header-toolbar {
     gap: 12px;
   }
@@ -398,29 +342,27 @@
     gap: 8px;
   }
 
-  .btn-secondary {
+  .btn.btn-secondary {
     padding: 6px 12px;
     font-size: 12px;
     min-height: 36px;
   }
 
-  /* Hide button text on tablet, show only icons */
-  .btn-secondary .btn-text {
+  .btn.btn-secondary .btn-text {
     display: none;
   }
 
-  .btn-primary {
+  .btn.btn-primary {
     padding: 6px 14px;
     font-size: 12px;
     min-height: 36px;
     min-width: auto;
   }
 
-  .btn-primary span {
+  .btn.btn-primary .btn-text-primary {
     font-size: 12px;
   }
 
-  /* Table adjustments for tablet - NO SCROLL */
   .table-container {
     overflow-x: hidden;
   }
@@ -441,7 +383,6 @@
     padding: 12px 8px;
   }
 
-  /* Adjusted column widths for tablet */
   .case-table th:nth-child(1),
   .case-table td:nth-child(1) {
     width: 22%;
@@ -462,7 +403,6 @@
     width: 18%;
   }
 
-  /* Action icons compact */
   .icon-btn {
     font-size: 14px;
     padding: 2px;
@@ -472,7 +412,6 @@
     gap: 6px !important;
   }
 
-  /* Footer adjustments */
   .table-footer {
     gap: 8px;
   }
@@ -492,7 +431,6 @@
     font-size: 12px;
   }
 
-  /* Hide Previous/Next text on tablet */
   .prev-next-text {
     display: none;
   }
@@ -518,7 +456,6 @@
     padding: 10px 6px;
   }
 
-  /* Even more compact column widths for small tablets */
   .case-table th:nth-child(1),
   .case-table td:nth-child(1) {
     width: 24%;
@@ -543,8 +480,7 @@
     font-size: 13px;
   }
 
-  /* Compact button text */
-  .btn-primary .f-14-m {
+  .btn.btn-primary .f-14-m {
     font-size: 11px;
   }
 }
@@ -594,15 +530,15 @@
     justify-content: stretch;
   }
 
-  .btn-secondary,
-  .btn-primary {
+  .btn.btn-secondary,
+  .btn.btn-primary {
     width: 100%;
     justify-content: center;
     padding: 10px 16px;
   }
 
-  /* Show button text on mobile */
-  .btn-secondary .btn-text {
+  .btn.btn-secondary .btn-text,
+  .btn.btn-primary .btn-text-primary {
     display: inline;
   }
 
@@ -624,7 +560,6 @@
     width: 100%;
   }
 
-  /* Show Previous/Next text on mobile */
   .prev-next-text {
     display: inline;
   }
@@ -657,8 +592,7 @@
     gap: 12px !important;
   }
 
-  /* Show button text on desktop */
-  .btn-secondary .btn-text {
+  .btn.btn-secondary .btn-text {
     display: inline;
   }
 }

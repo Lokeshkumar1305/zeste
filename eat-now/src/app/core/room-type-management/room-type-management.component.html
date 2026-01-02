@@ -1,20 +1,23 @@
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="header-toolbar d-flex align-items-center justify-content-between mb-4">
-      <p class="mb-0 f-18-m text-high-contrast">Room Type Details</p>
+    <div class="header-toolbar page-header d-flex align-items-center justify-content-between mb-4">
+      <p class="mb-0 f-18-m text-high-contrast page-header-title">
+        Room Type Details
+      </p>
 
-      <div class="toolbar-actions d-flex align-items-center gap-3">
+      <div class="toolbar-actions page-header-actions d-flex align-items-center gap-3">
         <!-- Filter & Reset buttons side by side -->
         <div class="d-flex gap-3">
           <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            class="btn btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onFilter()">
             <i class="bi bi-funnel"></i>
             <span class="btn-text f-12-m">Filter</span>
           </button>
+
           <button type="button"
-            class="btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
+            class="btn btn-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2"
             (click)="onReset()">
             <i class="bi bi-arrow-counterclockwise"></i>
             <span class="btn-text f-12-m">Reset</span>
@@ -23,10 +26,10 @@
 
         <!-- Add New Room Type button -->
         <button type="button"
-          class="btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
+          class="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2 px-4 py-2"
           (click)="onAddNewRoom()">
           <i class="bi bi-plus-circle"></i>
-          <span class="f-14-m">Add Room Type</span>
+          <span class="btn-text-primary f-14-m">Add Room Type</span>
         </button>
       </div>
     </div>
@@ -55,15 +58,16 @@
             </td>
             <td class="text-center col-action">
               <div class="d-inline-flex align-items-center gap-2 action-icons">
-                <button type="button" class="icon-btn" title="Edit" (click)="onEdit(room)">
+                <button type="button" class="btn-icon icon-btn" title="Edit" (click)="onEdit(room)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button type="button" class="icon-btn" title="Delete" (click)="onDelete(room)">
+                <button type="button" class="btn-icon icon-btn" title="Delete" (click)="onDelete(room)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </div>
             </td>
           </tr>
+
           <tr *ngIf="pagedRoomTypes.length === 0">
             <td colspan="4" class="text-center py-4 text-muted">
               No room types found.
@@ -94,10 +98,10 @@
         </div>
 
         <div class="mobile-card-footer d-flex justify-content-end gap-3">
-          <button type="button" class="icon-btn" title="Edit" (click)="onEdit(room)">
+          <button type="button" class="btn-icon icon-btn" title="Edit" (click)="onEdit(room)">
             <i class="bi bi-pencil-square"></i>
           </button>
-          <button type="button" class="icon-btn" title="Delete" (click)="onDelete(room)">
+          <button type="button" class="btn-icon icon-btn" title="Delete" (click)="onDelete(room)">
             <i class="bi bi-trash text-danger"></i>
           </button>
         </div>
@@ -129,7 +133,8 @@
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-              <i class="bi bi-chevron-left"></i> <span class="prev-next-text">Previous</span>
+              <i class="bi bi-chevron-left"></i>
+              <span class="prev-next-text">Previous</span>
             </button>
           </li>
 
@@ -141,7 +146,8 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-              <span class="prev-next-text">Next</span> <i class="bi bi-chevron-right"></i>
+              <span class="prev-next-text">Next</span>
+              <i class="bi bi-chevron-right"></i>
             </button>
           </li>
         </ul>

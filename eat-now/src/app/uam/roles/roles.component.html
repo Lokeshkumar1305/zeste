@@ -2,24 +2,26 @@
 <div class="page-container">
   <section class="case-card">
     <!-- Header & Toolbar -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
-      <p class="mb-0 f-18-m text-high-contrast">Roles Details</p>
+    <div class="d-flex align-items-center justify-content-between mb-3 page-header">
+      <p class="mb-0 f-18-m text-high-contrast page-header-title">
+        Roles Details
+      </p>
 
-      <div class="d-flex align-items-center gap-2">
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onFilter()">
+      <div class="d-flex align-items-center gap-2 page-header-actions">
+        <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onFilter()">
           <i class="bi bi-funnel"></i>
           <span class="f-12-m">Filter</span>
         </button>
 
-        <button type="button" class="btn-secondary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onReset()">
+        <button type="button" class="btn btn-secondary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onReset()">
           <i class="bi bi-arrow-counterclockwise"></i>
           <span class="f-12-m">Reset</span>
         </button>
 
-        <button type="button" class="btn-primary btn-sm d-inline-flex align-items-center gap-2"
-                (click)="onAddNewRole()">
+        <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2"
+          (click)="onAddNewRole()">
           <i class="bi bi-plus-circle"></i>
           <span class="f-14-m">Add New Role</span>
         </button>
@@ -30,7 +32,7 @@
 
     <!-- Table -->
     <div class="table-container">
-      <table class="case-table" role="table" aria-label="Rooms">
+      <table class="case-table table-7col" role="table" aria-label="Roles">
         <thead>
           <tr>
             <th scope="col">Room No</th>
@@ -44,34 +46,32 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber"
-              class="table-row-hover">
+          <tr *ngFor="let room of pagedRooms; trackBy: trackByRoomNumber" class="table-row-hover">
             <td class="f-14-m">{{ room.roomNumber }}</td>
             <td class="f-14-r">{{ room.type }}</td>
             <td class="f-14-r">{{ room.floor }}</td>
-            <td class="f-14-r">{{ room.monthlyRent | currency:'INR':'symbol':'1.0-0' }}</td>
+            <td class="f-14-r">
+              {{ room.monthlyRent | currency:'INR':'symbol':'1.0-0' }}
+            </td>
             <td class="f-14-r text-capitalize">
               {{ room.amenities.length ? room.amenities.join(', ') : '-' }}
             </td>
             <td>
-              <span class="status-pill"
-                    [ngClass]="{
-                      'status-available': room.status === 'Available',
-                      'status-occupied': room.status === 'Occupied',
-                      'status-maintenance': room.status === 'Maintenance'
-                    }">
+              <span class="status-pill" [ngClass]="{
+                  'status-available': room.status === 'Available',
+                  'status-occupied': room.status === 'Occupied',
+                  'status-maintenance': room.status === 'Maintenance'
+                }">
                 <span class="status-dot"></span>
                 {{ room.status }}
               </span>
             </td>
             <td class="text-center">
               <div class="d-inline-flex align-items-center gap-3 action-icons">
-                <button type="button" class="icon-btn" title="Edit"
-                        (click)="onEditRoom(room)">
+                <button type="button" class="btn-icon icon-btn" title="Edit" (click)="onEditRoom(room)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button type="button" class="icon-btn" title="Delete"
-                        (click)="onDeleteRoom(room)">
+                <button type="button" class="btn-icon icon-btn" title="Delete" (click)="onDeleteRoom(room)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </div>
@@ -79,7 +79,9 @@
           </tr>
 
           <tr *ngIf="pagedRooms.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">No rooms found.</td>
+            <td colspan="7" class="text-center py-4 text-muted">
+              No roles found.
+            </td>
           </tr>
         </tbody>
       </table>
@@ -89,15 +91,18 @@
     <div class="table-footer">
       <div class="footer-left">
         <div class="f-12-r text-muted text-high-contrast">
-          Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
+          Showing {{ showingFrom }} to {{ showingTo }} of
+          {{ totalItems }} entries
         </div>
 
         <div class="d-inline-flex align-items-center gap-2">
-          <span class="f-12-r text-muted text-high-contrast">Rows per page:</span>
-          <select class="rows-per-page"
-                  [ngModel]="pageSize"
-                  (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+          <span class="f-12-r text-muted text-high-contrast">
+            Rows per page:
+          </span>
+          <select class="rows-per-page" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+            <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+              {{ size }}
+            </option>
           </select>
         </div>
       </div>
@@ -105,24 +110,19 @@
       <nav aria-label="Table pagination">
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
-            <button type="button" class="page-link"
-                    (click)="prevPage()" [disabled]="currentPage === 1">
+            <button type="button" class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
               <i class="bi bi-chevron-left"></i> Previous
             </button>
           </li>
 
-          <li class="page-item"
-              *ngFor="let page of pageNumbers"
-              [class.active]="page === currentPage">
-            <button type="button" class="page-link"
-                    (click)="goToPage(page)">
+          <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === currentPage">
+            <button type="button" class="page-link" (click)="goToPage(page)">
               {{ page }}
             </button>
           </li>
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button type="button" class="page-link"
-                    (click)="nextPage()" [disabled]="currentPage === totalPages">
+            <button type="button" class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
               Next <i class="bi bi-chevron-right"></i>
             </button>
           </li>
