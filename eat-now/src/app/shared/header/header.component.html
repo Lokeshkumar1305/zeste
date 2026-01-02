@@ -1,11 +1,7 @@
 <mat-toolbar class="app-header" [class.collapsed]="sidebarCollapsed">
   <!-- Left: Menu toggle -->
-  <button
-    mat-icon-button
-    class="menu-toggle action-btn circle-icon-btn"
-    (click)="toggleSidebar()"
-    aria-label="Toggle sidebar"
-    type="button">
+  <button mat-icon-button class="menu-toggle  circle-icon-btn" (click)="toggleSidebar()"
+    aria-label="Toggle sidebar" type="button">
     <mat-icon>menu</mat-icon>
   </button>
 
@@ -15,23 +11,14 @@
   <!-- Right: icons + user -->
   <div class="header-actions">
     <div class="icon-group">
-      <button
-        mat-icon-button
-        class="action-btn circle-icon-btn hide-on-mobile"
-        aria-label="Quick actions"
+      <button mat-icon-button class="action-btn circle-icon-btn hide-on-mobile" aria-label="Quick actions"
         type="button">
         <mat-icon>crop_free</mat-icon>
       </button>
 
-      <button
-        mat-icon-button
-        class="action-btn circle-icon-btn notification-btn"
-        [matMenuTriggerFor]="notificationMenu"
-        aria-label="Notifications"
-        type="button">
-        <mat-icon
-          [matBadge]="notificationCount > 0 ? notificationCount : null"
-          matBadgeColor="warn"
+      <button mat-icon-button class="action-btn circle-icon-btn notification-btn" [matMenuTriggerFor]="notificationMenu"
+        aria-label="Notifications" type="button">
+        <mat-icon [matBadge]="notificationCount > 0 ? notificationCount : null" matBadgeColor="warn"
           matBadgeSize="small">
           notifications_none
         </mat-icon>
@@ -39,19 +26,10 @@
     </div>
 
     <div class="user-wrapper">
-      <button
-        mat-button
-        class="profile-btn"
-        [matMenuTriggerFor]="profileMenu"
-        aria-label="User menu"
-        type="button">
+      <button mat-button class="profile-btn" [matMenuTriggerFor]="profileMenu" aria-label="User menu" type="button">
         <div class="profile-content">
           <div class="avatar-circle">
-            <img
-              *ngIf="userAvatar; else initialsTemplate"
-              [src]="userAvatar"
-              [alt]="userName"
-              class="avatar-img" />
+            <img *ngIf="userAvatar; else initialsTemplate" [src]="userAvatar" [alt]="userName" class="avatar-img" />
             <ng-template #initialsTemplate>{{ userInitials }}</ng-template>
           </div>
           <div class="profile-info">
@@ -74,12 +52,8 @@
       <i class="bi bi-bell me-2"></i>
       Notifications
     </span>
-    <button
-      mat-button
-      *ngIf="notificationCount > 0"
-      (click)="markAllAsRead(); $event.stopPropagation()"
-      class="mark-read-btn"
-      type="button">
+    <button mat-button *ngIf="notificationCount > 0" (click)="markAllAsRead(); $event.stopPropagation()"
+      class="mark-read-btn" type="button">
       <i class="bi bi-check2-all me-1"></i>
       <span class="mark-read-text">Mark all read</span>
     </button>
@@ -92,13 +66,8 @@
       <p>No new notifications</p>
     </div>
 
-    <button
-      mat-menu-item
-      *ngFor="let notif of notifications"
-      class="notification-item"
-      [class.unread]="!notif.read"
-      (click)="onNotificationClick(notif)"
-      type="button">
+    <button mat-menu-item *ngFor="let notif of notifications" class="notification-item" [class.unread]="!notif.read"
+      (click)="onNotificationClick(notif)" type="button">
       <div class="notif-icon" [ngClass]="notif.type">
         <i class="bi" [ngClass]="getNotificationIcon(notif.type)"></i>
       </div>
@@ -111,10 +80,7 @@
         </span>
       </div>
 
-      <span
-        class="notif-dismiss"
-        (click)="dismissNotification(notif, $event)"
-        aria-label="Dismiss notification"
+      <span class="notif-dismiss" (click)="dismissNotification(notif, $event)" aria-label="Dismiss notification"
         role="button">
         <i class="bi bi-x"></i>
       </span>
@@ -122,11 +88,7 @@
   </div>
 
   <mat-divider *ngIf="notifications.length > 0"></mat-divider>
-  <button
-    mat-menu-item
-    class="view-all-btn"
-    *ngIf="notifications.length > 0"
-    (click)="viewAllNotifications()"
+  <button mat-menu-item class="view-all-btn" *ngIf="notifications.length > 0" (click)="viewAllNotifications()"
     type="button">
     <span>View all</span>
     <i class="bi bi-arrow-right"></i>
@@ -137,11 +99,7 @@
 <mat-menu #profileMenu="matMenu" xPosition="before" class="profile-menu">
   <div class="profile-header" (click)="$event.stopPropagation()">
     <div class="avatar-large">
-      <img
-        *ngIf="userAvatar; else largeInitialsTemplate"
-        [src]="userAvatar"
-        [alt]="userName"
-        class="avatar-img" />
+      <img *ngIf="userAvatar; else largeInitialsTemplate" [src]="userAvatar" [alt]="userName" class="avatar-img" />
       <ng-template #largeInitialsTemplate>{{ userInitials }}</ng-template>
     </div>
     <div class="profile-details">

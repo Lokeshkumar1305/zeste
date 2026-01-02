@@ -4,10 +4,15 @@ $sidenav-width: 260px;          // expanded desktop
 $sidenav-width-tablet: 240px;   // expanded tablet
 $collapsed-width: 72px;         // collapsed rail
 
-// ===== Icon sizes =====
+// ===== Icon sizes (other header icons) =====
 $icon-size-desktop: 40px;
 $icon-size-tablet: 36px;
 $icon-size-mobile: 30px;
+
+// ===== Menu toggle specific sizes (smaller circle) =====
+$menu-toggle-size-desktop: 32px;
+$menu-toggle-size-tablet: 30px;
+$menu-toggle-size-mobile: 26px;
 
 // ===== Color system =====
 $primary-color: #1f4ed8;
@@ -88,8 +93,6 @@ $tablet-breakpoint: 1024px;
 }
 
 // -------- DESKTOP / LAPTOP (>= 1024px) --------
-// Header content starts to the right of the sidenav,
-// so the toggle is not hidden behind it.
 @include desktop {
   .app-header {
     padding-left: calc(24px + #{$sidenav-width}) !important;
@@ -101,8 +104,6 @@ $tablet-breakpoint: 1024px;
 }
 
 // -------- TABLET (768–1023px) --------
-// Same idea as desktop, but tablet sidenav width is 240px.
-// Toggle is hidden via media query later.
 @include tablet {
   .app-header {
     padding-left: calc(16px + #{$sidenav-width-tablet}) !important;
@@ -115,7 +116,6 @@ $tablet-breakpoint: 1024px;
 }
 
 // -------- MOBILE (< 768px) --------
-// Full-width header, no offset; sidenav overlays.
 @include mobile {
   .app-header,
   .app-header.collapsed {
@@ -239,7 +239,7 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-/* Force size of Material icon buttons for action icons (including toggle) */
+/* Force size of Material icon buttons for action icons (NOT the menu toggle) */
 :host ::ng-deep button.mat-mdc-icon-button.action-btn.circle-icon-btn {
   width: $icon-size-desktop !important;
   height: $icon-size-desktop !important;
@@ -925,8 +925,9 @@ $tablet-breakpoint: 1024px;
 }
 
 // ============================================================================
-// FINAL: MENU TOGGLE LIKE OTHER ICONS + TABLET HIDING
+// FINAL: MENU TOGGLE – SMALLER CIRCLE THAN OTHER ICONS
 // ============================================================================
+
 .app-header .menu-toggle {
   background: $icon-bg !important;
   border: 1px solid $icon-border !important;
@@ -938,22 +939,23 @@ $tablet-breakpoint: 1024px;
   justify-content: center;
   padding: 0 !important;
   box-sizing: border-box !important;
-  width: $icon-size-desktop !important;
-  height: $icon-size-desktop !important;
-  min-width: $icon-size-desktop !important;
-  min-height: $icon-size-desktop !important;
+
+  width: $menu-toggle-size-desktop !important;
+  height: $menu-toggle-size-desktop !important;
+  min-width: $menu-toggle-size-desktop !important;
+  min-height: $menu-toggle-size-desktop !important;
 
   mat-icon {
-    font-size: 20px !important;
-    width: 20px !important;
-    height: 20px !important;
-    line-height: 20px !important;
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    line-height: 18px !important;
   }
 
   &:hover {
     background: $icon-hover-bg !important;
     color: $icon-hover-color !important;
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
   }
 }
 
@@ -964,46 +966,47 @@ $tablet-breakpoint: 1024px;
   }
 }
 
-/* <=1023px: resize, visibility handled above */
+/* <=1023px: update size (still hidden on tablet by rule above) */
 @media (max-width: #{$tablet-breakpoint - 1px}) {
   .app-header .menu-toggle {
-    width: $icon-size-tablet !important;
-    height: $icon-size-tablet !important;
-    min-width: $icon-size-tablet !important;
-    min-height: $icon-size-tablet !important;
+    width: $menu-toggle-size-tablet !important;
+    height: $menu-toggle-size-tablet !important;
+    min-width: $menu-toggle-size-tablet !important;
+    min-height: $menu-toggle-size-tablet !important;
   }
 }
 
-/* Mobile (<768px): show toggle again + smaller size */
+/* Mobile (<768px): show toggle again + even smaller size */
 @media (max-width: #{$mobile-breakpoint - 1px}) {
   .app-header .menu-toggle {
     display: inline-flex !important;
-    width: $icon-size-mobile !important;
-    height: $icon-size-mobile !important;
-    min-width: $icon-size-mobile !important;
-    min-height: $icon-size-mobile !important;
-
-    mat-icon {
-      font-size: 18px !important;
-      width: 18px !important;
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-  }
-}
-
-@media (max-width: #{$small-mobile-breakpoint - 1px}) {
-  .app-header .menu-toggle {
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
-    min-height: 26px !important;
+    width: $menu-toggle-size-mobile !important;
+    height: $menu-toggle-size-mobile !important;
+    min-width: $menu-toggle-size-mobile !important;
+    min-height: $menu-toggle-size-mobile !important;
 
     mat-icon {
       font-size: 16px !important;
       width: 16px !important;
       height: 16px !important;
       line-height: 16px !important;
+    }
+  }
+}
+
+/* Very small mobile */
+@media (max-width: #{$small-mobile-breakpoint - 1px}) {
+  .app-header .menu-toggle {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+
+    mat-icon {
+      font-size: 14px !important;
+      width: 14px !important;
+      height: 14px !important;
+      line-height: 14px !important;
     }
   }
 }
