@@ -86,11 +86,11 @@ export class AmenitiesManagementComponent implements OnInit {
 
   onAddNewAmenity(): void {
     const dialogRef = this.dialog.open(AmenitiesManagementModalComponent, {
-     width: '720px',
-     maxWidth: '100vw',
+    width: '520px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
+      panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
@@ -114,11 +114,11 @@ export class AmenitiesManagementComponent implements OnInit {
 
   onEditAmenity(amenity: AmenityGroup): void {
     const dialogRef = this.dialog.open(AmenitiesManagementModalComponent, {
-      width: '720px',
+       width: '520px',
       maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
+      panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,

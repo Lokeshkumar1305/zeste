@@ -1,9 +1,10 @@
+<!-- payment-details-modal.component.html -->
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
     <p class="f-18-m mb-0">
       {{ data?.payment ? 'Edit' : 'Add' }} Payment Details
     </p>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -102,7 +103,7 @@
   </div>
 
   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
       Cancel
     </button>
     <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="!paymentForm.valid">

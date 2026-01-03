@@ -1,9 +1,10 @@
+<!-- tenant-onboard-modal.component.html -->
 <div class="modal-slide-in">
     <div class="modal-header d-flex align-items-center justify-content-between">
         <p class="f-18-m mb-0">
             {{ data?.tenant ? 'Edit' : 'Onboard New' }} Tenant
         </p>
-        <button mat-icon-button (click)="onCancel()" class="text-muted">
+        <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
             <i class="bi bi-x-lg"></i>
         </button>
     </div>
@@ -41,6 +42,14 @@
                     <mat-label class="required">Room Number</mat-label>
                     <mat-form-field appearance="outline" class="w-100 mt-1">
                         <input matInput [(ngModel)]="tenant.roomNumber" name="roomNumber" required placeholder="101" />
+                    </mat-form-field>
+                </div>
+
+                <!-- Bed Number -->
+                <div class="col-12 col-md-6">
+                    <mat-label class="required">Bed Number</mat-label>
+                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                        <input matInput [(ngModel)]="tenant.bedNumber" name="bedNumber" required placeholder="f101-1" />
                     </mat-form-field>
                 </div>
 
@@ -122,7 +131,9 @@
 
                 <!-- ID Proof Upload Section -->
                 <div class="col-12" *ngIf="tenant.idProofType">
-                    <mat-label class="required d-block mb-2">{{ tenant.idProofType }} Upload</mat-label>
+                    <mat-label class="required d-block mb-2">
+                        {{ tenant.idProofType }} Upload
+                    </mat-label>
 
                     <!-- Camera Preview -->
                     <div class="camera-preview-container mt-2" *ngIf="showCameraPreview">
@@ -132,37 +143,42 @@
                                 <div class="camera-frame"></div>
                             </div>
                         </div>
+
                         <div class="camera-controls">
-                            <button mat-fab color="warn" (click)="stopCamera()" class="camera-btn">
+                            <button mat-fab color="warn" type="button" (click)="stopCamera()" class="camera-btn">
                                 <i class="bi bi-x-lg"></i>
                             </button>
-                            <button mat-fab color="primary" (click)="captureImage()" class="camera-btn capture-btn">
+                            <button mat-fab color="primary" type="button" (click)="captureImage()"
+                                class="camera-btn capture-btn">
                                 <i class="bi bi-camera"></i>
                             </button>
-                            <button mat-fab color="accent" (click)="switchCamera()" class="camera-btn"
+                            <button mat-fab color="accent" type="button" (click)="switchCamera()" class="camera-btn"
                                 *ngIf="isMobileOrTablet">
                                 <i class="bi bi-arrow-repeat"></i>
                             </button>
                         </div>
-                        <p class="camera-hint">Position the damage area within the frame and tap capture</p>
+
+                        <p class="camera-hint">
+                            Position the ID within the frame and tap capture
+                        </p>
                     </div>
 
                     <!-- Upload Options Container -->
                     <div class="upload-container" *ngIf="!showCameraPreview">
                         <!-- No file selected state -->
                         <div *ngIf="!tenant.idProofFile && !capturedImageUrl; else filePreview">
-
                             <!-- Desktop View - Only File Upload -->
                             <div *ngIf="!isMobileOrTablet" class="desktop-upload">
                                 <input #idFileInput type="file" (change)="onIdFileSelected($event)"
-                                    accept=".pdf,.jpg,.jpeg,.png" style="display: none">
+                                    accept=".pdf,.jpg,.jpeg,.png" style="display: none" />
                                 <div class="upload-icon-wrapper">
                                     <i class="bi bi-cloud-arrow-up"></i>
                                 </div>
                                 <p class="upload-title">Drag & drop your file here</p>
                                 <p class="upload-subtitle">or</p>
-                                <button mat-stroked-button color="primary" (click)="idFileInput.click()">
-                                    <i class="bi bi-upload me-2"></i> Browse Files
+                                <button mat-stroked-button color="primary" type="button" (click)="idFileInput.click()">
+                                    <i class="bi bi-upload me-2"></i>
+                                    Browse Files
                                 </button>
                                 <small class="text-muted d-block mt-3">
                                     Supported formats: PDF, JPG, PNG • Max size: 5MB
@@ -175,7 +191,7 @@
                                     <!-- File Upload Option -->
                                     <div class="upload-option" (click)="mobileFileInput.click()">
                                         <input #mobileFileInput type="file" (change)="onIdFileSelected($event)"
-                                            accept=".pdf,.jpg,.jpeg,.png" style="display: none">
+                                            accept=".pdf,.jpg,.jpeg,.png" style="display: none" />
                                         <div class="option-icon file-icon">
                                             <i class="bi bi-folder2-open"></i>
                                         </div>
@@ -196,11 +212,11 @@
                                         <small class="option-hint">Use device camera</small>
                                     </div>
 
-                                    <!-- Native Camera Fallback (if MediaDevices not available) -->
+                                    <!-- Native Camera Fallback -->
                                     <div class="upload-option" *ngIf="!isCameraAvailable"
                                         (click)="nativeCameraInput.click()">
                                         <input #nativeCameraInput type="file" accept="image/*" capture="environment"
-                                            (change)="onNativeCameraCapture($event)" style="display: none">
+                                            (change)="onNativeCameraCapture($event)" style="display: none" />
                                         <div class="option-icon camera-icon">
                                             <i class="bi bi-camera"></i>
                                         </div>
@@ -221,15 +237,20 @@
                             <div class="file-preview-container">
                                 <!-- Image Preview -->
                                 <div *ngIf="capturedImageUrl" class="image-preview">
-                                    <img [src]="capturedImageUrl" alt="ID Proof Preview" class="preview-image">
+                                    <img [src]="capturedImageUrl" alt="ID Proof Preview" class="preview-image" />
                                     <div class="preview-badge" *ngIf="showCameraPreview === false">
                                         <i class="bi bi-check-circle-fill text-success"></i>
-                                        <span>{{ tenant.idProofFile?.name?.includes('capture') ? 'Captured' : 'Uploaded'
-                                            }}</span>
+                                        <span>
+                                            {{
+                                            tenant.idProofFile?.name?.includes('capture')
+                                            ? 'Captured'
+                                            : 'Uploaded'
+                                            }}
+                                        </span>
                                     </div>
                                 </div>
 
-                                <!-- PDF/Non-image Preview -->
+                                <!-- PDF / non-image preview -->
                                 <div *ngIf="!capturedImageUrl && tenant.idProofFile" class="pdf-preview">
                                     <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
                                 </div>
@@ -238,7 +259,9 @@
                                 <div class="file-info">
                                     <div class="file-details">
                                         <div class="file-name text-truncate">
-                                            {{ tenant.idProofFile?.name || 'Captured Image' }}
+                                            {{
+                                            tenant.idProofFile?.name || 'Captured Image'
+                                            }}
                                         </div>
                                         <small class="file-size text-muted">
                                             {{ formatFileSize(tenant.idProofFile?.size) }}
@@ -246,11 +269,11 @@
                                     </div>
 
                                     <div class="file-actions">
-                                        <button mat-icon-button color="primary"
+                                        <button mat-icon-button color="primary" type="button"
                                             (click)="downloadFile(tenant.idProofFile)" matTooltip="Download">
                                             <i class="bi bi-download"></i>
                                         </button>
-                                        <button mat-icon-button color="warn" (click)="removeIdProof()"
+                                        <button mat-icon-button color="warn" type="button" (click)="removeIdProof()"
                                             matTooltip="Remove">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -259,15 +282,18 @@
 
                                 <!-- Re-upload/Re-capture Options for Mobile -->
                                 <div class="retake-options" *ngIf="isMobileOrTablet">
-                                    <button mat-stroked-button color="primary" (click)="mobileRetakeInput.click()">
-                                        <i class="bi bi-upload me-1"></i> Re-upload
+                                    <button mat-stroked-button color="primary" type="button"
+                                        (click)="mobileRetakeInput.click()">
+                                        <i class="bi bi-upload me-1"></i>
+                                        Re-upload
                                     </button>
                                     <input #mobileRetakeInput type="file" (change)="onIdFileSelected($event)"
-                                        accept=".pdf,.jpg,.jpeg,.png" style="display: none">
+                                        accept=".pdf,.jpg,.jpeg,.png" style="display: none" />
 
-                                    <button mat-stroked-button color="accent" (click)="openCamera()"
+                                    <button mat-stroked-button color="accent" type="button" (click)="openCamera()"
                                         *ngIf="isCameraAvailable">
-                                        <i class="bi bi-camera me-1"></i> Retake
+                                        <i class="bi bi-camera me-1"></i>
+                                        Retake
                                     </button>
                                 </div>
                             </div>
@@ -288,11 +314,13 @@
     </div>
 
     <div class="modal-footer d-flex justify-content-end gap-3">
-        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
             Cancel
         </button>
-        <button type="button" class="btn btn-primary btn-sm" (click)="onSave()"
-            [disabled]="!tenantForm.valid || (tenant.idProofType && !tenant.idProofFile)">
+        <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="
+        !tenantForm.valid ||
+        (tenant.idProofType && !tenant.idProofFile)
+      ">
             <i class="bi bi-check2 me-1"></i>
             {{ data?.tenant ? 'Update' : 'Onboard' }} Tenant
         </button>

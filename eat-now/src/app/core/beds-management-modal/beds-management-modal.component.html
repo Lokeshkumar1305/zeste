@@ -1,21 +1,31 @@
+<!-- bed-details-modal.component.html -->
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">{{ isEditMode ? 'Edit' : 'Add' }} Bed Details</p> <button mat-icon-button
-      (click)="onCancel()"> <i class="bi bi-x-lg"></i> </button>
+    <p class="f-18-m mb-0">
+      {{ isEditMode ? 'Edit' : 'Add' }} Bed Details
+    </p>
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
+      <i class="bi bi-x-lg"></i>
+    </button>
   </div>
+
   <div class="modal-body">
     <form>
       <div class="row">
+        <!-- Bed summary -->
         <div class="col-12">
-          <div class="d-flex align-items-center gap-3 p-3 mb-3" style="background: #F7FAFC; border-radius: 8px;"> <i
-              class="bi bi-hospital-bed" style="font-size: 32px; color: #4A5568;"></i>
+          <div class="d-flex align-items-center gap-3 p-3 mb-3 bed-summary">
+            <i class="bi bi-hospital-bed bed-summary-icon"></i>
             <div>
               <p class="f-16-m mb-1">{{ bed.id || 'New Bed' }}</p>
-              <p class="f-12-r text-muted mb-0">Room {{ bed.roomNumber }} - {{ bed.floor }}</p>
+              <p class="f-12-r text-muted mb-0">
+                Room {{ bed.roomNumber }} - {{ bed.floor }}
+              </p>
             </div>
           </div>
         </div>
-      
+
+        <!-- Bed ID / Room Number (create) -->
         <div class="col-md-6" *ngIf="!isEditMode">
           <mat-label class="required">Bed ID</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -30,6 +40,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Bed ID / Room Number (edit, readonly) -->
         <div class="col-md-6" *ngIf="isEditMode">
           <mat-label>Bed ID</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -44,6 +55,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Floor -->
         <div class="col-md-6">
           <mat-label>Floor</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -51,6 +63,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Room Type -->
         <div class="col-md-6">
           <mat-label>Room Type</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -59,6 +72,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Monthly Rent -->
         <div class="col-md-6">
           <mat-label class="required">Monthly Rent</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -66,18 +80,21 @@
           </mat-form-field>
         </div>
 
+        <!-- Status -->
         <div class="col-md-6">
           <mat-label class="required">Status</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="bed.status" name="status" required>
-              <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+              <mat-option *ngFor="let s of statuses" [value]="s">
+                {{ s }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
 
+        <!-- Occupant section (when occupied) -->
         <div class="col-12" *ngIf="bed.status === 'Occupied'">
-          <div class="occupant-section p-3 mb-3"
-            style="background: #FFF5E6; border-radius: 8px; border: 1px solid #FFD580;">
+          <div class="occupant-section p-3 mb-3">
             <p class="f-14-m mb-2">Occupant Details</p>
 
             <div class="row">
@@ -98,6 +115,7 @@
           </div>
         </div>
 
+        <!-- Amenities -->
         <div class="col-12">
           <mat-label>Amenities</mat-label>
           <div class="mt-2">
@@ -114,8 +132,14 @@
       </div>
     </form>
   </div>
-  <div class="modal-footer d-flex justify-content-end gap-2 mt-4"> <button type="button"
-      class="btn btn-outline-secondary btn-sm" (click)="onCancel()"> Cancel </button> <button type="button"
-      class="btn btn-primary btn-sm" (click)="onSave()"> <i class="bi bi-check2 me-1"></i> {{ isEditMode ? 'Update' :
-      'Create' }} Bed </button> </div>
+
+  <div class="modal-footer d-flex justify-content-end gap-2 mt-4">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()">
+      <i class="bi bi-check2 me-1"></i>
+      {{ isEditMode ? 'Update' : 'Create' }} Bed
+    </button>
+  </div>
 </div>

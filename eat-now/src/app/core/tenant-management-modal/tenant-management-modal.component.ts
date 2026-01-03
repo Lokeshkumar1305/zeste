@@ -12,6 +12,7 @@ export class TenantManagementModalComponent implements OnInit {
     email: '',
     phone: '',
     roomNumber: '',
+    bedNumber: '',
     checkinDate: null,
     status: 'Active',
     monthlyRent: null,

@@ -25,7 +25,7 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private bedsService: BedsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscription = this.bedsService.beds$.subscribe(beds => {
@@ -128,11 +128,11 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
 
   onAddNewBed(): void {
     const dialogRef = this.dialog.open(BedsManagementModalComponent, {
-       width: '720px',
+      width: '520px',
       maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
+      panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
@@ -148,11 +148,11 @@ export class BedsManagementComponent implements OnInit, OnDestroy {
 
   onEditBed(bed: Bed): void {
     const dialogRef = this.dialog.open(BedsManagementModalComponent, {
-      width: '720px',
-     maxWidth: '100vw',
+      width: '520px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
+      panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,

@@ -1,34 +1,35 @@
+/* announcement-dialog.component.scss
+   Uses shared modal + button styles from the design system
+*/
 
-.announcement-dialog {
+.modal-slide-in {
+  width: 600px;
+  max-width: 100%;
   height: 100%;
+  background: var(--card-background);
+  border-left: 1px solid var(--card-border);
   display: flex;
   flex-direction: column;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
 
-  max-width: 100%;
-  background: var(--card-background, #fff);
-  border-left: 1px solid var(--card-border, #e0e0e0);
-  box-shadow: -4px 0 20px rgba(0, 0, 0, .1);
+/* Full screen on mobile */
+@media (max-width: 768px) {
+  .modal-slide-in {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border-left: none;
+    box-shadow: none;
+  }
 }
 
 .modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 16px 24px;
-  border-bottom: 1px solid var(--card-border, #e0e0e0);
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-background);
   flex-shrink: 0;
 }
-
-.modal-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #222;
-}
-
-.modal-close-btn {
-  margin-right: -8px;
-}
-
 
 .modal-body {
   flex: 1 1 auto;
@@ -37,29 +38,27 @@
   overflow-x: hidden;
 }
 
-
 .modal-footer {
   padding: 16px 24px;
-  border-top: 1px solid var(--card-border, #e0e0e0);
+  border-top: 1px solid var(--card-border);
+  background: var(--card-background);
   flex-shrink: 0;
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
 }
 
-.modal-footer button {
+.modal-footer .btn {
   min-width: 120px;
 }
-
 
 .announcement-form {
   padding: 10px 0;
 }
 
-mat-form-field .mat-mdc-form-field-hint {
-  color: #666;
+/* Hint text color */
+::ng-deep .mat-mdc-form-field-hint {
+  color: var(--text-muted);
 }
 
+/* Bootstrap badge tweak (if used) */
 .badge {
   font-size: 0.7rem;
 }

@@ -1,12 +1,12 @@
-<div class="announcement-dialog">
-
+<!-- announcement-dialog.component.html -->
+<div class="modal-slide-in">
   <!-- HEADER -->
-  <div class="modal-header">
-    <span class="modal-title">
+  <div class="modal-header d-flex align-items-center justify-content-between">
+    <p class="f-18-m mb-0">
       {{ isEdit ? 'Edit Announcement' : 'Create New Announcement' }}
-    </span>
+    </p>
 
-    <button mat-icon-button type="button" class="modal-close-btn" (click)="onCancel()">
+    <button mat-icon-button type="button" class="modal-close-btn text-muted" (click)="onCancel()">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -21,11 +21,19 @@
             <mat-label>
               <i class="bi bi-type-h1 me-1"></i> Title
             </mat-label>
-            <input matInput formControlName="title" placeholder="Enter announcement title">
-            <mat-hint>{{ f['title'].value?.length || 0 }}/100 characters</mat-hint>
-            <mat-error *ngIf="f['title'].hasError('required')">Title is required</mat-error>
-            <mat-error *ngIf="f['title'].hasError('minlength')">Minimum 5 characters required</mat-error>
-            <mat-error *ngIf="f['title'].hasError('maxlength')">Maximum 100 characters allowed</mat-error>
+            <input matInput formControlName="title" placeholder="Enter announcement title" />
+            <mat-hint>
+              {{ f['title'].value?.length || 0 }}/100 characters
+            </mat-hint>
+            <mat-error *ngIf="f['title'].hasError('required')">
+              Title is required
+            </mat-error>
+            <mat-error *ngIf="f['title'].hasError('minlength')">
+              Minimum 5 characters required
+            </mat-error>
+            <mat-error *ngIf="f['title'].hasError('maxlength')">
+              Maximum 100 characters allowed
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -37,7 +45,8 @@
             </mat-label>
             <mat-select formControlName="type">
               <mat-option *ngFor="let type of announcementTypes" [value]="type.value">
-                <i class="bi {{ type.icon }} me-2"></i> {{ type.label }}
+                <i class="bi {{ type.icon }} me-2"></i>
+                {{ type.label }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -51,7 +60,8 @@
             </mat-label>
             <mat-select formControlName="priority">
               <mat-option *ngFor="let priority of priorities" [value]="priority.value">
-                <span class="badge bg-{{ priority.color }} me-2">●</span> {{ priority.label }}
+                <span class="badge me-2">●</span>
+                {{ priority.label }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -64,9 +74,15 @@
               <i class="bi bi-chat-text me-1"></i> Message
             </mat-label>
             <textarea matInput formControlName="message" placeholder="Enter announcement message" rows="5"></textarea>
-            <mat-hint>{{ f['message'].value?.length || 0 }}/1000 characters</mat-hint>
-            <mat-error *ngIf="f['message'].hasError('required')">Message is required</mat-error>
-            <mat-error *ngIf="f['message'].hasError('minlength')">Minimum 10 characters required</mat-error>
+            <mat-hint>
+              {{ f['message'].value?.length || 0 }}/1000 characters
+            </mat-hint>
+            <mat-error *ngIf="f['message'].hasError('required')">
+              Message is required
+            </mat-error>
+            <mat-error *ngIf="f['message'].hasError('minlength')">
+              Minimum 10 characters required
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -78,7 +94,8 @@
             </mat-label>
             <mat-select formControlName="targetAudience">
               <mat-option *ngFor="let audience of targetAudiences" [value]="audience.value">
-                <i class="bi {{ audience.icon }} me-2"></i> {{ audience.label }}
+                <i class="bi {{ audience.icon }} me-2"></i>
+                {{ audience.label }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -90,7 +107,7 @@
             <mat-label>
               <i class="bi bi-calendar-x me-1"></i> Expiry Date (Optional)
             </mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="expiryDate">
+            <input matInput [matDatepicker]="picker" formControlName="expiryDate" />
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-hint>Leave empty for no expiry</mat-hint>
@@ -139,20 +156,21 @@
   </div>
 
   <!-- FOOTER -->
-  <div class="modal-footer">
-    <button mat-button (click)="onCancel()" [disabled]="isLoading">
-      <i class="bi bi-x-lg me-1"></i> Cancel
+  <div class="modal-footer d-flex justify-content-end gap-2">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()" [disabled]="isLoading">
+      <i class="bi bi-x-lg me-1"></i>
+      Cancel
     </button>
 
-    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isLoading">
+    <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2" (click)="onSubmit()"
+      [disabled]="isLoading || announcementForm.invalid">
       <ng-container *ngIf="!isLoading">
-        <i class="bi me-1" [ngClass]="isEdit ? 'bi-check-lg' : 'bi-send'"></i>
+        <i class="bi" [ngClass]="isEdit ? 'bi-check-lg' : 'bi-send'"></i>
         {{ isEdit ? 'Update' : 'Publish' }}
       </ng-container>
       <ng-container *ngIf="isLoading">
-        <mat-spinner diameter="20"></mat-spinner>
+        <mat-spinner diameter="18"></mat-spinner>
       </ng-container>
     </button>
   </div>
-
 </div>
