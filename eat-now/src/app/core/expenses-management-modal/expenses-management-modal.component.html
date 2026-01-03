@@ -1,9 +1,10 @@
+<!-- expense-modal.component.html -->
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
     <p class="f-18-m mb-0">
       {{ data?.expense ? 'Edit' : 'Add' }} Expense
     </p>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -24,7 +25,9 @@
           <mat-label class="required">Category</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="expense.category" name="category" required>
-              <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+              <mat-option *ngFor="let cat of categories" [value]="cat">
+                {{ cat }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -54,7 +57,9 @@
           <mat-label class="required">Payment Method</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="expense.paymentMethod" name="paymentMethod" required>
-              <mat-option *ngFor="let pm of paymentMethods" [value]="pm">{{ pm }}</mat-option>
+              <mat-option *ngFor="let pm of paymentMethods" [value]="pm">
+                {{ pm }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -81,35 +86,40 @@
               </div>
             </div>
             <div class="camera-controls">
-              <button mat-fab color="warn" (click)="stopCamera()" class="camera-btn">
+              <button mat-fab type="button" color="warn" (click)="stopCamera()" class="camera-btn">
                 <i class="bi bi-x-lg"></i>
               </button>
-              <button mat-fab color="primary" (click)="captureImage()" class="camera-btn capture-btn">
+              <button mat-fab type="button" color="primary" (click)="captureImage()" class="camera-btn capture-btn">
                 <i class="bi bi-camera"></i>
               </button>
-              <button mat-fab color="accent" (click)="switchCamera()" class="camera-btn" *ngIf="isMobileOrTablet">
+              <button mat-fab type="button" color="accent" (click)="switchCamera()" class="camera-btn"
+                *ngIf="isMobileOrTablet">
                 <i class="bi bi-arrow-repeat"></i>
               </button>
             </div>
-            <p class="camera-hint">Position the receipt within the frame and tap capture</p>
+            <p class="camera-hint">
+              Position the receipt within the frame and tap capture
+            </p>
           </div>
 
           <!-- Upload Options Container -->
           <div class="upload-container mt-2" *ngIf="!showCameraPreview">
             <!-- No file selected state -->
             <div *ngIf="!hasFile; else filePreviewBlock">
-
               <!-- Desktop View - Only File Upload -->
               <div *ngIf="!isMobileOrTablet" class="desktop-upload">
                 <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*,.pdf"
-                  style="display: none">
+                  style="display: none" />
                 <div class="upload-icon-wrapper">
                   <i class="bi bi-receipt"></i>
                 </div>
-                <p class="upload-title">Drag & drop your receipt here</p>
+                <p class="upload-title">
+                  Drag & drop your receipt here
+                </p>
                 <p class="upload-subtitle">or</p>
-                <button mat-stroked-button color="primary" (click)="fileInput.click()">
-                  <i class="bi bi-upload me-2"></i> Upload Receipt
+                <button mat-stroked-button color="primary" type="button" (click)="fileInput.click()">
+                  <i class="bi bi-upload me-2"></i>
+                  Upload Receipt
                 </button>
                 <small class="text-muted d-block mt-3">
                   Supported formats: JPG, PNG, PDF • Max size: 10MB
@@ -122,12 +132,16 @@
                   <!-- File Upload Option -->
                   <div class="upload-option" (click)="mobileFileInput.click()">
                     <input #mobileFileInput type="file" (change)="onFileSelected($event)" accept="image/*,.pdf"
-                      style="display: none">
+                      style="display: none" />
                     <div class="option-icon file-icon">
                       <i class="bi bi-folder2-open"></i>
                     </div>
-                    <span class="option-label">Upload File</span>
-                    <small class="option-hint">From device storage</small>
+                    <span class="option-label">
+                      Upload File
+                    </span>
+                    <small class="option-hint">
+                      From device storage
+                    </small>
                   </div>
 
                   <div class="option-divider">
@@ -139,19 +153,27 @@
                     <div class="option-icon camera-icon">
                       <i class="bi bi-camera"></i>
                     </div>
-                    <span class="option-label">Take Photo</span>
-                    <small class="option-hint">Capture receipt</small>
+                    <span class="option-label">
+                      Take Photo
+                    </span>
+                    <small class="option-hint">
+                      Capture receipt
+                    </small>
                   </div>
 
                   <!-- Native Camera Fallback -->
                   <div class="upload-option" *ngIf="!isCameraAvailable" (click)="nativeCameraInput.click()">
                     <input #nativeCameraInput type="file" accept="image/*" capture="environment"
-                      (change)="onNativeCameraCapture($event)" style="display: none">
+                      (change)="onNativeCameraCapture($event)" style="display: none" />
                     <div class="option-icon camera-icon">
                       <i class="bi bi-camera"></i>
                     </div>
-                    <span class="option-label">Take Photo</span>
-                    <small class="option-hint">Use device camera</small>
+                    <span class="option-label">
+                      Take Photo
+                    </span>
+                    <small class="option-hint">
+                      Use device camera
+                    </small>
                   </div>
                 </div>
 
@@ -165,27 +187,24 @@
             <!-- File/Image Preview -->
             <ng-template #filePreviewBlock>
               <div class="file-preview-container">
-                <!-- Image Preview -->
-                <div *ngIf="isImage && capturedImageUrl" class="image-preview">
-                  <img [src]="capturedImageUrl" alt="Receipt preview" class="preview-image">
+                <!-- Image Preview (captured or uploaded) -->
+                <div *ngIf="isImage && (capturedImageUrl || imagePreviewUrl)" class="image-preview">
+                  <img [src]="capturedImageUrl || imagePreviewUrl" alt="Receipt preview" class="preview-image" />
                   <div class="preview-badge">
                     <i class="bi bi-check-circle-fill text-success"></i>
-                    <span>{{ attachmentName?.includes('capture') ? 'Captured' : 'Uploaded' }}</span>
-                  </div>
-                </div>
-
-                <!-- Image from URL (existing data) -->
-                <div *ngIf="isImage && imagePreviewUrl && !capturedImageUrl" class="image-preview">
-                  <img [src]="imagePreviewUrl" alt="Receipt preview" class="preview-image">
-                  <div class="preview-badge">
-                    <i class="bi bi-check-circle-fill text-success"></i>
-                    <span>Uploaded</span>
+                    <span>
+                      {{
+                      attachmentName?.includes('capture')
+                      ? 'Captured'
+                      : 'Uploaded'
+                      }}
+                    </span>
                   </div>
                 </div>
 
                 <!-- PDF Preview -->
                 <div *ngIf="!isImage" class="pdf-preview">
-                  <i class="bi bi-file-earmark-pdf text-danger"></i>
+                  <i class="bi bi-file-earmark-pdf"></i>
                   <span>PDF Document</span>
                 </div>
 
@@ -193,7 +212,11 @@
                 <div class="file-info">
                   <div class="file-details">
                     <div class="file-name text-truncate">
-                      {{ attachmentName || expense.receiptFileName || 'Receipt' }}
+                      {{
+                      attachmentName ||
+                      expense.receiptFileName ||
+                      'Receipt'
+                      }}
                     </div>
                     <small class="file-size text-muted" *ngIf="attachmentSize">
                       {{ formatFileSize(attachmentSize) }}
@@ -201,10 +224,11 @@
                   </div>
 
                   <div class="file-actions">
-                    <button mat-icon-button color="primary" (click)="downloadFile()" matTooltip="Download">
+                    <button mat-icon-button color="primary" type="button" (click)="downloadFile()"
+                      matTooltip="Download">
                       <i class="bi bi-download"></i>
                     </button>
-                    <button mat-icon-button color="warn" (click)="removeFile()" matTooltip="Remove">
+                    <button mat-icon-button color="warn" type="button" (click)="removeFile()" matTooltip="Remove">
                       <i class="bi bi-trash"></i>
                     </button>
                   </div>
@@ -212,14 +236,17 @@
 
                 <!-- Re-upload/Re-capture Options for Mobile -->
                 <div class="retake-options" *ngIf="isMobileOrTablet">
-                  <button mat-stroked-button color="primary" (click)="mobileRetakeInput.click()">
-                    <i class="bi bi-upload me-1"></i> Re-upload
+                  <button mat-stroked-button color="primary" type="button" (click)="mobileRetakeInput.click()">
+                    <i class="bi bi-upload me-1"></i>
+                    Re-upload
                   </button>
                   <input #mobileRetakeInput type="file" (change)="onFileSelected($event)" accept="image/*,.pdf"
-                    style="display: none">
+                    style="display: none" />
 
-                  <button mat-stroked-button color="accent" (click)="openCamera()" *ngIf="isCameraAvailable">
-                    <i class="bi bi-camera me-1"></i> Retake
+                  <button mat-stroked-button color="accent" type="button" (click)="openCamera()"
+                    *ngIf="isCameraAvailable">
+                    <i class="bi bi-camera me-1"></i>
+                    Retake
                   </button>
                 </div>
               </div>
@@ -249,9 +276,12 @@
   </div>
 
   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">Cancel</button>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
     <button type="button" class="btn btn-primary btn-sm" [disabled]="!expenseForm.valid" (click)="onSave()">
-      <i class="bi bi-check2 me-1"></i> {{ data?.expense ? 'Update' : 'Save' }} Expense
+      <i class="bi bi-check2 me-1"></i>
+      {{ data?.expense ? 'Update' : 'Save' }} Expense
     </button>
   </div>
 </div>

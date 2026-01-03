@@ -7,13 +7,16 @@
         <i class="bi bi-folder me-2"></i>
         {{ isEditMode ? 'Edit Category' : 'Add New Category' }}
       </p>
-      <small class="text-muted">Categories help organize your items into groups</small>
+      <small class="text-muted">
+        Categories help organize your items into groups
+      </small>
     </div>
-    <button mat-icon-button (click)="onCancel()">
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
 
+  <!-- Body -->
   <div class="modal-body">
     <!-- Help Section -->
     <div class="help-box mb-4">
@@ -22,15 +25,19 @@
       </div>
       <div class="help-content">
         <strong>What is a Category?</strong>
-        <p class="mb-0">Categories help you organize items. For example: "Food & Groceries" can have items like Rice,
-          Dal, Oil. "Cleaning Supplies" can have Soap, Broom, Mop.</p>
+        <p class="mb-0">
+          Categories help you organize items. For example:
+          "Food &amp; Groceries" can have items like Rice, Dal, Oil.
+          "Cleaning Supplies" can have Soap, Broom, Mop.
+        </p>
       </div>
     </div>
 
     <!-- Suggested Categories -->
     <div class="suggested-section mb-4">
       <label class="form-label">
-        <i class="bi bi-stars me-1"></i> Suggested Categories (Click to use)
+        <i class="bi bi-stars me-1"></i>
+        Suggested Categories (Click to use)
       </label>
       <div class="suggested-grid">
         <button *ngFor="let sug of suggestedCategories" type="button" class="suggested-card"
@@ -41,7 +48,7 @@
       </div>
     </div>
 
-    <form>
+    <form #categoryForm="ngForm">
       <div class="row">
         <!-- Category Name -->
         <div class="col-12">
@@ -58,12 +65,16 @@
           <mat-label>Parent Category (Optional)</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="category.parentId" name="parentId">
-              <mat-option [value]="null">-- No Parent (Main Category) --</mat-option>
+              <mat-option [value]="null">
+                -- No Parent (Main Category) --
+              </mat-option>
               <mat-option *ngFor="let cat of existingCategories" [value]="cat.id">
                 {{ cat.name }}
               </mat-option>
             </mat-select>
-            <mat-hint>Select if this is a sub-category of another</mat-hint>
+            <mat-hint>
+              Select if this is a sub-category of another
+            </mat-hint>
           </mat-form-field>
         </div>
 
@@ -72,16 +83,19 @@
           <mat-label>Description</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <textarea matInput rows="3" [(ngModel)]="category.description" name="description"
-              placeholder="List some items that will be in this category...">
-            </textarea>
-            <mat-hint>Help others understand what items belong here</mat-hint>
+              placeholder="List some items that will be in this category..."></textarea>
+            <mat-hint>
+              Help others understand what items belong here
+            </mat-hint>
           </mat-form-field>
         </div>
 
         <!-- Status -->
         <div class="col-12 mt-3">
           <mat-checkbox [(ngModel)]="category.isActive" name="isActive" color="primary">
-            <span class="ms-2">Active (can be used for new items)</span>
+            <span class="ms-2">
+              Active (can be used for new items)
+            </span>
           </mat-checkbox>
         </div>
       </div>
@@ -90,10 +104,15 @@
     <!-- Example Items -->
     <div class="example-box mt-4" *ngIf="category.name">
       <label class="form-label">
-        <i class="bi bi-box me-1"></i> Example Items for "{{ category.name }}"
+        <i class="bi bi-box me-1"></i>
+        Example Items for "{{ category.name }}"
       </label>
       <div class="example-items">
-        <span class="example-item" *ngFor="let item of (category.description || '').split(',').slice(0, 5)">
+        <span class="example-item" *ngFor="
+            let item of (category.description || '')
+              .split(',')
+              .slice(0, 5)
+          ">
           {{ item.trim() }}
         </span>
       </div>
@@ -101,11 +120,13 @@
   </div>
 
   <!-- Footer -->
-  
   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button mat-stroked-button (click)="onCancel()">Cancel</button>
-    <button mat-flat-button color="primary" (click)="onSave()"  >
-      <i class="bi bi-check2 me-1"></i> {{ isEditMode ? 'Update Category' : 'Add Category' }}
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="!categoryForm.valid">
+      <i class="bi bi-check2 me-1"></i>
+      {{ isEditMode ? 'Update Category' : 'Add Category' }}
     </button>
   </div>
 </div>

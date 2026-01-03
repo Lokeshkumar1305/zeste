@@ -1,3 +1,4 @@
+<!-- supplier-modal.component.html -->
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
     <div>
@@ -5,9 +6,11 @@
         <i class="bi bi-building me-2"></i>
         {{ isEditMode ? 'Edit Supplier' : 'Add New Supplier' }}
       </p>
-      <small class="text-muted">Manage shops and vendors you purchase from</small>
+      <small class="text-muted">
+        Manage shops and vendors you purchase from
+      </small>
     </div>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -19,13 +22,16 @@
       </div>
       <div class="help-content">
         <strong>What is a Supplier?</strong>
-        <p class="mb-0">Any store, wholesaler, or company you buy inventory from — local kirana, online seller,
-          distributor, etc.</p>
+        <p class="mb-0">
+          Any store, wholesaler, or company you buy inventory from — local
+          kirana, online seller, distributor, etc.
+        </p>
       </div>
     </div>
 
     <form #supplierForm="ngForm">
       <div class="row g-3">
+        <!-- Supplier Name -->
         <div class="col-12">
           <mat-label class="required">Supplier Name</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -35,6 +41,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Contact Person -->
         <div class="col-12 col-md-6">
           <mat-label>Contact Person</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -43,6 +50,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Phone -->
         <div class="col-12 col-md-6">
           <mat-label class="required">Phone Number</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -51,6 +59,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Email -->
         <div class="col-12 col-md-6">
           <mat-label>Email</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -59,6 +68,7 @@
           </mat-form-field>
         </div>
 
+        <!-- GST -->
         <div class="col-12 col-md-6">
           <mat-label>GST Number (Optional)</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -66,6 +76,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Address -->
         <div class="col-12">
           <mat-label>Address</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -75,6 +86,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Active -->
         <div class="col-12">
           <mat-checkbox [(ngModel)]="supplier.isActive" name="isActive" color="primary">
             Active Supplier (currently purchasing from)
@@ -86,23 +98,40 @@
     <!-- Preview -->
     <div class="preview-card mt-5" *ngIf="supplier.name">
       <div class="card-header">
-        <i class="bi bi-building"></i> Supplier Preview
+        <i class="bi bi-building"></i>
+        Supplier Preview
       </div>
       <div class="card-body">
-        <div class="info-row"><strong>{{ supplier.name }}</strong></div>
-        <div class="info-row" *ngIf="supplier.contactPerson"><i class="bi bi-person"></i> {{ supplier.contactPerson }}
+        <div class="info-row">
+          <strong>{{ supplier.name }}</strong>
         </div>
-        <div class="info-row" *ngIf="supplier.phone"><i class="bi bi-telephone"></i> {{ supplier.phone }}</div>
-        <div class="info-row" *ngIf="supplier.email"><i class="bi bi-envelope"></i> {{ supplier.email }}</div>
-        <div class="info-row" *ngIf="supplier.address"><i class="bi bi-geo-alt"></i> {{ supplier.address }}</div>
+        <div class="info-row" *ngIf="supplier.contactPerson">
+          <i class="bi bi-person"></i>
+          {{ supplier.contactPerson }}
+        </div>
+        <div class="info-row" *ngIf="supplier.phone">
+          <i class="bi bi-telephone"></i>
+          {{ supplier.phone }}
+        </div>
+        <div class="info-row" *ngIf="supplier.email">
+          <i class="bi bi-envelope"></i>
+          {{ supplier.email }}
+        </div>
+        <div class="info-row" *ngIf="supplier.address">
+          <i class="bi bi-geo-alt"></i>
+          {{ supplier.address }}
+        </div>
       </div>
     </div>
   </div>
 
   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button mat-stroked-button (click)="onCancel()">Cancel</button>
-    <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!supplierForm.valid">
-      <i class="bi bi-check2 me-1"></i> {{ isEditMode ? 'Update' : 'Add' }} Supplier
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="!supplierForm.valid">
+      <i class="bi bi-check2 me-1"></i>
+      {{ isEditMode ? 'Update' : 'Add' }} Supplier
     </button>
   </div>
 </div>

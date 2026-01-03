@@ -1,9 +1,10 @@
+<!-- complaint-modal.component.html -->
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
     <p class="f-18-m mb-0">
       {{ data?.issue ? 'Edit' : 'Report New' }} Complaint
     </p>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -32,7 +33,9 @@
           <mat-label class="required">Category</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="issue.category" name="category" required>
-              <mat-option *ngFor="let c of categories" [value]="c">{{ c }}</mat-option>
+              <mat-option *ngFor="let c of categories" [value]="c">
+                {{ c }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -42,7 +45,9 @@
           <mat-label class="required">Priority</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="issue.priority" name="priority" required>
-              <mat-option *ngFor="let p of priorities" [value]="p">{{ p }}</mat-option>
+              <mat-option *ngFor="let p of priorities" [value]="p">
+                {{ p }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -69,35 +74,40 @@
               </div>
             </div>
             <div class="camera-controls">
-              <button mat-fab color="warn" (click)="stopCamera()" class="camera-btn">
+              <button mat-fab color="warn" type="button" (click)="stopCamera()" class="camera-btn">
                 <i class="bi bi-x-lg"></i>
               </button>
-              <button mat-fab color="primary" (click)="captureImage()" class="camera-btn capture-btn">
+              <button mat-fab color="primary" type="button" (click)="captureImage()" class="camera-btn capture-btn">
                 <i class="bi bi-camera"></i>
               </button>
-              <button mat-fab color="accent" (click)="switchCamera()" class="camera-btn" *ngIf="isMobileOrTablet">
+              <button mat-fab color="accent" type="button" (click)="switchCamera()" class="camera-btn"
+                *ngIf="isMobileOrTablet">
                 <i class="bi bi-arrow-repeat"></i>
               </button>
             </div>
-            <p class="camera-hint">Position the damage area within the frame and tap capture</p>
+            <p class="camera-hint">
+              Position the damage area within the frame and tap capture
+            </p>
           </div>
 
           <!-- Upload Options Container -->
           <div class="upload-container mt-2" *ngIf="!showCameraPreview">
             <!-- No image selected state -->
             <div *ngIf="!hasImage; else imagePreviewBlock">
-
               <!-- Desktop View - Only File Upload -->
               <div *ngIf="!isMobileOrTablet" class="desktop-upload">
                 <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*"
-                  style="display: none">
+                  style="display: none" />
                 <div class="upload-icon-wrapper">
                   <i class="bi bi-image"></i>
                 </div>
-                <p class="upload-title">Drag & drop damage image here</p>
+                <p class="upload-title">
+                  Drag & drop damage image here
+                </p>
                 <p class="upload-subtitle">or</p>
-                <button mat-stroked-button color="primary" (click)="fileInput.click()">
-                  <i class="bi bi-camera me-2"></i> Upload Photo
+                <button mat-stroked-button color="primary" type="button" (click)="fileInput.click()">
+                  <i class="bi bi-camera me-2"></i>
+                  Upload Photo
                 </button>
                 <small class="text-muted d-block mt-3">
                   Supported formats: JPG, PNG • Max size: 10MB
@@ -110,12 +120,16 @@
                   <!-- File Upload Option -->
                   <div class="upload-option" (click)="mobileFileInput.click()">
                     <input #mobileFileInput type="file" (change)="onFileSelected($event)" accept="image/*"
-                      style="display: none">
+                      style="display: none" />
                     <div class="option-icon file-icon">
                       <i class="bi bi-folder2-open"></i>
                     </div>
-                    <span class="option-label">Upload Photo</span>
-                    <small class="option-hint">From gallery</small>
+                    <span class="option-label">
+                      Upload Photo
+                    </span>
+                    <small class="option-hint">
+                      From gallery
+                    </small>
                   </div>
 
                   <div class="option-divider">
@@ -127,19 +141,27 @@
                     <div class="option-icon camera-icon">
                       <i class="bi bi-camera"></i>
                     </div>
-                    <span class="option-label">Take Photo</span>
-                    <small class="option-hint">Capture damage</small>
+                    <span class="option-label">
+                      Take Photo
+                    </span>
+                    <small class="option-hint">
+                      Capture damage
+                    </small>
                   </div>
 
                   <!-- Native Camera Fallback -->
                   <div class="upload-option" *ngIf="!isCameraAvailable" (click)="nativeCameraInput.click()">
                     <input #nativeCameraInput type="file" accept="image/*" capture="environment"
-                      (change)="onNativeCameraCapture($event)" style="display: none">
+                      (change)="onNativeCameraCapture($event)" style="display: none" />
                     <div class="option-icon camera-icon">
                       <i class="bi bi-camera"></i>
                     </div>
-                    <span class="option-label">Take Photo</span>
-                    <small class="option-hint">Use device camera</small>
+                    <span class="option-label">
+                      Take Photo
+                    </span>
+                    <small class="option-hint">
+                      Use device camera
+                    </small>
                   </div>
                 </div>
 
@@ -155,10 +177,16 @@
               <div class="file-preview-container">
                 <!-- Image Preview -->
                 <div class="image-preview" *ngIf="capturedImageUrl || issue.imagePreview">
-                  <img [src]="capturedImageUrl || issue.imagePreview" alt="Damage preview" class="preview-image">
+                  <img [src]="capturedImageUrl || issue.imagePreview" alt="Damage preview" class="preview-image" />
                   <div class="preview-badge">
                     <i class="bi bi-check-circle-fill text-success"></i>
-                    <span>{{ issue.imageName?.includes('capture') ? 'Captured' : 'Uploaded' }}</span>
+                    <span>
+                      {{
+                      issue.imageName?.includes('capture')
+                      ? 'Captured'
+                      : 'Uploaded'
+                      }}
+                    </span>
                   </div>
                 </div>
 
@@ -174,10 +202,11 @@
                   </div>
 
                   <div class="file-actions">
-                    <button mat-icon-button color="primary" (click)="downloadImage()" matTooltip="Download">
+                    <button mat-icon-button color="primary" type="button" (click)="downloadImage()"
+                      matTooltip="Download">
                       <i class="bi bi-download"></i>
                     </button>
-                    <button mat-icon-button color="warn" (click)="removeImage()" matTooltip="Remove">
+                    <button mat-icon-button color="warn" type="button" (click)="removeImage()" matTooltip="Remove">
                       <i class="bi bi-trash"></i>
                     </button>
                   </div>
@@ -185,14 +214,17 @@
 
                 <!-- Re-upload/Re-capture Options for Mobile -->
                 <div class="retake-options" *ngIf="isMobileOrTablet">
-                  <button mat-stroked-button color="primary" (click)="mobileRetakeInput.click()">
-                    <i class="bi bi-upload me-1"></i> Re-upload
+                  <button mat-stroked-button color="primary" type="button" (click)="mobileRetakeInput.click()">
+                    <i class="bi bi-upload me-1"></i>
+                    Re-upload
                   </button>
                   <input #mobileRetakeInput type="file" (change)="onFileSelected($event)" accept="image/*"
-                    style="display: none">
+                    style="display: none" />
 
-                  <button mat-stroked-button color="accent" (click)="openCamera()" *ngIf="isCameraAvailable">
-                    <i class="bi bi-camera me-1"></i> Retake
+                  <button mat-stroked-button color="accent" type="button" (click)="openCamera()"
+                    *ngIf="isCameraAvailable">
+                    <i class="bi bi-camera me-1"></i>
+                    Retake
                   </button>
                 </div>
               </div>
@@ -213,13 +245,15 @@
   </div>
 
   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancel()">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
       Cancel
     </button>
     <button type="button" class="btn btn-primary btn-sm" (click)="onSave()"
       [disabled]="!f.valid || !issue.imageFile || isSubmitting">
       <i class="bi bi-check2 me-1"></i>
-      <span *ngIf="!isSubmitting">{{ data?.issue ? 'Update' : 'Submit' }} Complaint</span>
+      <span *ngIf="!isSubmitting">
+        {{ data?.issue ? 'Update' : 'Submit' }} Complaint
+      </span>
       <span *ngIf="isSubmitting">Submitting...</span>
     </button>
   </div>

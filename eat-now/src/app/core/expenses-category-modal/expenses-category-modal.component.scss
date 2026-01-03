@@ -1,16 +1,33 @@
+/* expense-category-config-modal.component.scss
+   Uses shared modal + button styles and category list layout
+*/
+
 .modal-slide-in {
-  width: 720px; 
+  width: 720px;
   max-width: 100%;
   background: var(--card-background);
   border-left: 1px solid var(--card-border);
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px 0 0 8px;
+}
+
+/* Full screen on mobile */
+@media (max-width: 768px) {
+  .modal-slide-in {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border-left: none;
+    box-shadow: none;
+  }
 }
 
 .modal-header {
-  padding: 15px;
+  padding: 15px 24px;
   border-bottom: 1px solid var(--card-border);
   background: var(--card-background);
   flex-shrink: 0;
@@ -43,13 +60,12 @@
   opacity: 0.6;
 }
 
-/* Fixed layout: fields + delete button */
+/* Fields + delete button layout */
 .fields-container {
   flex: 1;
   min-width: 0;
 }
 
-/* Full-width fields inside container */
 .field-full {
   width: 100%;
   display: block;
@@ -57,12 +73,12 @@
 
 /* Required asterisk */
 mat-label.required::after {
-  content: " *";
+  content: ' *';
   color: #d32f2f;
   font-weight: bold;
 }
 
-/* Delete button wrapper (fixed size) */
+/* Delete button wrapper and spacer */
 .delete-btn-wrapper,
 .delete-btn-spacer {
   width: 40px;
@@ -71,7 +87,7 @@ mat-label.required::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 24px; /* Aligns with top of first mat-form-field label */
+  margin-top: 24px;
 }
 
 .delete-btn-spacer {
@@ -83,10 +99,21 @@ mat-label.required::after {
   height: 32px !important;
   line-height: 32px !important;
   font-size: 16px !important;
+}
 
-  i {
-    font-size: 16px;
-  }
+.delete-btn i {
+  font-size: 16px;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--card-border);
+  background: var(--card-background);
+  flex-shrink: 0;
+}
+
+.modal-footer .btn {
+  min-width: 80px;
 }
 
 /* Material field tweaks */
@@ -101,56 +128,20 @@ mat-label.required::after {
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar for category list */
 .category-sets-container::-webkit-scrollbar {
   width: 6px;
 }
+
 .category-sets-container::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .category-sets-container::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
+
 .category-sets-container::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.4);
-}
-
-.modal-footer {
-  padding: 16px 24px;
-  border-top: 1px solid var(--card-border);
-  background: var(--card-background);
-  flex-shrink: 0;
-}
-
-.modal-footer .btn {
-  min-width: 80px;
-}
-
-::ng-deep .mat-mdc-select-arrow {
-  color: var(--text-muted);
-}
-
-/* Animation */
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .modal-slide-in {
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    border-radius: 0;
-    border-left: none;
-    box-shadow: none;
-  }
 }

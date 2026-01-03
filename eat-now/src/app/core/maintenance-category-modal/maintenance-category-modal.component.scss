@@ -1,3 +1,7 @@
+/* maintenance-category-config-modal.component.scss
+   Uses shared modal + button styles
+*/
+
 .modal-slide-in {
   width: 720px;
   max-width: 100%;
@@ -65,7 +69,6 @@
 /* Delete button alignment */
 .delete-btn-wrapper {
   margin-top: 32px;
-  /* Aligns with first form field label */
   flex-shrink: 0;
 }
 
@@ -76,7 +79,7 @@
 
 /* Required asterisk */
 mat-label.required::after {
-  content: " *";
+  content: ' *';
   color: #d32f2f;
   margin-left: 4px;
   font-weight: bold;

@@ -1,3 +1,7 @@
+/* unit-modal.component.scss
+   Uses shared modal + button styles and unit-specific UI
+*/
+
 .modal-slide-in {
   width: 800px;
   max-width: 100%;
@@ -10,6 +14,7 @@
   border-radius: 8px 0 0 8px;
 }
 
+/* Full screen on mobile */
 @media (max-width: 768px) {
   .modal-slide-in {
     width: 100vw;
@@ -44,6 +49,11 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.modal-footer .btn {
+  min-width: 80px;
+}
+
+/* Help box */
 .help-box {
   background: #e8f4fd;
   border-left: 4px solid #2196f3;
@@ -53,61 +63,78 @@
   gap: 16px;
 }
 
-.quick-chips {
-  .label {
-    font-weight: 600;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .chip {
-    padding: 8px 16px;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    background: white;
-    cursor: pointer;
-    font-size: 13px;
-    transition: all 0.2s;
-
-    &:hover {
-      background: #f0f8ff;
-      border-color: #2196f3;
-    }
-  }
+.help-box .help-icon {
+  font-size: 28px;
+  color: #2196f3;
 }
 
+/* Quick chips */
+.quick-chips .label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.quick-chips .chip {
+  padding: 8px 16px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #dddddd;
+  border-radius: 20px;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.quick-chips .chip:hover {
+  background: #f0f8ff;
+  border-color: #2196f3;
+}
+
+/* Preview box */
 .preview-box {
   background: #f8f9fa;
-  border: 1px dashed #ddd;
+  border: 1px dashed #dddddd;
   border-radius: 12px;
   padding: 20px;
-
-  .preview-label {
-    font-weight: 600;
-    margin-bottom: 12px;
-  }
-
-  .preview-display {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    font-size: 18px;
-
-    .badge {
-      padding: 8px 16px;
-      background: #2196f3;
-      color: white;
-      border-radius: 8px;
-      font-weight: 600;
-    }
-  }
 }
 
+.preview-box .preview-label {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.preview-box .preview-display {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 18px;
+}
+
+.preview-box .preview-display .badge {
+  padding: 8px 16px;
+  background: #2196f3;
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Required asterisk */
 mat-label.required::after {
-  content: " *";
+  content: ' *';
   color: #d32f2f;
   margin-left: 4px;
   font-weight: bold;
+}
+
+/* Material tweaks */
+::ng-deep .mat-mdc-form-field {
+  .mdc-notched-outline {
+    border-radius: 8px !important;
+  }
+
+  .mat-mdc-form-field-infix {
+    padding: 12px 0 !important;
+  }
 }

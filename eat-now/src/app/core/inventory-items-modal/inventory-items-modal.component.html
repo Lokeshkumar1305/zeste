@@ -1,3 +1,4 @@
+<!-- inventory-item-modal.component.html -->
 <div class="modal-slide-in">
   <!-- Header -->
   <div class="modal-header d-flex align-items-center justify-content-between">
@@ -6,9 +7,11 @@
         <i class="bi bi-box-seam me-2"></i>
         {{ isEditMode ? 'Edit Item' : 'Add New Item' }}
       </p>
-      <small class="text-muted">Add items you want to track in your inventory</small>
+      <small class="text-muted">
+        Add items you want to track in your inventory
+      </small>
     </div>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -22,12 +25,14 @@
       </div>
       <div class="help-content">
         <strong>What is an Inventory Item?</strong>
-        <p class="mb-0">An item is anything you want to keep track of, like "Rice", "Soap", "Bedsheets", "Brooms", etc.
+        <p class="mb-0">
+          An item is anything you want to keep track of, like
+          "Rice", "Soap", "Bedsheets", "Brooms", etc.
         </p>
       </div>
     </div>
 
-    <!-- Step Indicator - Responsive & Single Line -->
+    <!-- Step Indicator -->
     <div class="step-indicator mb-4">
       <div class="step active">
         <span class="step-number">1</span>
@@ -36,7 +41,7 @@
       <div class="step-line"></div>
       <div class="step" [class.active]="item.categoryId && item.unitId">
         <span class="step-number">2</span>
-        <span class="step-text">Category & Unit</span>
+        <span class="step-text">Category &amp; Unit</span>
       </div>
       <div class="step-line"></div>
       <div class="step" [class.active]="item.minStockLevel">
@@ -61,7 +66,7 @@
           <mat-label>Item Code (SKU)</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <input matInput [(ngModel)]="item.sku" name="sku" placeholder="Auto-generated" readonly />
-            <button mat-icon-button matSuffix (click)="regenerateSKU()" matTooltip="Regenerate">
+            <button type="button" mat-icon-button matSuffix (click)="regenerateSKU()" matTooltip="Regenerate">
               <i class="bi bi-arrow-clockwise"></i>
             </button>
           </mat-form-field>
@@ -72,7 +77,9 @@
           <mat-label class="required">Category</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="item.categoryId" name="categoryId" required>
-              <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</mat-option>
+              <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                {{ cat.name }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -91,7 +98,9 @@
 
         <!-- Min Stock Level -->
         <div class="col-12 col-md-6">
-          <mat-label class="required">Minimum Stock Level</mat-label>
+          <mat-label class="required">
+            Minimum Stock Level
+          </mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <input matInput type="number" [(ngModel)]="item.minStockLevel" name="minStockLevel" required min="0" />
             <mat-hint>Low stock alert threshold</mat-hint>
@@ -128,38 +137,50 @@
     <!-- Preview Summary -->
     <div class="summary-card mt-5" *ngIf="item.name">
       <div class="summary-header">
-        <i class="bi bi-eye me-2"></i> Item Preview
+        <i class="bi bi-eye me-2"></i>
+        Item Preview
       </div>
       <div class="summary-body">
         <div class="summary-row">
-          <span class="label">Name:</span> <span class="value">{{ item.name }}</span>
+          <span class="label">Name:</span>
+          <span class="value">{{ item.name }}</span>
         </div>
         <div class="summary-row" *ngIf="item.categoryId">
           <span class="label">Category:</span>
-          <span class="value badge-category">{{ getCategoryName(item.categoryId) }}</span>
+          <span class="value badge-category">
+            {{ getCategoryName(item.categoryId) }}
+          </span>
         </div>
         <div class="summary-row" *ngIf="item.unitId">
           <span class="label">Unit:</span>
-          <span class="value">{{ getUnitName(item.unitId) }}</span>
+          <span class="value">
+            {{ getUnitName(item.unitId) }}
+          </span>
         </div>
         <div class="summary-row">
           <span class="label">Min Stock:</span>
-          <span class="value">{{ item.minStockLevel || 0 }}</span>
+          <span class="value">
+            {{ item.minStockLevel || 0 }}
+          </span>
         </div>
         <div class="summary-row" *ngIf="item.costPrice">
           <span class="label">Cost Price:</span>
-          <span class="value">₹{{ item.costPrice }}</span>
+          <span class="value">
+            ₹{{ item.costPrice }}
+          </span>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-
-   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button mat-stroked-button (click)="onCancel()">Cancel</button>
-    <button mat-flat-button color="primary" (click)="onSave()"  [disabled]="!itemForm.valid">
-      <i class="bi bi-check2 me-1"></i> {{ isEditMode ? 'Update' : 'Add' }} Item
+  <div class="modal-footer d-flex justify-content-end gap-3">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="!itemForm.valid">
+      <i class="bi bi-check2 me-1"></i>
+      {{ isEditMode ? 'Update' : 'Add' }} Item
     </button>
   </div>
 </div>

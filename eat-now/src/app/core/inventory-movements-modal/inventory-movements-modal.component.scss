@@ -1,3 +1,7 @@
+/* stock-movement-modal.component.scss
+   Uses shared modal + button styles and movement-specific UI
+*/
+
 .modal-slide-in {
   width: 800px;
   max-width: 100%;
@@ -45,7 +49,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Help box & toggle */
+/* Help box */
 .help-box {
   background: #e8f4fd;
   border-left: 4px solid #2196f3;
@@ -53,57 +57,61 @@
   padding: 16px;
 }
 
+/* Type toggle */
 .type-toggle {
   display: flex;
   gap: 16px;
-
-  .toggle-btn {
-    flex: 1;
-    padding: 20px;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    i {
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
-
-    span {
-      font-weight: 600;
-      font-size: 16px;
-      display: block;
-    }
-
-    small {
-      color: #666;
-      font-size: 12px;
-    }
-
-    &.in.active,
-    &.in:hover {
-      border-color: #4caf50;
-      background: #e8f5e9;
-
-      i {
-        color: #4caf50;
-      }
-    }
-
-    &.out.active,
-    &.out:hover {
-      border-color: #f44336;
-      background: #ffebee;
-
-      i {
-        color: #f44336;
-      }
-    }
-  }
 }
 
+.type-toggle .toggle-btn {
+  flex: 1;
+  padding: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.type-toggle .toggle-btn i {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.type-toggle .toggle-btn span {
+  display: block;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.type-toggle .toggle-btn small {
+  color: #666666;
+  font-size: 12px;
+}
+
+.type-toggle .toggle-btn.in.active,
+.type-toggle .toggle-btn.in:hover {
+  border-color: #4caf50;
+  background: #e8f5e9;
+}
+
+.type-toggle .toggle-btn.in.active i,
+.type-toggle .toggle-btn.in:hover i {
+  color: #4caf50;
+}
+
+.type-toggle .toggle-btn.out.active,
+.type-toggle .toggle-btn.out:hover {
+  border-color: #f44336;
+  background: #ffebee;
+}
+
+.type-toggle .toggle-btn.out.active i,
+.type-toggle .toggle-btn.out:hover i {
+  color: #f44336;
+}
+
+/* Current / New stock display */
 .current-stock-display {
   display: flex;
   align-items: center;
@@ -112,62 +120,64 @@
   padding: 20px;
   background: #f8f9fa;
   border-radius: 12px;
-
-  .stock-box {
-    text-align: center;
-    padding: 16px;
-    border-radius: 12px;
-    min-width: 120px;
-
-    &.current {
-      background: white;
-      border: 1px solid #ddd;
-    }
-
-    &.new.increased {
-      background: #e8f5e9;
-      border: 2px solid #4caf50;
-      color: #2e7d32;
-    }
-
-    &.new.decreased {
-      background: #ffebee;
-      border: 2px solid #f44336;
-      color: #c62828;
-    }
-
-    .value {
-      font-size: 24px;
-      font-weight: 700;
-      margin-top: 8px;
-      display: block;
-    }
-  }
-
-  .arrow {
-    text-align: center;
-
-    i {
-      font-size: 28px;
-      color: #999;
-    }
-
-    span {
-      font-size: 18px;
-      font-weight: 700;
-      display: block;
-      margin-top: 4px;
-    }
-  }
 }
 
+.current-stock-display .stock-box {
+  text-align: center;
+  padding: 16px;
+  border-radius: 12px;
+  min-width: 120px;
+}
+
+.current-stock-display .stock-box.current {
+  background: #ffffff;
+  border: 1px solid #dddddd;
+}
+
+.current-stock-display .stock-box.new.increased {
+  background: #e8f5e9;
+  border: 2px solid #4caf50;
+  color: #2e7d32;
+}
+
+.current-stock-display .stock-box.new.decreased {
+  background: #ffebee;
+  border: 2px solid #f44336;
+  color: #c62828;
+}
+
+.current-stock-display .stock-box .value {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 8px;
+  display: block;
+}
+
+.current-stock-display .arrow {
+  text-align: center;
+}
+
+.current-stock-display .arrow i {
+  font-size: 28px;
+  color: #999999;
+}
+
+.current-stock-display .arrow span {
+  font-size: 18px;
+  font-weight: 700;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Required asterisk */
 mat-label.required::after {
-  content: " *";
+  content: ' *';
   color: #d32f2f;
   margin-left: 4px;
   font-weight: bold;
 }
 
+/* Material tweaks */
 ::ng-deep .mat-mdc-form-field {
   .mdc-notched-outline {
     border-radius: 8px !important;

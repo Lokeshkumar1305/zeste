@@ -1,3 +1,4 @@
+<!-- unit-modal.component.html -->
 <div class="modal-slide-in">
   <div class="modal-header d-flex align-items-center justify-content-between">
     <div>
@@ -5,9 +6,11 @@
         <i class="bi bi-rulers me-2"></i>
         {{ isEditMode ? 'Edit Unit' : 'Add New Unit' }}
       </p>
-      <small class="text-muted">Define how items are measured (kg, pcs, liters, etc.)</small>
+      <small class="text-muted">
+        Define how items are measured (kg, pcs, liters, etc.)
+      </small>
     </div>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -19,11 +22,14 @@
       </div>
       <div class="help-content">
         <strong>What is a Unit?</strong>
-        <p class="mb-0">Units define how you count items: Rice → Kilograms (kg), Chairs → Pieces (pcs), Milk → Liters
-          (L)</p>
+        <p class="mb-0">
+          Units define how you count items: Rice → Kilograms (kg), Chairs →
+          Pieces (pcs), Milk → Liters (L)
+        </p>
       </div>
     </div>
 
+    <!-- Quick chips -->
     <div class="quick-chips mb-4">
       <span class="label">Quick Add:</span>
       <button type="button" class="chip" *ngFor="let ex of quickUnits" (click)="applyQuickUnit(ex)">
@@ -33,6 +39,7 @@
 
     <form #unitForm="ngForm">
       <div class="row g-3">
+        <!-- Full Name -->
         <div class="col-12 col-md-6">
           <mat-label class="required">Full Name</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -40,6 +47,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Short Name -->
         <div class="col-12 col-md-6">
           <mat-label class="required">Short Name</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -49,6 +57,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Description -->
         <div class="col-12">
           <mat-label>Description (Optional)</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -57,6 +66,7 @@
           </mat-form-field>
         </div>
 
+        <!-- Active -->
         <div class="col-12">
           <mat-checkbox [(ngModel)]="unit.isActive" name="isActive" color="primary">
             Active (available for new items)
@@ -65,6 +75,7 @@
       </div>
     </form>
 
+    <!-- Preview -->
     <div class="preview-box mt-5" *ngIf="unit.name && unit.shortName">
       <div class="preview-label">Preview in lists:</div>
       <div class="preview-display">
@@ -75,9 +86,12 @@
   </div>
 
   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button mat-stroked-button (click)="onCancel()">Cancel</button>
-    <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!unitForm.valid">
-      <i class="bi bi-check2 me-1"></i> {{ isEditMode ? 'Update' : 'Add' }} Unit
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="!unitForm.valid">
+      <i class="bi bi-check2 me-1"></i>
+      {{ isEditMode ? 'Update' : 'Add' }} Unit
     </button>
   </div>
 </div>

@@ -1,8 +1,11 @@
+<!-- maintenance-category-config-modal.component.html -->
 <div class="modal-slide-in">
   <!-- Header -->
   <div class="modal-header d-flex align-items-center justify-content-between">
-    <p class="f-18-m mb-0">Configure Maintenance Categories</p>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <p class="f-18-m mb-0">
+      Configure Maintenance Categories
+    </p>
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -12,23 +15,28 @@
     <form #cfgForm="ngForm">
       <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h6 class="mb-0 fw-semibold">Categories</h6>
-          <button mat-stroked-button color="primary" (click)="addCategorySet()" class="btn-sm">
-            <i class="bi bi-plus-circle me-1"></i> Add Category
+          <p  class="f-18-m mb-0">Categories</p>
+          <button type="button" class="btn btn-primary btn-sm" (click)="addCategorySet()">
+            <i class="bi bi-plus-circle me-1"></i>
+            Add Category
           </button>
         </div>
 
-        <!-- Scrollable Category List -->
+        <!-- Category list -->
         <div class="category-sets-container">
           <div *ngFor="let item of tempCategorySets; let i = index" class="category-item">
             <div class="d-flex align-items-start gap-4">
               <!-- Fields -->
               <div class="fields-container flex-grow-1">
-                <mat-label class="required">Category Name</mat-label>
+                <mat-label class="required">
+                  Category Name
+                </mat-label>
                 <mat-form-field appearance="outline" class="w-100 mt-1">
                   <input matInput [(ngModel)]="item.name" [name]="'catName' + i" required
                     placeholder="e.g., Air Conditioning" />
-                  <mat-error>Category name is required</mat-error>
+                  <mat-error>
+                    Category name is required
+                  </mat-error>
                 </mat-form-field>
 
                 <mat-label>Description (optional)</mat-label>
@@ -38,10 +46,10 @@
                 </mat-form-field>
               </div>
 
-              <!-- Delete Button (hidden for first item) -->
+              <!-- Delete Button -->
               <div class="delete-btn-wrapper" *ngIf="tempCategorySets.length > 1">
-                <button mat-icon-button color="warn" (click)="removeCategorySet(i)" matTooltip="Remove category"
-                  class="delete-btn">
+                <button type="button" mat-icon-button color="warn" (click)="removeCategorySet(i)"
+                  matTooltip="Remove category" class="delete-btn">
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
@@ -53,7 +61,7 @@
 
           <!-- Empty state -->
           <div *ngIf="tempCategorySets.length === 0" class="text-center text-muted py-5">
-            No categories added yet. Click "+ Add Category" to begin.
+            No categories added yet. Click "Add Category" to begin.
           </div>
         </div>
       </div>
@@ -62,11 +70,14 @@
 
   <!-- Footer -->
   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button mat-stroked-button (click)="onCancel()">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
       Cancel
     </button>
-    <button mat-flat-button color="primary" (click)="onSave()"
-      [disabled]="!cfgForm.valid || tempCategorySets.length === 0 || !hasValidCategories()">
+    <button type="button" class="btn btn-primary btn-sm" (click)="onSave()" [disabled]="
+        !cfgForm.valid ||
+        tempCategorySets.length === 0 ||
+        !hasValidCategories()
+      ">
       Save Categories
     </button>
   </div>

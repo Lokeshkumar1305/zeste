@@ -1,13 +1,17 @@
+<!-- stock-movement-modal.component.html -->
 <div class="modal-slide-in">
   <!-- Header -->
   <div class="modal-header d-flex align-items-center justify-content-between">
     <div>
       <p class="f-18-m mb-0">
-        <i class="bi bi-arrow-left-right me-2"></i> Stock Movement
+        <i class="bi bi-arrow-left-right me-2"></i>
+        Stock Movement
       </p>
-      <small class="text-muted">Add stock (IN) or remove stock (OUT)</small>
+      <small class="text-muted">
+        Add stock (IN) or remove stock (OUT)
+      </small>
     </div>
-    <button mat-icon-button (click)="onCancel()" class="text-muted">
+    <button mat-icon-button type="button" (click)="onCancel()" class="text-muted">
       <i class="bi bi-x-lg"></i>
     </button>
   </div>
@@ -22,8 +26,10 @@
       <div class="help-content">
         <strong>What is Stock Movement?</strong>
         <p class="mb-0">
-          <strong>Stock IN:</strong> When you buy or receive items (adds to stock)<br>
-          <strong>Stock OUT:</strong> When you use or give away items (removes from stock)
+          <strong>Stock IN:</strong> When you buy or receive items (adds to
+          stock)<br />
+          <strong>Stock OUT:</strong> When you use or give away items (removes
+          from stock)
         </p>
       </div>
     </div>
@@ -52,7 +58,10 @@
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <mat-select [(ngModel)]="movement.itemId" name="itemId" required (selectionChange)="onItemChange()">
               <mat-option *ngFor="let item of items" [value]="item.id">
-                {{ item.name }} <span class="text-muted">(Current: {{ item.currentStock }} {{ item.unitName }})</span>
+                {{ item.name }}
+                <span class="text-muted">
+                  (Current: {{ item.currentStock }} {{ item.unitName }})
+                </span>
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -63,19 +72,26 @@
           <div class="current-stock-display">
             <div class="stock-box current">
               <span class="label">Current Stock</span>
-              <span class="value">{{ selectedItem.currentStock }} {{ selectedItem.unitName }}</span>
+              <span class="value">
+                {{ selectedItem.currentStock }} {{ selectedItem.unitName }}
+              </span>
             </div>
+
             <div class="arrow">
               <i class="bi" [class.bi-arrow-right]="movement.type === 'IN'"
                 [class.bi-arrow-left]="movement.type === 'OUT'"></i>
               <span [class.text-success]="movement.type === 'IN'" [class.text-danger]="movement.type === 'OUT'">
-                {{ movement.type === 'IN' ? '+' : '-' }}{{ movement.quantity || 0 }}
+                {{ movement.type === 'IN' ? '+' : '-' }}
+                {{ movement.quantity || 0 }}
               </span>
             </div>
+
             <div class="stock-box new" [class.increased]="movement.type === 'IN'"
               [class.decreased]="movement.type === 'OUT'">
               <span class="label">New Stock</span>
-              <span class="value">{{ getNewStock() }} {{ selectedItem.unitName }}</span>
+              <span class="value">
+                {{ getNewStock() }} {{ selectedItem.unitName }}
+              </span>
             </div>
           </div>
         </div>
@@ -85,7 +101,9 @@
           <mat-label class="required">Quantity</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
             <input matInput type="number" [(ngModel)]="movement.quantity" name="quantity" min="1" required />
-            <span matSuffix *ngIf="selectedItem">{{ selectedItem.unitName }}</span>
+            <span matSuffix *ngIf="selectedItem">
+              {{ selectedItem.unitName }}
+            </span>
           </mat-form-field>
         </div>
 
@@ -116,6 +134,7 @@
             <input matInput [(ngModel)]="movement.performedBy" name="performedBy" />
           </mat-form-field>
         </div>
+
         <div class="col-12 col-md-6">
           <mat-label>Notes</mat-label>
           <mat-form-field appearance="outline" class="w-100 mt-1">
@@ -127,16 +146,15 @@
   </div>
 
   <!-- Footer -->
-
-
   <div class="modal-footer d-flex justify-content-end gap-3">
-    <button mat-stroked-button (click)="onCancel()">Cancel</button>
-    <button mat-flat-button [color]="movement.type === 'IN' ? 'primary' : 'warn'" (click)="onSave()"
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1" (click)="onSave()"
       [disabled]="!movementForm.valid || !movement.itemId">
-      <i class="bi me-1" [class.bi-plus-circle]="movement.type === 'IN'"
+      <i class="bi" [class.bi-plus-circle]="movement.type === 'IN'"
         [class.bi-dash-circle]="movement.type === 'OUT'"></i>
       {{ movement.type === 'IN' ? 'Add' : 'Remove' }} Stock
     </button>
   </div>
-
 </div>
