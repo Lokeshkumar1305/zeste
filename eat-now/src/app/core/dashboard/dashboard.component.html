@@ -24,9 +24,8 @@
 
   <!-- Stats Cards -->
   <div class="stats-grid">
-    <div class="stat-card" *ngFor="let stat of statCards; trackBy: trackByIndex"
-         [style.--card-color]="stat.color"
-         [style.--card-bg]="stat.bgColor">
+    <div class="stat-card" *ngFor="let stat of statCards; trackBy: trackByIndex" [style.--card-color]="stat.color"
+      [style.--card-bg]="stat.bgColor">
       <div class="stat-icon">
         <i class="bi {{ stat.icon }}"></i>
       </div>
@@ -35,7 +34,10 @@
         <h2 class="stat-value">{{ stat.value }}</h2>
         <div class="stat-trend" [class.positive]="stat.trend > 0" [class.negative]="stat.trend < 0">
           <i class="bi" [ngClass]="stat.trend > 0 ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
-          <span>{{ stat.trend > 0 ? '+' : '' }}{{ stat.trend }}% {{ stat.trendLabel }}</span>
+          <span>
+            {{ stat.trend > 0 ? '+' : '' }}{{ stat.trend }}%
+            {{ stat.trendLabel }}
+          </span>
         </div>
       </div>
     </div>
@@ -49,7 +51,7 @@
     </h3>
     <div class="quick-actions-grid">
       <button class="quick-action-btn" *ngFor="let action of quickActions; trackBy: trackByIndex"
-              [style.--action-color]="action.color">
+        [style.--action-color]="action.color">
         <div class="action-icon">
           <i class="bi {{ action.icon }}"></i>
         </div>
@@ -76,11 +78,7 @@
         </div>
       </div>
       <div class="chart-container">
-        <canvas baseChart
-                [type]="revenueChartType"
-                [data]="revenueChartData"
-                [options]="revenueChartOptions">
-        </canvas>
+        <canvas baseChart [type]="revenueChartType" [data]="revenueChartData" [options]="revenueChartOptions"></canvas>
       </div>
     </div>
 
@@ -93,11 +91,8 @@
         </div>
       </div>
       <div class="chart-container doughnut-container">
-        <canvas baseChart
-                [type]="occupancyChartType"
-                [data]="occupancyChartData"
-                [options]="occupancyChartOptions">
-        </canvas>
+        <canvas baseChart [type]="occupancyChartType" [data]="occupancyChartData"
+          [options]="occupancyChartOptions"></canvas>
         <div class="doughnut-center">
           <span class="occupancy-percent">73%</span>
           <span class="occupancy-label">Occupied</span>
@@ -114,11 +109,7 @@
         </div>
       </div>
       <div class="chart-container">
-        <canvas baseChart
-                [type]="paymentChartType"
-                [data]="paymentChartData"
-                [options]="paymentChartOptions">
-        </canvas>
+        <canvas baseChart [type]="paymentChartType" [data]="paymentChartData" [options]="paymentChartOptions"></canvas>
       </div>
     </div>
 
@@ -131,11 +122,8 @@
         </div>
       </div>
       <div class="chart-container">
-        <canvas baseChart
-                [type]="maintenanceChartType"
-                [data]="maintenanceChartData"
-                [options]="maintenanceChartOptions">
-        </canvas>
+        <canvas baseChart [type]="maintenanceChartType" [data]="maintenanceChartData"
+          [options]="maintenanceChartOptions"></canvas>
       </div>
     </div>
   </div>
@@ -147,13 +135,15 @@
         <i class="bi bi-building me-2"></i>
         Floor-wise Occupancy
       </h3>
-      <button class="btn-text">View All Rooms</button>
+      <button class="btn-text" type="button">View All Rooms</button>
     </div>
     <div class="occupancy-grid">
       <div class="occupancy-card" *ngFor="let floor of occupancyData; trackBy: trackByIndex">
         <div class="floor-header">
           <h4>{{ floor.floor }}</h4>
-          <span class="occupancy-badge">{{ getOccupancyPercentage(floor) }}%</span>
+          <span class="occupancy-badge">
+            {{ getOccupancyPercentage(floor) }}%
+          </span>
         </div>
         <div class="floor-progress">
           <div class="progress-bar">
@@ -188,7 +178,7 @@
           <i class="bi bi-activity me-2"></i>
           Recent Activities
         </h3>
-        <button class="btn-text">View All</button>
+        <button class="btn-text" type="button">View All</button>
       </div>
       <div class="activities-list">
         <div class="activity-item" *ngFor="let activity of recentActivities; trackBy: trackById">
@@ -197,7 +187,9 @@
           </div>
           <div class="activity-content">
             <p class="activity-title">{{ activity.title }}</p>
-            <p class="activity-description">{{ activity.description }}</p>
+            <p class="activity-description">
+              {{ activity.description }}
+            </p>
           </div>
           <span class="activity-time">{{ activity.time }}</span>
         </div>
@@ -211,7 +203,7 @@
           <i class="bi bi-calendar-check me-2"></i>
           Upcoming Payments
         </h3>
-        <button class="btn-text">View All</button>
+        <button class="btn-text" type="button">View All</button>
       </div>
       <div class="payments-list">
         <div class="payment-item" *ngFor="let payment of upcomingPayments; trackBy: trackByIndex">
@@ -221,11 +213,15 @@
             </div>
             <div class="payment-details">
               <p class="tenant-name">{{ payment.tenantName }}</p>
-              <p class="room-number">Room {{ payment.roomNumber }}</p>
+              <p class="room-number">
+                Room {{ payment.roomNumber }}
+              </p>
             </div>
           </div>
           <div class="payment-amount-section">
-            <p class="payment-amount">₹{{ payment.amount | number }}</p>
+            <p class="payment-amount">
+              ₹{{ payment.amount | number }}
+            </p>
             <span class="payment-status" [ngClass]="getStatusClass(payment.status)">
               {{ payment.status | titlecase }}
             </span>
@@ -241,22 +237,32 @@
           <i class="bi bi-tools me-2"></i>
           Pending Maintenance
         </h3>
-        <button class="btn-text">View All</button>
+        <button class="btn-text" type="button">View All</button>
       </div>
       <div class="maintenance-list">
         <div class="maintenance-item" *ngFor="let request of maintenanceRequests; trackBy: trackById">
           <div class="maintenance-info">
             <span class="priority-indicator" [ngClass]="getPriorityClass(request.priority)"></span>
             <div class="maintenance-details">
-              <p class="maintenance-title">{{ request.title }}</p>
-              <p class="maintenance-room">Room {{ request.roomNumber }}</p>
+              <p class="maintenance-title">
+                {{ request.title }}
+              </p>
+              <p class="maintenance-room">
+                Room {{ request.roomNumber }}
+              </p>
             </div>
           </div>
           <div class="maintenance-meta">
             <span class="maintenance-status" [ngClass]="getStatusClass(request.status)">
-              {{ request.status === 'in-progress' ? 'In Progress' : (request.status | titlecase) }}
+              {{
+              request.status === 'in-progress'
+              ? 'In Progress'
+              : (request.status | titlecase)
+              }}
             </span>
-            <span class="maintenance-date">{{ request.reportedDate | date: 'MMM d' }}</span>
+            <span class="maintenance-date">
+              {{ request.reportedDate | date: 'MMM d' }}
+            </span>
           </div>
         </div>
       </div>

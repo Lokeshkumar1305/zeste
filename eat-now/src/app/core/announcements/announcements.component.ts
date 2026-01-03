@@ -272,15 +272,14 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
 
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(AnnouncementsModalComponent, {
-     width: '720px',
-     maxWidth: '100vw',
+      width: '520px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
+      panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
-      autoFocus: false,
       data: { isEdit: false }
     });
 
@@ -294,15 +293,14 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
 
   openEditDialog(announcement: Announcement): void {
     const dialogRef = this.dialog.open(AnnouncementsModalComponent, {
-     width: '720px',
-     maxWidth: '100vw',
+      width: '520px',
+      maxWidth: '100vw',
       height: '100vh',
       position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
+      panelClass: ['custom-dialog-container', 'full-screen-on-mobile'],
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
       disableClose: false,
-      autoFocus: false,
       data: { isEdit: true, announcement }
     });
 
