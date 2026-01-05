@@ -111,7 +111,7 @@
             <!-- Announcements List -->
             <div class="announcements-list" *ngIf="!isLoading && filteredAnnouncements.length > 0">
                 <div *ngFor="let announcement of filteredAnnouncements" class="announcement-item"
-                    [class.unread]="!announcement.isRead" [class.important]="
+                    [class.unread]="!announcement.isRead" [class.read-card]="announcement.isRead" [class.important]="
             announcement.priority === 'urgent' ||
             announcement.priority === 'high'
           " (click)="viewAnnouncement(announcement)">
@@ -154,11 +154,22 @@
                     </div>
 
                     <!-- Right: actions -->
-                    <div class="announcement-actions">
-                        <button class="btn-action" *ngIf="!announcement.isRead"
-                            (click)="markAsRead(announcement, $event)">
-                            <i class="bi bi-check-lg"></i>
-                        </button>
+                    <div class="announcement-actions" (click)="$event.stopPropagation()">
+                        <!-- If unread: show actionable tick button -->
+                        <ng-container *ngIf="!announcement.isRead; else readPill">
+                            <button class="btn-action" (click)="markAsRead(announcement, $event)">
+                                <i class="bi bi-check-lg"></i>
+                            </button>
+                        </ng-container>
+
+                        <!-- If already ticked/read: show a visible 'Read' pill -->
+                        <ng-template #readPill>
+                            <div class="read-pill">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Read</span>
+                            </div>
+                        </ng-template>
+
                         <i class="bi bi-chevron-right"></i>
                     </div>
                 </div>
@@ -202,8 +213,7 @@
                         <i class="bi bi-hourglass-split"></i>
                         <span><strong>Expires:</strong>
                             {{
-                            selectedAnnouncement.expiryDate
-                            | date: 'MMMM d, y'
+                            selectedAnnouncement.expiryDate | date: 'MMMM d, y'
                             }}</span>
                     </div>
                 </div>

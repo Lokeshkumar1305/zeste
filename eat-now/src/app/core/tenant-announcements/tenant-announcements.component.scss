@@ -150,7 +150,6 @@ $danger-color: #ef4444;
         }
       }
 
-      /* single, light solid colors */
       &.total .stat-icon {
         background-color: #eef2ff;
         color: #4f46e5;
@@ -406,7 +405,7 @@ $danger-color: #ef4444;
       position: relative;
 
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         top: 0;
@@ -423,6 +422,7 @@ $danger-color: #ef4444;
         transform: translateX(4px);
       }
 
+      /* UNREAD: highlighted background */
       &.unread {
         background: #f0f1ff;
 
@@ -431,11 +431,38 @@ $danger-color: #ef4444;
         }
       }
 
+      /* IMPORTANT (both read & unread can be important) */
       &.important {
         border-color: #fee2e2;
 
         &::before {
           background: $danger-color;
+        }
+      }
+
+      /* READ CARD STYLE */
+      &.read-card {
+        background: $white;
+        border-color: $border-color;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+
+        &::before {
+          background: transparent;
+        }
+
+        &:hover {
+          box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+          transform: translateX(2px);
+        }
+
+        .announcement-title {
+          color: $text-primary;
+          opacity: 0.9;
+        }
+
+        .announcement-message {
+          color: $text-secondary;
+          opacity: 0.95;
         }
       }
 
@@ -576,6 +603,22 @@ $danger-color: #ef4444;
           &:hover {
             background: #4338ca;
             transform: scale(1.1);
+          }
+        }
+
+        .read-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.25rem 0.6rem;
+          border-radius: 999px;
+          background: #dcfce7;
+          color: #166534;
+          font-size: 0.75rem;
+          font-weight: 600;
+
+          i {
+            font-size: 0.9rem;
           }
         }
 
