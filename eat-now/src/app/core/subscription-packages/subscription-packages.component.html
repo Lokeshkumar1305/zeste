@@ -1,170 +1,185 @@
-<div class="page">
-
-    <!-- Header -->
-    <div class="page-header">
-        <div>
-            <h1>Subscription Packages</h1>
-            <p class="subtitle">
-                Configure the plans and modules available to your hostel clients.
-            </p>
-        </div>
-
-        <button mat-flat-button color="primary" (click)="openCreateModal()">
-            <i class="bi bi-plus-lg me-1"></i>
-            Add Package
-        </button>
-    </div>
-
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Search by package name or ID</mat-label>
-            <span matPrefix><i class="bi bi-search"></i>&nbsp;</span>
-            <input matInput [(ngModel)]="searchTerm" />
-        </mat-form-field>
-    </div>
-
-    <!-- Table -->
-    <div class="table">
-        <!-- Header Row -->
-        <div class="table-row table-header">
-            <div class="col col-id">ID</div>
-            <div class="col col-name">Package Name</div>
-            <div class="col col-price">Monthly</div>
-            <div class="col col-price">Annual</div>
-            <div class="col col-price">Lifetime</div>
-            <div class="col col-modules">Modules in Package</div>
-            <div class="col col-actions">Action</div>
-        </div>
-
-        <!-- Data Rows -->
-        <ng-container *ngFor="let pkg of filteredPackages">
-            <div class="table-row package-row" [class.inactive]="!pkg.isActive" [class.recommended]="pkg.recommended">
-                <!-- ID -->
-                <div class="col col-id">
-                    {{ pkg.id }}
-                </div>
-
-                <!-- Name & Badges -->
-                <div class="col col-name">
-                    <div class="name-line">
-                        <span class="pkg-name">{{ pkg.name }}</span>
-
-                        <span *ngIf="pkg.isDefault" class="badge badge-neutral" title="Default package for new clients">
-                            Default
-                        </span>
-
-                        <span *ngIf="pkg.planType === 'free'" class="badge badge-free">
-                            Free
-                        </span>
-
-                        <span *ngIf="pkg.planType === 'paid'" class="badge badge-paid">
-                            Paid
-                        </span>
-
-                        <span *ngIf="pkg.recommended" class="badge badge-recommended">
-                            Recommended
-                        </span>
-
-                        <span *ngIf="pkg.packageType === 'trial'" class="badge badge-trial">
-                            Trial
-                        </span>
-
-                        <span *ngIf="pkg.isActive" class="badge badge-active">
-                            Active
-                        </span>
-                        <span *ngIf="!pkg.isActive" class="badge badge-inactive">
-                            Inactive
-                        </span>
+<div class="page subscription-page">
+    <div class="subscription-page-inner">
+        <!-- Header -->
+        <mat-card>
+            <mat-card-content>
+                <div class="page-header">
+                    <div>
+                        <h1>Subscription Packages</h1>
+                        <p class="subtitle">
+                            Configure the plans and modules available to your hostel clients.
+                        </p>
                     </div>
 
-                    <div class="meta-line">
-                        <span class="meta-text" *ngIf="pkg.trialDays">
-                            Trial period: {{ pkg.trialDays }} days
+                    <button mat-flat-button color="primary" (click)="openCreateModal()">
+                        <i class="bi bi-plus-lg header-add-icon me-1"></i>
+                        <span>Add Package</span>
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Toolbar -->
+        <mat-card class="mt-3">
+            <mat-card-content>
+                <div class="toolbar">
+                    <mat-form-field appearance="outline" class="search-field">
+                        <mat-label>Search by package name or ID</mat-label>
+                        <span matPrefix>
+                            <i class="bi bi-search search-icon"></i>&nbsp;
                         </span>
-                        <span class="meta-dot" *ngIf="pkg.trialDays && pkg.isPrivate"></span>
-                        <span class="meta-text" *ngIf="pkg.isPrivate">
-                            Private package
-                        </span>
+                        <input matInput [(ngModel)]="searchTerm" />
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Table -->
+        <div class="table mt-3">
+            <!-- Header Row -->
+            <div class="table-row table-header">
+                <div class="col col-id">ID</div>
+                <div class="col col-name">Package Name</div>
+                <div class="col col-price">Monthly</div>
+                <div class="col col-price">Annual</div>
+                <div class="col col-price">Lifetime</div>
+                <div class="col col-modules">Modules in Package</div>
+                <div class="col col-actions">Action</div>
+            </div>
+
+            <!-- Data Rows -->
+            <ng-container *ngFor="let pkg of filteredPackages">
+                <div class="table-row package-row" [class.inactive]="!pkg.isActive"
+                    [class.recommended]="pkg.recommended">
+                    <!-- ID -->
+                    <div class="col col-id">
+                        {{ pkg.id }}
                     </div>
 
-                    <div class="description" *ngIf="pkg.description">
-                        {{ pkg.description }}
-                    </div>
-                </div>
+                    <!-- Name & Badges -->
+                    <div class="col col-name">
+                        <div class="name-line">
+                            <span class="pkg-name">{{ pkg.name }}</span>
 
-                <!-- Prices -->
-                <div class="col col-price">
-                    <span *ngIf="pkg.monthlyPrice != null; else noMonthly">
-                        ₹{{ pkg.monthlyPrice | number: '1.0-0' }}
-                        <span class="billing-text">/month</span>
-                    </span>
-                    <ng-template #noMonthly>—</ng-template>
-                </div>
+                            <span *ngIf="pkg.isDefault" class="badge badge-neutral"
+                                title="Default package for new clients">
+                                Default
+                            </span>
 
-                <div class="col col-price">
-                    <span *ngIf="pkg.annualPrice != null; else noAnnual">
-                        ₹{{ pkg.annualPrice | number: '1.0-0' }}
-                        <span class="billing-text">/year</span>
-                    </span>
-                    <ng-template #noAnnual>—</ng-template>
-                </div>
+                            <span *ngIf="pkg.planType === 'free'" class="badge badge-free">
+                                Free
+                            </span>
 
-                <div class="col col-price">
-                    <span *ngIf="pkg.lifetimePrice != null; else noLife">
-                        ₹{{ pkg.lifetimePrice | number: '1.0-0' }}
-                    </span>
-                    <ng-template #noLife>—</ng-template>
-                </div>
+                            <span *ngIf="pkg.planType === 'paid'" class="badge badge-paid">
+                                Paid
+                            </span>
 
-                <!-- Modules (chips) -->
-                <div class="col col-modules">
-                    <div class="modules-card">
-                        <div class="modules-summary">
-                            <i class="bi bi-grip-horizontal drag-icon"></i>
-                            {{ countIncludedModules(pkg) }} of {{ pkg.modules.length }} module(s) enabled
+                            <span *ngIf="pkg.recommended" class="badge badge-recommended">
+                                Recommended
+                            </span>
+
+                            <span *ngIf="pkg.packageType === 'trial'" class="badge badge-trial">
+                                Trial
+                            </span>
+
+                            <span *ngIf="pkg.isActive" class="badge badge-active">
+                                Active
+                            </span>
+                            <span *ngIf="!pkg.isActive" class="badge badge-inactive">
+                                Inactive
+                            </span>
                         </div>
 
-                        <mat-chip-set class="modules-chip-set" aria-label="Modules in package">
-                            <mat-chip *ngFor="let mod of pkg.modules | slice:0:10"
-                                [ngClass]="mod.included ? 'chip-included' : 'chip-excluded'" selectable="false"
-                                removable="false">
-                                <i class="bi me-1"
-                                    [ngClass]="mod.included ? 'bi-check-circle-fill' : 'bi-x-circle'"></i>
-                                <span class="chip-label">{{ mod.label }}</span>
-                            </mat-chip>
+                        <div class="meta-line">
+                            <span class="meta-text" *ngIf="pkg.trialDays">
+                                Trial period: {{ pkg.trialDays }} days
+                            </span>
+                            <span class="meta-dot" *ngIf="pkg.trialDays && pkg.isPrivate"></span>
+                            <span class="meta-text" *ngIf="pkg.isPrivate">
+                                Private package
+                            </span>
+                        </div>
 
-                            <mat-chip *ngIf="pkg.modules.length > 10" class="chip-more" selectable="false"
-                                removable="false">
-                                +{{ pkg.modules.length - 10 }} more
-                            </mat-chip>
-                        </mat-chip-set>
+                        <div class="description" *ngIf="pkg.description">
+                            {{ pkg.description }}
+                        </div>
+                    </div>
+
+                    <!-- Prices -->
+                    <div class="col col-price col-price-monthly">
+                        <span *ngIf="pkg.monthlyPrice != null; else noMonthly">
+                            ₹{{ pkg.monthlyPrice | number: '1.0-0' }}
+                            <span class="billing-text">/month</span>
+                        </span>
+                        <ng-template #noMonthly>—</ng-template>
+                    </div>
+
+                    <div class="col col-price col-price-annual">
+                        <span *ngIf="pkg.annualPrice != null; else noAnnual">
+                            ₹{{ pkg.annualPrice | number: '1.0-0' }}
+                            <span class="billing-text">/year</span>
+                        </span>
+                        <ng-template #noAnnual>—</ng-template>
+                    </div>
+
+                    <div class="col col-price col-price-life">
+                        <span *ngIf="pkg.lifetimePrice != null; else noLife">
+                            ₹{{ pkg.lifetimePrice | number: '1.0-0' }}
+                        </span>
+                        <ng-template #noLife>—</ng-template>
+                    </div>
+
+                    <!-- Modules (chips) -->
+                    <div class="col col-modules">
+                        <div class="modules-card">
+                            <div class="modules-summary">
+                                <i class="bi bi-grip-horizontal drag-icon"></i>
+                                {{ countIncludedModules(pkg) }} of
+                                {{ pkg.modules.length }} module(s) enabled
+                            </div>
+
+                            <mat-chip-set class="modules-chip-set" aria-label="Modules in package">
+                                <mat-chip *ngFor="let mod of pkg.modules | slice: 0:10"
+                                    [ngClass]="mod.included ? 'chip-included' : 'chip-excluded'" selectable="false"
+                                    removable="false">
+                                    <i class="bi me-1" [ngClass]="
+                      mod.included ? 'bi-check-circle-fill' : 'bi-x-circle'
+                    "></i>
+                                    <span class="chip-label">{{ mod.label }}</span>
+                                </mat-chip>
+
+                                <mat-chip *ngIf="pkg.modules.length > 10" class="chip-more" selectable="false"
+                                    removable="false">
+                                    +{{ pkg.modules.length - 10 }} more
+                                </mat-chip>
+                            </mat-chip-set>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="col col-actions">
+                        <button mat-stroked-button color="primary" class="action-btn action-btn-edit"
+                            (click)="openEditModal(pkg)">
+                            <span class="btn-content">
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Edit</span>
+                            </span>
+                        </button>
+
+                        <button mat-stroked-button color="warn" class="action-btn action-btn-delete"
+                            [disabled]="pkg.isDefault" (click)="deletePackage(pkg)">
+                            <span class="btn-content">
+                                <i class="bi bi-trash"></i>
+                                <span>Delete</span>
+                            </span>
+                        </button>
                     </div>
                 </div>
+            </ng-container>
 
-                <!-- Actions -->
-                <div class="col col-actions">
-                    <button mat-stroked-button color="primary" class="action-btn action-btn-edit"
-                        (click)="openEditModal(pkg)">
-                        <span class="btn-content">
-                            <i class="bi bi-pencil-square"></i>
-                            <span>Edit</span>
-                        </span>
-                    </button>
-
-                    <button mat-stroked-button color="warn" class="action-btn action-btn-delete"
-                        [disabled]="pkg.isDefault" (click)="deletePackage(pkg)">
-                        <span class="btn-content">
-                            <i class="bi bi-trash"></i>
-                            <span>Delete</span>
-                        </span>
-                    </button>
-                </div>
+            <div class="empty-state" *ngIf="filteredPackages.length === 0">
+                No packages found. Try a different search or create a new package.
             </div>
-        </ng-container>
-
-        <div class="empty-state" *ngIf="filteredPackages.length === 0">
-            No packages found. Try a different search or create a new package.
         </div>
     </div>
 </div>

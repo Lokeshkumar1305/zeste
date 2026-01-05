@@ -1,34 +1,39 @@
-<div class="page">
-    <div class="page-inner">
-        <!-- Header -->
-        <div class="page-header">
-            <div class="title-block">
-                <div>
-                    <h1>
+<div class="page-container package-edit-page">
+    <!-- Header -->
+    <mat-card>
+        <mat-card-content>
+            <div class="page-header">
+                <div class="page-header-title title-block">
+                    <h1 class="f-20-b">
                         {{ mode === 'create' ? 'Add Package' : 'Edit Package' }}
                     </h1>
-                    <p class="subtitle">
+                    <p class="subtitle f-12-r-07">
                         Define pricing, visibility and modules for this subscription plan.
                     </p>
                 </div>
+
+                <div class="header-actions">
+                    <button mat-stroked-button color="primary" type="button" (click)="goBack()">
+                        <i class="bi bi-x me-1"></i>
+                        <span class="btn-text">Cancel</span>
+                    </button>
+
+                    <button mat-flat-button color="primary" type="submit" (click)="submit()" [disabled]="form.invalid">
+                        <i class="bi bi-save me-1"></i>
+                        <span class="btn-text-primary">
+                            {{ mode === 'create' ? 'Create Package' : 'Save Changes' }}
+                        </span>
+                    </button>
+                </div>
             </div>
+        </mat-card-content>
+    </mat-card>
 
-            <div class="header-actions">
-                <button mat-stroked-button color="primary" type="button" (click)="goBack()">
-                    <i class="bi bi-x me-1"></i>
-                    Cancel
-                </button>
 
-                <button mat-flat-button color="primary" type="button" (click)="submit()" [disabled]="form.invalid">
-                    <i class="bi bi-save me-1"></i>
-                    {{ mode === 'create' ? 'Create Package' : 'Save Changes' }}
-                </button>
-            </div>
-        </div>
-
-        <!-- Content -->
-        <form class="page-content" [formGroup]="form" (ngSubmit)="submit()">
-            <div class="card">
+    <!-- Content -->
+    <form class="package-form" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-card class="case-card package-card">
+            <mat-card-content>
                 <!-- PLAN TYPE -->
                 <section class="section">
                     <div class="section-header">
@@ -176,7 +181,7 @@
                         </ng-container>
                     </div>
                 </section>
-            </div>
-        </form>
-    </div>
+            </mat-card-content>
+        </mat-card>
+    </form>
 </div>
