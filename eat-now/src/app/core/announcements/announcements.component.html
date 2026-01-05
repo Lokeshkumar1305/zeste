@@ -1,22 +1,27 @@
-<div class="announcements-container">
+<div class="page-container announcements-page">
   <!-- Header Section -->
-  <div class="page-header mb-4">
-    <div class="row align-items-center g-2">
-      <div class="col-md-6">
-        <h1 class="page-title">Announcements</h1>
-        <p class="text-muted mb-0">Manage and send announcements to tenants</p>
+  <mat-card class="case-card">
+    <mat-card-content>
+      <div class="page-header announcements-header">
+        <div class="page-header-title">
+          <h1 class="page-title f-20-b">Announcements</h1>
+          <p class="subtitle f-12-r-07">
+            Manage and send announcements to tenants
+          </p>
+        </div>
+
+        <div class="page-header-actions">
+          <button mat-raised-button color="primary" (click)="openCreateDialog()" class="btn-create">
+            <i class="bi bi-plus-lg me-2"></i>
+            <span class="btn-text-primary">Create Announcement</span>
+          </button>
+        </div>
       </div>
-      <div class="col-md-6 text-md-end mt-3 mt-md-0">
-        <button mat-raised-button color="primary" (click)="openCreateDialog()" class="btn-create">
-          <i class="bi bi-plus-lg me-2"></i>
-          Create Announcement
-        </button>
-      </div>
-    </div>
-  </div>
+    </mat-card-content>
+  </mat-card>
 
   <!-- Stats Cards -->
-  <div class="row mb-4 stats-row">
+  <div class="row mt-3 stats-row">
     <div class="col-6 col-md-3 mb-3">
       <mat-card class="stat-card stat-total">
         <mat-card-content>
@@ -72,9 +77,9 @@
   </div>
 
   <!-- Filters Section -->
-  <mat-card class="filter-card mb-4">
+  <mat-card class="filter-card mb-4 case-card">
     <mat-card-content>
-      <div class="row align-items-center g-3">
+      <div class="row g-3 filter-row">
         <div class="col-md-3">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>
@@ -94,7 +99,8 @@
             <mat-select [(ngModel)]="selectedType" (selectionChange)="applyFilter()">
               <mat-option value="">All Types</mat-option>
               <mat-option *ngFor="let type of announcementTypes" [value]="type.value">
-                <i class="bi {{ type.icon }} me-2"></i> {{ type.label }}
+                <i class="bi {{ type.icon }} me-2"></i>
+                {{ type.label }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -123,19 +129,12 @@
           </mat-form-field>
         </div>
 
-        <div class="col-md-3 text-md-end">
-          <div class="d-flex flex-wrap gap-2 justify-content-md-end">
-            <button mat-stroked-button color="warn" (click)="clearFilters()" class="w-100 w-md-auto">
+        <!-- Clear button column -->
+        <div class="col-md-3">
+          <div class="clear-col-wrapper">
+            <button mat-stroked-button color="warn" (click)="clearFilters()" class="w-100 clear-btn">
               <i class="bi bi-x-circle me-1"></i> Clear
             </button>
-            <mat-button-toggle-group [(ngModel)]="viewMode" class="view-toggle">
-              <mat-button-toggle value="cards">
-                <i class="bi bi-grid-3x2-gap"></i>
-              </mat-button-toggle>
-              <mat-button-toggle value="table">
-                <i class="bi bi-list-ul"></i>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
           </div>
         </div>
       </div>
@@ -153,78 +152,17 @@
     <mat-card class="text-center py-5">
       <i class="bi bi-megaphone display-1 text-muted"></i>
       <h3 class="mt-3">No Announcements Found</h3>
-      <p class="text-muted">Create your first announcement to notify tenants.</p>
+      <p class="text-muted">
+        Create your first announcement to notify tenants.
+      </p>
       <button mat-raised-button color="primary" (click)="openCreateDialog()">
         <i class="bi bi-plus-lg me-2"></i> Create Announcement
       </button>
     </mat-card>
   </div>
 
-  <!-- Cards View -->
-  <div *ngIf="!isLoading && announcements.length > 0 && viewMode === 'cards'" class="cards-view">
-    <div class="row">
-      <div class="col-sm-6 col-lg-4 mb-4" *ngFor="let announcement of announcements; trackBy: trackByFn">
-        <mat-card class="announcement-card" [class.inactive]="!announcement.isActive">
-          <mat-card-header>
-            <div mat-card-avatar class="type-avatar" [style.backgroundColor]="getTypeInfo(announcement.type)?.color">
-              <i class="bi {{ getTypeInfo(announcement.type)?.icon }}"></i>
-            </div>
-            <mat-card-title>{{ announcement.title }}</mat-card-title>
-            <mat-card-subtitle>
-              <span class="badge me-2" [ngClass]="'bg-' + getPriorityInfo(announcement.priority)?.color">
-                {{ getPriorityInfo(announcement.priority)?.label }}
-              </span>
-              <span class="badge" [ngClass]="announcement.isActive ? 'bg-success' : 'bg-secondary'">
-                {{ announcement.isActive ? 'Active' : 'Inactive' }}
-              </span>
-            </mat-card-subtitle>
-          </mat-card-header>
-
-          <mat-card-content>
-            <p class="announcement-message">
-              {{ announcement.message }}
-            </p>
-
-            <div class="announcement-meta">
-              <div class="meta-item">
-                <i class="bi bi-people me-1"></i>
-                {{ getTargetAudienceLabel(announcement.targetAudience) }}
-              </div>
-              <div class="meta-item">
-                <i class="bi bi-calendar me-1"></i>
-                {{ announcement.createdAt | date : 'MMM dd, yyyy' }}
-              </div>
-              <div class="meta-item" *ngIf="announcement.expiryDate">
-                <i class="bi bi-clock me-1" [class.text-warning]="isExpiringSoon(announcement.expiryDate)"
-                  [class.text-danger]="isExpired(announcement.expiryDate)"></i>
-                <span [class.text-warning]="isExpiringSoon(announcement.expiryDate)"
-                  [class.text-danger]="isExpired(announcement.expiryDate)">
-                  Expires:
-                  {{ announcement.expiryDate | date : 'MMM dd, yyyy' }}
-                </span>
-              </div>
-            </div>
-          </mat-card-content>
-
-          <mat-card-actions align="end">
-            <button mat-icon-button color="primary" matTooltip="Edit" (click)="openEditDialog(announcement)">
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button mat-icon-button [color]="announcement.isActive ? 'warn' : 'primary'"
-              [matTooltip]="announcement.isActive ? 'Deactivate' : 'Activate'" (click)="toggleStatus(announcement)">
-              <i class="bi" [ngClass]="announcement.isActive ? 'bi-pause-circle' : 'bi-play-circle'"></i>
-            </button>
-            <button mat-icon-button color="warn" matTooltip="Delete" (click)="deleteAnnouncement(announcement)">
-              <i class="bi bi-trash"></i>
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </div>
-  </div>
-
   <!-- TABLE VIEW (desktop + mobile card list) -->
-  <div *ngIf="!isLoading && announcements.length > 0 && viewMode === 'table'" class="table-view-wrapper">
+  <div class="table-view-wrapper">
     <!-- Desktop table -->
     <div class="table-view-desktop">
       <mat-card class="tenant-card">
@@ -244,9 +182,11 @@
             <table mat-table [dataSource]="dataSource" matSort class="tenant-table">
               <!-- Type Column -->
               <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>TYPE</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  TYPE
+                </th>
                 <td mat-cell *matCellDef="let row">
-                  <span class="type-badge" [style.backgroundColor]="getTypeInfo(row.type)?.color">
+                  <span class="type-badge" [ngClass]="'type-' + row.type">
                     <i class="bi {{ getTypeInfo(row.type)?.icon }} me-1"></i>
                     {{ getTypeInfo(row.type)?.label }}
                   </span>
@@ -255,7 +195,9 @@
 
               <!-- Title Column -->
               <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>TITLE</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  TITLE
+                </th>
                 <td mat-cell *matCellDef="let row">
                   <span class="tenant-name">{{ row.title }}</span>
                   <p class="tenant-subtext">{{ row.message }}</p>
@@ -268,7 +210,9 @@
                   PRIORITY
                 </th>
                 <td mat-cell *matCellDef="let row">
-                  <span class="priority-pill" [ngClass]="'priority-' + getPriorityInfo(row.priority)?.color">
+                  <span class="priority-pill" [ngClass]="
+                      'priority-' + getPriorityInfo(row.priority)?.color
+                    ">
                     {{ getPriorityInfo(row.priority)?.label }}
                   </span>
                 </td>
@@ -276,7 +220,9 @@
 
               <!-- Target Audience Column -->
               <ng-container matColumnDef="targetAudience">
-                <th mat-header-cell *matHeaderCellDef>TARGET</th>
+                <th mat-header-cell *matHeaderCellDef>
+                  TARGET
+                </th>
                 <td mat-cell *matCellDef="let row">
                   {{ getTargetAudienceLabel(row.targetAudience) }}
                 </td>
@@ -294,9 +240,13 @@
 
               <!-- Status Column -->
               <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>STATUS</th>
+                <th mat-header-cell *matHeaderCellDef>
+                  STATUS
+                </th>
                 <td mat-cell *matCellDef="let row">
-                  <span class="status-pill" [ngClass]="row.isActive ? 'status-active' : 'status-inactive'">
+                  <span class="status-pill" [ngClass]="
+                      row.isActive ? 'status-active' : 'status-inactive'
+                    ">
                     <span class="status-dot"></span>
                     {{ row.isActive ? 'Active' : 'Inactive' }}
                   </span>
@@ -305,14 +255,21 @@
 
               <!-- Actions Column -->
               <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>ACTION</th>
+                <th mat-header-cell *matHeaderCellDef>
+                  ACTION
+                </th>
                 <td mat-cell *matCellDef="let row">
                   <button mat-icon-button class="icon-btn edit" matTooltip="Edit" (click)="openEditDialog(row)">
                     <i class="bi bi-pencil-square"></i>
                   </button>
-                  <button mat-icon-button class="icon-btn status"
-                    [matTooltip]="row.isActive ? 'Deactivate' : 'Activate'" (click)="toggleStatus(row)">
-                    <i class="bi" [ngClass]="row.isActive ? 'bi-pause-circle' : 'bi-play-circle'"></i>
+                  <button mat-icon-button class="icon-btn status" [matTooltip]="
+                      row.isActive ? 'Deactivate' : 'Activate'
+                    " (click)="toggleStatus(row)">
+                    <i class="bi" [ngClass]="
+                        row.isActive
+                          ? 'bi-pause-circle'
+                          : 'bi-play-circle'
+                      "></i>
                   </button>
                   <button mat-icon-button class="icon-btn delete" color="warn" matTooltip="Delete"
                     (click)="deleteAnnouncement(row)">
@@ -322,8 +279,10 @@
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns" class="tenant-header-row"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns" class="tenant-data-row"
-                [class.inactive-row]="!row.isActive"></tr>
+              <tr mat-row *matRowDef="
+                  let row;
+                  columns: displayedColumns
+                " class="tenant-data-row" [class.inactive-row]="!row.isActive"></tr>
             </table>
           </div>
 
@@ -334,7 +293,6 @@
             </mat-paginator>
 
             <div class="page-nav">
-              <!-- NOTE: removed d-none from page-btn-icon so we can control via CSS -->
               <button class="page-btn prev" [disabled]="pageIndex === 0" (click)="goToPreviousPage()">
                 <span class="page-btn-text">‹ Previous</span>
                 <span class="page-btn-icon">‹</span>
@@ -365,16 +323,21 @@
 
       <div class="table-card" *ngFor="let row of announcements; trackBy: trackByFn">
         <div class="table-card-header">
-          <span class="type-badge" [style.backgroundColor]="getTypeInfo(row.type)?.color">
+          <span class="type-badge" [ngClass]="'type-' + row.type">
+            <!-- lighter Bootstrap icons for mobile -->
             <i class="bi {{ getTypeInfo(row.type)?.icon }} me-1"></i>
             {{ getTypeInfo(row.type)?.label }}
           </span>
 
-          <span class="priority-pill" [ngClass]="'priority-' + getPriorityInfo(row.priority)?.color">
+          <span class="priority-pill" [ngClass]="
+              'priority-' + getPriorityInfo(row.priority)?.color
+            ">
             {{ getPriorityInfo(row.priority)?.label }}
           </span>
 
-          <span class="status-pill" [ngClass]="row.isActive ? 'status-active' : 'status-inactive'">
+          <span class="status-pill" [ngClass]="
+              row.isActive ? 'status-active' : 'status-inactive'
+            ">
             <span class="status-dot"></span>
             {{ row.isActive ? 'Active' : 'Inactive' }}
           </span>
@@ -396,7 +359,7 @@
               {{ row.createdAt | date : 'MMM d, y' }}
             </div>
             <div class="meta-line" *ngIf="row.expiryDate">
-              <i class="bi bi-clock me-1" [class.text-warning]="isExpiringSoon(row.expiryDate)"
+              <i class="bi bi-clock-history me-1" [class.text-warning]="isExpiringSoon(row.expiryDate)"
                 [class.text-danger]="isExpired(row.expiryDate)"></i>
               <span [class.text-warning]="isExpiringSoon(row.expiryDate)"
                 [class.text-danger]="isExpired(row.expiryDate)">
@@ -407,15 +370,18 @@
         </div>
 
         <div class="table-card-footer">
+          <!-- light-weight action icons for mobile -->
           <button mat-icon-button color="primary" matTooltip="Edit" (click)="openEditDialog(row)">
             <i class="bi bi-pencil"></i>
           </button>
           <button mat-icon-button [color]="row.isActive ? 'warn' : 'primary'"
             [matTooltip]="row.isActive ? 'Deactivate' : 'Activate'" (click)="toggleStatus(row)">
-            <i class="bi" [ngClass]="row.isActive ? 'bi-pause-circle' : 'bi-play-circle'"></i>
+            <i class="bi" [ngClass]="
+                row.isActive ? 'bi-pause' : 'bi-play'
+              "></i>
           </button>
           <button mat-icon-button color="warn" matTooltip="Delete" (click)="deleteAnnouncement(row)">
-            <i class="bi bi-trash"></i>
+            <i class="bi bi-trash3"></i>
           </button>
         </div>
       </div>
