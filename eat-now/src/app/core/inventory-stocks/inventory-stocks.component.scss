@@ -1,34 +1,38 @@
-/* ROOT WRAPPER: respects main layout, adds inner padding */
+/* ROOT WRAPPER: uses page-container; only vertical padding here */
 .inventory-stocks-page {
-  padding: 24px 32px 32px;
+  padding-block: 24px 32px;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding-block: 16px 24px;
+  }
 }
 
 /* Single centered container for heading + content */
 .page-inner {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 /* HEADER */
 .page-header {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
 
-  .page-title {
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  color: #202124;
+
+  i {
     font-size: 20px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    color: #202124;
-
-    i {
-      font-size: 20px;
-      margin-right: 8px;
-      color: #4a6cf7;
-    }
+    margin-right: 8px;
+    color: var(--brand-primary);
   }
 }
 
@@ -38,24 +42,40 @@
 }
 
 /* SUMMARY CARDS */
+
 .summary-section {
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .summary-cards {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .summary-card {
   position: relative;
   display: flex;
-  background: #ffffff;
+  background: var(--card-background);
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
   overflow: hidden;
   min-height: 88px;
+  border: 1px solid var(--card-border);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.09);
+    transform: translateY(-1px);
+  }
 
   .left-stripe {
     width: 4px;
@@ -85,16 +105,22 @@
   }
 
   .text {
+    min-width: 0;
+
     .label {
       font-size: 13px;
       color: #757575;
       margin-bottom: 4px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     .value {
       font-size: 22px;
       font-weight: 700;
       color: #212121;
+      line-height: 1.2;
     }
   }
 
@@ -159,57 +185,23 @@
   }
 }
 
-/* FILTERS */
+/* FILTERS – material fields aligned in a row */
+
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+}
 
-  .search-box {
-    flex: 1;
-    min-width: 220px;
-    display: flex;
-    align-items: center;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid #dde1e6;
-    background: #ffffff;
+.search-field {
+  flex: 1 1 220px;
+  min-width: 220px;
+}
 
-    i {
-      color: #a0a4a8;
-      margin-right: 10px;
-      font-size: 16px;
-    }
-
-    input {
-      border: none;
-      outline: none;
-      flex: 1;
-      font-size: 14px;
-      background: transparent;
-      color: #333;
-    }
-
-    input::placeholder {
-      color: #b0b0b0;
-    }
-  }
-
-  .filter-select {
-    padding: 10px 32px 10px 12px;
-    border-radius: 8px;
-    border: 1px solid #dde1e6;
-    background: #ffffff;
-    min-width: 160px;
-    font-size: 14px;
-    color: #333;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 14px;
-  }
+.filter-select-field {
+  flex: 0 0 180px;
+  min-width: 160px;
 }
 
 /* STOCK LIST */
@@ -224,7 +216,7 @@
   padding: 14px 16px;
   border-radius: 12px;
   margin-bottom: 10px;
-  background: #ffffff;
+  background: var(--card-background);
   border: 1px solid #edf0f4;
   transition: all 0.18s ease;
 
@@ -362,17 +354,9 @@
 
 /* RESPONSIVE */
 
-/* Large tablets / small desktops */
-@media (max-width: 1200px) {
-  .summary-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* Tablets */
 @media (max-width: 768px) {
   .inventory-stocks-page {
-    padding: 16px 16px 24px;
+    padding-inline: 16px;
   }
 
   .page-header {
@@ -385,8 +369,9 @@
     flex-direction: column;
     align-items: stretch;
 
-    .search-box,
-    .filter-select {
+    .search-field,
+    .filter-select-field {
+      flex: 1 1 100%;
       width: 100%;
     }
   }
@@ -403,18 +388,5 @@
         justify-content: flex-start;
       }
     }
-  }
-}
-
-/* Small phones */
-@media (max-width: 576px) {
-  .summary-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .total-value-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
   }
 }

@@ -1,5 +1,5 @@
-<div class="inventory-stocks-page">
-  <!-- Everything (heading + content) is inside the same centered container -->
+<div class="inventory-stocks-page page-container">
+  <!-- Inner width -->
   <div class="page-inner">
     <!-- Page header -->
     <div class="page-header">
@@ -87,35 +87,46 @@
       </div>
     </section>
 
-    <!-- FILTERS -->
+    <!-- FILTERS (Angular Material) -->
     <section class="section">
       <div class="filter-bar">
-        <div class="search-box">
-          <i class="bi bi-search"></i>
-          <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterItems()" placeholder="Search items..." />
-        </div>
+        <!-- Search -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput placeholder="Search items..." [(ngModel)]="searchTerm" (ngModelChange)="filterItems()" />
+        </mat-form-field>
 
-        <select [(ngModel)]="filterCategory" (ngModelChange)="filterItems()" class="filter-select">
-          <option value="">All Categories</option>
-          <option *ngFor="let cat of categories" [value]="cat.id">
-            {{ cat.name }}
-          </option>
-        </select>
+        <!-- Category filter -->
+        <mat-form-field appearance="outline" class="filter-select-field">
+          <mat-label>Category</mat-label>
+          <mat-select [(ngModel)]="filterCategory" (ngModelChange)="filterItems()">
+            <mat-option [value]="''">All Categories</mat-option>
+            <mat-option *ngFor="let cat of categories" [value]="cat.id">
+              {{ cat.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-        <select [(ngModel)]="filterStatus" (ngModelChange)="filterItems()" class="filter-select">
-          <option value="all">All Status</option>
-          <option value="ok">In Stock</option>
-          <option value="low">Low Stock</option>
-          <option value="out">Out of Stock</option>
-        </select>
+        <!-- Status filter -->
+        <mat-form-field appearance="outline" class="filter-select-field">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="filterStatus" (ngModelChange)="filterItems()">
+            <mat-option value="all">All Status</mat-option>
+            <mat-option value="ok">In Stock</mat-option>
+            <mat-option value="low">Low Stock</mat-option>
+            <mat-option value="out">Out of Stock</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </section>
 
     <!-- STOCK LIST -->
     <section class="section">
       <div class="stock-list" *ngIf="filteredItems.length; else noItemsTpl">
-        <div class="stock-item" *ngFor="let item of filteredItems; trackBy: trackByItemId"
-          [class.status-ok]="getStockStatus(item) === 'ok'" [class.status-low]="getStockStatus(item) === 'low'"
+        <div class="stock-item" *ngFor="
+            let item of filteredItems;
+            trackBy: trackByItemId
+          " [class.status-ok]="getStockStatus(item) === 'ok'" [class.status-low]="getStockStatus(item) === 'low'"
           [class.status-out]="getStockStatus(item) === 'out'">
           <div class="item-info">
             <span class="item-name">{{ item.name }}</span>
@@ -126,8 +137,12 @@
 
           <div class="stock-info">
             <div class="current-stock">
-              <span class="stock-number">{{ item.currentStock }}</span>
-              <span class="unit">{{ item.unitName || 'units' }}</span>
+              <span class="stock-number">
+                {{ item.currentStock }}
+              </span>
+              <span class="unit">
+                {{ item.unitName || 'units' }}
+              </span>
             </div>
             <div class="stock-meta">
               <span class="min-level">
