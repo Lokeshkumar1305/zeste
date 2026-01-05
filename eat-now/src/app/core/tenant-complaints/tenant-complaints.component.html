@@ -5,7 +5,7 @@
         <div class="complaints-container header-card">
             <div class="header-content">
                 <div class="header-left">
-                    <h1 class="page-title">📝 My Complaints</h1>
+                    <h1 class="page-title"> My Complaints</h1>
                     <p class="page-subtitle">Track and manage your complaints</p>
                 </div>
                 <div class="header-right">
@@ -87,7 +87,7 @@
                     <div class="search-box">
                         <i class="bi bi-search search-icon"></i>
                         <input type="text" class="search-input" placeholder="Search complaints..."
-                            [(ngModel)]="searchTerm" (input)="onSearch($event)">
+                            [(ngModel)]="searchTerm" (input)="onSearch($event)" />
                         <button class="clear-search" *ngIf="searchTerm" (click)="clearSearch()">
                             <i class="bi bi-x-lg"></i>
                         </button>
@@ -129,7 +129,11 @@
                     <div class="empty-icon">📋</div>
                     <h3>No complaints found</h3>
                     <p>
-                        {{ searchTerm ? 'Try adjusting your search' : 'You haven\'t submitted any complaints yet' }}
+                        {{
+                        searchTerm
+                        ? 'Try adjusting your search'
+                        : "You haven't submitted any complaints yet"
+                        }}
                     </p>
                     <button class="btn-primary" (click)="showCreateForm()" *ngIf="!searchTerm">
                         <i class="bi bi-plus-lg"></i>
@@ -154,15 +158,21 @@
                             </div>
                             <div class="complaint-right">
                                 <div class="status-badge" [class]="getStatusClass(complaint.status || 'PENDING')">
-                                    <i class="bi" [ngClass]="getStatusIcon(complaint.status || 'PENDING')"></i>
-                                    <span>{{ (complaint.status || 'PENDING').replace('_', ' ') }}</span>
+                                    <i class="bi" [ngClass]="
+                      getStatusIcon(complaint.status || 'PENDING')
+                    "></i>
+                                    <span>{{
+                                        (complaint.status || 'PENDING').replace('_', ' ')
+                                        }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="complaint-body">
                             <h3 class="complaint-title">{{ complaint.title }}</h3>
-                            <p class="complaint-description">{{ complaint.description }}</p>
+                            <p class="complaint-description">
+                                {{ complaint.description }}
+                            </p>
                         </div>
 
                         <div class="complaint-footer">
@@ -175,8 +185,10 @@
                                     <i class="bi bi-door-closed"></i>
                                     Room {{ complaint.roomNumber }}
                                 </span>
-                                <span class="info-item"
-                                    *ngIf="complaint.status !== 'RESOLVED' && complaint.submittedDate">
+                                <span class="info-item" *ngIf="
+                    complaint.status !== 'RESOLVED' &&
+                    complaint.submittedDate
+                  ">
                                     <i class="bi bi-clock"></i>
                                     {{ getDaysSince(complaint.submittedDate) }} days ago
                                 </span>
@@ -207,14 +219,14 @@
                             <div class="form-field">
                                 <label class="field-label required">Tenant Name</label>
                                 <input type="text" class="field-input" [(ngModel)]="newComplaint.tenantName"
-                                    name="tenantName" readonly>
+                                    name="tenantName" readonly />
                             </div>
 
                             <!-- Room Number (Read-only) -->
                             <div class="form-field">
                                 <label class="field-label required">Room Number</label>
                                 <input type="text" class="field-input" [(ngModel)]="newComplaint.roomNumber"
-                                    name="roomNumber" readonly>
+                                    name="roomNumber" readonly />
                             </div>
 
                             <!-- Category -->
@@ -245,7 +257,7 @@
                             <div class="form-field full-width">
                                 <label class="field-label required">Issue Title</label>
                                 <input type="text" class="field-input" [(ngModel)]="newComplaint.title" name="title"
-                                    placeholder="e.g., AC not cooling properly" required>
+                                    placeholder="e.g., AC not cooling properly" required />
                             </div>
 
                             <!-- Image Upload -->
@@ -275,7 +287,7 @@
                                     <!-- Desktop Upload -->
                                     <div class="desktop-upload" *ngIf="!isMobileOrTablet">
                                         <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*"
-                                            hidden>
+                                            hidden />
                                         <i class="bi bi-cloud-upload"></i>
                                         <p class="upload-text">Drag & drop image here</p>
                                         <p class="upload-subtext">or</p>
@@ -289,9 +301,9 @@
                                     <!-- Mobile Upload -->
                                     <div class="mobile-upload" *ngIf="isMobileOrTablet">
                                         <input #mobileFileInput type="file" (change)="onFileSelected($event)"
-                                            accept="image/*" hidden>
+                                            accept="image/*" hidden />
                                         <input #nativeCameraInput type="file" accept="image/*" capture="environment"
-                                            (change)="onNativeCameraCapture($event)" hidden>
+                                            (change)="onNativeCameraCapture($event)" hidden />
 
                                         <div class="upload-options">
                                             <button type="button" class="upload-option"
@@ -302,8 +314,11 @@
 
                                             <div class="option-divider"></div>
 
-                                            <button type="button" class="upload-option"
-                                                (click)="isCameraAvailable ? openCamera() : nativeCameraInput.click()">
+                                            <button type="button" class="upload-option" (click)="
+                          isCameraAvailable
+                            ? openCamera()
+                            : nativeCameraInput.click()
+                        ">
                                                 <i class="bi bi-camera"></i>
                                                 <span>Camera</span>
                                             </button>
@@ -316,7 +331,7 @@
                                 <!-- Image Preview -->
                                 <div class="image-preview-container" *ngIf="hasImage && !showCameraPreview">
                                     <div class="preview-image">
-                                        <img [src]="newComplaint.imagePreview" alt="Damage preview">
+                                        <img [src]="newComplaint.imagePreview" alt="Damage preview" />
                                         <div class="image-overlay">
                                             <button type="button" class="overlay-btn" (click)="downloadImage()">
                                                 <i class="bi bi-download"></i>
@@ -328,9 +343,13 @@
                                     </div>
                                     <div class="image-info">
                                         <i class="bi bi-check-circle-fill text-success"></i>
-                                        <span class="image-name">{{ newComplaint.imageName }}</span>
+                                        <span class="image-name">{{
+                                            newComplaint.imageName
+                                            }}</span>
                                         <span class="image-size" *ngIf="newComplaint.imageFile">
-                                            {{ formatFileSize(newComplaint.imageFile.size) }}
+                                            {{
+                                            formatFileSize(newComplaint.imageFile.size)
+                                            }}
                                         </span>
                                     </div>
                                 </div>
@@ -365,21 +384,23 @@
                     </form>
                 </div>
             </ng-container>
-
         </div>
     </div>
 
     <!-- COMPLAINT DETAIL MODAL -->
     <div class="modal-overlay" *ngIf="selectedComplaint" (click)="closeComplaintDetail()">
         <div class="modal-content" (click)="$event.stopPropagation()">
-
             <!-- Modal Header -->
             <div class="modal-header">
                 <div class="modal-title">
                     <h2>Complaint Details</h2>
                     <div class="status-badge" [class]="getStatusClass(selectedComplaint.status || 'PENDING')">
-                        <i class="bi" [ngClass]="getStatusIcon(selectedComplaint.status || 'PENDING')"></i>
-                        <span>{{ (selectedComplaint.status || 'PENDING').replace('_', ' ') }}</span>
+                        <i class="bi" [ngClass]="
+                getStatusIcon(selectedComplaint.status || 'PENDING')
+              "></i>
+                        <span>{{
+                            (selectedComplaint.status || 'PENDING').replace('_', ' ')
+                            }}</span>
                     </div>
                 </div>
                 <button class="btn-close" (click)="closeComplaintDetail()">
@@ -389,7 +410,6 @@
 
             <!-- Modal Body -->
             <div class="modal-body">
-
                 <!-- Complaint Info -->
                 <div class="detail-section">
                     <div class="detail-row">
@@ -413,17 +433,23 @@
                     <div class="detail-row">
                         <div class="detail-item">
                             <label>Room Number</label>
-                            <div class="detail-value">Room {{ selectedComplaint.roomNumber }}</div>
+                            <div class="detail-value">
+                                Room {{ selectedComplaint.roomNumber }}
+                            </div>
                         </div>
                         <div class="detail-item" *ngIf="selectedComplaint.submittedDate">
                             <label>Submitted On</label>
-                            <div class="detail-value">{{ formatDate(selectedComplaint.submittedDate) }}</div>
+                            <div class="detail-value">
+                                {{ formatDate(selectedComplaint.submittedDate) }}
+                            </div>
                         </div>
                     </div>
 
                     <div class="detail-item full-width" *ngIf="selectedComplaint.resolvedDate">
                         <label>Resolved On</label>
-                        <div class="detail-value">{{ formatDate(selectedComplaint.resolvedDate) }}</div>
+                        <div class="detail-value">
+                            {{ formatDate(selectedComplaint.resolvedDate) }}
+                        </div>
                     </div>
                 </div>
 
@@ -433,12 +459,16 @@
                 <div class="detail-section">
                     <div class="detail-item full-width">
                         <label>Issue Title</label>
-                        <div class="detail-value">{{ selectedComplaint.title }}</div>
+                        <div class="detail-value">
+                            {{ selectedComplaint.title }}
+                        </div>
                     </div>
 
                     <div class="detail-item full-width">
                         <label>Description</label>
-                        <div class="detail-value description">{{ selectedComplaint.description }}</div>
+                        <div class="detail-value description">
+                            {{ selectedComplaint.description }}
+                        </div>
                     </div>
                 </div>
 
@@ -449,7 +479,7 @@
                     <div class="detail-item full-width">
                         <label>Damage Image</label>
                         <div class="detail-image">
-                            <img [src]="selectedComplaint.imagePreview" alt="Damage image">
+                            <img [src]="selectedComplaint.imagePreview" alt="Damage image" />
                         </div>
                     </div>
                 </div>
@@ -463,10 +493,11 @@
                             <i class="bi bi-chat-square-text"></i>
                             <strong>Admin Response</strong>
                         </div>
-                        <p class="response-text">{{ selectedComplaint.adminResponse }}</p>
+                        <p class="response-text">
+                            {{ selectedComplaint.adminResponse }}
+                        </p>
                     </div>
                 </div>
-
             </div>
 
             <!-- Modal Footer -->
@@ -475,8 +506,6 @@
                     Close
                 </button>
             </div>
-
         </div>
     </div>
-
 </div>

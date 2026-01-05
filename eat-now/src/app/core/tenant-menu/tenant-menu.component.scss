@@ -1,18 +1,15 @@
 // ========================
-// VARIABLES
+// THEME-MAPPED VARIABLES
 // ========================
-$primary-color: #4f46e5;
-$secondary-color: #64748b;
-$success-color: #10b981;
-$warning-color: #f59e0b;
-$danger-color: #ef4444;
-$text-primary: #1e293b;
-$text-secondary: #64748b;
-$border-color: #e2e8f0;
-$bg-light: #f8fafc;
-$white: #ffffff;
+// Map to your shared CSS variables so design stays consistent
+$primary-color: unquote("var(--brand-primary)");
+$text-primary: unquote("var(--text-color)");
+$text-secondary: unquote("var(--text-muted)");
+$border-color: unquote("var(--card-border)");
+$bg-light: unquote("var(--bg-page)");
+$white: unquote("var(--card-background)");
 
-// Item type colors
+// item type colors
 $veg-color: #10b981;
 $non-veg-color: #ef4444;
 $egg-color: #f59e0b;
@@ -110,9 +107,9 @@ $egg-color: #f59e0b;
           }
         }
 
-        &:hover {
+        &:hover:not(:disabled) {
           border-color: $primary-color;
-          background: #f0f1ff;
+          background: rgba(79, 70, 229, 0.06);
 
           i {
             color: $primary-color;
@@ -130,7 +127,7 @@ $egg-color: #f59e0b;
 
 @keyframes spin {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to   { transform: rotate(360deg); }
 }
 
 // ========================
@@ -197,10 +194,10 @@ $egg-color: #f59e0b;
 
   .meal-filters {
     display: flex;
-    flex-wrap: wrap;             // allow wrapping (no horizontal scroll)
+    flex-wrap: wrap;
     gap: 0.75rem;
     padding: 0.25rem 0 0.25rem;
-    overflow: visible;           // no scrollbars
+    overflow: visible;
     align-items: center;
     justify-content: flex-start;
   }
@@ -218,8 +215,8 @@ $egg-color: #f59e0b;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    white-space: nowrap;   // keep label in one line
-    flex-shrink: 0;        // keep button size consistent
+    white-space: nowrap;
+    flex-shrink: 0;
 
     i {
       font-size: 1rem;
@@ -228,7 +225,7 @@ $egg-color: #f59e0b;
     &:hover {
       border-color: $primary-color;
       color: $primary-color;
-      background: #f0f1ff;
+      background: rgba(79, 70, 229, 0.06);
     }
 
     &.active {
@@ -318,7 +315,6 @@ $egg-color: #f59e0b;
     width: 100%;
 
     &.serving {
-      border-color: $success-color;
       box-shadow: 0 4px 20px rgba(16, 185, 129, 0.18);
     }
 
@@ -348,14 +344,14 @@ $egg-color: #f59e0b;
           width: 56px;
           height: 56px;
           border-radius: 14px;
-          background: linear-gradient(135deg, $primary-color 0%, #6366f1 100%);
+          background-color: #eef2ff;
           display: flex;
           align-items: center;
           justify-content: center;
 
           i {
             font-size: 1.75rem;
-            color: $white;
+            color: $primary-color;
           }
         }
 
@@ -474,9 +470,9 @@ $egg-color: #f59e0b;
               font-size: 0.95rem;
             }
 
-            &.veg   { color: $veg-color; }
+            &.veg    { color: $veg-color; }
             &.non-veg { color: $non-veg-color; }
-            &.egg   { color: $egg-color; }
+            &.egg    { color: $egg-color; }
           }
 
           .unavailable-overlay {
@@ -545,7 +541,7 @@ $egg-color: #f59e0b;
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50%      { opacity: 0.5; }
 }
 
 // ========================
@@ -653,6 +649,10 @@ $egg-color: #f59e0b;
             .item-type-indicator {
               font-size: 1rem;
               flex-shrink: 0;
+
+              &.veg    { color: $veg-color; }
+              &.non-veg { color: $non-veg-color; }
+              &.egg    { color: $egg-color; }
             }
 
             .item-title {
@@ -695,7 +695,6 @@ $egg-color: #f59e0b;
     padding: 0 16px;
   }
 
-  // remove right shift on smaller screens
   .page-header .menu-container,
   .view-tabs-section .menu-container,
   .filter-section .menu-container,
@@ -740,7 +739,6 @@ $egg-color: #f59e0b;
     }
   }
 
-  // mobile-specific tweaks for filter buttons
   .filter-section .menu-container {
     padding: 0.75rem 1.25rem 1.25rem;
   }
@@ -748,7 +746,7 @@ $egg-color: #f59e0b;
   .filter-section .meal-filters {
     gap: 0.6rem;
     padding: 0.2rem 0 0.4rem;
-    justify-content: flex-start; // fits 2 lines nicely if needed
+    justify-content: flex-start;
   }
 
   .filter-section .meal-filter-btn {

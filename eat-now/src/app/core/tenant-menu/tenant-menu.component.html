@@ -1,223 +1,212 @@
 <div class="tenant-menu-page">
 
-  <!-- HEADER CARD -->
-  <div class="page-header">
-    <div class="menu-container">
-      <div class="header-content">
-        <div class="header-left">
-          <h1 class="page-title">🍽️ Today's Menu</h1>
-          <p class="page-subtitle">Check out what's cooking today</p>
+    <!-- HEADER CARD -->
+    <div class="page-header">
+        <div class="menu-container">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="page-title"> Today's Menu</h1>
+                    <p class="page-subtitle">Check out what's cooking today</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-refresh" (click)="refreshMenus()" [disabled]="isLoading">
+                        <i class="bi bi-arrow-clockwise" [class.spinning]="isLoading"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="header-right">
-          <button class="btn-refresh" (click)="refreshMenus()" [disabled]="isLoading">
-            <i class="bi bi-arrow-clockwise" [class.spinning]="isLoading"></i>
-          </button>
+    </div>
+
+    <!-- VIEW MODE TABS CARD -->
+    <div class="view-tabs-section">
+        <div class="menu-container">
+            <div class="view-tabs">
+                <button class="view-tab" [class.active]="viewMode === 'today'" (click)="changeViewMode('today')">
+                    <i class="bi bi-calendar-day"></i>
+                    <span>Today</span>
+                </button>
+                <button class="view-tab" [class.active]="viewMode === 'week'" (click)="changeViewMode('week')">
+                    <i class="bi bi-calendar-week"></i>
+                    <span>This Week</span>
+                </button>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- VIEW MODE TABS CARD -->
-  <div class="view-tabs-section">
-    <div class="menu-container">
-      <div class="view-tabs">
-        <button 
-          class="view-tab"
-          [class.active]="viewMode === 'today'"
-          (click)="changeViewMode('today')">
-          <i class="bi bi-calendar-day"></i>
-          <span>Today</span>
-        </button>
-        <button 
-          class="view-tab"
-          [class.active]="viewMode === 'week'"
-          (click)="changeViewMode('week')">
-          <i class="bi bi-calendar-week"></i>
-          <span>This Week</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MEAL TYPE FILTER CARD -->
-  <div class="filter-section" *ngIf="viewMode === 'today'">
-    <div class="menu-container">
-      <div class="meal-filters">
-        <button 
-          *ngFor="let mealType of mealTypes"
-          class="meal-filter-btn"
-          [class.active]="selectedMealFilter === mealType"
-          (click)="filterByMealType(mealType)">
-          <i class="bi" [ngClass]="{
+    <!-- MEAL TYPE FILTER CARD -->
+    <div class="filter-section" *ngIf="viewMode === 'today'">
+        <div class="menu-container">
+            <div class="meal-filters">
+                <button *ngFor="let mealType of mealTypes" class="meal-filter-btn"
+                    [class.active]="selectedMealFilter === mealType" (click)="filterByMealType(mealType)">
+                    <i class="bi" [ngClass]="{
             'bi-grid': mealType === 'all',
             'bi-sunrise': mealType === 'Breakfast',
             'bi-sun': mealType === 'Lunch',
             'bi-moon-stars': mealType === 'Dinner',
             'bi-cup-hot': mealType === 'Snacks'
           }"></i>
-          <span>{{ mealType === 'all' ? 'All Meals' : mealType }}</span>
-        </button>
-      </div>
+                    <span>{{ mealType === 'all' ? 'All Meals' : mealType }}</span>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- MAIN CONTENT CARD (Breakfast, Weekly view, etc.) -->
-  <div class="menu-content">
-    <div class="menu-container">
+    <!-- MAIN CONTENT CARD (Today / Week) -->
+    <div class="menu-content">
+        <div class="menu-container">
 
-      <!-- LOADING STATE -->
-      <div class="loading-state" *ngIf="isLoading">
-        <div class="spinner"></div>
-        <p>Loading menu...</p>
-      </div>
-
-      <!-- TODAY'S VIEW -->
-      <ng-container *ngIf="!isLoading && viewMode === 'today'">
-        
-        <!-- Empty State -->
-        <div class="empty-state" *ngIf="getFilteredMenus(todayMenus).length === 0">
-          <div class="empty-icon">🍽️</div>
-          <h3>No menu available</h3>
-          <p>{{ selectedMealFilter === 'all' ? 'No meals scheduled for today' : 'No ' + selectedMealFilter + ' menu available today' }}</p>
-        </div>
-
-        <!-- Menus List -->
-        <div class="menus-list" *ngIf="getFilteredMenus(todayMenus).length > 0">
-          <div 
-            *ngFor="let menu of getFilteredMenus(todayMenus); trackBy: trackByMenuId"
-            class="menu-card"
-            [class.serving]="isMenuServing(menu)"
-            [class.upcoming]="getMenuTimingStatus(menu) === 'upcoming'"
-            [class.completed]="getMenuTimingStatus(menu) === 'completed'">
-            
-            <!-- Menu Header -->
-            <div class="menu-header">
-              <div class="menu-title-section">
-                <div class="meal-icon">
-                  <i class="bi" [ngClass]="'bi-' + getMealIcon(menu.mealType)"></i>
-                </div>
-                <div class="meal-info">
-                  <h2 class="meal-name">{{ menu.mealType }}</h2>
-                  <div class="meal-timing" *ngIf="menu.serveFrom && menu.serveTo">
-                    <i class="bi bi-clock"></i>
-                    <span>{{ menu.serveFrom }} - {{ menu.serveTo }}</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Status Badge -->
-              <div class="status-badge" [ngClass]="getMenuTimingStatus(menu)">
-                <ng-container [ngSwitch]="getMenuTimingStatus(menu)">
-                  <span *ngSwitchCase="'serving'">
-                    <i class="bi bi-circle-fill pulse"></i>
-                    Serving Now
-                  </span>
-                  <span *ngSwitchCase="'upcoming'">
-                    <i class="bi bi-clock-history"></i>
-                    Upcoming
-                  </span>
-                  <span *ngSwitchCase="'completed'">
-                    <i class="bi bi-check-circle"></i>
-                    Completed
-                  </span>
-                </ng-container>
-              </div>
+            <!-- LOADING STATE -->
+            <div class="loading-state" *ngIf="isLoading">
+                <div class="spinner"></div>
+                <p>Loading menu...</p>
             </div>
 
-            <!-- Menu Items Grid -->
-            <div class="menu-items-grid">
-              <div 
-                *ngFor="let item of menu.items; trackBy: trackByItemId"
-                class="menu-item-card"
-                [class.unavailable]="item.status === 'COMPLETED'">
-                
-                <div class="item-image">
-                  <img [src]="item.imageUrl || defaultImage" [alt]="item.itemName" loading="lazy">
-                  <span class="item-type-badge" [class]="getItemTypeClass(item.itemType)">
-                    <span class="type-dot">{{ getItemTypeDot(item.itemType) }}</span>
-                  </span>
-                  <div class="unavailable-overlay" *ngIf="item.status === 'COMPLETED'">
-                    <i class="bi bi-x-circle"></i>
-                    <span>Not Available</span>
-                  </div>
+            <!-- TODAY'S VIEW -->
+            <ng-container *ngIf="!isLoading && viewMode === 'today'">
+
+                <!-- Empty State -->
+                <div class="empty-state" *ngIf="getFilteredMenus(todayMenus).length === 0">
+                    <div class="empty-icon">🍽️</div>
+                    <h3>No menu available</h3>
+                    <p>
+                        {{
+                        selectedMealFilter === 'all'
+                        ? 'No meals scheduled for today'
+                        : 'No ' + selectedMealFilter + ' menu available today'
+                        }}
+                    </p>
                 </div>
 
-                <div class="item-details">
-                  <h3 class="item-name">{{ item.itemName }}</h3>
-                  <p class="item-description" *ngIf="item.description">
-                    {{ item.description }}
-                  </p>
-                </div>
-              </div>
-            </div>
+                <!-- Menus List -->
+                <div class="menus-list" *ngIf="getFilteredMenus(todayMenus).length > 0">
+                    <div *ngFor="let menu of getFilteredMenus(todayMenus); trackBy: trackByMenuId" class="menu-card"
+                        [class.serving]="isMenuServing(menu)"
+                        [class.upcoming]="getMenuTimingStatus(menu) === 'upcoming'"
+                        [class.completed]="getMenuTimingStatus(menu) === 'completed'">
 
-            <!-- No items -->
-            <div class="no-items" *ngIf="menu.items.length === 0">
-              <i class="bi bi-inbox"></i>
-              <p>No items in this menu</p>
-            </div>
-          </div>
-        </div>
-      </ng-container>
+                        <!-- Menu Header -->
+                        <div class="menu-header">
+                            <div class="menu-title-section">
+                                <div class="meal-icon">
+                                    <i class="bi" [ngClass]="'bi-' + getMealIcon(menu.mealType)"></i>
+                                </div>
+                                <div class="meal-info">
+                                    <h2 class="meal-name">{{ menu.mealType }}</h2>
+                                    <div class="meal-timing" *ngIf="menu.serveFrom && menu.serveTo">
+                                        <i class="bi bi-clock"></i>
+                                        <span>{{ menu.serveFrom }} - {{ menu.serveTo }}</span>
+                                    </div>
+                                </div>
+                            </div>
 
-      <!-- WEEKLY VIEW -->
-      <ng-container *ngIf="!isLoading && viewMode === 'week'">
-        <div class="weekly-view">
-          <div 
-            *ngFor="let day of daysOfWeek; trackBy: trackByDay"
-            class="day-section"
-            [class.today]="day.value === currentDayOfWeek">
-            
-            <div class="day-header">
-              <h2 class="day-name">
-                {{ day.label }}
-                <span class="today-badge" *ngIf="day.value === currentDayOfWeek">Today</span>
-              </h2>
-            </div>
+                            <!-- Status Badge -->
+                            <div class="status-badge" [ngClass]="getMenuTimingStatus(menu)">
+                                <ng-container [ngSwitch]="getMenuTimingStatus(menu)">
+                                    <span *ngSwitchCase="'serving'">
+                                        <i class="bi bi-circle-fill pulse"></i>
+                                        Serving Now
+                                    </span>
+                                    <span *ngSwitchCase="'upcoming'">
+                                        <i class="bi bi-clock-history"></i>
+                                        Upcoming
+                                    </span>
+                                    <span *ngSwitchCase="'completed'">
+                                        <i class="bi bi-check-circle"></i>
+                                        Completed
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
 
-            <!-- Menus for this day -->
-            <ng-container *ngIf="getMenusForDay(day.value).length > 0; else noDayMenu">
-              <div class="day-menus">
-                <div 
-                  *ngFor="let menu of getMenusForDay(day.value); trackBy: trackByMenuId"
-                  class="weekly-menu-card">
-                  
-                  <div class="weekly-menu-header">
-                    <div class="meal-badge">
-                      <i class="bi" [ngClass]="'bi-' + getMealIcon(menu.mealType)"></i>
-                      <span>{{ menu.mealType }}</span>
+                        <!-- Menu Items Grid -->
+                        <div class="menu-items-grid">
+                            <div *ngFor="let item of menu.items; trackBy: trackByItemId" class="menu-item-card"
+                                [class.unavailable]="item.status === 'COMPLETED'">
+
+                                <div class="item-image">
+                                    <img [src]="item.imageUrl || defaultImage" [alt]="item.itemName" loading="lazy">
+                                    <span class="item-type-badge" [class]="getItemTypeClass(item.itemType)">
+                                        <span class="type-dot">{{ getItemTypeDot(item.itemType) }}</span>
+                                    </span>
+                                    <div class="unavailable-overlay" *ngIf="item.status === 'COMPLETED'">
+                                        <i class="bi bi-x-circle"></i>
+                                        <span>Not Available</span>
+                                    </div>
+                                </div>
+
+                                <div class="item-details">
+                                    <h3 class="item-name">{{ item.itemName }}</h3>
+                                    <p class="item-description" *ngIf="item.description">
+                                        {{ item.description }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- No items -->
+                        <div class="no-items" *ngIf="menu.items.length === 0">
+                            <i class="bi bi-inbox"></i>
+                            <p>No items in this menu</p>
+                        </div>
                     </div>
-                    <div class="meal-time" *ngIf="menu.serveFrom && menu.serveTo">
-                      <i class="bi bi-clock"></i>
-                      {{ menu.serveFrom }} - {{ menu.serveTo }}
-                    </div>
-                  </div>
-
-                  <div class="weekly-items-list">
-                    <div 
-                      *ngFor="let item of menu.items; trackBy: trackByItemId"
-                      class="weekly-item">
-                      <span class="item-type-indicator" [class]="getItemTypeClass(item.itemType)">
-                        {{ getItemTypeDot(item.itemType) }}
-                      </span>
-                      <span class="item-title">{{ item.itemName }}</span>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </ng-container>
 
-            <ng-template #noDayMenu>
-              <div class="no-day-menu">
-                <i class="bi bi-calendar-x"></i>
-                <p>No menu scheduled</p>
-              </div>
-            </ng-template>
-          </div>
-        </div>
-      </ng-container>
+            <!-- WEEKLY VIEW -->
+            <ng-container *ngIf="!isLoading && viewMode === 'week'">
+                <div class="weekly-view">
+                    <div *ngFor="let day of daysOfWeek; trackBy: trackByDay" class="day-section"
+                        [class.today]="day.value === currentDayOfWeek">
 
+                        <div class="day-header">
+                            <h2 class="day-name">
+                                {{ day.label }}
+                                <span class="today-badge" *ngIf="day.value === currentDayOfWeek">Today</span>
+                            </h2>
+                        </div>
+
+                        <!-- Menus for this day -->
+                        <ng-container *ngIf="getMenusForDay(day.value).length > 0; else noDayMenu">
+                            <div class="day-menus">
+                                <div *ngFor="let menu of getMenusForDay(day.value); trackBy: trackByMenuId"
+                                    class="weekly-menu-card">
+
+                                    <div class="weekly-menu-header">
+                                        <div class="meal-badge">
+                                            <i class="bi" [ngClass]="'bi-' + getMealIcon(menu.mealType)"></i>
+                                            <span>{{ menu.mealType }}</span>
+                                        </div>
+                                        <div class="meal-time" *ngIf="menu.serveFrom && menu.serveTo">
+                                            <i class="bi bi-clock"></i>
+                                            {{ menu.serveFrom }} - {{ menu.serveTo }}
+                                        </div>
+                                    </div>
+
+                                    <div class="weekly-items-list">
+                                        <div *ngFor="let item of menu.items; trackBy: trackByItemId"
+                                            class="weekly-item">
+                                            <span class="item-type-indicator" [class]="getItemTypeClass(item.itemType)">
+                                                {{ getItemTypeDot(item.itemType) }}
+                                            </span>
+                                            <span class="item-title">{{ item.itemName }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-template #noDayMenu>
+                            <div class="no-day-menu">
+                                <i class="bi bi-calendar-x"></i>
+                                <p>No menu scheduled</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
     </div>
-  </div>
 
 </div>
