@@ -1,16 +1,19 @@
-<div class="create-user-page">
-    <mat-card class="p-3 p-md-4 mt-3">
+<div class="create-user-page page-container">
+    <!-- Main card -->
+    <mat-card class="case-card create-user-card mt-3">
         <!-- User Details -->
         <div class="section user-details">
             <div class="mb-3">
                 <p class="f-16-m">User Details</p>
             </div>
             <mat-divider class="w-100"></mat-divider>
-            
+
             <form [formGroup]="userForm" class="form-grid">
                 <!-- First Name -->
                 <div class="form-field-wrapper">
-                    <label class="field-label">First Name <span class="required">*</span></label>
+                    <label class="field-label">
+                        First Name <span class="required">*</span>
+                    </label>
                     <mat-form-field appearance="outline" class="form-field">
                         <input matInput formControlName="firstName" placeholder="Enter first name" />
                         <mat-error *ngIf="userForm.get('firstName')?.hasError('required')">
@@ -21,7 +24,9 @@
 
                 <!-- Last Name -->
                 <div class="form-field-wrapper">
-                    <label class="field-label">Last Name <span class="required">*</span></label>
+                    <label class="field-label">
+                        Last Name <span class="required">*</span>
+                    </label>
                     <mat-form-field appearance="outline" class="form-field">
                         <input matInput formControlName="lastName" placeholder="Enter last name" />
                         <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">
@@ -32,7 +37,9 @@
 
                 <!-- Email ID -->
                 <div class="form-field-wrapper">
-                    <label class="field-label">Email ID <span class="required">*</span></label>
+                    <label class="field-label">
+                        Email ID <span class="required">*</span>
+                    </label>
                     <mat-form-field appearance="outline" class="form-field">
                         <input matInput type="email" formControlName="email" placeholder="Enter email address" />
                         <mat-icon matSuffix>email</mat-icon>
@@ -45,26 +52,28 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Phone Input Container -->
-             
-                    <div class="form-field-wrapper">
-                        <label class="field-label">Mobile Number <span class="required">*</span></label>
-                        <mat-form-field appearance="outline" class="form-field">
-                            <input matInput formControlName="mobile" placeholder="Enter mobile number" />
-                            <mat-icon matSuffix>phone</mat-icon>
-                            <mat-error *ngIf="userForm.get('mobile')?.hasError('required')">
-                                Mobile number is required
-                            </mat-error>
-                            <mat-error *ngIf="userForm.get('mobile')?.hasError('pattern')">
-                                Please enter a valid mobile number
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                
+                <!-- Mobile -->
+                <div class="form-field-wrapper">
+                    <label class="field-label">
+                        Mobile Number <span class="required">*</span>
+                    </label>
+                    <mat-form-field appearance="outline" class="form-field">
+                        <input matInput formControlName="mobile" placeholder="Enter mobile number" />
+                        <mat-icon matSuffix>phone</mat-icon>
+                        <mat-error *ngIf="userForm.get('mobile')?.hasError('required')">
+                            Mobile number is required
+                        </mat-error>
+                        <mat-error *ngIf="userForm.get('mobile')?.hasError('pattern')">
+                            Please enter a valid mobile number
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
                 <!-- Business Type -->
                 <div class="form-field-wrapper">
-                    <label class="field-label">Business Type <span class="required">*</span></label>
+                    <label class="field-label">
+                        Business Type <span class="required">*</span>
+                    </label>
                     <mat-form-field appearance="outline" class="form-field">
                         <mat-select formControlName="businessType" placeholder="Select business type">
                             <mat-option *ngFor="let type of businessTypes" [value]="type">
@@ -93,11 +102,8 @@
                         <ng-container matColumnDef="select">
                             <th mat-header-cell *matHeaderCellDef>Select</th>
                             <td mat-cell *matCellDef="let role">
-                                <mat-checkbox 
-                                    [checked]="role.selected" 
-                                    (change)="toggleRole(role, $event)"
-                                    (click)="$event.stopPropagation()"
-                                    color="primary">
+                                <mat-checkbox [checked]="role.selected" (change)="toggleRole(role, $event)"
+                                    (click)="$event.stopPropagation()" color="primary">
                                 </mat-checkbox>
                             </td>
                         </ng-container>
@@ -105,22 +111,22 @@
                         <!-- Role Name Column -->
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef>Role</th>
-                            <td mat-cell *matCellDef="let role" class="role-name">{{ role.name }}</td>
+                            <td mat-cell *matCellDef="let role" class="role-name">
+                                {{ role.name }}
+                            </td>
                         </ng-container>
 
                         <!-- Description Column -->
                         <ng-container matColumnDef="description">
                             <th mat-header-cell *matHeaderCellDef>Functions</th>
-                            <td mat-cell *matCellDef="let role" class="role-desc">{{ role.description }}</td>
+                            <td mat-cell *matCellDef="let role" class="role-desc">
+                                {{ role.description }}
+                            </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="roleDisplayedColumns"></tr>
-                        <tr mat-row 
-                            *matRowDef="let row; columns: roleDisplayedColumns;" 
-                            (click)="onRowClick(row)"
-                            [class.selected-row]="row.selected"
-                            class="clickable-row">
-                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: roleDisplayedColumns" (click)="onRowClick(row)"
+                            [class.selected-row]="row.selected" class="clickable-row"></tr>
                     </table>
                 </div>
 
@@ -154,10 +160,8 @@
                         <ng-container matColumnDef="create">
                             <th mat-header-cell *matHeaderCellDef>Create</th>
                             <td mat-cell *matCellDef="let permission">
-                                <mat-slide-toggle 
-                                    [checked]="permission.create"
-                                    (change)="togglePermission(permission, 'create', $event)" 
-                                    color="primary">
+                                <mat-slide-toggle [checked]="permission.create"
+                                    (change)="togglePermission(permission, 'create', $event)" color="primary">
                                 </mat-slide-toggle>
                             </td>
                         </ng-container>
@@ -167,13 +171,10 @@
                             <th mat-header-cell *matHeaderCellDef>Edit</th>
                             <td mat-cell *matCellDef="let permission">
                                 <div class="edit-cell">
-                                    <mat-slide-toggle 
-                                        [checked]="permission.edit"
-                                        (change)="togglePermission(permission, 'edit', $event)" 
-                                        color="primary">
+                                    <mat-slide-toggle [checked]="permission.edit"
+                                        (change)="togglePermission(permission, 'edit', $event)" color="primary">
                                     </mat-slide-toggle>
-                                    <mat-chip *ngIf="permission.edit && permission.editLabel" 
-                                        class="edit-label-chip">
+                                    <mat-chip *ngIf="permission.edit && permission.editLabel" class="edit-label-chip">
                                         {{ permission.editLabel }}
                                     </mat-chip>
                                 </div>
@@ -181,17 +182,21 @@
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="permissionDisplayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: permissionDisplayedColumns;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: permissionDisplayedColumns"></tr>
                     </table>
                 </div>
             </div>
         </div>
     </mat-card>
 
-    <mat-card class="topbar-card p-3 mt-3">
+    <!-- Footer Actions -->
+    <mat-card class="case-card topbar-card mt-3">
         <div class="d-flex align-items-center justify-content-end flex-wrap gap-2">
-            <button mat-button type="button" class="text-accent" (click)="onCancel()">Cancel</button>
-            <button mat-raised-button color="primary" class="btn-create" (click)="onCreateUser()">
+            <button mat-button type="button" class="btn btn-secondary btn-sm text-accent" (click)="onCancel()">
+                Cancel
+            </button>
+            <button mat-raised-button color="primary" class="btn btn-primary btn-sm btn-create"
+                (click)="onCreateUser()">
                 Create User
             </button>
         </div>

@@ -1,15 +1,17 @@
-.create-user-page {
-  padding: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
 
-  mat-card {
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
+.create-user-page {
+  padding-block: 24px;
 }
 
-// Section Styles
+/* Optional hook if you want to target this card only */
+.create-user-card {
+  /* extra customizations for main card can go here if needed */
+}
+
+/* -------------------------------
+   Sections
+-------------------------------- */
+
 .section {
   margin-bottom: 32px;
 
@@ -21,7 +23,10 @@
   }
 }
 
-// Form Field Wrapper - For label outside form field
+/* -------------------------------
+   Form field wrappers & grid
+-------------------------------- */
+
 .form-field-wrapper {
   display: flex;
   flex-direction: column;
@@ -49,7 +54,6 @@
   }
 }
 
-// Form Grid
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -65,7 +69,7 @@
   }
 }
 
-// Phone Input Container
+/* Optional phone container (if you split country code + mobile in future) */
 .phone-input-container {
   display: flex;
   gap: 16px;
@@ -89,7 +93,10 @@
   }
 }
 
-// Mat Form Field Customization
+/* -------------------------------
+   Mat form field tweaks
+-------------------------------- */
+
 ::ng-deep {
   .mat-mdc-form-field {
     width: 100%;
@@ -118,22 +125,27 @@
   }
 }
 
-// Divider
+/* Divider between sections inside main card */
 .section-divider {
   margin: 32px 0;
 }
 
+/* Footer card uses shared case-card + these extras */
 .topbar-card {
   border: 1px solid var(--card-border);
   background: var(--card-background);
 }
 
+/* Accent text link-style */
 .text-accent {
   color: var(--brand-primary) !important;
   font-weight: 600;
 }
 
-// Roles & Permissions Section
+/* -------------------------------
+   Roles & Permissions layout
+-------------------------------- */
+
 .roles-permissions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -145,7 +157,7 @@
   }
 }
 
-// Roles Column
+/* Roles column */
 .roles-column {
   .role-table-container {
     border: 1px solid #e0e0e0;
@@ -219,7 +231,7 @@
   }
 }
 
-// Permissions Column
+/* Permissions column */
 .permissions-column {
   .subtitle {
     font-size: 14px;
@@ -265,12 +277,12 @@
   }
 }
 
-// ============================================
-// CHECKBOX FIX - Important for tick marks
-// ============================================
+/* -------------------------------
+   Checkbox appearance (page-only)
+-------------------------------- */
+
 ::ng-deep {
   .mat-mdc-checkbox {
-    // Ensure checkbox is visible
     .mdc-checkbox {
       padding: 0;
       width: 18px;
@@ -302,27 +314,24 @@
         }
       }
 
-      // Checked state
       .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
-      .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+      .mdc-checkbox__native-control:indeterminate
+        ~ .mdc-checkbox__background {
         background-color: #1976d2 !important;
         border-color: #1976d2 !important;
       }
     }
 
-    // Ripple effect
     .mdc-checkbox__ripple {
       display: none;
     }
 
-    // State layer
     .mat-mdc-checkbox-touch-target {
       width: 40px;
       height: 40px;
     }
   }
 
-  // Alternative fix for checkbox visibility
   .mdc-checkbox__checkmark {
     opacity: 1 !important;
   }
@@ -333,7 +342,10 @@
   }
 }
 
-// Mat Slide Toggle Customization
+/* -------------------------------
+   Slide toggle tweaks
+-------------------------------- */
+
 ::ng-deep {
   .mat-mdc-slide-toggle {
     .mdc-switch {
@@ -344,15 +356,12 @@
         border-radius: 7px;
       }
 
-      .mdc-switch__handle-track {
-        .mdc-switch__handle {
-          width: 20px;
-          height: 20px;
-        }
+      .mdc-switch__handle-track .mdc-switch__handle {
+        width: 20px;
+        height: 20px;
       }
     }
 
-    // Checked state colors
     &.mat-mdc-slide-toggle-checked {
       .mdc-switch__track {
         background-color: rgba(25, 118, 210, 0.5) !important;
@@ -365,10 +374,13 @@
   }
 }
 
-// Responsive Adjustments
+/* -------------------------------
+   Responsive adjustments
+-------------------------------- */
+
 @media (max-width: 600px) {
   .create-user-page {
-    padding: 12px;
+    padding-block: 16px;
   }
 
   .phone-input-container {

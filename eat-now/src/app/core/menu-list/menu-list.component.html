@@ -1,4 +1,4 @@
-<div class="page-container">
+<div class="hostel-menu-page page-container">
     <!-- HEADER -->
     <div class="page-header">
         <div class="title-block">
@@ -17,13 +17,15 @@
             </button>
             <button mat-flat-button color="primary" type="button" (click)="onSaveMenu()" class="btn-publish">
                 <mat-icon>{{ editingMenuId ? 'save' : 'publish' }}</mat-icon>
-                <span class="btn-text-primary">{{ editingMenuId ? 'Update Menu' : 'Publish Menu' }}</span>
+                <span class="btn-text-primary">
+                    {{ editingMenuId ? 'Update Menu' : 'Publish Menu' }}
+                </span>
             </button>
         </div>
     </div>
 
     <!-- MODE TOGGLE -->
-    <div class="mode-toggle-section">
+    <div class="mode-toggle-section case-card">
         <div class="mode-toggle-label">Create menu for:</div>
         <mat-button-toggle-group [value]="menuMode" (change)="onModeChange($event.value)" class="mode-toggle-group">
             <mat-button-toggle value="DATE">
@@ -40,7 +42,7 @@
     <!-- BODY: two columns -->
     <div class="layout-grid">
         <!-- LEFT: builder -->
-        <div class="left-panel">
+        <div class="left-panel case-card">
             <form [formGroup]="menuForm" class="menu-filters">
                 <!-- DATE MODE FIELDS -->
                 <ng-container *ngIf="menuMode === 'DATE'">
@@ -93,7 +95,9 @@
 
                     <div class="day-info-chip">
                         <mat-icon>info</mat-icon>
-                        <span class="day-info-text">This menu will repeat every {{ getDayLabel(selectedDayOfWeek) }}</span>
+                        <span class="day-info-text">
+                            This menu will repeat every {{ getDayLabel(selectedDayOfWeek) }}
+                        </span>
                     </div>
                 </ng-container>
 
@@ -129,9 +133,12 @@
                 <div class="selection-summary">
                     <span class="selected-count">
                         <mat-icon>check_circle</mat-icon>
-                        <span class="count-text">{{ selectedItemIds.size }} item(s)</span>
+                        <span class="count-text">
+                            {{ selectedItemIds.size }} item(s)
+                        </span>
                     </span>
-                    <button mat-button type="button" (click)="selectAllVisible()" [disabled]="!filteredItems.length" class="select-all-btn">
+                    <button mat-button type="button" (click)="selectAllVisible()" [disabled]="!filteredItems.length"
+                        class="select-all-btn">
                         <span class="select-btn-text">Select All</span>
                     </button>
                     <button mat-button type="button" color="warn" (click)="clearSelection()"
@@ -154,11 +161,17 @@
                     <div class="image-wrapper">
                         <img [src]="item.imageUrl || defaultImage" [alt]="item.itemName" loading="lazy" />
                         <span class="item-type-badge" [ngClass]="{
-                            veg: item.itemType === 'VEG',
-                            nonveg: item.itemType === 'NON_VEG',
-                            egg: item.itemType === 'EGG'
-                        }">
-                            {{ item.itemType === 'VEG' ? 'VEG' : item.itemType === 'NON_VEG' ? 'NON-VEG' : 'EGG' }}
+                veg: item.itemType === 'VEG',
+                nonveg: item.itemType === 'NON_VEG',
+                egg: item.itemType === 'EGG'
+              }">
+                            {{
+                            item.itemType === 'VEG'
+                            ? 'VEG'
+                            : item.itemType === 'NON_VEG'
+                            ? 'NON-VEG'
+                            : 'EGG'
+                            }}
                         </span>
                     </div>
 
@@ -184,7 +197,7 @@
         </div>
 
         <!-- RIGHT PANEL -->
-        <div class="right-panel">
+        <div class="right-panel case-card">
             <!-- DATE MODE RIGHT PANEL -->
             <ng-container *ngIf="menuMode === 'DATE'">
                 <div class="right-header">
@@ -192,17 +205,24 @@
                         <h3>
                             <mat-icon>calendar_today</mat-icon>
                             <ng-container *ngIf="selectedDateDisplay; else noDateSelected">
-                                <span class="date-text">Menus for {{ selectedDateDisplay | date: 'EEE, dd MMM y' }}</span>
+                                <span class="date-text">
+                                    Menus for
+                                    {{ selectedDateDisplay | date: 'EEE, dd MMM y' }}
+                                </span>
                             </ng-container>
-                            <ng-template #noDateSelected><span class="date-text">Select a date</span></ng-template>
+                            <ng-template #noDateSelected>
+                                <span class="date-text">Select a date</span>
+                            </ng-template>
                         </h3>
                         <p>All meals scheduled for this date.</p>
                     </div>
                 </div>
 
                 <ng-container *ngIf="menusForSelectedDate.length; else noMenusForDate">
-                    <div class="menu-summary" *ngFor="let m of menusForSelectedDate; trackBy: trackByPublishedId"
-                        [ngClass]="{ 'editing-highlight': editingMenuId === m.id }">
+                    <div class="menu-summary" *ngFor="
+              let m of menusForSelectedDate;
+              trackBy: trackByPublishedId
+            " [ngClass]="{ 'editing-highlight': editingMenuId === m.id }">
                         <div class="summary-header">
                             <div class="summary-left">
                                 <div class="meal-title">
@@ -225,8 +245,12 @@
                                 </div>
                                 <div class="repeat-chip" *ngIf="m.recurrence !== 'ONE_TIME'">
                                     <mat-icon>repeat</mat-icon>
-                                    <span class="repeat-text">{{ getRecurrenceLabel(m.recurrence) }}</span>
-                                    <span *ngIf="m.endDate" class="repeat-date">till {{ m.endDate | date: 'dd MMM' }}</span>
+                                    <span class="repeat-text">
+                                        {{ getRecurrenceLabel(m.recurrence) }}
+                                    </span>
+                                    <span *ngIf="m.endDate" class="repeat-date">
+                                        till {{ m.endDate | date: 'dd MMM' }}
+                                    </span>
                                 </div>
                             </div>
 
@@ -235,11 +259,15 @@
                                     <mat-label>Status</mat-label>
                                     <mat-select [value]="m.status" (selectionChange)="onStatusChange(m, $event.value)">
                                         <mat-option value="AVAILABLE">
-                                            <mat-icon class="status-icon available">check_circle</mat-icon>
+                                            <mat-icon class="status-icon available">
+                                                check_circle
+                                            </mat-icon>
                                             Available
                                         </mat-option>
                                         <mat-option value="COMPLETED">
-                                            <mat-icon class="status-icon completed">task_alt</mat-icon>
+                                            <mat-icon class="status-icon completed">
+                                                task_alt
+                                            </mat-icon>
                                             Completed
                                         </mat-option>
                                     </mat-select>
@@ -262,20 +290,28 @@
                                 <mat-icon>restaurant</mat-icon>
                                 Items ({{ getMenuItemsCount(m.id) }})
                             </div>
-                            <div class="item-row" *ngFor="let it of getMenuItems(m.id); trackBy: trackByItemId">
+                            <div class="item-row" *ngFor="
+                  let it of getMenuItems(m.id);
+                  trackBy: trackByItemId
+                ">
                                 <span class="item-name">
                                     <span class="item-type-dot" [ngClass]="{
-                                        veg: it.menuItem.itemType === 'VEG',
-                                        nonveg: it.menuItem.itemType === 'NON_VEG',
-                                        egg: it.menuItem.itemType === 'EGG'
-                                    }"></span>
+                      veg: it.menuItem.itemType === 'VEG',
+                      nonveg: it.menuItem.itemType === 'NON_VEG',
+                      egg: it.menuItem.itemType === 'EGG'
+                    }"></span>
                                     {{ it.menuItem.itemName }}
                                 </span>
                                 <mat-form-field appearance="fill" class="item-status-field">
-                                    <mat-select [value]="it.status"
-                                        (selectionChange)="onItemStatusChange(m, it.menuItem.id, $event.value)">
-                                        <mat-option value="AVAILABLE">Available</mat-option>
-                                        <mat-option value="COMPLETED">Completed</mat-option>
+                                    <mat-select [value]="it.status" (selectionChange)="
+                      onItemStatusChange(m, it.menuItem.id, $event.value)
+                    ">
+                                        <mat-option value="AVAILABLE">
+                                            Available
+                                        </mat-option>
+                                        <mat-option value="COMPLETED">
+                                            Completed
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -320,8 +356,10 @@
                 </div>
 
                 <ng-container *ngIf="menusForSelectedDay.length; else noMenusForDay">
-                    <div class="menu-summary" *ngFor="let m of menusForSelectedDay; trackBy: trackByPublishedId"
-                        [ngClass]="{ 'editing-highlight': editingMenuId === m.id }">
+                    <div class="menu-summary" *ngFor="
+              let m of menusForSelectedDay;
+              trackBy: trackByPublishedId
+            " [ngClass]="{ 'editing-highlight': editingMenuId === m.id }">
                         <div class="summary-header">
                             <div class="summary-left">
                                 <div class="meal-title">
@@ -344,7 +382,9 @@
                                 </div>
                                 <div class="weekly-badge" *ngIf="m.dayOfWeek != null">
                                     <mat-icon>repeat</mat-icon>
-                                    <span class="weekly-text">Every {{ getDayLabel(m.dayOfWeek) }}</span>
+                                    <span class="weekly-text">
+                                        Every {{ getDayLabel(m.dayOfWeek) }}
+                                    </span>
                                 </div>
                             </div>
 
@@ -374,20 +414,28 @@
                                 <mat-icon>restaurant</mat-icon>
                                 Items ({{ getMenuItemsCount(m.id) }})
                             </div>
-                            <div class="item-row" *ngFor="let it of getMenuItems(m.id); trackBy: trackByItemId">
+                            <div class="item-row" *ngFor="
+                  let it of getMenuItems(m.id);
+                  trackBy: trackByItemId
+                ">
                                 <span class="item-name">
                                     <span class="item-type-dot" [ngClass]="{
-                                        veg: it.menuItem.itemType === 'VEG',
-                                        nonveg: it.menuItem.itemType === 'NON_VEG',
-                                        egg: it.menuItem.itemType === 'EGG'
-                                    }"></span>
+                      veg: it.menuItem.itemType === 'VEG',
+                      nonveg: it.menuItem.itemType === 'NON_VEG',
+                      egg: it.menuItem.itemType === 'EGG'
+                    }"></span>
                                     {{ it.menuItem.itemName }}
                                 </span>
                                 <mat-form-field appearance="fill" class="item-status-field">
-                                    <mat-select [value]="it.status"
-                                        (selectionChange)="onItemStatusChange(m, it.menuItem.id, $event.value)">
-                                        <mat-option value="AVAILABLE">Available</mat-option>
-                                        <mat-option value="COMPLETED">Completed</mat-option>
+                                    <mat-select [value]="it.status" (selectionChange)="
+                      onItemStatusChange(m, it.menuItem.id, $event.value)
+                    ">
+                                        <mat-option value="AVAILABLE">
+                                            Available
+                                        </mat-option>
+                                        <mat-option value="COMPLETED">
+                                            Completed
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
