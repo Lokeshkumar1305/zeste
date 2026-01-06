@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthRoutingModule } from './auth-routing.module';
-import { LoginComponent } from './login/login.component';
-import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { AuthRoutingModule } from './auth-routing.module';
+import { MaterialModule } from '../material/material.module';
+
+import { LoginComponent } from './login/login.component';
 import { OtpValidateComponent } from './otp-validate/otp-validate.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
+    LandingPageComponent,
     OtpValidateComponent
   ],
   imports: [
@@ -19,4 +23,4 @@ import { OtpValidateComponent } from './otp-validate/otp-validate.component';
     ReactiveFormsModule
   ]
 })
-export class AuthModule { }
+export class AuthModule {}

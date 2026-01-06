@@ -32,7 +32,11 @@ const routes: Routes = [
     data: { breadcrumb: 'IAM' } // Enable breadcrumbs with a label
   },
   { path: '', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule), data: { breadcrumb: false } },
+  //   { path: '', redirectTo: 'auth/landing-page', pathMatch: 'full' },
+  // { path: '**', redirectTo: 'auth/landing-page' }
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
+
+ 
 ];
 
 @NgModule({

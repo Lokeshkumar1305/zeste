@@ -1,0 +1,94 @@
+<div class="landing-wrapper">
+  <!-- DECORATIVE BOTTOM-LEFT SHAPE -->
+  <div class="landing-leaf"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="landing-header">
+    <div class="landing-container d-flex align-items-center justify-content-between">
+      <!-- Brand / Logo -->
+      <div class="brand-block">
+        <!-- Use exactly the Toucan logo asset you have -->
+        <img
+          src="assets/images/toucan-logo.svg"
+          alt="Toucan logo"
+          class="brand-logo"
+        />
+      </div>
+
+      <!-- Nav & header CTA -->
+      <nav class="header-nav d-flex align-items-center">
+        <a
+          *ngFor="let link of navLinks"
+          class="nav-link header-link"
+          [routerLink]="link.route"
+        >
+          {{ link.label }}
+        </a>
+
+        <button type="button" class="btn btn-outline-secondary header-cta">
+          <span class="me-1">Create Account</span>
+        </button>
+
+        <!-- Small orange icon at far right -->
+        <button type="button" class="btn header-icon-btn p-0 ms-3">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO SECTION ===== -->
+  <main class="hero-section">
+    <div class="landing-container">
+      <div class="row align-items-center gx-5">
+        <!-- LEFT: Text content -->
+        <div class="col-lg-5 col-md-6">
+          <p class="hero-eyebrow">Next Generation</p>
+
+          <h1 class="hero-title">
+            <span class="hero-title-main">Merchant Platform</span>
+          </h1>
+
+          <p class="hero-description">
+            Get the latest industry standard security, powerful dashboards,
+            and much more.
+          </p>
+
+          <div class="hero-cta-block">
+            <button
+              type="button"
+              class="btn hero-primary-cta d-inline-flex align-items-center"
+              [routerLink]="'/auth/login'"
+            >
+              <span class="me-2">Create Account</span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- RIGHT: Illustration -->
+        <div class="col-lg-7 col-md-6 hero-visual">
+          <div class="hero-illustration-shell">
+            <div class="hero-circle"></div>
+            <!-- Replace with your exact illustration SVG/PNG -->
+            <img
+              src="assets/images/merchant-hero-illustration.svg"
+              alt="Team working on the merchant platform"
+              class="hero-illustration img-fluid"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER (bottom right) ===== -->
+  <footer class="landing-footer">
+    <div class="landing-container d-flex justify-content-end">
+      <div class="footer-brand">
+        <span class="footer-text">Powered by</span>
+        <span class="footer-logo-text">TOUCAN</span>
+      </div>
+    </div>
+  </footer>
+</div>
