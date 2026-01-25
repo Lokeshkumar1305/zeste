@@ -79,8 +79,8 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #ef4444;
-  color: #fff;
+  background: var(--status-error-color);
+  color: var(--button-text);
   font-size: 10px;
   font-weight: 600;
   display: flex;
@@ -107,12 +107,12 @@
   align-items: flex-start;
   gap: 16px;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .stat-icon {
@@ -159,11 +159,11 @@
 }
 
 .stat-trend.positive {
-  color: #10b981;
+  color: var(--status-success-color);
 }
 
 .stat-trend.negative {
-  color: #ef4444;
+  color: var(--status-error-color);
 }
 
 .stat-trend i {
@@ -209,19 +209,19 @@
   border-color: var(--action-color);
   background: color-mix(in srgb, var(--action-color) 5%, var(--card-background));
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .quick-action-btn:hover .action-icon {
   background: var(--action-color);
-  color: #fff;
+  color: var(--button-text);
 }
 
 .action-icon {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #f3f4f6;
+  background: var(--icon-bg);
   color: var(--action-color);
   display: flex;
   align-items: center;
@@ -233,7 +233,7 @@
 .action-label {
   font-size: 12px;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-secondary);
   text-align: center;
 }
 
@@ -253,7 +253,7 @@
   border-radius: 16px;
   padding: 20px;
   border: 1px solid var(--card-border);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .card-header {
@@ -406,8 +406,8 @@
 .occupancy-badge {
   font-size: 12px;
   font-weight: 600;
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
+  color: var(--status-success-color);
+  background: var(--status-success-bg);
   padding: 4px 10px;
   border-radius: 20px;
 }
@@ -418,7 +418,7 @@
 
 .progress-bar {
   height: 8px;
-  background: #f3f4f6;
+  background: var(--input-background);
   border-radius: 4px;
   overflow: hidden;
   display: flex;
@@ -430,11 +430,11 @@
 }
 
 .progress-fill.occupied {
-  background: #10b981;
+  background: var(--status-success-color);
 }
 
 .progress-fill.maintenance {
-  background: #f59e0b;
+  background: var(--status-warning-color);
 }
 
 .floor-stats {
@@ -448,7 +448,7 @@
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .stat-dot {
@@ -458,13 +458,13 @@
 }
 
 .stat-dot.occupied {
-  background: #10b981;
+  background: var(--status-success-color);
 }
 .stat-dot.vacant {
-  background: #6366f1;
+  background: var(--brand-primary);
 }
 .stat-dot.maintenance {
-  background: #f59e0b;
+  background: var(--status-warning-color);
 }
 
 /* ========================================
@@ -481,7 +481,7 @@
   border-radius: 16px;
   padding: 20px;
   border: 1px solid var(--card-border);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .list-card .card-header {
@@ -515,7 +515,7 @@
 }
 
 .activity-item:hover {
-  background: #e5e7eb;
+  background: var(--surface-hover);
 }
 
 .activity-icon {
@@ -552,7 +552,7 @@
 
 .activity-time {
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -574,7 +574,7 @@
 }
 
 .payment-item:hover {
-  background: #e5e7eb;
+  background: var(--surface-hover);
 }
 
 .payment-info {
@@ -589,8 +589,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #fff;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-700));
+  color: var(--button-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -658,7 +658,7 @@
 }
 
 .maintenance-item:hover {
-  background: #e5e7eb;
+  background: var(--surface-hover);
 }
 
 .maintenance-info {
@@ -712,45 +712,48 @@
 .maintenance-date {
   display: block;
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
 /* Priority & status chips */
 .priority-high {
-  background: #ef4444;
+  background: var(--status-error-bg);
+  color: var(--status-error-color);
 }
 .priority-medium {
-  background: #f59e0b;
+  background: var(--status-warning-bg);
+  color: var(--status-warning-color);
 }
 .priority-low {
-  background: #10b981;
+  background: var(--status-success-bg);
+  color: var(--status-success-color);
 }
 
 .status-pending {
-  background: rgba(245, 158, 11, 0.15);
-  color: #b45309;
+  background: var(--status-warning-bg);
+  color: var(--status-warning-color);
 }
 .status-in-progress {
-  background: rgba(99, 102, 241, 0.15);
-  color: #4338ca;
+  background: var(--status-info-bg);
+  color: var(--status-info-color);
 }
 .status-resolved {
-  background: rgba(16, 185, 129, 0.15);
-  color: #059669;
+  background: var(--status-success-bg);
+  color: var(--status-success-color);
 }
 
 .status-due {
-  background: rgba(245, 158, 11, 0.15);
-  color: #b45309;
+  background: var(--status-warning-bg);
+  color: var(--status-warning-color);
 }
 .status-overdue {
-  background: rgba(239, 68, 68, 0.15);
-  color: #dc2626;
+  background: var(--status-error-bg);
+  color: var(--status-error-color);
 }
 .status-paid {
-  background: rgba(16, 185, 129, 0.15);
-  color: #059669;
+  background: var(--status-success-bg);
+  color: var(--status-success-color);
 }
 
 /* ========================================

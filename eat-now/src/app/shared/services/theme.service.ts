@@ -81,29 +81,12 @@ export class ThemeService {
     root.setAttribute('data-theme', mode);
     root.setAttribute('data-brand-color', color);
 
-    // Accent color + derived shades
+    // Dynamic brand colors (SCSS theme owns the rest of the palette)
     root.style.setProperty('--brand-primary', color);
     root.style.setProperty('--brand-primary-700', this.shade(color, -12));
     root.style.setProperty('--brand-primary-200', this.shade(color, 28));
-    root.style.setProperty('--header-background', color);
-
-    if (mode === 'dark') {
-      root.style.setProperty('--card-background', '#2d3748');
-      root.style.setProperty('--card-border', '#4a5568');
-      root.style.setProperty('--input-background', '#2d3748');
-      root.style.setProperty('--text-color', '#e2e8f0');
-      root.style.setProperty('--text-muted', '#a0aec0');
-      root.style.setProperty('--button-text', '#ffffff');
-      root.style.setProperty('--app-background', '#1a202c');
-    } else {
-      root.style.setProperty('--card-background', '#ffffff');
-      root.style.setProperty('--card-border', '#ebf1f6');
-      root.style.setProperty('--input-background', '#F4F5F7');
-      root.style.setProperty('--text-color', '#333333');
-      root.style.setProperty('--text-muted', '#6c757d');
-      root.style.setProperty('--button-text', '#ffffff');
-      root.style.setProperty('--app-background', '#F4F6F8');
-    }
+    root.style.setProperty('--brand-primary-light', this.shade(color, 42));
+    root.style.setProperty('--brand-primary-dark', this.shade(color, -24));
 
     // Also keep legacy keys in sync if other parts read them
     localStorage.setItem(this.MODE_KEY, mode);

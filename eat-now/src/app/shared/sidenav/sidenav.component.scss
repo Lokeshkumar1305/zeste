@@ -1,19 +1,19 @@
-@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
 // ===== Variables =====
 $sidenav-width: 260px;
 $sidenav-width-tablet: 240px;
 $collapsed-width: 72px;
 $mobile-sidenav-width: 280px;
-$primary-color: #1e40af;
-$active-bg: #ecfdf5;
-$active-text: #059669;
-$hover-bg: #f0fdfa;
-$border-color: #e5e7eb;
-$text-primary: #1f2937;
-$text-secondary: #6b7280;
-$text-muted: #9ca3af;
+$primary-color: var(--brand-primary);
+$active-bg: var(--surface-active);
+$active-text: var(--brand-primary);
+$hover-bg: var(--surface-hover);
+$border-color: var(--card-border);
+$text-primary: var(--text-color);
+$text-secondary: var(--text-secondary);
+$text-muted: var(--text-muted);
 $transition-speed: 0.3s;
 $transition-fast: 0.2s;
+
 // ===== Breakpoints =====
 $mobile-breakpoint: 768px;
 $tablet-breakpoint: 1024px;
@@ -61,8 +61,7 @@ $desktop-breakpoint: 1280px;
 
 // ===== Base Styles =====
 .sidenav-wrapper {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    sans-serif;
+  font-family: var(--font-family);
   position: relative;
 }
 
@@ -73,7 +72,7 @@ $desktop-breakpoint: 1280px;
   height: 100vh;
   height: 100dvh;
   width: $sidenav-width;
-  background: #ffffff;
+  background: var(--sidenav-bg);
   border-right: 1px solid $border-color;
   transition: width $transition-speed ease, transform $transition-speed ease;
   z-index: 1000;
@@ -101,7 +100,7 @@ $desktop-breakpoint: 1280px;
 
     &.mobile-open {
       transform: translateX(0);
-      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-lg);
     }
 
     &.mobile-closed {
@@ -117,7 +116,7 @@ $desktop-breakpoint: 1280px;
   padding: 0 16px;
   @include flex-align;
   gap: 12px;
-  background: white;
+  background: var(--sidenav-bg);
   flex-shrink: 0;
 
   @include mobile {
@@ -142,7 +141,7 @@ $desktop-breakpoint: 1280px;
   .logo-text {
     font-weight: 800;
     font-size: 18px;
-    color: #8a4a9f;
+    color: var(--brand-primary);
     letter-spacing: 1px;
     white-space: nowrap;
 
@@ -281,7 +280,7 @@ $desktop-breakpoint: 1280px;
   }
 
   &:hover {
-    background: $hover-bg;
+    background: var(--surface-hover);
     color: $primary-color;
 
     i {
@@ -294,7 +293,7 @@ $desktop-breakpoint: 1280px;
   }
 
   &.active {
-    background: $active-bg !important;
+    background: var(--surface-active);
     color: $active-text;
     font-weight: 600;
 
@@ -343,11 +342,11 @@ $desktop-breakpoint: 1280px;
   }
 
   &:hover {
-    background: $hover-bg;
+    background: var(--surface-hover);
   }
 
   &.open {
-    background: $active-bg;
+    background: var(--surface-active);
 
     span,
     i:first-child,
@@ -425,7 +424,7 @@ $desktop-breakpoint: 1280px;
     }
 
     &:hover {
-      background: rgba($hover-bg, 0.5);
+      background: var(--surface-hover);
 
       .line {
         width: 24px;
@@ -447,7 +446,7 @@ $desktop-breakpoint: 1280px;
     }
 
     &.active {
-      background: rgba($active-bg, 0.5);
+      background: var(--surface-active);
 
       .line {
         width: 28px;
@@ -474,9 +473,9 @@ $desktop-breakpoint: 1280px;
   left: $collapsed-width - 1px;
   min-width: 200px;
   max-width: 280px;
-  background: #ffffff;
+  background: var(--card-background);
   border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
   border: 1px solid $border-color;
   z-index: 9999;
   padding: 8px 0;
@@ -581,10 +580,10 @@ $desktop-breakpoint: 1280px;
   @include flex-center;
   width: 44px;
   height: 44px;
-  background: white;
+  background: var(--card-background);
   border: 1px solid $border-color;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   @include transition;
   -webkit-tap-highlight-color: transparent;
@@ -615,7 +614,7 @@ $desktop-breakpoint: 1280px;
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay-bg);
   z-index: 999;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);

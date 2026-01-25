@@ -1,16 +1,18 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-/* ---------------------------------------------------------------
-   FONT – PLUS JAKARTA SANS
---------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@include mat.core();
 
 /* ---------------------------------------------------------------
-   SASS TOKENS – COLORS & TYPOGRAPHY
+  FONT – POPPINS
+--------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ---------------------------------------------------------------
+  SASS TOKENS – COLORS & TYPOGRAPHY
 --------------------------------------------------------------- */
 
-$plus-font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont,
+$app-font-family: 'Poppins', -apple-system, BlinkMacSystemFont,
   'Segoe UI', Roboto, sans-serif;
 
 /* Primary palette */
@@ -40,7 +42,7 @@ $color-neutral-700: #B3B3B3;
 $color-neutral-900: #F2F2F2;
 
 /* ---------------------------------------------------------------
-   MIXINS
+  MIXINS
 --------------------------------------------------------------- */
 
 @mixin brand-overrides($primary, $dark, $light, $active) {
@@ -54,14 +56,13 @@ $color-neutral-900: #F2F2F2;
 }
 
 /* ---------------------------------------------------------------
-   ROOT VARIABLES – LIGHT THEME
+  ROOT VARIABLES – LIGHT THEME
 --------------------------------------------------------------- */
 
 :root {
   color-scheme: light;
 
-  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, sans-serif;
+  --font-family: #{$app-font-family};
 
   /* Primary */
   --color-primary-50:  #{$color-primary-50};
@@ -103,6 +104,7 @@ $color-neutral-900: #F2F2F2;
   --text-muted: var(--color-neutral-500);
 
   --bg-page: #ffffff;
+  --app-background: var(--bg-page);
   --background: #ffffff;
   --card-background: #ffffff;
   --card-border: #E5E7EB;
@@ -120,7 +122,33 @@ $color-neutral-900: #F2F2F2;
   --scrollbar-thumb-hover: #9CA3AF;
 
   --header-bg: #ffffff;
-  --sidenav-bg: #111827;
+  --header-border: var(--card-border);
+  --sidenav-bg: #ffffff;
+
+  --icon-bg: #F3F4F6;
+  --icon-color: var(--text-secondary);
+  --icon-hover-bg: var(--brand-primary-light);
+  --icon-hover-color: var(--brand-primary-700);
+
+  --surface-hover: rgba(15, 23, 42, 0.04);
+  --surface-active: rgba(15, 23, 42, 0.08);
+  --overlay-bg: rgba(15, 23, 42, 0.5);
+
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 8px 18px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 10px 40px rgba(15, 23, 42, 0.18);
+
+  --avatar-bg: var(--brand-primary-light);
+  --avatar-color: var(--brand-primary-700);
+
+  --status-info-color: #0284c7;
+  --status-info-bg: #e0f2fe;
+  --status-success-color: #16a34a;
+  --status-success-bg: #dcfce7;
+  --status-warning-color: #d97706;
+  --status-warning-bg: #fef3c7;
+  --status-error-color: #dc2626;
+  --status-error-bg: #fee2e2;
 
   /* Status for room table */
   --status-available-color: var(--brand-green);
@@ -132,13 +160,14 @@ $color-neutral-900: #F2F2F2;
 }
 
 /* ---------------------------------------------------------------
-   ROOT VARIABLES – DARK THEME
+  ROOT VARIABLES – DARK THEME
 --------------------------------------------------------------- */
 
 [data-theme='dark'] {
   color-scheme: dark;
 
   --bg-page: #020617;
+  --app-background: var(--bg-page);
   --background: #020617;
   --card-background: #030712;
   --card-border: #111827;
@@ -168,7 +197,33 @@ $color-neutral-900: #F2F2F2;
   --scrollbar-thumb-hover: #4B5563;
 
   --header-bg: #020617;
+  --header-border: var(--card-border);
   --sidenav-bg: #020617;
+
+  --icon-bg: #0f172a;
+  --icon-color: #cbd5f5;
+  --icon-hover-bg: rgba(148, 163, 184, 0.18);
+  --icon-hover-color: #e2e8f0;
+
+  --surface-hover: rgba(148, 163, 184, 0.12);
+  --surface-active: rgba(148, 163, 184, 0.2);
+  --overlay-bg: rgba(2, 6, 23, 0.6);
+
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.4);
+  --shadow-md: 0 8px 18px rgba(15, 23, 42, 0.45);
+  --shadow-lg: 0 10px 40px rgba(15, 23, 42, 0.55);
+
+  --avatar-bg: rgba(59, 130, 246, 0.2);
+  --avatar-color: #93c5fd;
+
+  --status-info-color: #7dd3fc;
+  --status-info-bg: rgba(14, 165, 233, 0.18);
+  --status-success-color: #86efac;
+  --status-success-bg: rgba(34, 197, 94, 0.18);
+  --status-warning-color: #facc15;
+  --status-warning-bg: rgba(234, 179, 8, 0.2);
+  --status-error-color: #fca5a5;
+  --status-error-bg: rgba(239, 68, 68, 0.2);
 
   --status-available-bg: rgba(11, 135, 119, 0.24);
   --status-maintenance-bg: rgba(148, 163, 184, 0.28);
@@ -176,7 +231,7 @@ $color-neutral-900: #F2F2F2;
 }
 
 /* ---------------------------------------------------------------
-   BRAND-COLOR OVERRIDES
+  BRAND-COLOR OVERRIDES
 --------------------------------------------------------------- */
 
 [data-brand-color='#1A365D'] {
@@ -204,7 +259,7 @@ $color-neutral-900: #F2F2F2;
 }
 
 /* ---------------------------------------------------------------
-   GLOBAL RESET & BASE
+  GLOBAL RESET & BASE
 --------------------------------------------------------------- */
 
 *,
@@ -253,7 +308,7 @@ h6 {
 }
 
 /* ---------------------------------------------------------------
-   FOCUS, SCROLL, TOUCH
+  FOCUS, SCROLL, TOUCH
 --------------------------------------------------------------- */
 
 :focus-visible {
@@ -283,7 +338,7 @@ h6 {
 }
 
 /* ---------------------------------------------------------------
-   TYPOGRAPHY SCALE & UTILITIES
+  TYPOGRAPHY SCALE & UTILITIES
 --------------------------------------------------------------- */
 
 h1 {
@@ -408,7 +463,7 @@ h5 {
 .f-12-m-07 { @extend .f-12-m; opacity: 0.7; }
 
 /* ---------------------------------------------------------------
-   PRINT
+  PRINT
 --------------------------------------------------------------- */
 
 @media print {
@@ -428,7 +483,7 @@ h5 {
 }
 
 /* ---------------------------------------------------------------
-   BACKGROUND FIXES
+  BACKGROUND FIXES
 --------------------------------------------------------------- */
 
 app-root,
@@ -442,7 +497,7 @@ main,
 }
 
 /* ---------------------------------------------------------------
-   SCROLLBAR
+  SCROLLBAR
 --------------------------------------------------------------- */
 
 ::-webkit-scrollbar {
@@ -464,7 +519,7 @@ main,
 }
 
 /* ---------------------------------------------------------------
-   ANGULAR MATERIAL THEME
+  ANGULAR MATERIAL THEME
 --------------------------------------------------------------- */
 
 $app-primary-palette: (
@@ -538,7 +593,7 @@ $app-accent:  mat.define-palette($app-accent-palette, 500);
 $app-warn:    mat.define-palette(mat.$red-palette);
 
 $app-typography: mat.define-typography-config(
-  $font-family: $plus-font-family,
+  $font-family: $app-font-family,
   $headline-1: mat.define-typography-level(48px, 56px, 500),
   $headline-2: mat.define-typography-level(40px, 48px, 500),
   $headline-3: mat.define-typography-level(32px, 40px, 500),

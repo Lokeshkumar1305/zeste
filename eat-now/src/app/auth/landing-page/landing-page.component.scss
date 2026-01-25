@@ -11,7 +11,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f6f8ff; // slightly bluish, close to screenshot
+  background: var(--app-background);
   color: var(--text-color);
   overflow-x: hidden;
 }
@@ -31,7 +31,12 @@
   bottom: -80px;
   width: 220px;
   height: 260px;
-  background: radial-gradient(circle at 20% 10%, #8adf5b 0, #58b344 40%, #2d7e2d 100%);
+  background: radial-gradient(
+    circle at 20% 10%,
+    var(--brand-accent) 0,
+    var(--brand-primary) 40%,
+    var(--brand-primary-dark) 100%
+  );
   border-radius: 100% 100% 0 0;
   transform: rotate(-14deg);
   opacity: 0.85;
@@ -87,26 +92,26 @@
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  border-color: #d2d6e4;
+  border-color: var(--card-border);
   color: var(--text-color);
-  background-color: #ffffff;
+  background-color: var(--card-background);
 }
 
 .header-cta:hover {
-  background-color: #f3f4ff;
+  background-color: var(--input-background);
 }
 
 /* Small orange icon at far right (close/star-like) */
 .header-icon-btn {
   background: transparent;
   border: none;
-  color: #f39c12;
+  color: var(--status-warning-color);
   font-size: 1.04rem;
   line-height: 1;
 }
 
 .header-icon-btn:hover {
-  color: #e28b0d;
+  color: var(--brand-primary);
 }
 
 /* ------------------------------------------------
@@ -125,7 +130,7 @@
 .hero-eyebrow {
   font-size: 1.05rem;
   font-weight: 500;
-  color: #4c5565;
+  color: var(--text-secondary);
   margin-bottom: 18px;
 }
 
@@ -138,14 +143,14 @@
   font-size: 3.1rem;
   line-height: 1.25;
   font-weight: 700;
-  color: #f39c12;
+  color: var(--brand-accent);
 }
 
 .hero-description {
   max-width: 380px;
   font-size: 0.94rem;
   line-height: 1.7;
-  color: #7a8293;
+  color: var(--text-secondary);
   margin-bottom: 28px;
 }
 
@@ -164,20 +169,20 @@
   padding: 10px 30px;
   font-weight: 600;
   font-size: 0.9rem;
-  background-color: #f39c12;
-  border-color: #f39c12;
-  color: #ffffff;
-  box-shadow: 0 12px 26px rgba(243, 156, 18, 0.4);
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: var(--button-text);
+  box-shadow: var(--shadow-md);
 }
 
 .hero-primary-cta:hover {
-  background-color: #e08e0b;
-  border-color: #e08e0b;
+  background-color: var(--button-hover);
+  border-color: var(--button-hover);
 }
 
 .hero-or {
   font-size: 0.8rem;
-  color: #9aa2b4;
+  color: var(--text-muted);
 }
 
 /* Features row under OR */
@@ -190,7 +195,7 @@
 
 .hero-feature {
   font-size: 0.86rem;
-  color: #434b5b;
+  color: var(--text-secondary);
   gap: 6px;
 }
 
@@ -202,13 +207,13 @@
 }
 
 .feature-dot--orange {
-  background-color: #f39c12;
+  background-color: var(--status-warning-color);
 }
 .feature-dot--blue {
-  background-color: #3498db;
+  background-color: var(--brand-primary);
 }
 .feature-dot--green {
-  background-color: #27ae60;
+  background-color: var(--status-success-color);
 }
 
 .feature-label {
@@ -240,9 +245,9 @@
   width: 380px;
   height: 380px;
   border-radius: 50%;
-  background: #e4ecff;
+  background: var(--brand-primary-light);
   right: 10%;
-  box-shadow: 0 28px 60px rgba(93, 104, 145, 0.12);
+  box-shadow: var(--shadow-lg);
 }
 
 .hero-illustration {
@@ -271,14 +276,14 @@
 }
 
 .footer-text {
-  color: #9aa2b4;
+  color: var(--text-muted);
 }
 
 .footer-logo-text {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #4c5565;
+  color: var(--text-secondary);
 }
 
 /* ------------------------------------------------

@@ -7,12 +7,12 @@ $sidenav-width: 260px;
 $sidenav-width-tablet: 240px;
 $collapsed-width: 72px;
 
-$text-primary: #1f2937;
-$text-secondary: #6b7280;
-$text-muted: #9ca3af;
-$primary-color: #1e40af;
-$border-color: #e5e7eb;
-$hover-color: #3b82f6;
+$text-primary: var(--text-color);
+$text-secondary: var(--text-secondary);
+$text-muted: var(--text-muted);
+$primary-color: var(--brand-primary);
+$border-color: var(--header-border);
+$hover-color: var(--brand-primary);
 
 // ===== Breakpoints =====
 $mobile-breakpoint: 768px;
@@ -37,7 +37,7 @@ $tablet-breakpoint: 1024px;
   left: $sidenav-width;
   right: 0;
   height: $breadcrumb-height;
-  background: #ffffff;
+  background: var(--header-bg);
   border-bottom: 1px solid $border-color;
   z-index: 998;
   display: flex;
@@ -134,7 +134,7 @@ $tablet-breakpoint: 1024px;
 
   &:hover {
     color: $hover-color;
-    background: rgba($hover-color, 0.08);
+    background: var(--surface-hover);
   }
 
   @include mobile {

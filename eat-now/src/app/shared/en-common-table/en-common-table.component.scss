@@ -1,6 +1,7 @@
 .search-field {
-    width: 300px !important;
-    border-radius: 6px 6px 6px 6px !important;
+    width: 100% !important;
+    max-width: 320px;
+    border-radius: 6px !important;
 }
 
 ::ng-deep .mdc-text-field--outlined {
@@ -14,25 +15,23 @@ mat-form-field {
     --mat-form-field-container-vertical-padding: 15px;
 }
 
-
 .insideContainer {
-    width: 1300px !important;
+    width: 100% !important;
+    max-width: 100%;
     padding: 20px;
     margin: 0 auto;
 }
 
 .table-header {
-    // background-color: #eee0f0 !important;
-    background-color: #0D47A1 !important;
+    background-color: var(--brand-primary) !important;
     background-size: cover;
-    color: #fff !important;
+    color: var(--button-text) !important;
 }
 
 .mat-header-cell,
 .mat-cell {
     padding: 8px 10px;
     min-width: 80px;
-    // max-width: 150px;
     word-wrap: break-word;
 }
 
@@ -46,7 +45,6 @@ mat-form-field {
 
 img {
     max-width: 100px;
-    /* Reduce image size */
     height: auto;
 }
 
@@ -57,14 +55,14 @@ img {
 
 .breadcrum-card {
     border-radius: 6px;
-    width: 1300px;
-    height: 140px;
+    width: 100%;
+    min-height: 140px;
 }
 
 .search-card {
     border-radius: 6px;
-    width: 1300px;
-    height: 100px;
+    width: 100%;
+    min-height: 100px;
 }
 
 .mat-column-description {
@@ -75,23 +73,28 @@ th,
 td {
     padding: 8px 10px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--card-border);
 }
 
 th {
     font-weight: 600;
-    color: #252525;
-    background: #f5f5f5;
+    color: var(--text-color);
+    background: var(--input-background);
 }
 
 td {
-    color: #555;
-    background: #fff;
+    color: var(--text-secondary);
+    background: var(--card-background);
 }
 
+@media (max-width: 768px) {
+    .insideContainer {
+        padding: 16px;
+    }
 
-
-// table.mat-table {
-//     border-collapse: separate !important;
+    .search-field {
+        max-width: 100%;
+    }
+}
 //     border-spacing: 10px 0 !important;
 // }

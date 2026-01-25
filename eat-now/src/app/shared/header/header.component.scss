@@ -15,22 +15,22 @@ $menu-toggle-size-tablet: 30px;
 $menu-toggle-size-mobile: 26px;
 
 // ===== Color system =====
-$primary-color: #1f4ed8;
-$accent-color: #14b8a6;
-$header-bg: #ffffff;
-$header-border: #e5e7eb;
-$icon-bg: #f3f4f6;
+$primary-color: var(--brand-primary);
+$accent-color: var(--brand-accent);
+$header-bg: var(--header-bg);
+$header-border: var(--header-border);
+$icon-bg: var(--icon-bg);
 $icon-border: transparent;
-$icon-color: #4b5563;
-$icon-hover-bg: #e5edff;
-$icon-hover-color: #1d4ed8;
-$text-primary: #111827;
-$text-secondary: #6b7280;
-$text-muted: #9ca3af;
-$badge-warn: #f97373;
-$hover-bg: #f3f4f6;
-$active-bg: #eff6ff;
-$border-color: #e5e7eb;
+$icon-color: var(--icon-color);
+$icon-hover-bg: var(--icon-hover-bg);
+$icon-hover-color: var(--icon-hover-color);
+$text-primary: var(--text-color);
+$text-secondary: var(--text-secondary);
+$text-muted: var(--text-muted);
+$badge-warn: var(--status-warning-color);
+$hover-bg: var(--surface-hover);
+$active-bg: var(--surface-active);
+$border-color: var(--card-border);
 
 // ===== Breakpoints =====
 $mobile-breakpoint: 768px;
@@ -85,7 +85,7 @@ $tablet-breakpoint: 1024px;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  box-shadow: var(--shadow-sm);
   box-sizing: border-box !important;
   z-index: 900 !important; // sidenav is 1000 -> sits above header background
   overflow: visible !important;
@@ -235,7 +235,7 @@ $tablet-breakpoint: 1024px;
   &:hover {
     background: $icon-hover-bg !important;
     color: $icon-hover-color !important;
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    box-shadow: var(--shadow-md);
   }
 }
 
@@ -305,13 +305,13 @@ $tablet-breakpoint: 1024px;
   width: 32px;
   height: 32px;
   border-radius: 9999px;
-  background: #eff6ff;
+  background: var(--avatar-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   font-size: 14px;
-  color: #2563eb;
+  color: var(--avatar-color);
 
   @include mobile {
     width: 30px;
@@ -344,12 +344,12 @@ $tablet-breakpoint: 1024px;
 .profile-name {
   font-size: 14px;
   font-weight: 500;
-  color: #111827;
+  color: $text-primary;
 }
 
 .profile-role {
   font-size: 13px;
-  color: #9ca3af;
+  color: $text-muted;
 }
 
 .profile-meta {
@@ -361,7 +361,7 @@ $tablet-breakpoint: 1024px;
 
 .profile-chevron {
   font-size: 14px;
-  color: #9ca3af;
+  color: $text-muted;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -388,17 +388,17 @@ $tablet-breakpoint: 1024px;
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.04) !important;
+    background: $hover-bg !important;
   }
 }
 
 .notification-btn,
 .profile-btn {
-  color: #6b7280 !important;
+  color: $text-secondary !important;
   flex-shrink: 0;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.04) !important;
+    background: $hover-bg !important;
   }
 }
 
@@ -407,7 +407,7 @@ $tablet-breakpoint: 1024px;
 // ======================================================
 ::ng-deep .mat-mdc-menu-panel {
   border-radius: 12px !important;
-  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.18) !important;
+  box-shadow: var(--shadow-lg) !important;
   max-width: 95vw !important;
 
   @include mobile {
@@ -569,46 +569,38 @@ $tablet-breakpoint: 1024px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 20px;
 
     @include mobile {
       width: 32px;
       height: 32px;
       min-width: 32px;
       border-radius: 8px;
+      font-size: 16px;
     }
     @include small-mobile {
       width: 28px;
       height: 28px;
       min-width: 28px;
       border-radius: 6px;
-    }
-
-    i {
-      font-size: 20px;
-
-      @include mobile {
-        font-size: 16px;
-      }
-      @include small-mobile {
-        font-size: 14px;
-      }
+      font-size: 14px;
     }
 
     &.info {
-      background: #e0f2fe;
-      color: #0284c7;
+      background: var(--status-info-bg);
+      color: var(--status-info-color);
     }
     &.success {
-      background: #dcfce7;
-      color: #16a34a;
+      background: var(--status-success-bg);
+      color: var(--status-success-color);
     }
     &.warning {
-      background: #fef3c7;
-      color: #d97706;
+      background: var(--status-warning-bg);
+      color: var(--status-warning-color);
     }
     &.error {
-      background: #fee2e2;
-      color: #dc2626;
+      background: var(--status-error-bg);
+      color: var(--status-error-color);
     }
   }
 
@@ -711,7 +703,7 @@ $tablet-breakpoint: 1024px;
     }
 
     &:hover {
-      background: rgba(15, 23, 42, 0.06);
+      background: var(--surface-hover);
       color: $text-primary;
       transform: translateY(-1px);
     }
@@ -756,7 +748,7 @@ $tablet-breakpoint: 1024px;
 
   .mat-mdc-menu-content {
     padding: 0 !important;
-    background: #ffffff !important;
+    background: var(--card-background) !important;
   }
 }
 
@@ -765,7 +757,7 @@ $tablet-breakpoint: 1024px;
   align-items: center;
   gap: 12px;
   padding: 16px 20px 12px;
-  background: #ffffff;
+  background: var(--card-background);
   color: $text-primary;
 
   @include mobile {
@@ -778,8 +770,8 @@ $tablet-breakpoint: 1024px;
     height: 40px;
     min-width: 40px;
     border-radius: 9999px;
-    background: #eff6ff;
-    color: #1d4ed8;
+    background: var(--avatar-bg);
+    color: var(--avatar-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -882,11 +874,11 @@ $tablet-breakpoint: 1024px;
 .logout-btn {
   i,
   span {
-    color: #dc2626 !important;
+    color: var(--status-error-color) !important;
   }
 
   &:hover {
-    background: #fef2f2 !important;
+    background: var(--status-error-bg) !important;
   }
 }
 
@@ -894,6 +886,7 @@ $tablet-breakpoint: 1024px;
 ::ng-deep .mat-badge-warn .mat-badge-content {
   background-color: $badge-warn !important;
 }
+
 ::ng-deep .mat-badge-small.mat-badge-above .mat-badge-content {
   top: 2px !important;
   right: 2px !important;
@@ -903,6 +896,7 @@ $tablet-breakpoint: 1024px;
     right: 0 !important;
   }
 }
+
 ::ng-deep .mat-badge-content {
   font-size: 10px !important;
   font-weight: 600 !important;
@@ -955,7 +949,7 @@ $tablet-breakpoint: 1024px;
   &:hover {
     background: $icon-hover-bg !important;
     color: $icon-hover-color !important;
-    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+    box-shadow: var(--shadow-md);
   }
 }
 
