@@ -1,0 +1,59 @@
+<div class="config-container">
+    <header class="config-header">
+        <h1>{{ 'PAYMENT_CONFIG.TITLE' | translate }}</h1>
+        <p>{{ 'PAYMENT_CONFIG.DESCRIPTION' | translate }}</p>
+    </header>
+
+    <div class="gateway-grid">
+        <mat-card *ngFor="let gw of gateways" class="gateway-card" [class.connected]="gw.connected">
+            <mat-card-content>
+                <div class="gateway-header">
+                    <div class="gateway-logo">
+                        <i class="bi bi-credit-card-2-front" *ngIf="!gw.logo"></i>
+                        <span *ngIf="gw.name === 'Razorpay'" class="razorpay-text">Razorpay</span>
+                        <span *ngIf="gw.name === 'Stripe'" class="stripe-text">Stripe</span>
+                    </div>
+                    <div class="status-badge" [class.active]="gw.connected">
+                        {{ gw.connected ? 'Connected' : 'Disconnected' }}
+                    </div>
+                </div>
+
+                <div class="gateway-body">
+                    <h3>{{gw.name}} Integration</h3>
+                    <p>Accept payments locally and globally with {{gw.name}} checkout.</p>
+                </div>
+
+                <div class="gateway-actions">
+                    <button mat-flat-button *ngIf="!gw.connected" color="primary"
+                        (click)="connect(gw)">Configure</button>
+                    <button mat-stroked-button *ngIf="gw.connected" (click)="connect(gw)">Manage</button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Config Modal Placeholder (rendered as a card below for simplicity) -->
+    <mat-card class="premium-card mt-8" *ngIf="selectedGateway">
+        <mat-card-header>
+            <mat-card-title>Configure {{selectedGateway.name}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="settings-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>API Key</mat-label>
+                    <input matInput [(ngModel)]="selectedGateway.apiKey" placeholder="rzp_test_...">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Secret Key</mat-label>
+                    <input matInput type="password" [(ngModel)]="selectedGateway.secretKey">
+                </mat-form-field>
+
+                <div class="form-actions">
+                    <button mat-flat-button color="primary" (click)="saveConfig()">Save Connection</button>
+                    <button mat-button (click)="selectedGateway = null">Cancel</button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

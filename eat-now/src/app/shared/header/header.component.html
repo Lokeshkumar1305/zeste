@@ -1,7 +1,7 @@
 <mat-toolbar class="app-header" [class.collapsed]="sidebarCollapsed">
   <!-- Left: Menu toggle -->
-  <button mat-icon-button class="menu-toggle  circle-icon-btn" (click)="toggleSidebar()"
-    aria-label="Toggle sidebar" type="button">
+  <button mat-icon-button class="menu-toggle  circle-icon-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar"
+    type="button">
     <mat-icon>menu</mat-icon>
   </button>
 
@@ -22,6 +22,11 @@
           matBadgeSize="small">
           notifications_none
         </mat-icon>
+      </button>
+
+      <button mat-icon-button class="action-btn circle-icon-btn lang-btn" [matMenuTriggerFor]="langMenu"
+        aria-label="Switch Language" type="button">
+        <mat-icon>language</mat-icon>
       </button>
     </div>
 
@@ -125,5 +130,15 @@
   <button mat-menu-item class="profile-item logout-btn" (click)="logout()" type="button">
     <i class="bi bi-box-arrow-right"></i>
     <span>Log Out</span>
+  </button>
+</mat-menu>
+
+<!-- ================= LANGUAGE MENU ================= -->
+<mat-menu #langMenu="matMenu" xPosition="before" class="lang-menu">
+  <button mat-menu-item (click)="switchLanguage('en')" [class.active-lang]="currentLang === 'en'">
+    <span>English</span>
+  </button>
+  <button mat-menu-item (click)="switchLanguage('hi')" [class.active-lang]="currentLang === 'hi'">
+    <span>हिन्दी (Hindi)</span>
   </button>
 </mat-menu>

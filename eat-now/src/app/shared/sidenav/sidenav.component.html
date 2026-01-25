@@ -15,14 +15,14 @@
       <!-- GENERAL -->
       <div class="section">
         <span class="section-title" *ngIf="!isCollapsed || isMobile">
-          GENERAL
+          {{ 'GENERAL' | translate }}
         </span>
         <!-- Dashboard -->
         <div class="menu-item dashboard-item" [class.active]="selectedMenu === 'dashboard'"
           (click)="navigateTo('/core/dashboard')" role="button" tabindex="0"
           (keydown.enter)="navigateTo('/core/outlet-onboarding')">
           <i class="bi bi-speedometer2"></i>
-          <span *ngIf="!isCollapsed || isMobile">Dashboard</span>
+          <span *ngIf="!isCollapsed || isMobile">{{ 'NAV.DASHBOARD' | translate }}</span>
         </div>
         <div class="menu-divider"></div>
         <!-- Collapsible Groups -->
@@ -36,7 +36,7 @@
               <div class="header-left">
                 <i class="bi" [ngClass]="'bi-' + group.icon"></i>
                 <span *ngIf="!isCollapsed || isMobile">
-                  {{ group.title }}
+                  {{ group.title | translate }}
                 </span>
               </div>
               <i class="bi bi-chevron-down chevron" [class.rotated]="openedGroup === group.key"
@@ -46,12 +46,12 @@
             <!-- FLOATING CARD (Only in collapsed desktop mode) -->
             <div class="floating-card" *ngIf="!isMobile && isCollapsed && openedGroup === group.key"
               [style.top.px]="floatingCardTop" (click)="$event.stopPropagation()" role="menu">
-              <div class="floating-card-title">{{ group.title }}</div>
+              <div class="floating-card-title">{{ group.title | translate }}</div>
               <ul class="floating-card-menu">
                 <li *ngFor="let item of group.items; trackBy: trackByRoute" class="floating-card-item"
                   [class.active]="isRouteActive(item.route)" (click)="navigateTo(item.route, $event)" role="menuitem"
                   tabindex="0" (keydown.enter)="navigateTo(item.route, $event)">
-                  {{ item.title }}
+                  {{ item.title | translate }}
                 </li>
               </ul>
             </div>
@@ -61,7 +61,7 @@
                 [class.active]="isRouteActive(item.route)" (click)="navigateTo(item.route, $event)" role="menuitem"
                 tabindex="0" (keydown.enter)="navigateTo(item.route, $event)">
                 <span class="line"></span>
-                <span class="label">{{ item.title }}</span>
+                <span class="label">{{ item.title | translate }}</span>
               </li>
             </ul>
           </div>
@@ -69,33 +69,84 @@
           <div class="menu-divider"></div>
         </ng-container>
       </div>
+
+      <!-- SETTINGS -->
+      <div class="section">
+        <span class="section-title" *ngIf="!isCollapsed || isMobile">
+          {{ 'NAV.SETTINGS' | translate }}
+        </span>
+        <ng-container *ngFor="let group of settingsGroups; trackBy: trackByGroupKey">
+          <div class="collapsible-group" [class.has-active]="isGroupActive(group)">
+            <!-- Group Header -->
+            <div class="group-header" (click)="onGroupHeaderClick($event, group.key)"
+              [class.open]="openedGroup === group.key" [class.group-active]="isGroupActive(group)" role="button"
+              tabindex="0" [attr.aria-expanded]="openedGroup === group.key"
+              (keydown.enter)="onGroupHeaderClick($event, group.key)">
+              <div class="header-left">
+                <i class="bi" [ngClass]="'bi-' + group.icon"></i>
+                <span *ngIf="!isCollapsed || isMobile">
+                  {{ group.title | translate }}
+                </span>
+              </div>
+              <i class="bi bi-chevron-down chevron" [class.rotated]="openedGroup === group.key"
+                *ngIf="!isCollapsed || isMobile">
+              </i>
+            </div>
+            <!-- FLOATING CARD (Only in collapsed desktop mode) -->
+            <div class="floating-card" *ngIf="!isMobile && isCollapsed && openedGroup === group.key"
+              [style.top.px]="floatingCardTop" (click)="$event.stopPropagation()" role="menu">
+              <div class="floating-card-title">{{ group.title | translate }}</div>
+              <ul class="floating-card-menu">
+                <li *ngFor="let item of group.items; trackBy: trackByRoute" class="floating-card-item"
+                  [class.active]="isRouteActive(item.route)" (click)="navigateTo(item.route, $event)" role="menuitem"
+                  tabindex="0" (keydown.enter)="navigateTo(item.route, $event)">
+                  {{ item.title | translate }}
+                </li>
+              </ul>
+            </div>
+            <!-- Regular submenu (expanded mode or mobile) -->
+            <ul class="submenu" *ngIf="!isCollapsed || isMobile" [class.open]="openedGroup === group.key" role="menu">
+              <li *ngFor="let item of group.items; trackBy: trackByRoute" class="submenu-item"
+                [class.active]="isRouteActive(item.route)" (click)="navigateTo(item.route, $event)" role="menuitem"
+                tabindex="0" (keydown.enter)="navigateTo(item.route, $event)">
+                <span class="line"></span>
+                <span class="label">{{ item.title | translate }}</span>
+              </li>
+            </ul>
+          </div>
+          <!-- Divider under each top-level group -->
+          <div class="menu-divider"></div>
+        </ng-container>
+      </div>
+
       <!-- Announcements -->
       <div class="section misc-section">
         <span class="section-title" *ngIf="!isCollapsed || isMobile">
-          Announcements
+          {{ 'ANNOUNCEMENTS' | translate }}
         </span>
         <div class="menu-item" [class.active]="isRouteActive('/core/announcements')"
           (click)="navigateTo('/core/announcements')" role="button" tabindex="0"
           (keydown.enter)="navigateTo('/core/announcements')">
           <i class="bi bi-megaphone"></i>
-          <span *ngIf="!isCollapsed || isMobile">Announcements</span>
+          <span *ngIf="!isCollapsed || isMobile">{{ 'NAV.ANNOUNCEMENTS' | translate }}</span>
         </div>
         <div class="menu-divider"></div>
       </div>
+
       <!-- MISCELLANEOUS -->
       <div class="section misc-section">
         <span class="section-title" *ngIf="!isCollapsed || isMobile">
-          MISCELLANEOUS
+          {{ 'NAV.AUDIT_LOGS' | translate }}
         </span>
         <div class="menu-item" [class.active]="isRouteActive('/core/audit-logs')"
           (click)="navigateTo('/core/audit-logs')" role="button" tabindex="0"
           (keydown.enter)="navigateTo('/core/audit-logs')">
           <i class="bi bi-journal-text"></i>
-          <span *ngIf="!isCollapsed || isMobile">Audit Logs</span>
+          <span *ngIf="!isCollapsed || isMobile">{{ 'NAV.AUDIT_LOGS' | translate }}</span>
         </div>
         <div class="menu-divider"></div>
       </div>
-      
+
     </div>
     <!-- Collapse Toggle (Desktop only) -->
     <div class="collapse-toggle" (click)="toggleSidenav()" *ngIf="!isMobile" role="button" tabindex="0"

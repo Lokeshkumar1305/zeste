@@ -2,6 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
+import { ThemeConfigComponent } from './features/config/theme-config/theme-config.component';
+import { SystemConfigComponent } from './features/config/system-config/system-config.component';
+import { ProductConfigComponent } from './features/config/product-config/product-config.component';
+import { PaymentConfigComponent } from './features/config/payment-config/payment-config.component';
+import { DynamicInputsComponent } from './features/config/dynamic-inputs/dynamic-inputs.component';
 
 const routes: Routes = [
   {
@@ -27,6 +32,16 @@ const routes: Routes = [
     data: { breadcrumb: 'Core' }
   },
   {
+    path: 'features/config',
+    children: [
+      { path: 'theme-config', component: ThemeConfigComponent, data: { breadcrumb: 'Theme Config' } },
+      { path: 'system-config', component: SystemConfigComponent, data: { breadcrumb: 'System Config' } },
+      { path: 'product-config', component: ProductConfigComponent, data: { breadcrumb: 'Product Config' } },
+      { path: 'payment-config', component: PaymentConfigComponent, data: { breadcrumb: 'Payment Integration' } },
+      { path: 'dynamic-inputs', component: DynamicInputsComponent, data: { breadcrumb: 'Dynamic Inputs' } },
+    ]
+  },
+  {
     path: 'uam',
     loadChildren: () => import('./uam/uam.module').then(m => m.UamModule),
     data: { breadcrumb: 'IAM' } // Enable breadcrumbs with a label
@@ -36,11 +51,11 @@ const routes: Routes = [
   // { path: '**', redirectTo: 'auth/landing-page' }
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
 
- 
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -1,0 +1,82 @@
+<div class="config-container">
+    <header class="config-header">
+        <h1>Dynamic Input Builder</h1>
+        <p>Create custom fields that will automatically appear across configuration screens.</p>
+    </header>
+
+    <div class="builder-layout">
+        <!-- Form Side -->
+        <mat-card class="premium-card">
+            <mat-card-header>
+                <mat-card-title>Create New Field</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="field-form">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Field Label</mat-label>
+                        <input matInput [(ngModel)]="newField.label" placeholder="e.g. SKU Number">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Field Type</mat-label>
+                        <mat-select [(ngModel)]="newField.type">
+                            <mat-option value="text">Text Input</mat-option>
+                            <mat-option value="number">Numeric</mat-option>
+                            <mat-option value="date">Date Picker</mat-option>
+                            <mat-option value="boolean">Toggle/Checkbox</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Target Page</mat-label>
+                        <mat-select [(ngModel)]="newField.page">
+                            <mat-option value="product">Product Config</mat-option>
+                            <mat-option value="system">System Config</mat-option>
+                            <mat-option value="payment">Payment Config</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="flex items-center gap-2 mb-4">
+                        <mat-checkbox [(ngModel)]="newField.required" color="primary">Mark as Required</mat-checkbox>
+                    </div>
+
+                    <button mat-flat-button color="primary" class="w-full" (click)="addField()">
+                        <mat-icon>add</mat-icon> Add Field Definition
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- List Side -->
+        <div class="field-list">
+            <h3>Active Custom Fields ({{fields.length}})</h3>
+            <div *ngIf="fields.length === 0" class="empty-state-card">
+                <i class="bi bi-input-cursor"></i>
+                <p>No custom fields defined yet.</p>
+            </div>
+
+            <mat-card *ngFor="let field of fields" class="field-item-card">
+                <div class="field-item-content">
+                    <div class="field-icon">
+                        <i class="bi" [ngClass]="{
+              'bi-type': field.type === 'text',
+              'bi-hash': field.type === 'number',
+              'bi-calendar-event': field.type === 'date',
+              'bi-toggle-on': field.type === 'boolean'
+            }"></i>
+                    </div>
+                    <div class="field-details">
+                        <span class="field-name">{{field.label}}</span>
+                        <div class="field-meta">
+                            <span class="badge">{{field.type}}</span>
+                            <span class="page-link"><i class="bi bi-arrow-right-short"></i> {{field.page}}</span>
+                        </div>
+                    </div>
+                    <button mat-icon-button color="warn" (click)="removeField(field.id)">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

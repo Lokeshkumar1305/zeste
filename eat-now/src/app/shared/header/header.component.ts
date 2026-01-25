@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ThemeService } from '../services/theme.service';
 import { LayoutService } from '../services/layout.service';
+import { TranslateService } from '@ngx-translate/core';
 
 type NotificationType = 'info' | 'success' | 'warning' | 'error';
 
@@ -53,8 +54,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly theme: ThemeService,
-    public layout: LayoutService
-  ) {}
+    public layout: LayoutService,
+    private translate: TranslateService
+  ) {
+    this.currentLang = this.translate.currentLang || this.translate.defaultLang || 'en';
+  }
+
+  currentLang = 'en';
+
+  switchLanguage(lang: string): void {
+    this.translate.use(lang);
+    this.currentLang = lang;
+    localStorage.setItem('app-lang', lang);
+  }
 
   ngOnInit(): void {
     this.checkScreenSize();

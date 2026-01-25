@@ -1,0 +1,132 @@
+.config-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.config-header {
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin: 0;
+    }
+
+    p {
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
+}
+
+.premium-card {
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    background: var(--card-background);
+    overflow: hidden;
+}
+
+.mb-6 {
+    margin-bottom: 24px;
+}
+
+.add-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 16px;
+    align-items: center;
+
+    @media (max-width: 992px) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.config-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+        text-align: left;
+        padding: 16px 24px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--card-border);
+        background: var(--input-background);
+    }
+
+    td {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--card-border);
+        vertical-align: middle;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    tr:hover td {
+        background: var(--input-background);
+    }
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.product-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--brand-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 500;
+
+    &.secondary {
+        background: var(--brand-primary-light);
+        color: var(--brand-primary);
+    }
+}
+
+.action-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.gap-3 {
+    gap: 12px;
+}
+
+.justify-between {
+    justify-content: space-between;
+}

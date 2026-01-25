@@ -6,6 +6,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { MaterialModule } from '../material/material.module';
 import { EnCommonTableComponent } from './en-common-table/en-common-table.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -18,12 +19,14 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
   imports: [
     CommonModule,
     SharedRoutingModule,
-    MaterialModule
+    MaterialModule,
+    TranslateModule
   ],
   exports: [
     SidenavComponent,
     HeaderComponent,
-    BreadcrumbComponent 
+    BreadcrumbComponent,
+    TranslateModule
   ]
 })
 export class SharedModule { }

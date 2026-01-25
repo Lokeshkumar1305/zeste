@@ -8,6 +8,8 @@ import { LoginService } from './auth/login.service';
 import { ThemeService } from './shared/services/theme.service';
 import { LayoutService } from './shared/services/layout.service';
 
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -38,8 +40,20 @@ export class AppComponent implements OnInit, OnDestroy {
     public snackbar: MatSnackBar,
     public postService: ApiService,
     private theme: ThemeService,
-    public layout: LayoutService
-  ) {}
+    public layout: LayoutService,
+    private translate: TranslateService
+  ) {
+    // Internationalization Init
+    this.translate.addLangs(['en', 'hi']);
+    this.translate.setDefaultLang('en');
+
+    const savedLang = localStorage.getItem('app-lang');
+    if (savedLang) {
+      this.translate.use(savedLang);
+    } else {
+      this.translate.use('en');
+    }
+  }
 
   ngOnInit(): void {
     this.initializeUser();

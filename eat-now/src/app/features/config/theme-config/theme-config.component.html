@@ -1,0 +1,103 @@
+<div class="config-container">
+    <header class="config-header">
+        <div class="header-content">
+            <h1>{{ 'THEME_CONFIG.TITLE' | translate }}</h1>
+            <p>{{ 'THEME_CONFIG.DESCRIPTION' | translate }}</p>
+        </div>
+    </header>
+
+    <div class="config-grid">
+        <!-- Theme Selection -->
+        <mat-card class="config-card premium-card">
+            <mat-card-header>
+                <div class="card-icon">
+                    <i class="bi bi-palette"></i>
+                </div>
+                <mat-card-title>Appearance Mode</mat-card-title>
+                <mat-card-subtitle>Choose your preferred interface style</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="theme-options">
+                    <div class="theme-option" (click)="setMode('light')" [class.active]="state.mode === 'light'">
+                        <div class="theme-preview-box light-preview">
+                            <div class="win-header"></div>
+                            <div class="win-body">
+                                <div class="line small"></div>
+                                <div class="line large"></div>
+                            </div>
+                        </div>
+                        <span>Light Mode</span>
+                    </div>
+                    <div class="theme-option" (click)="setMode('dark')" [class.active]="state.mode === 'dark'">
+                        <div class="theme-preview-box dark-preview">
+                            <div class="win-header"></div>
+                            <div class="win-body">
+                                <div class="line small"></div>
+                                <div class="line large"></div>
+                            </div>
+                        </div>
+                        <span>Dark Mode</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Brand Color -->
+        <mat-card class="config-card premium-card">
+            <mat-card-header>
+                <div class="card-icon">
+                    <i class="bi bi-droplet"></i>
+                </div>
+                <mat-card-title>Brand Identity</mat-card-title>
+                <mat-card-subtitle>Set the primary accent color for your workspace</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="color-section">
+                    <div class="color-picker-grid">
+                        <div *ngFor="let color of presetColors" class="color-swatch-wrapper"
+                            [class.active]="state.color === color" (click)="setBrandColor(color)">
+                            <div class="color-swatch" [style.background-color]="color"></div>
+                        </div>
+                    </div>
+
+                    <div class="custom-color-row">
+                        <div class="custom-input-label">Custom Palette</div>
+                        <div class="custom-color-control">
+                            <input type="color" [value]="state.color" (input)="onCustomColorChange($event)"
+                                id="brandColorPicker">
+                            <label for="brandColorPicker" class="hex-value">{{ state.color }}</label>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Font Family -->
+        <mat-card class="config-card premium-card">
+            <mat-card-header>
+                <div class="card-icon">
+                    <i class="bi bi-fonts"></i>
+                </div>
+                <mat-card-title>Typography</mat-card-title>
+                <mat-card-subtitle>Selected font family for the application</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="font-selection">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Font Family</mat-label>
+                        <mat-select [value]="'Poppins'">
+                            <mat-option value="Poppins">Poppins (Default)</mat-option>
+                            <mat-option value="Inter">Inter</mat-option>
+                            <mat-option value="Roboto">Roboto</mat-option>
+                            <mat-option value="Outfit">Outfit</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="font-preview mt-3">
+                        <p>The quick brown fox jumps over the lazy dog.</p>
+                        <div class="text-muted small">0123456789 ABCabc</div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
