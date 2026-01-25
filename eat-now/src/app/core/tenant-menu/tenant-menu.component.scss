@@ -8,8 +8,10 @@
     border: 1px solid var(--card-border);
 
     .tab-btn {
-      flex: 1;
-      padding: 10px;
+      flex: 1 1 auto;
+      min-width: 90px;
+      max-width: 140px;
+      padding: 10px 12px;
       border: none;
       background: transparent;
       border-radius: 12px;
@@ -22,6 +24,9 @@
       gap: 8px;
       cursor: pointer;
       transition: all 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &.active {
         background: var(--brand-primary);

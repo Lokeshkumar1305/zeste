@@ -51,7 +51,7 @@ Chart.register(...registerables);
       defaultLanguage: 'en'
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
+      enabled: true,
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
