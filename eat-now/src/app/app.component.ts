@@ -18,6 +18,29 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'zeste';
 
+  deferredPrompt: any;
+  showInstallButton = false;
+
+  @HostListener('window:beforeinstallprompt', ['$event'])
+  onBeforeInstallPrompt(e: any) {
+    e.preventDefault();
+    this.deferredPrompt = e;
+    this.showInstallButton = true;
+  }
+
+  installApp() {
+    if (this.deferredPrompt) {
+      this.deferredPrompt.prompt();
+      this.deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          this.snackbar.open('App installed successfully!', 'Close', { duration: 3000 });
+        }
+        this.deferredPrompt = null;
+        this.showInstallButton = false;
+      });
+    }
+  }
+
   // Sidebar state
   sidebarCollapsed = false;
 

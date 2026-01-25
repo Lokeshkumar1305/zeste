@@ -1,3 +1,18 @@
+<!-- PWA Install Banner (Mobile Only) -->
+<div class="install-banner" *ngIf="showInstallButton && isMobile">
+  <div class="banner-content">
+    <img src="assets/icons/icon-72x72.png" alt="Logo" class="mini-logo">
+    <div class="text">
+      <strong>Zeste Enterprise</strong>
+      <span>Install app for a better experience</span>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ignore-btn" (click)="showInstallButton = false">Not now</button>
+    <button class="install-btn" (click)="installApp()">Download</button>
+  </div>
+</div>
+
 <div class="app-layout" [class.sidenav-collapsed]="sidebarCollapsed" [class.tenant-mode]="isTenantView">
   <!-- Standard Admin Sidenav -->
   <app-sidenav *ngIf="!isTenantView" [isCollapsed]="sidebarCollapsed" (toggle)="onSidebarToggle()">

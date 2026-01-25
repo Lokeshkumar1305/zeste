@@ -37,6 +37,88 @@ $large-desktop-breakpoint: 1536px;
 }
 
 // ===== Layout Container =====
+// ===== PWA Install Banner =====
+.install-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  z-index: 10001;
+  /* Above almost everything */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.4s ease-out;
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .mini-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .text {
+      display: flex;
+      flex-direction: column;
+
+      strong {
+        font-size: 0.875rem;
+        color: #1e293b;
+      }
+
+      span {
+        font-size: 0.75rem;
+        color: #64748b;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    .ignore-btn {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .install-btn {
+      background: var(--brand-primary, #003B8A);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 59, 138, 0.2);
+    }
+  }
+}
+
 .app-layout {
   display: flex;
   min-height: 100vh;
