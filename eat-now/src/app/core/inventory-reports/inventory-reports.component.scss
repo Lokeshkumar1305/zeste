@@ -1,262 +1,219 @@
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
 /* ================================
-   OUTER & INNER WRAPPERS
+   CONTAINER & LAYOUT
    ================================ */
 
-.inventory-reports-container {
-  padding-block: 24px 32px;
-  background-color: var(--bg-page);
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding-block: 16px 24px;
-  }
-}
-
-.inventory-reports-inner {
-  width: 100%;
+.inventory-reports-page {
+  padding-bottom: 24px;
 }
 
 /* ================================
    PAGE HEADER
    ================================ */
 
-.page-header {
+.inventory-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
+  align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-}
 
-.header-content h1 {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0;
-  font-size: 24px;
-  font-weight: 500;
-  color: var(--text-color);
-}
+  .page-header-title {
+    h1 {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      color: var(--text-color);
 
-.header-content h1 mat-icon {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-  color: var(--brand-primary);
-}
+      i {
+        color: var(--brand-primary);
+        font-size: 1.5rem;
+      }
+    }
 
-.header-content .subtitle {
-  margin: 6px 0 0 44px;
-  color: var(--text-muted);
-  font-size: 14px;
-}
+    .subtitle {
+      margin: 4px 0 0 0;
+      color: var(--text-muted);
+    }
+  }
 
-.header-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+  .page-header-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 
-.header-actions button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 6px !important;
-  /* 6px radius for all header buttons */
-}
+    button {
+      height: 42px;
+      padding: 0 16px;
+      font-weight: 500;
+      border-radius: 8px !important;
+      font-size: 0.875rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
 
-.header-actions button mat-icon {
-  margin-right: 4px;
-}
+      &.btn-secondary {
+        border-color: var(--card-border);
+        color: var(--text-color);
+        background: var(--card-background);
 
-/* ==========================================
-SUMMARY CARDS (Updated to match second image)
-========================================== */
-.summary-cards {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
-  margin-bottom: 20px;
-}
+        &:hover {
+          background: var(--surface-hover);
+          border-color: var(--brand-primary);
+        }
+      }
 
-@media (max-width: 1024px) {
-  .summary-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+      &.btn-create {
+        background: var(--brand-primary);
+        color: #fff;
+
+        &:hover {
+          background: var(--brand-primary-dark);
+        }
+      }
+    }
   }
 }
 
-@media (max-width: 576px) {
-  .summary-cards {
-    grid-template-columns: 1fr;
+/* ================================
+   SUMMARY CARDS
+   ================================ */
+
+.stats-row {
+  .stat-card {
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    background: var(--card-background);
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .mat-mdc-card-content {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      i {
+        font-size: 1.5rem;
+      }
+    }
+
+    .stat-info {
+      h3 {
+        margin: 0;
+        color: var(--text-color);
+        line-height: 1.2;
+      }
+
+      p {
+        margin: 4px 0 0 0;
+      }
+    }
   }
 }
 
-/* Mat-card shell */
-.summary-card {
-  border-radius: 16px;
-  background: var(--card-background);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
-}
-
-/* Flex layout - icon left, text right */
-.summary-card .mat-mdc-card-content {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 16px;
-  box-sizing: border-box;
-}
-
-.summary-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-/* Circular icon */
-.summary-card .card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-}
-
-.summary-card .card-icon mat-icon {
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
-}
-
-/* Icon backgrounds (Light version) and Icon colors */
-.summary-card .card-icon.blue {
+/* Color Helpers */
+.bg-info-light {
   background: var(--status-info-bg);
-
-  mat-icon {
-    color: var(--status-info-color);
-  }
 }
 
-.summary-card .card-icon.green {
+.bg-success-light {
   background: var(--status-success-bg);
-
-  mat-icon {
-    color: var(--status-success-color);
-  }
 }
 
-.summary-card .card-icon.orange {
+.bg-warning-light {
   background: var(--status-warning-bg);
-
-  mat-icon {
-    color: var(--status-warning-color);
-  }
 }
 
-.summary-card .card-icon.red {
+.bg-danger-light {
   background: var(--status-error-bg);
-
-  mat-icon {
-    color: var(--status-error-color);
-  }
 }
 
-/* Text block - value on top, label below */
-.summary-card .card-content {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+.color-info {
+  color: var(--status-info-color);
 }
 
-.summary-card .card-content .value {
-  font-size: 28px;
-  /* Larger like in the second image */
-  font-weight: 700;
-  color: var(--text-color);
-  line-height: 1.2;
-  margin-bottom: 4px;
+.color-success {
+  color: var(--status-success-color);
 }
 
-.summary-card .card-content .value.warning {
+.color-warning {
   color: var(--status-warning-color);
 }
 
-.summary-card .card-content .value.danger {
+.color-danger {
   color: var(--status-error-color);
 }
 
-.summary-card .card-content .label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-transform: none;
-  letter-spacing: normal;
-}
+/* ================================
+   REPORT TYPE SELECTION
+   ================================ */
 
-.summary-card .card-content .summary-hint {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
+.report-type-selection-wrapper {
+  overflow-x: auto;
+  padding-bottom: 4px;
 
-/* ================================\
-REPORT TYPE CARD (buttons row)\
-================================ */
-.report-type-card {
-  margin-bottom: 24px;
-  border-radius: 8px;
-  background: var(--card-background);
-  border: 1px solid var(--card-border);
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
 }
 
 .report-type-buttons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.report-type-buttons button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 6px !important;
-  font-size: 13px;
-  text-transform: none;
-  line-height: 1.2;
-  color: var(--text-muted);
-  /* Default text color for inactive buttons */
-}
-
-.report-type-buttons button mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-}
-
-.report-type-buttons .report-type-label {
+  gap: 10px;
   white-space: nowrap;
-  color: inherit;
-  /* Inherits from button */
-}
 
-.report-type-buttons button.active {
-  background-color: var(--brand-primary);
-  color: var(--button-text) !important;
-  /* White text when active */
-  border-color: var(--brand-primary);
-}
+  .report-nav-btn {
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 8px !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    border: 1px solid var(--card-border);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
 
-.report-type-buttons button:hover:not(.active) {
-  background-color: var(--brand-primary-light);
-  color: var(--text-secondary);
-  /* Slightly darker gray on hover for better visibility */
+    &:hover:not(.active) {
+      background: var(--brand-primary-light);
+      color: var(--brand-primary);
+      border-color: var(--brand-primary);
+    }
+
+    &.active {
+      background: var(--brand-primary);
+      color: #fff !important;
+      border-color: var(--brand-primary);
+
+      mat-icon {
+        color: #fff;
+      }
+    }
+
+    mat-icon {
+      font-size: 1.25rem;
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
 
 /* ================================
@@ -264,114 +221,112 @@ REPORT TYPE CARD (buttons row)\
    ================================ */
 
 .filter-card {
-  margin-bottom: 24px;
-  border-radius: 8px;
-  background: var(--card-background);
-  border: 1px solid var(--card-border);
-}
+  .mat-mdc-card-content {
+    padding: 20px !important;
+  }
 
-.filter-card mat-card-header {
-  margin-bottom: 16px;
-}
+  mat-form-field {
+    .mat-mdc-form-field-wrapper {
+      padding-bottom: 0;
+    }
+  }
 
-.filter-card mat-card-header mat-card-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 18px;
-}
+  .filter-btn {
+    height: 48px;
+    /* Matching standard mat-form-field height */
+    border-radius: 8px !important;
+    font-weight: 600;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
 
-.filter-card mat-card-header mat-card-title mat-icon {
-  color: var(--brand-primary);
-}
+    &.apply-btn {
+      background: var(--brand-primary);
+      color: #fff;
 
-.filter-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: flex-end;
-}
+      &:hover {
+        background: var(--brand-primary-dark);
+      }
+    }
 
-.filter-form mat-form-field {
-  flex: 1;
-  min-width: 160px;
-}
+    &.reset-btn {
+      border-color: var(--card-border);
+      color: var(--color-neutral-300);
 
-.filter-actions {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 22px;
-}
-
-.filter-actions button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 6px !important;
+      &:hover {
+        background: var(--surface-hover);
+        border-color: var(--text-muted);
+      }
+    }
+  }
 }
 
 /* ================================
-   LOADING
+   LOADING OVERLAY
    ================================ */
 
-.loading-container {
+.loading-overlay {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px;
-}
-
-.loading-container p {
-  margin-top: 16px;
-  color: var(--text-muted);
+  padding: 40px;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  margin-bottom: 24px;
 }
 
 /* ================================
-   REPORT TABLE CARD
+   TABLE CARDS
    ================================ */
 
 .report-table-card {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
-  margin-bottom: 24px;
-  background: var(--card-background);
+  border-radius: 12px;
   border: 1px solid var(--card-border);
-}
+  background: var(--card-background);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 
-.report-table-card mat-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background-color: var(--card-background);
-  border-bottom: 1px solid var(--card-border);
-  flex-wrap: wrap;
-  gap: 16px;
-}
+  mat-card-header {
+    background: var(--card-background);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
 
-.report-table-card mat-card-header mat-card-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-  color: var(--text-color);
-}
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-color);
 
-.report-table-card mat-card-header mat-card-title mat-icon {
-  color: var(--brand-primary);
-}
+      mat-icon {
+        color: var(--brand-primary);
+        margin-right: 10px;
+      }
+    }
 
-.report-table-card .search-field {
-  width: 280px;
-  margin: 0;
-}
+    .search-field {
+      width: 280px;
+      font-size: 0.875rem;
 
-.report-table-card mat-card-content {
-  padding: 16px 20px 24px;
+      @media (max-width: 576px) {
+        width: 100%;
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: 0 !important;
+  }
 }
 
 /* ================================
@@ -379,275 +334,158 @@ REPORT TYPE CARD (buttons row)\
    ================================ */
 
 .table-container {
-  overflow: hidden;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-radius: 8px;
-  border: 1px solid var(--card-border);
-  background: var(--card-background);
-}
 
-.report-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
 
-.report-table .mat-mdc-header-row {
-  background: var(--brand-primary);
-  color: #ffffff !important;
-}
+    .mat-mdc-header-row {
+      background: var(--brand-primary);
+      height: 48px;
+    }
 
-.report-table th.mat-mdc-header-cell {
-  font-weight: 600;
-  color: #ffffff !important;
-  padding: 14px 12px;
-  white-space: nowrap;
-  text-transform: uppercase;
-  font-size: 11px;
-  border-bottom: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    th.mat-mdc-header-cell {
+      color: #fff !important;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0 16px;
+      border-bottom: none;
+    }
 
-.report-table td.mat-mdc-cell {
-  padding: 12px 10px;
-  border-bottom: 1px solid var(--card-border);
-  font-size: 13px;
-  color: var(--text-color);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    td.mat-mdc-cell {
+      padding: 14px 16px;
+      font-size: 0.875rem;
+      color: var(--text-color);
+      border-bottom: 1px solid var(--card-border);
+    }
 
-// .report-table tr.mat-mdc-row:nth-child(even) td.mat-mdc-cell {
-//   background-color: var(--surface-hover);
-// }
+    tr.mat-mdc-row {
+      transition: background-color 0.2s;
 
-.report-table tr.mat-mdc-row:hover td.mat-mdc-cell {
-  background-color: var(--surface-hover);
-}
-
-.text-truncate-cell {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.unit-text {
-  font-size: 11px;
-  color: var(--text-muted);
+      &:hover {
+        background-color: var(--surface-hover);
+      }
+    }
+  }
 }
 
 /* ================================
-   STATUS + MOVEMENT BADGES
+   BADGES & CHIPS
    ================================ */
 
 .status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 500;
-  white-space: nowrap;
-}
+  gap: 6px;
 
-.status-badge::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 6px;
-  background-color: currentColor;
-  opacity: 0.8;
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
 }
 
 .status-success {
-  background-color: var(--status-success-bg);
+  background: var(--status-success-bg);
   color: var(--status-success-color);
 }
 
 .status-warning {
-  background-color: var(--status-warning-bg);
+  background: var(--status-warning-bg);
   color: var(--status-warning-color);
 }
 
 .status-danger {
-  background-color: var(--status-error-bg);
+  background: var(--status-error-bg);
   color: var(--status-error-color);
 }
 
 .status-info {
-  background-color: var(--status-info-bg);
+  background: var(--status-info-bg);
   color: var(--status-info-color);
 }
 
 .movement-type-badge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 500;
-}
+  gap: 6px;
 
-.movement-type-badge mat-icon {
-  font-size: 14px;
-  width: 14px;
-  height: 14px;
+  mat-icon {
+    font-size: 1rem;
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .movement-in {
-  background-color: var(--status-success-bg);
+  background: var(--status-success-bg);
   color: var(--status-success-color);
 }
 
 .movement-out {
-  background-color: var(--status-error-bg);
+  background: var(--status-error-bg);
   color: var(--status-error-color);
 }
 
 .movement-transfer {
-  background-color: var(--status-info-bg);
+  background: var(--status-info-bg);
   color: var(--status-info-color);
 }
 
 .movement-adjustment {
-  background-color: var(--status-warning-bg);
+  background: var(--status-warning-bg);
   color: var(--status-warning-color);
 }
 
 /* ================================
-   VALUE COLORS
-   ================================ */
-
-.positive {
-  color: var(--status-success-color);
-  font-weight: 500;
-}
-
-.negative {
-  color: var(--status-error-color);
-  font-weight: 500;
-}
-
-.warning {
-  color: var(--status-warning-color);
-  font-weight: 600;
-}
-
-.danger {
-  color: var(--status-error-color);
-  font-weight: 600;
-}
-
-.stock-value {
-  font-weight: 500;
-  color: var(--text-color);
-}
-
-.order-number {
-  font-family: 'Courier New', monospace;
-  font-weight: 600;
-  color: var(--brand-primary);
-}
-
-.category-name {
-  font-weight: 500;
-}
-
-/* ================================
-   NO DATA
-   ================================ */
-
-.no-data {
-  text-align: center;
-  padding: 60px !important;
-  color: var(--text-muted);
-}
-
-.no-data mat-icon {
-  font-size: 48px;
-  width: 48px;
-  height: 48px;
-  margin-bottom: 16px;
-  opacity: 0.5;
-}
-
-.no-data p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.no-data-card {
-  border: 1px dashed var(--card-border);
-  border-radius: 8px;
-  background: var(--bg-page);
-}
-
-/* ================================
-   PAGINATOR (Custom Design)
+   CUSTOM PAGINATION
    ================================ */
 
 .report-pagination-bar {
   background: var(--card-background);
-  // border-top: 1px solid var(--card-border);
+  border-top: 1px solid var(--card-border);
 }
 
 .custom-pagination-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 24px;
-  gap: 20px;
+  padding: 12px 20px;
   flex-wrap: wrap;
+  gap: 16px;
 
   .pagination-info {
     display: flex;
     align-items: center;
-    gap: 16px;
-    font-size: 13px;
+    gap: 12px;
+    font-size: 0.8125rem;
     color: var(--text-muted);
 
-    .rows-per-page-label {
-      white-space: nowrap;
-    }
+    .custom-page-select {
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+      background: var(--card-background);
+      padding: 0 4px;
+      color: var(--text-color);
+      cursor: pointer;
+      outline: none;
 
-    .custom-select-wrapper {
-      position: relative;
-
-      select.custom-page-select {
-        appearance: none;
-        background: var(--card-background);
-        border: 1px solid var(--card-border);
-        border-radius: 8px;
-        padding: 6px 32px 6px 12px;
-        font-size: 13px;
-        color: var(--text-color);
-        cursor: pointer;
-        min-width: 65px;
-        outline: none;
-        transition: all 0.2s;
-
-        &:hover {
-          border-color: var(--brand-primary);
-        }
-      }
-
-      &::after {
-        content: "\F285";
-        /* bi-chevron-down */
-        font-family: "bootstrap-icons";
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 10px;
-        pointer-events: none;
-        color: var(--text-muted);
+      &:focus {
+        border-color: var(--brand-primary);
       }
     }
   }
@@ -655,56 +493,49 @@ REPORT TYPE CARD (buttons row)\
   .pagination-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 
     .paginator-btn {
-      background: var(--card-background);
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 6px;
       border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 7px 14px;
-      font-size: 13px;
+      background: var(--card-background);
+      font-size: 0.8125rem;
       font-weight: 500;
       color: var(--text-color);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
+      gap: 6px;
 
       &:hover:not(:disabled) {
         border-color: var(--brand-primary);
         color: var(--brand-primary);
-        background: var(--brand-primary-light);
       }
 
       &:disabled {
-        opacity: 0.4;
+        opacity: 0.5;
         cursor: not-allowed;
-      }
-
-      i {
-        font-size: 10px;
       }
     }
 
     .page-numbers-container {
       display: flex;
-      gap: 6px;
+      gap: 4px;
 
       .page-number-btn {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        border: 1px solid var(--card-border);
+        background: var(--card-background);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid var(--card-border);
-        border-radius: 8px;
-        background: var(--card-background);
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--text-color);
-        cursor: pointer;
-        transition: all 0.2s;
 
         &:hover {
           border-color: var(--brand-primary);
@@ -713,9 +544,8 @@ REPORT TYPE CARD (buttons row)\
 
         &.active {
           background: var(--brand-primary);
+          color: #fff;
           border-color: var(--brand-primary);
-          color: #ffffff;
-          font-weight: 600;
         }
       }
     }
@@ -723,175 +553,22 @@ REPORT TYPE CARD (buttons row)\
 }
 
 /* ================================
-   MOBILE CARDS
+   MOBILE STYLES
    ================================ */
-
-.desktop-table {
-  display: block;
-}
-
-.mobile-cards {
-  display: none;
-}
-
-.mobile-card {
-  background: var(--card-background);
-  border-radius: 8px;
-  border: 1px solid var(--card-border);
-  padding: 12px 14px;
-  margin: 0 12px 12px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
-}
-
-.mobile-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.mobile-card-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.mobile-card-subtitle {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-.mobile-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.mobile-field {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 12px;
-}
-
-.field-label {
-  color: var(--text-muted);
-}
-
-.field-value {
-  color: var(--text-color);
-  font-weight: 500;
-  text-align: right;
-}
-
-/* ================================
-   RESPONSIVE
-   ================================ */
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .header-actions .btn-text {
-    display: none;
-  }
-
-  .summary-cards {
-    gap: 14px;
-  }
-
-  .summary-card .mat-mdc-card-content {
-    padding: 14px 16px;
-  }
-
-  .summary-card {
-    min-height: 90px;
-  }
-
-  .summary-card .card-content .value {
-    font-size: 20px;
-  }
-
-  .report-table-card mat-card-header {
-    padding: 12px 16px;
-  }
-
-  .report-table th.mat-mdc-header-cell {
-    font-size: 9px;
-    padding: 10px 6px;
-  }
-
-  .report-table td.mat-mdc-cell {
-    font-size: 11px;
-    padding: 10px 6px;
-  }
-
-  .custom-paginator {
-    padding: 10px 12px;
-  }
-
-  .page-btn,
-  .page-number {
-    padding: 3px 8px;
-    min-width: 26px;
-    font-size: 11px;
-  }
-
-  .prev-next-text {
-    display: none;
-  }
-}
 
 @media (max-width: 768px) {
-  .inventory-reports-inner {
-    width: 100%;
-    padding-inline: 12px;
-  }
-
   .page-header {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .header-actions {
-    width: 100%;
-    flex-direction: column;
     align-items: stretch;
-  }
 
-  .header-actions button {
-    width: 100%;
-    justify-content: center;
-  }
+    .page-header-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
 
-  .summary-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .filter-form {
-    flex-direction: column;
-  }
-
-  .filter-form mat-form-field {
-    width: 100%;
-    min-width: 100%;
-  }
-
-  .filter-actions {
-    width: 100%;
-  }
-
-  .filter-actions button {
-    flex: 1;
-  }
-
-  .report-table-card mat-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .report-table-card .search-field {
-    width: 100%;
+      button:last-child {
+        grid-column: span 2;
+      }
+    }
   }
 
   .desktop-table {
@@ -899,21 +576,58 @@ REPORT TYPE CARD (buttons row)\
   }
 
   .mobile-cards {
-    display: block;
-  }
-
-  .custom-paginator {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
-  }
-}
+    gap: 12px;
+    padding: 16px;
 
-@media (min-width: 1025px) {
-  .mobile-cards {
-    display: none !important;
+    .mobile-card {
+      background: var(--card-background);
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+
+      .mobile-card-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+
+        .mobile-card-title {
+          font-weight: 700;
+          font-size: 1rem;
+        }
+      }
+
+      .mobile-card-body {
+        display: grid;
+        gap: 8px;
+
+        .mobile-field {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.8125rem;
+
+          .field-label {
+            color: var(--text-muted);
+          }
+
+          .field-value {
+            font-weight: 600;
+          }
+        }
+      }
+    }
   }
 
-  .desktop-table {
-    display: block !important;
+  .custom-pagination-container {
+    flex-direction: column;
+    align-items: center;
+
+    .pagination-actions {
+      .page-numbers-container {
+        display: none;
+      }
+    }
   }
 }

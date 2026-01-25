@@ -16,14 +16,14 @@ export class InventoryReportsComponent implements OnInit {
 
   // Report Types
   reportTypes = [
-    { value: 'stock', label: 'Stock Report', icon: 'inventory_2' },
-    { value: 'movement', label: 'Movement Report', icon: 'swap_horiz' },
-    { value: 'purchase', label: 'Purchase Order Report', icon: 'shopping_cart' },
-    { value: 'category', label: 'Category Wise Report', icon: 'category' },
-    { value: 'supplier', label: 'Supplier Report', icon: 'local_shipping' },
-    { value: 'consumption', label: 'Consumption Report', icon: 'trending_down' },
-    { value: 'lowstock', label: 'Low Stock Alert', icon: 'warning' },
-    { value: 'expiry', label: 'Expiry Report', icon: 'event_busy' }
+    { value: 'stock', label: 'Stock Report', icon: 'bi-box-seam' },
+    { value: 'movement', label: 'Movement Report', icon: 'bi-arrow-left-right' },
+    { value: 'purchase', label: 'Purchase Order Report', icon: 'bi-cart3' },
+    { value: 'category', label: 'Category Wise Report', icon: 'bi-tags' },
+    { value: 'supplier', label: 'Supplier Report', icon: 'bi-truck' },
+    { value: 'consumption', label: 'Consumption Report', icon: 'bi-graph-down-arrow' },
+    { value: 'lowstock', label: 'Low Stock Alert', icon: 'bi-exclamation-triangle' },
+    { value: 'expiry', label: 'Expiry Report', icon: 'bi-calendar-x' }
   ];
 
   selectedReportType = 'stock';
