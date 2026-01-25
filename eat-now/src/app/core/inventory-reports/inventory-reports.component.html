@@ -342,50 +342,42 @@
                     </div>
                 </div>
 
-                <mat-paginator #stockPaginator class="hidden-paginator"
-                    [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
-
-                <div class="custom-paginator" *ngIf="stockPaginator">
-                    <div class="paginator-left">
-                        <span class="paginator-info">
-                            {{ getCustomRangeLabel(stockPaginator) }}
-                        </span>
-                        <div class="page-size-select">
-                            <span class="rows-label">Rows:</span>
-                            <select [value]="stockPaginator.pageSize" (change)="
-                  onCustomPageSizeChange(
-                    stockPaginator,
-                    $any($event.target).value
-                  )
-                ">
-                                <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
-                                    {{ size }}
-                                </option>
-                            </select>
+                <div class="report-pagination-bar">
+                    <mat-paginator #stockPaginator [pageSizeOptions]="[10, 25, 50, 100]"
+                        style="display: none;"></mat-paginator>
+                    <div class="custom-pagination-container">
+                        <div class="pagination-info">
+                            <span class="range-label">{{ getCustomRangeLabel(stockPaginator) }}</span>
+                            <span class="rows-per-page-label">Rows per page:</span>
+                            <div class="custom-select-wrapper">
+                                <select [value]="stockPaginator?.pageSize"
+                                    (change)="onCustomPageSizeChange(stockPaginator, $any($event.target).value)"
+                                    class="custom-page-select">
+                                    <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">{{ size }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pagination-actions">
+                            <button class="paginator-btn prev-btn" [disabled]="!hasPreviousPage(stockPaginator)"
+                                (click)="goToPreviousPage(stockPaginator)">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </button>
+                            <div class="page-numbers-container">
+                                <button *ngFor="let page of getPageNumbers(stockPaginator)" class="page-number-btn"
+                                    [class.active]="page === stockPaginator?.pageIndex"
+                                    (click)="goToPage(stockPaginator, page)">
+                                    {{ page + 1 }}
+                                </button>
+                            </div>
+                            <button class="paginator-btn next-btn" [disabled]="!hasNextPage(stockPaginator)"
+                                (click)="goToNextPage(stockPaginator)">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-
-                    <div class="paginator-right">
-                        <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(stockPaginator)"
-                            (click)="goToPreviousPage(stockPaginator)">
-                            <span class="arrow">&lt;</span>
-                            <span class="prev-next-text">Previous</span>
-                        </button>
-
-                        <button *ngFor="
-                let page of getPageNumbers(stockPaginator)
-              " type="button" class="page-number" [class.active]="page === stockPaginator.pageIndex"
-                            (click)="goToPage(stockPaginator, page)">
-                            {{ page + 1 }}
-                        </button>
-
-                        <button type="button" class="page-btn next" [disabled]="!hasNextPage(stockPaginator)"
-                            (click)="goToNextPage(stockPaginator)">
-                            <span class="prev-next-text">Next</span>
-                            <span class="arrow">&gt;</span>
-                        </button>
-                    </div>
                 </div>
+
+
             </mat-card-content>
         </mat-card>
 
@@ -572,47 +564,42 @@
                     </div>
                 </div>
 
-                <mat-paginator #movementPaginator class="hidden-paginator"
-                    [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
-
-                <div class="custom-paginator" *ngIf="movementPaginator">
-                    <div class="paginator-left">
-                        <span class="paginator-info">
-                            {{ getCustomRangeLabel(movementPaginator) }}
-                        </span>
-                        <div class="page-size-select">
-                            <span class="rows-label">Rows:</span>
-                            <select [value]="movementPaginator.pageSize" (change)="
-                  onCustomPageSizeChange(
-                    movementPaginator,
-                    $any($event.target).value
-                  )
-                ">
-                                <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
-                                    {{ size }}
-                                </option>
-                            </select>
+                <div class="report-pagination-bar">
+                    <mat-paginator #movementPaginator [pageSizeOptions]="[10, 25, 50, 100]"
+                        style="display: none;"></mat-paginator>
+                    <div class="custom-pagination-container">
+                        <div class="pagination-info">
+                            <span class="range-label">{{ getCustomRangeLabel(movementPaginator) }}</span>
+                            <span class="rows-per-page-label">Rows per page:</span>
+                            <div class="custom-select-wrapper">
+                                <select [value]="movementPaginator?.pageSize"
+                                    (change)="onCustomPageSizeChange(movementPaginator, $any($event.target).value)"
+                                    class="custom-page-select">
+                                    <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">{{ size }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pagination-actions">
+                            <button class="paginator-btn prev-btn" [disabled]="!hasPreviousPage(movementPaginator)"
+                                (click)="goToPreviousPage(movementPaginator)">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </button>
+                            <div class="page-numbers-container">
+                                <button *ngFor="let page of getPageNumbers(movementPaginator)" class="page-number-btn"
+                                    [class.active]="page === movementPaginator?.pageIndex"
+                                    (click)="goToPage(movementPaginator, page)">
+                                    {{ page + 1 }}
+                                </button>
+                            </div>
+                            <button class="paginator-btn next-btn" [disabled]="!hasNextPage(movementPaginator)"
+                                (click)="goToNextPage(movementPaginator)">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="paginator-right">
-                        <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(movementPaginator)"
-                            (click)="goToPreviousPage(movementPaginator)">
-                            <span class="arrow">&lt;</span>
-                            <span class="prev-next-text">Previous</span>
-                        </button>
-                        <button *ngFor="
-                let page of getPageNumbers(movementPaginator)
-              " type="button" class="page-number" [class.active]="page === movementPaginator.pageIndex"
-                            (click)="goToPage(movementPaginator, page)">
-                            {{ page + 1 }}
-                        </button>
-                        <button type="button" class="page-btn next" [disabled]="!hasNextPage(movementPaginator)"
-                            (click)="goToNextPage(movementPaginator)">
-                            <span class="prev-next-text">Next</span>
-                            <span class="arrow">&gt;</span>
-                        </button>
-                    </div>
                 </div>
+
+
             </mat-card-content>
         </mat-card>
 
@@ -764,47 +751,42 @@
                     </div>
                 </div>
 
-                <mat-paginator #purchasePaginator class="hidden-paginator"
-                    [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
-
-                <div class="custom-paginator" *ngIf="purchasePaginator">
-                    <div class="paginator-left">
-                        <span class="paginator-info">
-                            {{ getCustomRangeLabel(purchasePaginator) }}
-                        </span>
-                        <div class="page-size-select">
-                            <span class="rows-label">Rows:</span>
-                            <select [value]="purchasePaginator.pageSize" (change)="
-                  onCustomPageSizeChange(
-                    purchasePaginator,
-                    $any($event.target).value
-                  )
-                ">
-                                <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
-                                    {{ size }}
-                                </option>
-                            </select>
+                <div class="report-pagination-bar">
+                    <mat-paginator #purchasePaginator [pageSizeOptions]="[10, 25, 50, 100]"
+                        style="display: none;"></mat-paginator>
+                    <div class="custom-pagination-container">
+                        <div class="pagination-info">
+                            <span class="range-label">{{ getCustomRangeLabel(purchasePaginator) }}</span>
+                            <span class="rows-per-page-label">Rows per page:</span>
+                            <div class="custom-select-wrapper">
+                                <select [value]="purchasePaginator?.pageSize"
+                                    (change)="onCustomPageSizeChange(purchasePaginator, $any($event.target).value)"
+                                    class="custom-page-select">
+                                    <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">{{ size }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pagination-actions">
+                            <button class="paginator-btn prev-btn" [disabled]="!hasPreviousPage(purchasePaginator)"
+                                (click)="goToPreviousPage(purchasePaginator)">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </button>
+                            <div class="page-numbers-container">
+                                <button *ngFor="let page of getPageNumbers(purchasePaginator)" class="page-number-btn"
+                                    [class.active]="page === purchasePaginator?.pageIndex"
+                                    (click)="goToPage(purchasePaginator, page)">
+                                    {{ page + 1 }}
+                                </button>
+                            </div>
+                            <button class="paginator-btn next-btn" [disabled]="!hasNextPage(purchasePaginator)"
+                                (click)="goToNextPage(purchasePaginator)">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="paginator-right">
-                        <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(purchasePaginator)"
-                            (click)="goToPreviousPage(purchasePaginator)">
-                            <span class="arrow">&lt;</span>
-                            <span class="prev-next-text">Previous</span>
-                        </button>
-                        <button *ngFor="
-                let page of getPageNumbers(purchasePaginator)
-              " type="button" class="page-number" [class.active]="page === purchasePaginator.pageIndex"
-                            (click)="goToPage(purchasePaginator, page)">
-                            {{ page + 1 }}
-                        </button>
-                        <button type="button" class="page-btn next" [disabled]="!hasNextPage(purchasePaginator)"
-                            (click)="goToNextPage(purchasePaginator)">
-                            <span class="prev-next-text">Next</span>
-                            <span class="arrow">&gt;</span>
-                        </button>
-                    </div>
                 </div>
+
+
             </mat-card-content>
         </mat-card>
 
@@ -938,47 +920,42 @@
                     </div>
                 </div>
 
-                <mat-paginator #categoryPaginator class="hidden-paginator"
-                    [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
-
-                <div class="custom-paginator" *ngIf="categoryPaginator">
-                    <div class="paginator-left">
-                        <span class="paginator-info">
-                            {{ getCustomRangeLabel(categoryPaginator) }}
-                        </span>
-                        <div class="page-size-select">
-                            <span class="rows-label">Rows:</span>
-                            <select [value]="categoryPaginator.pageSize" (change)="
-                  onCustomPageSizeChange(
-                    categoryPaginator,
-                    $any($event.target).value
-                  )
-                ">
-                                <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
-                                    {{ size }}
-                                </option>
-                            </select>
+                <div class="report-pagination-bar">
+                    <mat-paginator #categoryPaginator [pageSizeOptions]="[10, 25, 50, 100]"
+                        style="display: none;"></mat-paginator>
+                    <div class="custom-pagination-container">
+                        <div class="pagination-info">
+                            <span class="range-label">{{ getCustomRangeLabel(categoryPaginator) }}</span>
+                            <span class="rows-per-page-label">Rows per page:</span>
+                            <div class="custom-select-wrapper">
+                                <select [value]="categoryPaginator?.pageSize"
+                                    (change)="onCustomPageSizeChange(categoryPaginator, $any($event.target).value)"
+                                    class="custom-page-select">
+                                    <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">{{ size }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pagination-actions">
+                            <button class="paginator-btn prev-btn" [disabled]="!hasPreviousPage(categoryPaginator)"
+                                (click)="goToPreviousPage(categoryPaginator)">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </button>
+                            <div class="page-numbers-container">
+                                <button *ngFor="let page of getPageNumbers(categoryPaginator)" class="page-number-btn"
+                                    [class.active]="page === categoryPaginator?.pageIndex"
+                                    (click)="goToPage(categoryPaginator, page)">
+                                    {{ page + 1 }}
+                                </button>
+                            </div>
+                            <button class="paginator-btn next-btn" [disabled]="!hasNextPage(categoryPaginator)"
+                                (click)="goToNextPage(categoryPaginator)">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="paginator-right">
-                        <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(categoryPaginator)"
-                            (click)="goToPreviousPage(categoryPaginator)">
-                            <span class="arrow">&lt;</span>
-                            <span class="prev-next-text">Previous</span>
-                        </button>
-                        <button *ngFor="
-                let page of getPageNumbers(categoryPaginator)
-              " type="button" class="page-number" [class.active]="page === categoryPaginator.pageIndex"
-                            (click)="goToPage(categoryPaginator, page)">
-                            {{ page + 1 }}
-                        </button>
-                        <button type="button" class="page-btn next" [disabled]="!hasNextPage(categoryPaginator)"
-                            (click)="goToNextPage(categoryPaginator)">
-                            <span class="prev-next-text">Next</span>
-                            <span class="arrow">&gt;</span>
-                        </button>
-                    </div>
                 </div>
+
+
             </mat-card-content>
         </mat-card>
 
@@ -1121,47 +1098,42 @@
                     </div>
                 </div>
 
-                <mat-paginator #supplierPaginator class="hidden-paginator"
-                    [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
-
-                <div class="custom-paginator" *ngIf="supplierPaginator">
-                    <div class="paginator-left">
-                        <span class="paginator-info">
-                            {{ getCustomRangeLabel(supplierPaginator) }}
-                        </span>
-                        <div class="page-size-select">
-                            <span class="rows-label">Rows:</span>
-                            <select [value]="supplierPaginator.pageSize" (change)="
-                  onCustomPageSizeChange(
-                    supplierPaginator,
-                    $any($event.target).value
-                  )
-                ">
-                                <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
-                                    {{ size }}
-                                </option>
-                            </select>
+                <div class="report-pagination-bar">
+                    <mat-paginator #supplierPaginator [pageSizeOptions]="[10, 25, 50, 100]"
+                        style="display: none;"></mat-paginator>
+                    <div class="custom-pagination-container">
+                        <div class="pagination-info">
+                            <span class="range-label">{{ getCustomRangeLabel(supplierPaginator) }}</span>
+                            <span class="rows-per-page-label">Rows per page:</span>
+                            <div class="custom-select-wrapper">
+                                <select [value]="supplierPaginator?.pageSize"
+                                    (change)="onCustomPageSizeChange(supplierPaginator, $any($event.target).value)"
+                                    class="custom-page-select">
+                                    <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">{{ size }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pagination-actions">
+                            <button class="paginator-btn prev-btn" [disabled]="!hasPreviousPage(supplierPaginator)"
+                                (click)="goToPreviousPage(supplierPaginator)">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </button>
+                            <div class="page-numbers-container">
+                                <button *ngFor="let page of getPageNumbers(supplierPaginator)" class="page-number-btn"
+                                    [class.active]="page === supplierPaginator?.pageIndex"
+                                    (click)="goToPage(supplierPaginator, page)">
+                                    {{ page + 1 }}
+                                </button>
+                            </div>
+                            <button class="paginator-btn next-btn" [disabled]="!hasNextPage(supplierPaginator)"
+                                (click)="goToNextPage(supplierPaginator)">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="paginator-right">
-                        <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(supplierPaginator)"
-                            (click)="goToPreviousPage(supplierPaginator)">
-                            <span class="arrow">&lt;</span>
-                            <span class="prev-next-text">Previous</span>
-                        </button>
-                        <button *ngFor="
-                let page of getPageNumbers(supplierPaginator)
-              " type="button" class="page-number" [class.active]="page === supplierPaginator.pageIndex"
-                            (click)="goToPage(supplierPaginator, page)">
-                            {{ page + 1 }}
-                        </button>
-                        <button type="button" class="page-btn next" [disabled]="!hasNextPage(supplierPaginator)"
-                            (click)="goToNextPage(supplierPaginator)">
-                            <span class="prev-next-text">Next</span>
-                            <span class="arrow">&gt;</span>
-                        </button>
-                    </div>
                 </div>
+
+
             </mat-card-content>
         </mat-card>
 
@@ -1324,47 +1296,42 @@
                     </div>
                 </div>
 
-                <mat-paginator #consumptionPaginator class="hidden-paginator"
-                    [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
-
-                <div class="custom-paginator" *ngIf="consumptionPaginator">
-                    <div class="paginator-left">
-                        <span class="paginator-info">
-                            {{ getCustomRangeLabel(consumptionPaginator) }}
-                        </span>
-                        <div class="page-size-select">
-                            <span class="rows-label">Rows:</span>
-                            <select [value]="consumptionPaginator.pageSize" (change)="
-                  onCustomPageSizeChange(
-                    consumptionPaginator,
-                    $any($event.target).value
-                  )
-                ">
-                                <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">
-                                    {{ size }}
-                                </option>
-                            </select>
+                <div class="report-pagination-bar">
+                    <mat-paginator #consumptionPaginator [pageSizeOptions]="[10, 25, 50, 100]"
+                        style="display: none;"></mat-paginator>
+                    <div class="custom-pagination-container">
+                        <div class="pagination-info">
+                            <span class="range-label">{{ getCustomRangeLabel(consumptionPaginator) }}</span>
+                            <span class="rows-per-page-label">Rows per page:</span>
+                            <div class="custom-select-wrapper">
+                                <select [value]="consumptionPaginator?.pageSize"
+                                    (change)="onCustomPageSizeChange(consumptionPaginator, $any($event.target).value)"
+                                    class="custom-page-select">
+                                    <option *ngFor="let size of [10, 25, 50, 100]" [value]="size">{{ size }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pagination-actions">
+                            <button class="paginator-btn prev-btn" [disabled]="!hasPreviousPage(consumptionPaginator)"
+                                (click)="goToPreviousPage(consumptionPaginator)">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </button>
+                            <div class="page-numbers-container">
+                                <button *ngFor="let page of getPageNumbers(consumptionPaginator)"
+                                    class="page-number-btn" [class.active]="page === consumptionPaginator?.pageIndex"
+                                    (click)="goToPage(consumptionPaginator, page)">
+                                    {{ page + 1 }}
+                                </button>
+                            </div>
+                            <button class="paginator-btn next-btn" [disabled]="!hasNextPage(consumptionPaginator)"
+                                (click)="goToNextPage(consumptionPaginator)">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="paginator-right">
-                        <button type="button" class="page-btn prev" [disabled]="!hasPreviousPage(consumptionPaginator)"
-                            (click)="goToPreviousPage(consumptionPaginator)">
-                            <span class="arrow">&lt;</span>
-                            <span class="prev-next-text">Previous</span>
-                        </button>
-                        <button *ngFor="
-                let page of getPageNumbers(consumptionPaginator)
-              " type="button" class="page-number" [class.active]="page === consumptionPaginator.pageIndex"
-                            (click)="goToPage(consumptionPaginator, page)">
-                            {{ page + 1 }}
-                        </button>
-                        <button type="button" class="page-btn next" [disabled]="!hasNextPage(consumptionPaginator)"
-                            (click)="goToNextPage(consumptionPaginator)">
-                            <span class="prev-next-text">Next</span>
-                            <span class="arrow">&gt;</span>
-                        </button>
-                    </div>
                 </div>
+
+
             </mat-card-content>
         </mat-card>
     </div>

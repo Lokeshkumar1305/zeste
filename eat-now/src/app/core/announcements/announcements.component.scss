@@ -103,6 +103,7 @@
     /* Single, light solid colors for icons */
     &.stat-total .stat-icon {
       background-color: var(--status-info-bg);
+
       i {
         color: var(--status-info-color);
       }
@@ -110,6 +111,7 @@
 
     &.stat-active .stat-icon {
       background-color: var(--status-success-bg);
+
       i {
         color: var(--status-success-color);
       }
@@ -117,6 +119,7 @@
 
     &.stat-urgent .stat-icon {
       background-color: var(--status-error-bg);
+
       i {
         color: var(--status-error-color);
       }
@@ -124,6 +127,7 @@
 
     &.stat-expiring .stat-icon {
       background-color: var(--status-warning-bg);
+
       i {
         color: var(--status-warning-color);
       }
@@ -140,7 +144,8 @@
   }
 
   .filter-row {
-    align-items: stretch !important; /* make all cells same height */
+    align-items: stretch !important;
+    /* make all cells same height */
   }
 
   .filter {
@@ -166,7 +171,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 44px;     
+    height: 44px;
     min-height: 44px;
     padding: 0 18px;
     box-sizing: border-box;
@@ -227,18 +232,22 @@
   }
 
   .tenant-card-content {
-    padding: 0;
+    padding: 16px 20px 24px;
   }
 
   .table-responsive {
     width: 100%;
+    overflow: hidden;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    background: var(--card-background);
   }
 
   .tenant-table {
     width: 100%;
-    border-collapse: separate;
+    border-collapse: collapse;
     border-spacing: 0;
   }
 
@@ -253,25 +262,25 @@
 
   .tenant-header-row {
     background: var(--brand-primary);
-    color: var(--button-text) !important;
+    color: #ffffff !important;
   }
 
   .tenant-header-row th {
-    color: var(--button-text) !important;
+    color: #ffffff !important;
     font-weight: 600;
     letter-spacing: 0.03em;
     border-bottom: none;
   }
 
-  .tenant-data-row {
-    background-color: var(--card-background);
-    transition: background-color 0.2s ease, transform 0.1s ease;
+  // .tenant-data-row {
+  //   background-color: var(--card-background);
+  //   transition: background-color 0.2s ease, transform 0.1s ease;
 
-    &.inactive-row {
-      background-color: var(--input-background);
-      opacity: 0.85;
-    }
-  }
+  //   &.inactive-row {
+  //     background-color: var(--input-background);
+  //     opacity: 0.85;
+  //   }
+  // }
 
   .tenant-data-row:hover {
     background-color: var(--surface-hover);
@@ -404,105 +413,72 @@
 
   /* Icon buttons in table */
   .table-view-desktop .icon-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 4px;
-    transition: background-color 0.15s ease, transform 0.1s ease;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    margin-right: 8px;
+    background: var(--input-background);
+    color: var(--text-color);
+    border: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     i {
-      font-size: 0.95rem;
+      font-size: 1rem;
     }
 
     &.edit {
-      color: var(--brand-primary);
+      &:hover {
+        background: var(--brand-primary-light);
+        color: var(--brand-primary);
+      }
     }
+
     &.status {
-      color: var(--status-warning-color);
+      &:hover {
+        background: var(--status-warning-bg);
+        color: var(--status-warning-color);
+      }
     }
+
     &.delete {
-      color: var(--status-error-color);
+      &:hover {
+        background: var(--status-error-bg);
+        color: var(--status-error-color);
+      }
     }
 
     &:hover {
-      background-color: var(--surface-hover);
-      transform: translateY(-1px);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: var(--shadow-sm);
     }
   }
 
   /* Pagination bar */
   .tenant-pagination-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 16px 12px;
-    border-top: 1px solid var(--card-border);
+    padding: 8px 16px;
+    // border-top: 1px solid var(--card-border);
     background-color: var(--card-background);
-    flex-wrap: wrap;
-    gap: 8px;
   }
 
-  .page-nav {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+  ::ng-deep .tenant-paginator {
+    background: transparent !important;
 
-  .page-btn {
-    border-radius: 8px;
-    border: 1px solid var(--card-border);
-    background-color: var(--card-background);
-    padding: 6px 14px;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    outline: none;
-    transition:
-      background-color 0.15s ease,
-      color 0.15s ease,
-      border-color 0.15s ease,
-      transform 0.1s ease;
-    white-space: nowrap;
-
-    &:disabled {
-      cursor: default;
-      color: var(--text-muted);
-      border-color: var(--card-border);
-      background-color: var(--input-background);
-    }
-
-    &.number {
-      width: 32px;
-      height: 32px;
+    .mat-mdc-paginator-container {
+      justify-content: flex-end;
       padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    &.number.active {
-      background: var(--brand-primary);
-      color: var(--button-text) !important;
-      border-color: var(--brand-primary);
+    .mat-mdc-paginator-page-size {
+      margin-right: 24px;
     }
 
-    &:not(:disabled):hover {
-      background-color: var(--surface-hover);
-      transform: translateY(-1px);
+    .mat-mdc-paginator-range-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
     }
-
-    &.number.active:not(:disabled):hover {
-      background-color: var(--brand-primary-700);
-      border-color: var(--brand-primary-700);
-    }
-  }
-
-  .page-btn-text {
-    display: inline;
-  }
-
-  .page-btn-icon {
-    display: none;
   }
 
   /* Mobile table cards */
@@ -593,7 +569,7 @@
       font-size: 0.9rem;
     }
 
-    .stats-row > div[class^='col-'] {
+    .stats-row>div[class^='col-'] {
       flex: 0 0 50%;
       max-width: 50%;
     }
@@ -721,7 +697,7 @@
       justify-content: center;
     }
 
-    .stats-row > div[class^='col-'] {
+    .stats-row>div[class^='col-'] {
       flex: 0 0 100%;
       max-width: 100%;
     }
@@ -768,61 +744,152 @@
     }
   }
 
-  /* Paginator tweaks */
-  ::ng-deep .tenant-paginator {
-    .mat-mdc-paginator-outer-container {
-      padding: 0;
-    }
+  /* Paginator (Custom Design) */
+  .tenant-pagination-bar {
+    background: var(--card-background);
+    // border-top: 1px solid var(--card-border);
+  }
 
-    .mat-mdc-paginator-container {
-      min-height: 40px;
-      justify-content: flex-start;
+  .custom-pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    .pagination-info {
+      display: flex;
+      align-items: center;
       gap: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+
+      .rows-per-page-label {
+        white-space: nowrap;
+      }
+
+      .custom-select-wrapper {
+        position: relative;
+
+        select.custom-page-select {
+          appearance: none;
+          background: var(--card-background);
+          border: 1px solid var(--card-border);
+          border-radius: 8px;
+          padding: 6px 32px 6px 12px;
+          font-size: 13px;
+          color: var(--text-color);
+          cursor: pointer;
+          min-width: 65px;
+          outline: none;
+          transition: all 0.2s;
+
+          &:hover {
+            border-color: var(--brand-primary);
+          }
+        }
+
+        &::after {
+          content: "\F285";
+          /* bi-chevron-down */
+          font-family: "bootstrap-icons";
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 10px;
+          pointer-events: none;
+          color: var(--text-muted);
+        }
+      }
     }
 
-    .mat-mdc-paginator-range-actions {
-      order: 1;
+    .pagination-actions {
       display: flex;
       align-items: center;
-    }
+      gap: 10px;
 
-    .mat-mdc-paginator-page-size {
-      order: 2;
-      display: flex;
-      align-items: center;
-    }
+      .paginator-btn {
+        background: var(--card-background);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        padding: 7px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-color);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
 
-    .mat-mdc-paginator-range-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-left: 0;
-      margin-right: 12px;
-    }
+        &:hover:not(:disabled) {
+          border-color: var(--brand-primary);
+          color: var(--brand-primary);
+          background: var(--brand-primary-light);
+        }
 
-    .mat-mdc-paginator-page-size-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-right: 4px;
-    }
+        &:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
 
-    .mat-mdc-paginator-page-size .mat-mdc-text-field-wrapper {
-      height: 32px;
-      border-radius: 8px;
-    }
+        i {
+          font-size: 10px;
+        }
+      }
 
-    .mat-mdc-paginator-page-size .mat-mdc-form-field-flex {
-      padding: 0 8px;
-    }
+      .page-numbers-container {
+        display: flex;
+        gap: 6px;
 
-    .mat-mdc-paginator-page-size .mat-mdc-select-trigger {
-      font-size: 0.8rem;
-    }
+        .page-number-btn {
+          width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid var(--card-border);
+          border-radius: 8px;
+          background: var(--card-background);
+          font-size: 13px;
+          font-weight: 500;
+          color: var(--text-color);
+          cursor: pointer;
+          transition: all 0.2s;
 
-    .mat-mdc-paginator-navigation-first,
-    .mat-mdc-paginator-navigation-previous,
-    .mat-mdc-paginator-navigation-next,
-    .mat-mdc-paginator-navigation-last {
-      display: none !important;
+          &:hover {
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+          }
+
+          &.active {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+            color: #ffffff;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .custom-pagination-container {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px;
+      gap: 16px;
+
+      .pagination-actions {
+        width: 100%;
+        justify-content: space-between;
+
+        .page-numbers-container {
+          display: none;
+        }
+      }
     }
   }
 }

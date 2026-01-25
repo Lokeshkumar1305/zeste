@@ -13,7 +13,7 @@ import { StockReport, MovementReport, PurchaseOrderReport, CategoryWiseReport, S
   styleUrls: ['./inventory-reports.component.scss']
 })
 export class InventoryReportsComponent implements OnInit {
-  
+
   // Report Types
   reportTypes = [
     { value: 'stock', label: 'Stock Report', icon: 'inventory_2' },
@@ -100,7 +100,7 @@ export class InventoryReportsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initFilterForm();
@@ -267,7 +267,7 @@ export class InventoryReportsComponent implements OnInit {
     // Filter for low stock if needed
     let filteredData = stockData;
     if (this.selectedReportType === 'lowstock') {
-      filteredData = stockData.filter(item => 
+      filteredData = stockData.filter(item =>
         item.status === 'Low Stock' || item.status === 'Out of Stock'
       );
     }
@@ -422,7 +422,7 @@ export class InventoryReportsComponent implements OnInit {
     ];
 
     this.purchaseDataSource.data = purchaseData;
-    this.summaryData.pendingOrders = purchaseData.filter(p => 
+    this.summaryData.pendingOrders = purchaseData.filter(p =>
       p.status === 'Pending' || p.status === 'Approved' || p.status === 'Ordered'
     ).length;
 
@@ -703,22 +703,7 @@ export class InventoryReportsComponent implements OnInit {
 
   // ---------- Custom paginator helpers (design only) ----------
 
-  getCustomRangeLabel(paginator: MatPaginator | null | undefined): string {
-    if (!paginator) {
-      return '';
-    }
-    const length = paginator.length ?? 0;
-    const pageSize = paginator.pageSize || 0;
 
-    if (length === 0 || pageSize === 0) {
-      return 'Showing 0 to 0 of 0 entries';
-    }
-
-    const startIndex = paginator.pageIndex * pageSize;
-    const endIndex = Math.min(startIndex + pageSize, length);
-
-    return `Showing ${startIndex + 1} to ${endIndex} of ${length} entries`;
-  }
 
   getPageNumbers(paginator: MatPaginator | null | undefined): number[] {
     if (!paginator) {
@@ -804,7 +789,13 @@ export class InventoryReportsComponent implements OnInit {
     (paginator as any)._changePageSize(newSize);
   }
 
-
-
+  getCustomRangeLabel(paginator: MatPaginator | null | undefined): string {
+    if (!paginator || !paginator.length) {
+      return 'Showing 0 to 0 of 0 entries';
+    }
+    const startIndex = paginator.pageIndex * paginator.pageSize;
+    const endIndex = Math.min(startIndex + paginator.pageSize, paginator.length);
+    return `Showing ${startIndex + 1} to ${endIndex} of ${paginator.length} entries`;
+  }
 
 }

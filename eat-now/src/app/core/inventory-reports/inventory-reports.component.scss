@@ -94,16 +94,16 @@ SUMMARY CARDS (Updated to match second image)
 
 /* Mat-card shell */
 .summary-card {
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--card-background);
   border: 1px solid var(--card-border);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
-  transition: box-shadow 0.18s ease, transform 0.18s ease;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
 }
 
 /* Flex layout - icon left, text right */
 .summary-card .mat-mdc-card-content {
-  padding: 18px 20px;
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -112,43 +112,59 @@ SUMMARY CARDS (Updated to match second image)
 }
 
 .summary-card:hover {
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
 /* Circular icon */
 .summary-card .card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
 .summary-card .card-icon mat-icon {
-  font-size: 22px;
-  width: 22px;
-  height: 22px;
-  color: var(--button-text);
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
 }
 
-/* Icon background colors */
+/* Icon backgrounds (Light version) and Icon colors */
 .summary-card .card-icon.blue {
-  background: var(--brand-primary-dark);
+  background: var(--status-info-bg);
+
+  mat-icon {
+    color: var(--status-info-color);
+  }
 }
 
 .summary-card .card-icon.green {
-  background: var(--status-success-color);
+  background: var(--status-success-bg);
+
+  mat-icon {
+    color: var(--status-success-color);
+  }
 }
 
 .summary-card .card-icon.orange {
-  background: var(--status-warning-color);
+  background: var(--status-warning-bg);
+
+  mat-icon {
+    color: var(--status-warning-color);
+  }
 }
 
 .summary-card .card-icon.red {
-  background: var(--status-error-color);
+  background: var(--status-error-bg);
+
+  mat-icon {
+    color: var(--status-error-color);
+  }
 }
 
 /* Text block - value on top, label below */
@@ -329,7 +345,7 @@ REPORT TYPE CARD (buttons row)\
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background-color: var(--bg-page);
+  background-color: var(--card-background);
   border-bottom: 1px solid var(--card-border);
   flex-wrap: wrap;
   gap: 16px;
@@ -338,9 +354,11 @@ REPORT TYPE CARD (buttons row)\
 .report-table-card mat-card-header mat-card-title {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 18px;
+  font-weight: 600;
   margin: 0;
+  color: var(--text-color);
 }
 
 .report-table-card mat-card-header mat-card-title mat-icon {
@@ -348,12 +366,12 @@ REPORT TYPE CARD (buttons row)\
 }
 
 .report-table-card .search-field {
-  width: 250px;
+  width: 280px;
   margin: 0;
 }
 
 .report-table-card mat-card-content {
-  padding: 0;
+  padding: 16px 20px 24px;
 }
 
 /* ================================
@@ -361,8 +379,12 @@ REPORT TYPE CARD (buttons row)\
    ================================ */
 
 .table-container {
+  overflow: hidden;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
 }
 
 .report-table {
@@ -373,13 +395,13 @@ REPORT TYPE CARD (buttons row)\
 
 .report-table .mat-mdc-header-row {
   background: var(--brand-primary);
-  color: var(--button-text) !important;
+  color: #ffffff !important;
 }
 
 .report-table th.mat-mdc-header-cell {
   font-weight: 600;
-  color: var(--button-text) !important;
-  padding: 12px 10px;
+  color: #ffffff !important;
+  padding: 14px 12px;
   white-space: nowrap;
   text-transform: uppercase;
   font-size: 11px;
@@ -397,9 +419,9 @@ REPORT TYPE CARD (buttons row)\
   text-overflow: ellipsis;
 }
 
-.report-table tr.mat-mdc-row:nth-child(even) td.mat-mdc-cell {
-  background-color: var(--surface-hover);
-}
+// .report-table tr.mat-mdc-row:nth-child(even) td.mat-mdc-cell {
+//   background-color: var(--surface-hover);
+// }
 
 .report-table tr.mat-mdc-row:hover td.mat-mdc-cell {
   background-color: var(--surface-hover);
@@ -437,8 +459,9 @@ REPORT TYPE CARD (buttons row)\
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  margin-right: 5px;
-  background-color: rgba(0, 0, 0, 0.25);
+  margin-right: 6px;
+  background-color: currentColor;
+  opacity: 0.8;
 }
 
 .status-success {
@@ -446,17 +469,9 @@ REPORT TYPE CARD (buttons row)\
   color: var(--status-success-color);
 }
 
-.status-success::before {
-  background-color: var(--status-success-color);
-}
-
 .status-warning {
-  background-color: var(--card-background)3cd;
+  background-color: var(--status-warning-bg);
   color: var(--status-warning-color);
-}
-
-.status-warning::before {
-  background-color: var(--status-warning-color);
 }
 
 .status-danger {
@@ -464,17 +479,9 @@ REPORT TYPE CARD (buttons row)\
   color: var(--status-error-color);
 }
 
-.status-danger::before {
-  background-color: var(--status-error-color);
-}
-
 .status-info {
   background-color: var(--status-info-bg);
   color: var(--status-info-color);
-}
-
-.status-info::before {
-  background-color: var(--status-info-color);
 }
 
 .movement-type-badge {
@@ -509,7 +516,7 @@ REPORT TYPE CARD (buttons row)\
 }
 
 .movement-adjustment {
-  background-color: var(--card-background)3e0;
+  background-color: var(--status-warning-bg);
   color: var(--status-warning-color);
 }
 
@@ -582,98 +589,137 @@ REPORT TYPE CARD (buttons row)\
 }
 
 /* ================================
-   PAGINATOR
+   PAGINATOR (Custom Design)
    ================================ */
 
-mat-paginator.hidden-paginator {
-  display: none;
+.report-pagination-bar {
+  background: var(--card-background);
+  // border-top: 1px solid var(--card-border);
 }
 
-.custom-paginator {
+.custom-pagination-container {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  background-color: var(--card-background);
-  border-top: 1px solid var(--card-border);
-  font-size: 12px;
-  color: var(--text-muted);
+  align-items: center;
+  padding: 14px 24px;
+  gap: 20px;
   flex-wrap: wrap;
-}
 
-.paginator-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
+  .pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
 
-.paginator-info {
-  white-space: nowrap;
-}
+    .rows-per-page-label {
+      white-space: nowrap;
+    }
 
-.page-size-select {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+    .custom-select-wrapper {
+      position: relative;
 
-.page-size-select select {
-  min-width: 55px;
-  padding: 4px 22px 4px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--card-border);
-  background-color: var(--card-background);
-  font-size: 12px;
-  color: var(--text-color);
-  outline: none;
-  appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, #999 50%),
-    linear-gradient(135deg, #999 50%, transparent 50%);
-  background-position: calc(100% - 12px) 9px, calc(100% - 7px) 9px;
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
-}
+      select.custom-page-select {
+        appearance: none;
+        background: var(--card-background);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        padding: 6px 32px 6px 12px;
+        font-size: 13px;
+        color: var(--text-color);
+        cursor: pointer;
+        min-width: 65px;
+        outline: none;
+        transition: all 0.2s;
 
-.paginator-right {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
+        &:hover {
+          border-color: var(--brand-primary);
+        }
+      }
 
-.page-btn,
-.page-number {
-  border: 1px solid var(--card-border);
-  background-color: var(--card-background)fff;
-  color: var(--text-color);
-  padding: 4px 10px;
-  min-width: 28px;
-  font-size: 12px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-  border-radius: 6px;
-}
+      &::after {
+        content: "\F285";
+        /* bi-chevron-down */
+        font-family: "bootstrap-icons";
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 10px;
+        pointer-events: none;
+        color: var(--text-muted);
+      }
+    }
+  }
 
-.page-btn[disabled] {
-  opacity: 0.5;
-  cursor: default;
-  background-color: var(--input-background);
-}
+  .pagination-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-.page-number.active {
-  background: var(--brand-primary);
-  border-color: var(--brand-primary);
-  color: var(--button-text);
-  font-weight: 500;
-}
+    .paginator-btn {
+      background: var(--card-background);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-color);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
 
-.custom-paginator button:not([disabled]):hover {
-  border-color: var(--brand-primary);
+      &:hover:not(:disabled) {
+        border-color: var(--brand-primary);
+        color: var(--brand-primary);
+        background: var(--brand-primary-light);
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      i {
+        font-size: 10px;
+      }
+    }
+
+    .page-numbers-container {
+      display: flex;
+      gap: 6px;
+
+      .page-number-btn {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        background: var(--card-background);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          border-color: var(--brand-primary);
+          color: var(--brand-primary);
+        }
+
+        &.active {
+          background: var(--brand-primary);
+          border-color: var(--brand-primary);
+          color: #ffffff;
+          font-weight: 600;
+        }
+      }
+    }
+  }
 }
 
 /* ================================

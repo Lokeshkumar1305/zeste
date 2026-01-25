@@ -288,26 +288,42 @@
 
           <!-- Pagination bar -->
           <div class="tenant-pagination-bar">
-            <mat-paginator #paginator class="tenant-paginator" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-              aria-label="Select page of announcements" (page)="onMatPageChange($event)">
+            <!-- Hidden real paginator for state management -->
+            <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+              (page)="onMatPageChange($event)" style="display: none;">
             </mat-paginator>
 
-            <div class="page-nav">
-              <button class="page-btn prev" [disabled]="pageIndex === 0" (click)="goToPreviousPage()">
-                <span class="page-btn-text">‹ Previous</span>
-                <span class="page-btn-icon">‹</span>
-              </button>
+            <!-- Custom Paginator Matching Image -->
+            <div class="custom-pagination-container">
+              <div class="pagination-info">
+                <span class="range-label">{{ getCustomRangeLabel(paginator) }}</span>
+                <span class="rows-per-page-label">Rows per page:</span>
+                <div class="custom-select-wrapper">
+                  <select [value]="paginator?.pageSize"
+                    (change)="onCustomPageSizeChange(paginator, $any($event.target).value)" class="custom-page-select">
+                    <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+                  </select>
+                </div>
+              </div>
 
-              <ng-container *ngFor="let p of pages">
-                <button class="page-btn number" [class.active]="p === pageIndex + 1" (click)="goToPage(p - 1)">
-                  {{ p }}
+              <div class="pagination-actions">
+                <button class="paginator-btn prev-btn" [disabled]="!hasPreviousPage(paginator)"
+                  (click)="goToPreviousPage(paginator)">
+                  <i class="bi bi-chevron-left"></i> Previous
                 </button>
-              </ng-container>
 
-              <button class="page-btn next" [disabled]="pageIndex >= totalPages - 1" (click)="goToNextPage()">
-                <span class="page-btn-text">Next ›</span>
-                <span class="page-btn-icon">›</span>
-              </button>
+                <div class="page-numbers-container">
+                  <button *ngFor="let page of getPageNumbers(paginator)" class="page-number-btn"
+                    [class.active]="page === paginator?.pageIndex" (click)="goToPage(paginator, page)">
+                    {{ page + 1 }}
+                  </button>
+                </div>
+
+                <button class="paginator-btn next-btn" [disabled]="!hasNextPage(paginator)"
+                  (click)="goToNextPage(paginator)">
+                  Next <i class="bi bi-chevron-right"></i>
+                </button>
+              </div>
             </div>
           </div>
         </mat-card-content>

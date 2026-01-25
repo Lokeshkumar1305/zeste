@@ -81,13 +81,8 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
     expiringSoon: 0
   };
 
-  // Pagination state (for custom right-side buttons)
-  pageIndex = 0;
   pageSize = 5;
   pageSizeOptions: number[] = [5, 10, 25, 50];
-  length = 0;
-  totalPages = 0;
-  pages: number[] = [];
 
   announcementTypes = [
     {
@@ -142,7 +137,7 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
     private announcementService: AnnouncementsService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadAnnouncements();
@@ -152,7 +147,6 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.updatePagerInfo();
     }
   }
 
@@ -180,7 +174,6 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
 
         this.calculateStats();
         this.isLoading = false;
-        this.updatePagerInfo();
       },
       error: (error) => {
         console.error('Error loading announcements:', error);
@@ -190,63 +183,8 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /** Syncs custom buttons with MatPaginator / table */
-  private updatePagerInfo(): void {
-    if (this.paginator) {
-      this.length = this.paginator.length;
-      this.pageIndex = this.paginator.pageIndex;
-      this.pageSize = this.paginator.pageSize;
-    } else {
-      this.length = this.announcements.length;
-    }
-    this.generatePageArray();
-  }
-
-  private generatePageArray(): void {
-    if (!this.pageSize || this.length === 0) {
-      this.totalPages = 0;
-      this.pages = [];
-      return;
-    }
-    this.totalPages = Math.ceil(this.length / this.pageSize);
-    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-  /** Called whenever MatPaginator itself fires a page event (size or index change) */
   onMatPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.length = event.length;
-    this.generatePageArray();
-  }
-
-  /** Custom buttons: Previous / Next / numbered pages */
-  goToPreviousPage(): void {
-    if (this.paginator && this.pageIndex > 0) {
-      this.paginator.previousPage();
-    }
-  }
-
-  goToNextPage(): void {
-    if (this.paginator && this.pageIndex < this.totalPages - 1) {
-      this.paginator.nextPage();
-    }
-  }
-
-  goToPage(pageIndex: number): void {
-    if (!this.paginator || pageIndex === this.pageIndex) return;
-
-    const previousPageIndex = this.pageIndex;
-    this.pageIndex = pageIndex;
-    this.paginator.pageIndex = pageIndex;
-
-    // Emit a page event so MatTableDataSource updates
-    this.paginator.page.next({
-      pageIndex,
-      previousPageIndex,
-      pageSize: this.pageSize,
-      length: this.length
-    });
   }
 
   calculateStats(): void {
@@ -399,5 +337,67 @@ export class AnnouncementsComponent implements OnInit, AfterViewInit {
 
   trackByFn(index: number, item: Announcement): number {
     return item.id;
+  }
+
+  // ---------- Custom paginator helpers ----------
+
+  getPageNumbers(paginator: MatPaginator | null | undefined): number[] {
+    if (!paginator) return [];
+    const length = paginator.length ?? 0;
+    const pageSize = paginator.pageSize || 0;
+    if (length === 0 || pageSize === 0) return [];
+    const totalPages = Math.ceil(length / pageSize);
+    return Array.from({ length: totalPages }, (_, i) => i);
+  }
+
+  hasPreviousPage(paginator: MatPaginator | null | undefined): boolean {
+    return !!paginator && paginator.pageIndex > 0;
+  }
+
+  hasNextPage(paginator: MatPaginator | null | undefined): boolean {
+    if (!paginator) return false;
+    const length = paginator.length ?? 0;
+    const pageSize = paginator.pageSize || 0;
+    if (length === 0 || pageSize === 0) return false;
+    const totalPages = Math.ceil(length / pageSize);
+    return paginator.pageIndex < totalPages - 1;
+  }
+
+  goToPreviousPage(paginator: MatPaginator | null | undefined): void {
+    if (paginator && this.hasPreviousPage(paginator)) {
+      paginator.previousPage();
+    }
+  }
+
+  goToNextPage(paginator: MatPaginator | null | undefined): void {
+    if (paginator && this.hasNextPage(paginator)) {
+      paginator.nextPage();
+    }
+  }
+
+  goToPage(paginator: MatPaginator | null | undefined, pageIndex: number): void {
+    if (!paginator) return;
+    const length = paginator.length ?? 0;
+    const pageSize = paginator.pageSize || 0;
+    if (length === 0 || pageSize === 0) return;
+    const totalPages = Math.ceil(length / pageSize);
+    if (pageIndex < 0 || pageIndex >= totalPages) return;
+    paginator.pageIndex = pageIndex;
+    (paginator as any)._changePageSize(paginator.pageSize);
+    return;
+  }
+
+  onCustomPageSizeChange(paginator: MatPaginator | null | undefined, value: any): void {
+    if (!paginator) return;
+    const newSize = Number(value);
+    if (!newSize) return;
+    (paginator as any)._changePageSize(newSize);
+  }
+
+  getCustomRangeLabel(paginator: MatPaginator | null | undefined): string {
+    if (!paginator || !paginator.length) return 'Showing 0 to 0 of 0 entries';
+    const startIndex = paginator.pageIndex * paginator.pageSize;
+    const endIndex = Math.min(startIndex + paginator.pageSize, paginator.length);
+    return `Showing ${startIndex + 1} to ${endIndex} of ${paginator.length} entries`;
   }
 }
