@@ -27,13 +27,13 @@
   margin: 0;
   font-size: 22px;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
 }
 
 .title-block p {
   margin: 4px 0 0;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .editing-badge {
@@ -103,7 +103,7 @@
 .mode-toggle-label {
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-color);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -135,7 +135,7 @@
 
 .mode-toggle-group .mat-button-toggle-checked {
   background: var(--brand-primary);
-  color: #fff;
+  color: var(--button-text);
 }
 
 /* ---------------- LAYOUT GRID ---------------- */
@@ -191,8 +191,8 @@
 
 .day-count {
   font-size: 11px;
-  color: #6b7280;
-  background: #f3f4f6;
+  color: var(--text-muted);
+  background: var(--input-background);
   padding: 2px 8px;
   border-radius: 10px;
 }
@@ -250,8 +250,8 @@
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: #4b5563;
-  background: #f3f4f6;
+  color: var(--text-muted);
+  background: var(--input-background);
   padding: 6px 12px;
   border-radius: 20px;
   white-space: nowrap;
@@ -305,7 +305,7 @@
 }
 
 .menu-card:hover {
-  border-color: #c7d2fe;
+  border-color: var(--brand-primary-light);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
 }
 
@@ -359,25 +359,25 @@
   font-weight: 600;
   border-radius: 999px;
   text-transform: uppercase;
-  background: #ffffff;
+  background: var(--card-background);
   border: 1.5px solid transparent;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
 }
 
 .item-type-badge.veg {
-  border-color: #16a34a;
-  color: #16a34a;
+  border-color: var(--status-success-color);
+  color: var(--status-success-color);
 }
 
 .item-type-badge.nonveg {
-  border-color: #dc2626;
-  color: #dc2626;
+  border-color: var(--status-error-color);
+  color: var(--status-error-color);
 }
 
 .item-type-badge.egg {
-  border-color: #f59e0b;
-  color: #b45309;
+  border-color: var(--status-warning-color);
+  color: var(--status-warning-color);
 }
 
 /* Card body */
@@ -399,7 +399,7 @@
   margin: 0;
   font-size: 13px;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -421,7 +421,7 @@
 .description {
   margin: 0;
   font-size: 11px;
-  color: #6b7280;
+  color: var(--text-muted);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -433,8 +433,8 @@
   padding: 40px 20px;
   text-align: center;
   border-radius: 10px;
-  border: 2px dashed #d1d5db;
-  background: #f9fafb;
+  border: 2px dashed var(--card-border);
+  background: var(--input-background);
   margin-top: 20px;
 }
 
@@ -442,19 +442,19 @@
   font-size: 48px;
   width: 48px;
   height: 48px;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .empty-state p {
   margin: 12px 0 4px;
   font-size: 14px;
   font-weight: 500;
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 .empty-state span {
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 /* ---------------- RIGHT PANEL ---------------- */
@@ -467,7 +467,7 @@
   margin: 0;
   font-size: 15px;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -491,7 +491,7 @@
 .right-header p {
   margin: 4px 0 0 26px;
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* Day tabs */
@@ -500,7 +500,7 @@
   gap: 3px;
   margin-bottom: 16px;
   padding: 4px;
-  background: #f3f4f6;
+  background: var(--input-background);
   border-radius: 10px;
   overflow-x: auto;
 }
@@ -519,12 +519,12 @@
 }
 
 .day-tabs button:hover {
-  background: #e5e7eb;
+  background: var(--surface-hover);
 }
 
 .day-tabs button.active-day {
   background: var(--brand-primary);
-  color: #fff;
+  color: var(--button-text);
 }
 
 .day-tabs .day-short {
@@ -543,7 +543,7 @@
 
 .day-tabs button.active-day .day-badge {
   background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: var(--button-text);
 }
 
 .selected-day-header {
@@ -554,7 +554,7 @@
   margin: 0;
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-color);
 }
 
 /* Menu summary cards on right */
@@ -562,8 +562,8 @@
   margin-bottom: 12px;
   padding: 12px 14px;
   border-radius: 10px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--input-background);
+  border: 1px solid var(--card-border);
   transition: all 0.15s ease;
 }
 
@@ -592,7 +592,7 @@
 .meal-title {
   font-weight: 600;
   font-size: 14px;
-  color: #111827;
+  color: var(--text-color);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -608,7 +608,7 @@
 
 .time-range {
   font-size: 11px;
-  color: #4b5563;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -618,7 +618,7 @@
   font-size: 13px;
   width: 13px;
   height: 13px;
-  color: #9ca3af;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
@@ -679,7 +679,7 @@
 }
 
 .status-field .status-icon.completed {
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .action-icon-btn {
@@ -696,7 +696,7 @@
 /* Per-item statuses */
 .items-list {
   margin-top: 10px;
-  border-top: 1px dashed #e5e7eb;
+  border-top: 1px dashed var(--card-border);
   padding-top: 10px;
   display: flex;
   flex-direction: column;
@@ -706,7 +706,7 @@
 .items-header {
   font-size: 11px;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -728,7 +728,7 @@
 
 .item-name {
   font-size: 12px;
-  color: #111827;
+  color: var(--text-color);
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -747,15 +747,15 @@
 }
 
 .item-type-dot.veg {
-  background: #16a34a;
+  background: var(--status-success-color);
 }
 
 .item-type-dot.nonveg {
-  background: #dc2626;
+  background: var(--status-error-color);
 }
 
 .item-type-dot.egg {
-  background: #f59e0b;
+  background: var(--status-warning-color);
 }
 
 .item-status-field {
@@ -770,27 +770,27 @@
   padding: 30px 16px;
   text-align: center;
   border-radius: 10px;
-  border: 2px dashed #d1d5db;
-  background: #f9fafb;
+  border: 2px dashed var(--card-border);
+  background: var(--input-background);
 }
 
 .empty-right mat-icon {
   font-size: 40px;
   width: 40px;
   height: 40px;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .empty-right p {
   margin: 10px 0 4px;
   font-size: 13px;
   font-weight: 500;
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 .empty-right span {
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 /* ====== TABLET (769–1024) ====== */

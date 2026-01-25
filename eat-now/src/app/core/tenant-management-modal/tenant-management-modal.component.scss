@@ -49,7 +49,7 @@
 /* Required asterisk */
 mat-label.required::after {
   content: ' *';
-  color: #d32f2f;
+  color: var(--status-error-color);
   margin-left: 4px;
   font-weight: bold;
 }
@@ -157,7 +157,7 @@ mat-label.required::after {
 
 .mobile-upload .option-icon i {
   font-size: 24px;
-  color: #fff;
+  color: var(--button-text);
 }
 
 .mobile-upload .option-icon.file-icon {
@@ -212,7 +212,7 @@ mat-label.required::after {
 
 /* Camera Preview */
 .camera-preview-container {
-  background: #000;
+  background: var(--surface-dark);
   border-radius: 12px;
   overflow: hidden;
   position: relative;
@@ -222,7 +222,7 @@ mat-label.required::after {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: #000;
+  background: var(--surface-dark);
 }
 
 .camera-preview-wrapper video {
@@ -327,9 +327,9 @@ mat-label.required::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff5f5;
+  background: var(--status-error-bg);
   border-radius: 12px;
-  border: 1px solid #ffcdd2;
+  border: 1px solid var(--status-error-color);
 }
 
 .file-info {

@@ -53,7 +53,7 @@
 /* Required asterisk */
 mat-label.required::after {
   content: ' *';
-  color: #d32f2f;
+  color: var(--status-error-color);
   margin-left: 4px;
   font-weight: bold;
 }
@@ -161,7 +161,7 @@ mat-label.required::after {
 
 .mobile-upload .option-icon i {
   font-size: 24px;
-  color: #fff;
+  color: var(--button-text);
 }
 
 .mobile-upload .option-icon.file-icon {
@@ -216,7 +216,7 @@ mat-label.required::after {
 
 /* Camera Preview */
 .camera-preview-container {
-  background: #000;
+  background: var(--surface-dark);
   border-radius: 12px;
   overflow: hidden;
   position: relative;
@@ -226,7 +226,7 @@ mat-label.required::after {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: #000;
+  background: var(--surface-dark);
 }
 
 .camera-preview-wrapper video {
@@ -307,7 +307,7 @@ mat-label.required::after {
   width: 100%;
   max-height: 320px;
   object-fit: contain;
-  background: #f5f5f5;
+  background: var(--input-background);
   display: block;
 }
 

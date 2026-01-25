@@ -56,7 +56,7 @@
     gap: 16px;
     padding: 20px;
     border-radius: 12px;
-    background: white;
+    background: var(--card-background);
     border-left: 5px solid;
 
     i {
@@ -66,7 +66,7 @@
     .info {
       .label {
         font-size: 13px;
-        color: #666;
+        color: var(--text-muted);
       }
 
       .value {
@@ -78,34 +78,34 @@
     }
 
     &.total {
-      border-color: #2196f3;
+      border-color: var(--brand-primary);
 
       i {
-        color: #2196f3;
+        color: var(--brand-primary);
       }
     }
 
     &.ok {
-      border-color: #4caf50;
+      border-color: var(--status-success-color);
 
       i {
-        color: #4caf50;
+        color: var(--status-success-color);
       }
     }
 
     &.low {
-      border-color: #ff9800;
+      border-color: var(--status-warning-color);
 
       i {
-        color: #ff9800;
+        color: var(--status-warning-color);
       }
     }
 
     &.out {
-      border-color: #f44336;
+      border-color: var(--status-error-color);
 
       i {
-        color: #f44336;
+        color: var(--status-error-color);
       }
     }
   }
@@ -116,10 +116,10 @@
   align-items: center;
   gap: 12px;
   padding: 14px;
-  background: #f0f8ff;
+  background: var(--brand-primary-light);
   border-radius: 8px;
   font-size: 14px;
-  color: #1976d2;
+  color: var(--brand-primary);
 }
 
 .filter-bar {
@@ -133,12 +133,12 @@
     display: flex;
     align-items: center;
     padding: 10px 16px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--card-border);
     border-radius: 8px;
-    background: white;
+    background: var(--card-background);
 
     i {
-      color: #999;
+      color: var(--text-muted);
       margin-right: 12px;
     }
 
@@ -152,9 +152,9 @@
 
   .filter-select {
     padding: 10px 16px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--card-border);
     border-radius: 8px;
-    background: white;
+    background: var(--card-background);
     min-width: 160px;
   }
 }
@@ -167,8 +167,8 @@
     padding: 16px;
     border-radius: 12px;
     margin-bottom: 12px;
-    background: white;
-    border: 1px solid #eee;
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
     transition: all 0.2s;
 
     &:hover {
@@ -176,17 +176,17 @@
     }
 
     &.status-ok {
-      border-left: 5px solid #4caf50;
+      border-left: 5px solid var(--status-success-color);
     }
 
     &.status-low {
-      border-left: 5px solid #ff9800;
-      background: #fff8e1;
+      border-left: 5px solid var(--status-warning-color);
+      background: var(--status-warning-bg);
     }
 
     &.status-out {
-      border-left: 5px solid #f44336;
-      background: #ffebee;
+      border-left: 5px solid var(--status-error-color);
+      background: var(--status-error-bg);
     }
 
     .item-info {
@@ -198,7 +198,7 @@
 
       .item-category {
         font-size: 13px;
-        color: #666;
+        color: var(--text-muted);
       }
     }
 
@@ -213,7 +213,7 @@
 
         .unit {
           font-size: 14px;
-          color: #666;
+          color: var(--text-muted);
           margin-left: 6px;
         }
       }
@@ -226,7 +226,7 @@
         font-size: 12px;
 
         .min-level {
-          color: #999;
+          color: var(--text-muted);
         }
 
         .status-badge {
@@ -235,17 +235,17 @@
           font-weight: 600;
 
           &.status-ok {
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: var(--status-success-bg);
+            color: var(--status-success-color);
           }
 
           &.status-low {
-            background: #fff3e0;
-            color: #e65100;
+            background: var(--status-warning-bg);
+            color: var(--status-warning-color);
           }
 
           &.status-out {
-            background: #ffebee;
+            background: var(--status-error-bg);
             color: #c62828;
           }
         }
@@ -256,7 +256,7 @@
   .no-items {
     text-align: center;
     padding: 60px 20px;
-    color: #999;
+    color: var(--text-muted);
 
     i {
       font-size: 64px;
@@ -280,18 +280,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: #e3f2fd;
+  background: var(--brand-primary-light);
   border-radius: 12px;
   font-size: 16px;
 
   .label {
     font-weight: 600;
-    color: #1565c0;
+    color: var(--brand-primary);
   }
 
   .value {
     font-size: 28px;
     font-weight: 700;
-    color: #1565c0;
+    color: var(--brand-primary);
   }
 }

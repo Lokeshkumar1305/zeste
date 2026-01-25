@@ -36,7 +36,7 @@
   margin: 0;
   font-size: 24px;
   font-weight: 500;
-  color: #333;
+  color: var(--text-color);
 }
 
 .header-content h1 mat-icon {
@@ -48,7 +48,7 @@
 
 .header-content .subtitle {
   margin: 6px 0 0 44px;
-  color: #666;
+  color: var(--text-muted);
   font-size: 14px;
 }
 
@@ -96,7 +96,7 @@ SUMMARY CARDS (Updated to match second image)
 .summary-card {
   border-radius: 20px;
   background: var(--card-background);
-  border: 1px solid #edf2ff;
+  border: 1px solid var(--card-border);
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
   transition: box-shadow 0.18s ease, transform 0.18s ease;
 }
@@ -131,24 +131,24 @@ SUMMARY CARDS (Updated to match second image)
   font-size: 22px;
   width: 22px;
   height: 22px;
-  color: #ffffff;
+  color: var(--button-text);
 }
 
 /* Icon background colors */
 .summary-card .card-icon.blue {
-  background: #111827;
+  background: var(--brand-primary-dark);
 }
 
 .summary-card .card-icon.green {
-  background: #15803d;
+  background: var(--status-success-color);
 }
 
 .summary-card .card-icon.orange {
-  background: #f97316;
+  background: var(--status-warning-color);
 }
 
 .summary-card .card-icon.red {
-  background: #ef4444;
+  background: var(--status-error-color);
 }
 
 /* Text block - value on top, label below */
@@ -162,30 +162,30 @@ SUMMARY CARDS (Updated to match second image)
   font-size: 28px;
   /* Larger like in the second image */
   font-weight: 700;
-  color: #111827;
+  color: var(--text-color);
   line-height: 1.2;
   margin-bottom: 4px;
 }
 
 .summary-card .card-content .value.warning {
-  color: #f59e0b;
+  color: var(--status-warning-color);
 }
 
 .summary-card .card-content .value.danger {
-  color: #ef4444;
+  color: var(--status-error-color);
 }
 
 .summary-card .card-content .label {
   font-size: 13px;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--text-muted);
   text-transform: none;
   letter-spacing: normal;
 }
 
 .summary-card .card-content .summary-hint {
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -214,7 +214,7 @@ REPORT TYPE CARD (buttons row)\
   font-size: 13px;
   text-transform: none;
   line-height: 1.2;
-  color: #6b7280;
+  color: var(--text-muted);
   /* Default text color for inactive buttons */
 }
 
@@ -232,14 +232,14 @@ REPORT TYPE CARD (buttons row)\
 
 .report-type-buttons button.active {
   background-color: var(--brand-primary);
-  color: #ffffff !important;
+  color: var(--button-text) !important;
   /* White text when active */
   border-color: var(--brand-primary);
 }
 
 .report-type-buttons button:hover:not(.active) {
   background-color: var(--brand-primary-light);
-  color: #4b5563;
+  color: var(--text-secondary);
   /* Slightly darker gray on hover for better visibility */
 }
 
@@ -308,7 +308,7 @@ REPORT TYPE CARD (buttons row)\
 
 .loading-container p {
   margin-top: 16px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 /* ================================
@@ -373,12 +373,12 @@ REPORT TYPE CARD (buttons row)\
 
 .report-table .mat-mdc-header-row {
   background: var(--brand-primary);
-  color: #ffffff !important;
+  color: var(--button-text) !important;
 }
 
 .report-table th.mat-mdc-header-cell {
   font-weight: 600;
-  color: #ffffff !important;
+  color: var(--button-text) !important;
   padding: 12px 10px;
   white-space: nowrap;
   text-transform: uppercase;
@@ -390,19 +390,19 @@ REPORT TYPE CARD (buttons row)\
 
 .report-table td.mat-mdc-cell {
   padding: 12px 10px;
-  border-bottom: 1px solid #f1f1f5;
+  border-bottom: 1px solid var(--card-border);
   font-size: 13px;
-  color: #444;
+  color: var(--text-color);
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .report-table tr.mat-mdc-row:nth-child(even) td.mat-mdc-cell {
-  background-color: #fcfcff;
+  background-color: var(--surface-hover);
 }
 
 .report-table tr.mat-mdc-row:hover td.mat-mdc-cell {
-  background-color: #f6f0ff;
+  background-color: var(--surface-hover);
 }
 
 .text-truncate-cell {
@@ -415,7 +415,7 @@ REPORT TYPE CARD (buttons row)\
 
 .unit-text {
   font-size: 11px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 /* ================================
@@ -442,39 +442,39 @@ REPORT TYPE CARD (buttons row)\
 }
 
 .status-success {
-  background-color: #dcf7ec;
-  color: #1b5e20;
+  background-color: var(--status-success-bg);
+  color: var(--status-success-color);
 }
 
 .status-success::before {
-  background-color: #00c853;
+  background-color: var(--status-success-color);
 }
 
 .status-warning {
-  background-color: #fff3cd;
-  color: #d48806;
+  background-color: var(--card-background)3cd;
+  color: var(--status-warning-color);
 }
 
 .status-warning::before {
-  background-color: #ffc107;
+  background-color: var(--status-warning-color);
 }
 
 .status-danger {
-  background-color: #ffebee;
-  color: #c62828;
+  background-color: var(--status-error-bg);
+  color: var(--status-error-color);
 }
 
 .status-danger::before {
-  background-color: #e53935;
+  background-color: var(--status-error-color);
 }
 
 .status-info {
-  background-color: #e3f2fd;
-  color: #1565c0;
+  background-color: var(--status-info-bg);
+  color: var(--status-info-color);
 }
 
 .status-info::before {
-  background-color: #42a5f5;
+  background-color: var(--status-info-color);
 }
 
 .movement-type-badge {
@@ -494,23 +494,23 @@ REPORT TYPE CARD (buttons row)\
 }
 
 .movement-in {
-  background-color: #e8f5e9;
-  color: #2e7d32;
+  background-color: var(--status-success-bg);
+  color: var(--status-success-color);
 }
 
 .movement-out {
-  background-color: #ffebee;
-  color: #c62828;
+  background-color: var(--status-error-bg);
+  color: var(--status-error-color);
 }
 
 .movement-transfer {
-  background-color: #e3f2fd;
-  color: #1565c0;
+  background-color: var(--status-info-bg);
+  color: var(--status-info-color);
 }
 
 .movement-adjustment {
-  background-color: #fff3e0;
-  color: #ef6c00;
+  background-color: var(--card-background)3e0;
+  color: var(--status-warning-color);
 }
 
 /* ================================
@@ -518,34 +518,34 @@ REPORT TYPE CARD (buttons row)\
    ================================ */
 
 .positive {
-  color: #2e7d32;
+  color: var(--status-success-color);
   font-weight: 500;
 }
 
 .negative {
-  color: #c62828;
+  color: var(--status-error-color);
   font-weight: 500;
 }
 
 .warning {
-  color: #ef6c00;
+  color: var(--status-warning-color);
   font-weight: 600;
 }
 
 .danger {
-  color: #c62828;
+  color: var(--status-error-color);
   font-weight: 600;
 }
 
 .stock-value {
   font-weight: 500;
-  color: #333;
+  color: var(--text-color);
 }
 
 .order-number {
   font-family: 'Courier New', monospace;
   font-weight: 600;
-  color: #1976d2;
+  color: var(--brand-primary);
 }
 
 .category-name {
@@ -559,7 +559,7 @@ REPORT TYPE CARD (buttons row)\
 .no-data {
   text-align: center;
   padding: 60px !important;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .no-data mat-icon {
@@ -598,7 +598,7 @@ mat-paginator.hidden-paginator {
   background-color: var(--card-background);
   border-top: 1px solid var(--card-border);
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
   flex-wrap: wrap;
 }
 
@@ -623,10 +623,10 @@ mat-paginator.hidden-paginator {
   min-width: 55px;
   padding: 4px 22px 4px 8px;
   border-radius: 6px;
-  border: 1px solid #ddd;
-  background-color: #fff;
+  border: 1px solid var(--card-border);
+  background-color: var(--card-background);
   font-size: 12px;
-  color: #444;
+  color: var(--text-color);
   outline: none;
   appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, #999 50%),
@@ -645,9 +645,9 @@ mat-paginator.hidden-paginator {
 
 .page-btn,
 .page-number {
-  border: 1px solid #e0e0e5;
-  background-color: #ffffff;
-  color: #555;
+  border: 1px solid var(--card-border);
+  background-color: var(--card-background)fff;
+  color: var(--text-color);
   padding: 4px 10px;
   min-width: 28px;
   font-size: 12px;
@@ -662,13 +662,13 @@ mat-paginator.hidden-paginator {
 .page-btn[disabled] {
   opacity: 0.5;
   cursor: default;
-  background-color: #f8f8fb;
+  background-color: var(--input-background);
 }
 
 .page-number.active {
   background: var(--brand-primary);
   border-color: var(--brand-primary);
-  color: #ffffff;
+  color: var(--button-text);
   font-weight: 500;
 }
 
@@ -708,12 +708,12 @@ mat-paginator.hidden-paginator {
 .mobile-card-title {
   font-size: 14px;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
 }
 
 .mobile-card-subtitle {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -731,11 +731,11 @@ mat-paginator.hidden-paginator {
 }
 
 .field-label {
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .field-value {
-  color: #111827;
+  color: var(--text-color);
   font-weight: 500;
   text-align: right;
 }
