@@ -49,6 +49,7 @@
     }
 
     .filter-chip {
+      flex-shrink: 0;
       padding: 8px 16px;
       border-radius: 20px;
       border: 1px solid var(--card-border);
@@ -61,6 +62,7 @@
       align-items: center;
       gap: 6px;
       cursor: pointer;
+      min-width: fit-content;
 
       &.active {
         background: var(--brand-primary-light);
