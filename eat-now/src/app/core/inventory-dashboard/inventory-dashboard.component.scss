@@ -35,12 +35,13 @@
   font-weight: 600;
   display: flex;
   align-items: center;
+  color: var(--text-color);
 }
 
 .inventory-dashboard .page-subtitle {
   margin: 6px 0 0;
   font-size: 0.9rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .inventory-dashboard .quick-actions {
@@ -84,13 +85,13 @@
   padding: 1rem 1.1rem;
   border-radius: 0.9rem;
   background: var(--card-background);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--card-border);
   transition: box-shadow 0.18s ease, transform 0.18s ease;
   min-height: 90px;
 
   &:hover {
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+    box-shadow: var(--shadow-md);
     transform: translateY(-2px);
   }
 }
@@ -103,7 +104,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  color: #ffffff;
+  color: var(--button-text);
   flex-shrink: 0;
 }
 
@@ -119,13 +120,13 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .inventory-dashboard .summary-value {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
   line-height: 1.2;
   /* allow wrapping slightly instead of clipping */
   word-break: break-word;
@@ -133,30 +134,30 @@
 
 .inventory-dashboard .summary-hint {
   font-size: 0.8rem;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 /* icon colors */
 .inventory-dashboard .summary-primary .summary-icon {
-  background: #111827;
+  background: var(--brand-primary-dark);
 }
 .inventory-dashboard .summary-accent .summary-icon {
-  background: #7c3aed;
+  background: var(--brand-accent);
 }
 .inventory-dashboard .summary-info .summary-icon {
-  background: #0284c7;
+  background: var(--status-info-color);
 }
 .inventory-dashboard .summary-success .summary-icon {
-  background: #059669;
+  background: var(--status-success-color);
 }
 .inventory-dashboard .summary-warning .summary-icon {
-  background: #d97706;
+  background: var(--status-warning-color);
 }
 .inventory-dashboard .summary-danger .summary-icon {
-  background: #dc2626;
+  background: var(--status-error-color);
 }
 .inventory-dashboard .summary-secondary .summary-icon {
-  background: #374151;
+  background: var(--brand-primary-700);
 }
 
 /* ---------- MAIN CONTENT ---------- */
@@ -191,7 +192,7 @@
   background: var(--card-background);
   border-radius: 0.9rem;
   border: 1px solid var(--card-border);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -210,7 +211,7 @@
 .inventory-dashboard .panel-title {
   font-size: 0.98rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
   display: flex;
   align-items: center;
 }
@@ -283,7 +284,7 @@
 .inventory-dashboard .item-name {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #111827;
+  color: var(--text-color);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -296,7 +297,7 @@
   gap: 0.75rem;
   margin-top: 2px;
   font-size: 0.78rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .inventory-dashboard .item-stock {
@@ -308,13 +309,13 @@
 .inventory-dashboard .stock-value {
   display: block;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
   font-size: 0.96rem;
 }
 
 .inventory-dashboard .stock-unit {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* stock status chip */
@@ -326,16 +327,16 @@
 }
 
 .inventory-dashboard .status-ok {
-  background: rgba(34, 197, 94, 0.12);
-  color: #15803d;
+  background: var(--status-success-bg);
+  color: var(--status-success-color);
 }
 .inventory-dashboard .status-low {
-  background: rgba(245, 158, 11, 0.14);
-  color: #b45309;
+  background: var(--status-warning-bg);
+  color: var(--status-warning-color);
 }
 .inventory-dashboard .status-out {
-  background: rgba(248, 113, 113, 0.16);
-  color: #b91c1c;
+  background: var(--status-error-bg);
+  color: var(--status-error-color);
 }
 
 /* ---------- PURCHASE ORDERS ---------- */
@@ -369,7 +370,7 @@
 .inventory-dashboard .po-id {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #111827;
+  color: var(--text-color);
 }
 
 .inventory-dashboard .po-status {
@@ -381,25 +382,25 @@
 }
 
 .inventory-dashboard .status-draft {
-  background: #e5e7eb;
-  color: #4b5563;
+  background: var(--input-background);
+  color: var(--text-muted);
 }
 .inventory-dashboard .status-pending {
-  background: rgba(245, 158, 11, 0.16);
-  color: #b45309;
+  background: var(--status-warning-bg);
+  color: var(--status-warning-color);
 }
 .inventory-dashboard .status-approved,
 .inventory-dashboard .status-ordered {
-  background: rgba(59, 130, 246, 0.16);
-  color: #1d4ed8;
+  background: var(--status-info-bg);
+  color: var(--status-info-color);
 }
 .inventory-dashboard .status-received {
-  background: rgba(34, 197, 94, 0.16);
-  color: #15803d;
+  background: var(--status-success-bg);
+  color: var(--status-success-color);
 }
 .inventory-dashboard .status-cancelled {
-  background: rgba(248, 113, 113, 0.18);
-  color: #b91c1c;
+  background: var(--status-error-bg);
+  color: var(--status-error-color);
 }
 
 .inventory-dashboard .po-meta {
@@ -408,13 +409,13 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   font-size: 0.78rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .inventory-dashboard .po-amount {
   font-size: 0.94rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-color);
   white-space: nowrap;
 }
 
@@ -440,7 +441,7 @@
 .inventory-dashboard .movement-item {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #111827;
+  color: var(--text-color);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -457,12 +458,12 @@
 }
 
 .inventory-dashboard .type-in {
-  background: rgba(34, 197, 94, 0.12);
-  color: #15803d;
+  background: var(--status-success-bg);
+  color: var(--status-success-color);
 }
 .inventory-dashboard .type-out {
-  background: rgba(248, 113, 113, 0.16);
-  color: #b91c1c;
+  background: var(--status-error-bg);
+  color: var(--status-error-color);
 }
 
 .inventory-dashboard .movement-meta {
@@ -470,7 +471,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.78rem;
-  color: #6b7280;
+  color: var(--text-muted);
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -480,7 +481,7 @@
 .inventory-dashboard .empty-state {
   text-align: center;
   padding: 1.1rem 0.5rem;
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 0.86rem;
 }
 
@@ -488,8 +489,9 @@
 @media (min-width: 768px) {
   .inventory-dashboard .list-body {
     scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   }
+
   .inventory-dashboard .list-body::-webkit-scrollbar {
     width: 6px;
   }
@@ -497,11 +499,11 @@
     background: transparent;
   }
   .inventory-dashboard .list-body::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
+    background-color: var(--scrollbar-thumb);
     border-radius: 999px;
   }
   .inventory-dashboard .list-body::-webkit-scrollbar-thumb:hover {
-    background-color: #94a3b8;
+    background-color: var(--scrollbar-thumb-hover);
   }
 }
 
