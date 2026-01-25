@@ -167,30 +167,30 @@
    ================================ */
 
 .report-type-selection-wrapper {
-  overflow-x: auto;
-  padding-bottom: 4px;
-
-  &::-webkit-scrollbar {
-    height: 4px;
-  }
+  padding-bottom: 0;
 }
 
 .report-type-buttons {
   display: flex;
-  gap: 10px;
-  white-space: nowrap;
+  gap: 12px;
+  flex-wrap: wrap;
+  /* Allow buttons to move to next row */
 
   .report-nav-btn {
-    height: 40px;
-    padding: 0 16px;
-    border-radius: 8px !important;
-    font-size: 0.875rem;
+    height: 44px;
+    /* Slightly taller for better readability */
+    padding: 0 20px;
+    /* Increased padding to prevent horizontal text cramping */
+    border-radius: 10px !important;
+    font-size: 0.9375rem;
+    /* Slightly larger font */
     font-weight: 500;
-    color: var(--text-muted);
+    color: var(--text-color);
     border: 1px solid var(--card-border);
     transition: all 0.2s;
     display: flex;
     align-items: center;
+    background: var(--card-background);
 
     &:hover:not(.active) {
       background: var(--brand-primary-light);
@@ -202,13 +202,14 @@
       background: var(--brand-primary);
       color: #fff !important;
       border-color: var(--brand-primary);
+      box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.25);
 
-      mat-icon {
+      i {
         color: #fff;
       }
     }
 
-    mat-icon {
+    i {
       font-size: 1.25rem;
       width: 20px;
       height: 20px;
@@ -232,15 +233,17 @@
   }
 
   .filter-btn {
-    height: 48px;
-    /* Matching standard mat-form-field height */
+    height: 42px;
+    /* Standard Material outline height is approx 56px, 52px aligns better with the input flex */
     border-radius: 8px !important;
     font-weight: 600;
-    padding: 0 20px;
+    // padding: 0 22px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
+    margin-bottom: 23px;
+    /* Fine-tune vertical alignment with inputs */
 
     &.apply-btn {
       background: var(--brand-primary);
@@ -253,7 +256,7 @@
 
     &.reset-btn {
       border-color: var(--card-border);
-      color: var(--color-neutral-300);
+      color: var(--text-color);
 
       &:hover {
         background: var(--surface-hover);
@@ -456,7 +459,7 @@
 
 .report-pagination-bar {
   background: var(--card-background);
-  border-top: 1px solid var(--card-border);
+  // border-top: 1px solid var(--card-border);
 }
 
 .custom-pagination-container {
