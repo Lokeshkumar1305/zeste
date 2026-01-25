@@ -94,6 +94,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
 import { TenantComplaintsComponent } from './tenant-complaints/tenant-complaints.component';
 import { TenantAnnouncementsComponent } from './tenant-announcements/tenant-announcements.component';
+import { TenantPayRentComponent } from './tenant-pay-rent/tenant-pay-rent.component';
 
 @NgModule({
   declarations: [
@@ -167,7 +168,8 @@ import { TenantAnnouncementsComponent } from './tenant-announcements/tenant-anno
     DashboardComponent,
     TenantMenuComponent,
     TenantComplaintsComponent,
-    TenantAnnouncementsComponent  
+    TenantAnnouncementsComponent,
+    TenantPayRentComponent
   ],
   imports: [
     CommonModule,
@@ -194,4 +196,4 @@ import { TenantAnnouncementsComponent } from './tenant-announcements/tenant-anno
     AmenitiesManagementModalComponent,
   ],
 })
-export class CoreModule {}
+export class CoreModule { }

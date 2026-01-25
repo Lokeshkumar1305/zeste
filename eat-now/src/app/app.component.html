@@ -1,21 +1,44 @@
-<div class="app-layout" [class.sidenav-collapsed]="sidebarCollapsed">
-  <!-- Sidenav -->
-  <app-sidenav [isCollapsed]="sidebarCollapsed" (toggle)="onSidebarToggle()">
+<div class="app-layout" [class.sidenav-collapsed]="sidebarCollapsed" [class.tenant-mode]="isTenantView">
+  <!-- Standard Admin Sidenav -->
+  <app-sidenav *ngIf="!isTenantView" [isCollapsed]="sidebarCollapsed" (toggle)="onSidebarToggle()">
   </app-sidenav>
+
   <!-- Main Content Area -->
-  <div class="main-area">
+  <div class="main-area" [class.full-screen]="isTenantView">
     <!-- Header -->
-    <app-header [sidebarCollapsed]="sidebarCollapsed" (sidebarToggle)="onSidebarToggle()">
+    <app-header *ngIf="!isTenantView" [sidebarCollapsed]="sidebarCollapsed" (sidebarToggle)="onSidebarToggle()">
     </app-header>
+
     <!-- Breadcrumb -->
-    <app-breadcrumb [sidebarCollapsed]="sidebarCollapsed">
+    <app-breadcrumb *ngIf="!isTenantView && !isMobile" [sidebarCollapsed]="sidebarCollapsed">
       <ng-content select="[breadcrumb-actions]" breadcrumb-actions></ng-content>
     </app-breadcrumb>
+
     <!-- Page Content -->
-    <main class="page-content">
-      <div class="content-container">
+    <main class="page-content" [class.no-padding]="isTenantView">
+      <div [class.content-container]="!isTenantView">
         <router-outlet></router-outlet>
       </div>
     </main>
+  </div>
+
+  <!-- Mobile Bottom Nav (Show only in Tenant View) -->
+  <div class="mobile-bottom-nav" *ngIf="isTenantView">
+    <a routerLink="/core/tenant-announcements" routerLinkActive="active" class="nav-item">
+      <i class="bi bi-megaphone"></i>
+      <span>Updates</span>
+    </a>
+    <a routerLink="/core/tenant-menu" routerLinkActive="active" class="nav-item">
+      <i class="bi bi-egg-fried"></i>
+      <span>Menu</span>
+    </a>
+    <a routerLink="/core/tenant-pay-rent" routerLinkActive="active" class="nav-item">
+      <i class="bi bi-wallet2"></i>
+      <span>Pay Rent</span>
+    </a>
+    <a routerLink="/core/tenant-complaints" routerLinkActive="active" class="nav-item">
+      <i class="bi bi-chat-dots"></i>
+      <span>Support</span>
+    </a>
   </div>
 </div>

@@ -35,30 +35,30 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
 
   // View modes
   viewMode: 'today' | 'week' | 'calendar' = 'today';
-  
+
   // Menu data
   todayMenus: Menu[] = [];
   weeklyMenus: Menu[] = [];
   selectedDate: Date = new Date();
   selectedDateMenus: Menu[] = [];
-  
+
   // Filter
   selectedMealFilter: string = 'all';
   mealTypes = ['all', 'Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 
   // Days of week
   daysOfWeek = [
-    { value: 0, label: 'Sunday', short: 'Sun' },
-    { value: 1, label: 'Monday', short: 'Mon' },
-    { value: 2, label: 'Tuesday', short: 'Tue' },
-    { value: 3, label: 'Wednesday', short: 'Wed' },
-    { value: 4, label: 'Thursday', short: 'Thu' },
-    { value: 5, label: 'Friday', short: 'Fri' },
-    { value: 6, label: 'Saturday', short: 'Sat' }
+    { value: 0, label: 'Sunday', short: 'Sun', expanded: false },
+    { value: 1, label: 'Monday', short: 'Mon', expanded: false },
+    { value: 2, label: 'Tuesday', short: 'Tue', expanded: false },
+    { value: 3, label: 'Wednesday', short: 'Wed', expanded: false },
+    { value: 4, label: 'Thursday', short: 'Thu', expanded: false },
+    { value: 5, label: 'Friday', short: 'Fri', expanded: false },
+    { value: 6, label: 'Saturday', short: 'Sat', expanded: false }
   ];
 
   currentDayOfWeek: number = new Date().getDay();
-  
+
   // Loading state
   isLoading: boolean = false;
 
@@ -68,6 +68,10 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadTodayMenus();
     this.loadWeeklyMenus();
+
+    // Expand today in weekly view
+    const today = this.daysOfWeek.find(d => d.value === this.currentDayOfWeek);
+    if (today) today.expanded = true;
   }
 
   ngOnDestroy(): void {
@@ -267,7 +271,7 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
   // View mode changes
   changeViewMode(mode: 'today' | 'week' | 'calendar'): void {
     this.viewMode = mode;
-    
+
     if (mode === 'today') {
       this.loadTodayMenus();
     }
@@ -293,12 +297,23 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
   // Utility functions
   getMealIcon(mealType: string): string {
     const icons: any = {
-      'Breakfast': 'free_breakfast',
-      'Lunch': 'lunch_dining',
-      'Dinner': 'dinner_dining',
-      'Snacks': 'local_cafe'
+      'Breakfast': 'sunrise',
+      'Lunch': 'sun',
+      'Dinner': 'moon-stars',
+      'Snacks': 'cup-hot'
     };
     return icons[mealType] || 'restaurant';
+  }
+
+  getMealIconClass(mealType: string): string {
+    const icons: any = {
+      'all': 'bi-grid',
+      'Breakfast': 'bi-sunrise',
+      'Lunch': 'bi-sun',
+      'Dinner': 'bi-moon-stars',
+      'Snacks': 'bi-cup-hot'
+    };
+    return icons[mealType] || 'bi-egg-fried';
   }
 
   getItemTypeClass(itemType: string): string {
@@ -311,56 +326,56 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
 
   isMenuAvailable(menu: Menu): boolean {
     if (menu.status !== 'AVAILABLE') return false;
-    
+
     if (menu.menuMode === 'DATE') {
       // Check if menu is for today
       const today = new Date();
       const menuDate = menu.date ? new Date(menu.date) : null;
       if (!menuDate) return false;
-      
+
       return menuDate.toDateString() === today.toDateString();
     }
-    
+
     return true;
   }
 
   isMenuServing(menu: Menu): boolean {
     if (!this.isMenuAvailable(menu)) return false;
-    
+
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes();
-    
+
     if (menu.serveFrom && menu.serveTo) {
       const [fromHour, fromMin] = menu.serveFrom.split(':').map(Number);
       const [toHour, toMin] = menu.serveTo.split(':').map(Number);
-      
+
       const fromTime = fromHour * 60 + fromMin;
       const toTime = toHour * 60 + toMin;
-      
+
       return currentTime >= fromTime && currentTime <= toTime;
     }
-    
+
     return false;
   }
 
   getMenuTimingStatus(menu: Menu): 'upcoming' | 'serving' | 'completed' {
     if (!this.isMenuAvailable(menu)) return 'completed';
-    
+
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes();
-    
+
     if (menu.serveFrom && menu.serveTo) {
       const [fromHour, fromMin] = menu.serveFrom.split(':').map(Number);
       const [toHour, toMin] = menu.serveTo.split(':').map(Number);
-      
+
       const fromTime = fromHour * 60 + fromMin;
       const toTime = toHour * 60 + toMin;
-      
+
       if (currentTime < fromTime) return 'upcoming';
       if (currentTime >= fromTime && currentTime <= toTime) return 'serving';
       return 'completed';
     }
-    
+
     return 'upcoming';
   }
 

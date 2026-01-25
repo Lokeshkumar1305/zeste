@@ -1,0 +1,93 @@
+<div class="mobile-screen pay-rent-page">
+    <!-- Header -->
+    <header class="app-bar">
+        <button class="icon-btn"><i class="bi bi-chevron-left"></i></button>
+        <h1 class="app-title">Pay Rent</h1>
+        <button class="icon-btn"><i class="bi bi-person-circle"></i></button>
+    </header>
+
+    <div class="screen-content">
+        <!-- Monthly Summary Card -->
+        <div class="summary-card">
+            <div class="month-label">{{ rentDetails.month }}</div>
+            <div class="amount-title">Total Amount Due</div>
+            <div class="amount-value">₹{{ rentDetails.total | number:'1.2-2' }}</div>
+            <div class="status-pill" [class.pending]="rentDetails.status === 'Pending'">
+                {{ rentDetails.status }}
+            </div>
+
+            <div class="due-date">
+                <i class="bi bi-calendar-event"></i>
+                Due by {{ rentDetails.dueDate | date:'dd MMM, yyyy' }}
+            </div>
+        </div>
+
+        <!-- Breakdown Section -->
+        <div class="section">
+            <h2 class="section-title">Rent Breakdown</h2>
+            <div class="breakdown-list">
+                <div class="breakdown-item">
+                    <span class="label">Room Rent</span>
+                    <span class="value">₹{{ rentDetails.amount | number:'1.2-2' }}</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="label">Electricity Bill</span>
+                    <span class="value">₹{{ rentDetails.electricity | number:'1.2-2' }}</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="label">Maintenance</span>
+                    <span class="value">₹{{ rentDetails.maintenance | number:'1.2-2' }}</span>
+                </div>
+                <div class="breakdown-item total">
+                    <span class="label">Grand Total</span>
+                    <span class="value">₹{{ rentDetails.total | number:'1.2-2' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="section">
+            <h2 class="section-title">Select Payment Method</h2>
+            <div class="payment-methods">
+                <div *ngFor="let method of paymentMethods" class="method-card"
+                    [class.selected]="selectedMethod === method.id" (click)="selectedMethod = method.id">
+                    <div class="method-icon" [style.background-color]="method.color">
+                        <i class="bi {{ method.icon }}"></i>
+                    </div>
+                    <span class="method-name">{{ method.name }}</span>
+                    <div class="radio-circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Action -->
+    <div class="bottom-footer">
+        <button class="btn-primary-mobile" (click)="onPayNow()" [disabled]="isProcessing">
+            <span *ngIf="!isProcessing">Pay ₹{{ rentDetails.total | number:'1.2-2' }}</span>
+            <span *ngIf="isProcessing" class="spinner-border"></span>
+        </button>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" *ngIf="paymentSuccess">
+        <div class="success-modal">
+            <div class="success-icon">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <h2>Payment Successful!</h2>
+            <p>Your rent for {{ rentDetails.month }} has been paid.</p>
+            <div class="receipt-box">
+                <div class="receipt-row">
+                    <span>Transaction ID</span>
+                    <span>#TXN987654321</span>
+                </div>
+                <div class="receipt-row">
+                    <span>Paid on</span>
+                    <span>{{ today | date:'dd MMM, yyyy' }}</span>
+                </div>
+            </div>
+            <button class="btn-primary-mobile" (click)="closeReceipt()">Done</button>
+        </div>
+    </div>
+</div>

@@ -58,6 +58,8 @@
         "DYNAMIC_INPUTS": "Dynamic Inputs",
         "AUDIT_LOGS": "Audit Logs",
         "ANNOUNCEMENTS": "Announcements",
+        "COMPLAINTS": "My Complaints",
+        "PAY_RENT": "Pay Rent",
         "SETTINGS": "Settings"
     },
     "PRODUCT_CONFIG": {

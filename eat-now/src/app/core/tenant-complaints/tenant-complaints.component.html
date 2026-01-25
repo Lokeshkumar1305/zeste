@@ -1,510 +1,150 @@
-<div class="tenant-complaints-page">
+<div class="mobile-screen complaints-page">
+    <header class="app-bar">
+        <button class="icon-btn" *ngIf="activeView === 'create'" (click)="showComplaintsList()">
+            <i class="bi bi-arrow-left"></i>
+        </button>
+        <h1 class="app-title">{{ activeView === 'list' ? 'Complaints' : 'New Complaint' }}</h1>
+        <button class="icon-btn" (click)="refreshComplaints()" [disabled]="isLoading" *ngIf="activeView === 'list'">
+            <i class="bi bi-arrow-clockwise" [class.spinning]="isLoading"></i>
+        </button>
+    </header>
 
-    <!-- HEADER (aligned card) -->
-    <div class="page-header">
-        <div class="complaints-container header-card">
-            <div class="header-content">
-                <div class="header-left">
-                    <h1 class="page-title"> My Complaints</h1>
-                    <p class="page-subtitle">Track and manage your complaints</p>
+    <div class="screen-content">
+        <!-- List View -->
+        <ng-container *ngIf="activeView === 'list'">
+            <!-- Status Summary Cards (Horizontal Scroll) -->
+            <div class="status-summary-row">
+                <div class="summary-item total">
+                    <span class="val">{{ stats.total }}</span>
+                    <span class="lab">Total</span>
                 </div>
-                <div class="header-right">
-                    <button class="btn-refresh" (click)="refreshComplaints()" [disabled]="isLoading"
-                        *ngIf="activeView === 'list'">
-                        <i class="bi bi-arrow-clockwise" [class.spinning]="isLoading"></i>
-                    </button>
-
-                    <button class="btn-create" (click)="showCreateForm()" *ngIf="activeView === 'list'">
-                        <i class="bi bi-plus-lg"></i>
-                        <span>New Complaint</span>
-                    </button>
-
-                    <button class="btn-back" (click)="showComplaintsList()" *ngIf="activeView === 'create'">
-                        <i class="bi bi-arrow-left"></i>
-                        <span>Back</span>
-                    </button>
+                <div class="summary-item pending">
+                    <span class="val">{{ stats.pending }}</span>
+                    <span class="lab">Pending</span>
+                </div>
+                <div class="summary-item resolved">
+                    <span class="val">{{ stats.resolved }}</span>
+                    <span class="lab">Resolved</span>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- CONTENT -->
-    <div class="page-content">
-        <div class="complaints-container">
-
-            <!-- ======================== -->
-            <!-- COMPLAINTS LIST VIEW -->
-            <!-- ======================== -->
-            <ng-container *ngIf="activeView === 'list'">
-
-                <!-- STATS -->
-                <div class="stats-section">
-                    <div class="stat-card">
-                        <div class="stat-icon total">
-                            <i class="bi bi-file-text"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value">{{ stats.total }}</div>
-                            <div class="stat-label">Total</div>
-                        </div>
+            <!-- List -->
+            <div class="complaints-list-mobile">
+                <div *ngFor="let complaint of filteredComplaints" class="complaint-card-mobile"
+                    (click)="viewComplaintDetail(complaint)">
+                    <div class="top-row">
+                        <span class="category"><i class="bi" [ngClass]="getCategoryIcon(complaint.category)"></i> {{
+                            complaint.category }}</span>
+                        <span class="status-badge" [class]="getStatusClass(complaint.status || 'PENDING')">
+                            {{ (complaint.status || 'PENDING').replace('_', ' ') }}
+                        </span>
                     </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon pending">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value">{{ stats.pending }}</div>
-                            <div class="stat-label">Pending</div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon progress">
-                            <i class="bi bi-arrow-repeat"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value">{{ stats.inProgress }}</div>
-                            <div class="stat-label">In Progress</div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon resolved">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value">{{ stats.resolved }}</div>
-                            <div class="stat-label">Resolved</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FILTERS & SEARCH -->
-                <div class="filter-search-section">
-
-                    <!-- Search -->
-                    <div class="search-box">
-                        <i class="bi bi-search search-icon"></i>
-                        <input type="text" class="search-input" placeholder="Search complaints..."
-                            [(ngModel)]="searchTerm" (input)="onSearch($event)" />
-                        <button class="clear-search" *ngIf="searchTerm" (click)="clearSearch()">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-
-                    <!-- Status Filters -->
-                    <div class="status-filters">
-                        <button class="status-filter-btn" [class.active]="statusFilter === 'all'"
-                            (click)="onStatusFilterChange('all')">
-                            <i class="bi bi-grid"></i>
-                            <span>All </span>
-                        </button>
-                        <button class="status-filter-btn" [class.active]="statusFilter === 'PENDING'"
-                            (click)="onStatusFilterChange('PENDING')">
-                            <i class="bi bi-clock-history"></i>
-                            <span>Pending</span>
-                        </button>
-                        <button class="status-filter-btn" [class.active]="statusFilter === 'IN_PROGRESS'"
-                            (click)="onStatusFilterChange('IN_PROGRESS')">
-                            <i class="bi bi-arrow-repeat"></i>
-                            <span>In Progress</span>
-                        </button>
-                        <button class="status-filter-btn" [class.active]="statusFilter === 'RESOLVED'"
-                            (click)="onStatusFilterChange('RESOLVED')">
-                            <i class="bi bi-check-circle"></i>
-                            <span>Resolved</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- LOADING STATE -->
-                <div class="loading-state" *ngIf="isLoading">
-                    <div class="spinner"></div>
-                    <p>Loading complaints...</p>
-                </div>
-
-                <!-- EMPTY STATE -->
-                <div class="empty-state" *ngIf="!isLoading && filteredComplaints.length === 0">
-                    <div class="empty-icon">📋</div>
-                    <h3>No complaints found</h3>
-                    <p>
-                        {{
-                        searchTerm
-                        ? 'Try adjusting your search'
-                        : "You haven't submitted any complaints yet"
-                        }}
-                    </p>
-                    <button class="btn-primary" (click)="showCreateForm()" *ngIf="!searchTerm">
-                        <i class="bi bi-plus-lg"></i>
-                        Submit Your First Complaint
-                    </button>
-                </div>
-
-                <!-- COMPLAINTS LIST -->
-                <div class="complaints-list" *ngIf="!isLoading && filteredComplaints.length > 0">
-                    <div *ngFor="let complaint of filteredComplaints; trackBy: trackById" class="complaint-card"
-                        (click)="viewComplaintDetail(complaint)">
-
-                        <div class="complaint-header">
-                            <div class="complaint-left">
-                                <div class="category-badge">
-                                    <i class="bi" [ngClass]="getCategoryIcon(complaint.category)"></i>
-                                    <span>{{ complaint.category }}</span>
-                                </div>
-                                <div class="priority-badge" [class]="getPriorityClass(complaint.priority)">
-                                    {{ complaint.priority }}
-                                </div>
-                            </div>
-                            <div class="complaint-right">
-                                <div class="status-badge" [class]="getStatusClass(complaint.status || 'PENDING')">
-                                    <i class="bi" [ngClass]="
-                      getStatusIcon(complaint.status || 'PENDING')
-                    "></i>
-                                    <span>{{
-                                        (complaint.status || 'PENDING').replace('_', ' ')
-                                        }}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="complaint-body">
-                            <h3 class="complaint-title">{{ complaint.title }}</h3>
-                            <p class="complaint-description">
-                                {{ complaint.description }}
-                            </p>
-                        </div>
-
-                        <div class="complaint-footer">
-                            <div class="footer-info">
-                                <span class="info-item" *ngIf="complaint.submittedDate">
-                                    <i class="bi bi-calendar3"></i>
-                                    {{ formatDate(complaint.submittedDate) }}
-                                </span>
-                                <span class="info-item">
-                                    <i class="bi bi-door-closed"></i>
-                                    Room {{ complaint.roomNumber }}
-                                </span>
-                                <span class="info-item" *ngIf="
-                    complaint.status !== 'RESOLVED' &&
-                    complaint.submittedDate
-                  ">
-                                    <i class="bi bi-clock"></i>
-                                    {{ getDaysSince(complaint.submittedDate) }} days ago
-                                </span>
-                            </div>
-                            <div class="footer-action">
-                                <i class="bi bi-chevron-right"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </ng-container>
-
-            <!-- ======================== -->
-            <!-- CREATE COMPLAINT VIEW -->
-            <!-- ======================== -->
-            <ng-container *ngIf="activeView === 'create'">
-                <div class="create-complaint-form">
-                    <div class="form-header">
-                        <h2>Submit New Complaint</h2>
-                        <p>Fill in the details below to report your issue</p>
-                    </div>
-
-                    <form>
-                        <div class="form-grid">
-
-                            <!-- Tenant Name (Read-only) -->
-                            <div class="form-field">
-                                <label class="field-label required">Tenant Name</label>
-                                <input type="text" class="field-input" [(ngModel)]="newComplaint.tenantName"
-                                    name="tenantName" readonly />
-                            </div>
-
-                            <!-- Room Number (Read-only) -->
-                            <div class="form-field">
-                                <label class="field-label required">Room Number</label>
-                                <input type="text" class="field-input" [(ngModel)]="newComplaint.roomNumber"
-                                    name="roomNumber" readonly />
-                            </div>
-
-                            <!-- Category -->
-                            <div class="form-field">
-                                <label class="field-label required">Category</label>
-                                <select class="field-select" [(ngModel)]="newComplaint.category" name="category"
-                                    required>
-                                    <option value="" disabled>Select category</option>
-                                    <option *ngFor="let category of categories" [value]="category">
-                                        {{ category }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <!-- Priority -->
-                            <div class="form-field">
-                                <label class="field-label required">Priority</label>
-                                <select class="field-select" [(ngModel)]="newComplaint.priority" name="priority"
-                                    required>
-                                    <option value="" disabled>Select priority</option>
-                                    <option *ngFor="let priority of priorities" [value]="priority">
-                                        {{ priority }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <!-- Title -->
-                            <div class="form-field full-width">
-                                <label class="field-label required">Issue Title</label>
-                                <input type="text" class="field-input" [(ngModel)]="newComplaint.title" name="title"
-                                    placeholder="e.g., AC not cooling properly" required />
-                            </div>
-
-                            <!-- Image Upload -->
-                            <div class="form-field full-width">
-                                <label class="field-label required">Damage Image</label>
-
-                                <!-- Camera Preview -->
-                                <div class="camera-container" *ngIf="showCameraPreview">
-                                    <video id="cameraPreview" autoplay playsinline muted></video>
-                                    <div class="camera-controls">
-                                        <button type="button" class="camera-btn cancel" (click)="stopCamera()">
-                                            <i class="bi bi-x-lg"></i>
-                                        </button>
-                                        <button type="button" class="camera-btn capture" (click)="captureImage()">
-                                            <i class="bi bi-camera-fill"></i>
-                                        </button>
-                                        <button type="button" class="camera-btn switch" (click)="switchCamera()"
-                                            *ngIf="isMobileOrTablet">
-                                            <i class="bi bi-arrow-repeat"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Upload Area -->
-                                <div class="upload-area" *ngIf="!showCameraPreview && !hasImage">
-
-                                    <!-- Desktop Upload -->
-                                    <div class="desktop-upload" *ngIf="!isMobileOrTablet">
-                                        <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*"
-                                            hidden />
-                                        <i class="bi bi-cloud-upload"></i>
-                                        <p class="upload-text">Drag & drop image here</p>
-                                        <p class="upload-subtext">or</p>
-                                        <button type="button" class="btn-upload" (click)="fileInput.click()">
-                                            <i class="bi bi-image"></i>
-                                            Browse Files
-                                        </button>
-                                        <small class="upload-hint">JPG, PNG • Max 10MB</small>
-                                    </div>
-
-                                    <!-- Mobile Upload -->
-                                    <div class="mobile-upload" *ngIf="isMobileOrTablet">
-                                        <input #mobileFileInput type="file" (change)="onFileSelected($event)"
-                                            accept="image/*" hidden />
-                                        <input #nativeCameraInput type="file" accept="image/*" capture="environment"
-                                            (change)="onNativeCameraCapture($event)" hidden />
-
-                                        <div class="upload-options">
-                                            <button type="button" class="upload-option"
-                                                (click)="mobileFileInput.click()">
-                                                <i class="bi bi-folder2-open"></i>
-                                                <span>Gallery</span>
-                                            </button>
-
-                                            <div class="option-divider"></div>
-
-                                            <button type="button" class="upload-option" (click)="
-                          isCameraAvailable
-                            ? openCamera()
-                            : nativeCameraInput.click()
-                        ">
-                                                <i class="bi bi-camera"></i>
-                                                <span>Camera</span>
-                                            </button>
-                                        </div>
-
-                                        <small class="upload-hint">JPG, PNG • Max 10MB</small>
-                                    </div>
-                                </div>
-
-                                <!-- Image Preview -->
-                                <div class="image-preview-container" *ngIf="hasImage && !showCameraPreview">
-                                    <div class="preview-image">
-                                        <img [src]="newComplaint.imagePreview" alt="Damage preview" />
-                                        <div class="image-overlay">
-                                            <button type="button" class="overlay-btn" (click)="downloadImage()">
-                                                <i class="bi bi-download"></i>
-                                            </button>
-                                            <button type="button" class="overlay-btn" (click)="removeImage()">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="image-info">
-                                        <i class="bi bi-check-circle-fill text-success"></i>
-                                        <span class="image-name">{{
-                                            newComplaint.imageName
-                                            }}</span>
-                                        <span class="image-size" *ngIf="newComplaint.imageFile">
-                                            {{
-                                            formatFileSize(newComplaint.imageFile.size)
-                                            }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Description -->
-                            <div class="form-field full-width">
-                                <label class="field-label required">Description</label>
-                                <textarea class="field-textarea" [(ngModel)]="newComplaint.description"
-                                    name="description" rows="5" placeholder="Describe the issue in detail..."
-                                    required></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Form Actions -->
-                        <div class="form-actions">
-                            <button type="button" class="btn-secondary" (click)="showComplaintsList()">
-                                Cancel
-                            </button>
-                            <button type="button" class="btn-primary" (click)="onSubmitComplaint()"
-                                [disabled]="!isFormValid() || isSubmitting">
-                                <span *ngIf="!isSubmitting">
-                                    <i class="bi bi-check-lg"></i>
-                                    Submit Complaint
-                                </span>
-                                <span *ngIf="isSubmitting">
-                                    <i class="bi bi-arrow-repeat spinning"></i>
-                                    Submitting...
-                                </span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </ng-container>
-        </div>
-    </div>
-
-    <!-- COMPLAINT DETAIL MODAL -->
-    <div class="modal-overlay" *ngIf="selectedComplaint" (click)="closeComplaintDetail()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <div class="modal-title">
-                    <h2>Complaint Details</h2>
-                    <div class="status-badge" [class]="getStatusClass(selectedComplaint.status || 'PENDING')">
-                        <i class="bi" [ngClass]="
-                getStatusIcon(selectedComplaint.status || 'PENDING')
-              "></i>
-                        <span>{{
-                            (selectedComplaint.status || 'PENDING').replace('_', ' ')
+                    <h3 class="title">{{ complaint.title }}</h3>
+                    <p class="desc">{{ complaint.description }}</p>
+                    <div class="bottom-row">
+                        <span class="date">{{ formatDate(complaint.submittedDate) }}</span>
+                        <span class="priority" [class]="getPriorityClass(complaint.priority)">{{ complaint.priority
                             }}</span>
                     </div>
                 </div>
-                <button class="btn-close" (click)="closeComplaintDetail()">
-                    <i class="bi bi-x-lg"></i>
-                </button>
             </div>
 
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- Complaint Info -->
-                <div class="detail-section">
-                    <div class="detail-row">
-                        <div class="detail-item">
-                            <label>Category</label>
-                            <div class="detail-value">
-                                <i class="bi" [ngClass]="getCategoryIcon(selectedComplaint.category)"></i>
-                                {{ selectedComplaint.category }}
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <label>Priority</label>
-                            <div class="detail-value">
-                                <span class="priority-badge" [class]="getPriorityClass(selectedComplaint.priority)">
-                                    {{ selectedComplaint.priority }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+            <!-- FAB -->
+            <button class="fab-btn" (click)="showCreateForm()">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        </ng-container>
 
-                    <div class="detail-row">
-                        <div class="detail-item">
-                            <label>Room Number</label>
-                            <div class="detail-value">
-                                Room {{ selectedComplaint.roomNumber }}
-                            </div>
-                        </div>
-                        <div class="detail-item" *ngIf="selectedComplaint.submittedDate">
-                            <label>Submitted On</label>
-                            <div class="detail-value">
-                                {{ formatDate(selectedComplaint.submittedDate) }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="detail-item full-width" *ngIf="selectedComplaint.resolvedDate">
-                        <label>Resolved On</label>
-                        <div class="detail-value">
-                            {{ formatDate(selectedComplaint.resolvedDate) }}
-                        </div>
+        <!-- Create View -->
+        <ng-container *ngIf="activeView === 'create'">
+            <div class="mobile-form">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="mobile-select" [(ngModel)]="newComplaint.category">
+                        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <div class="priority-selector">
+                        <button *ngFor="let pr of priorities" class="pr-btn"
+                            [class.active]="newComplaint.priority === pr" (click)="newComplaint.priority = pr">
+                            {{ pr }}
+                        </button>
                     </div>
                 </div>
-
-                <div class="divider"></div>
-
-                <!-- Title & Description -->
-                <div class="detail-section">
-                    <div class="detail-item full-width">
-                        <label>Issue Title</label>
-                        <div class="detail-value">
-                            {{ selectedComplaint.title }}
-                        </div>
-                    </div>
-
-                    <div class="detail-item full-width">
-                        <label>Description</label>
-                        <div class="detail-value description">
-                            {{ selectedComplaint.description }}
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>Issue Title</label>
+                    <input type="text" class="mobile-input" [(ngModel)]="newComplaint.title"
+                        placeholder="Summary of issue">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="mobile-textarea" [(ngModel)]="newComplaint.description" rows="4"
+                        placeholder="Detailed description"></textarea>
                 </div>
 
-                <div class="divider" *ngIf="selectedComplaint.imagePreview"></div>
-
-                <!-- Image -->
-                <div class="detail-section" *ngIf="selectedComplaint.imagePreview">
-                    <div class="detail-item full-width">
-                        <label>Damage Image</label>
-                        <div class="detail-image">
-                            <img [src]="selectedComplaint.imagePreview" alt="Damage image" />
-                        </div>
+                <!-- Image Section -->
+                <div class="form-group">
+                    <label>Attach Image</label>
+                    <div class="image-upload-mobile" (click)="fileInput.click()" *ngIf="!hasImage">
+                        <i class="bi bi-camera"></i>
+                        <span>Tap to upload or take photo</span>
+                        <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" hidden>
                     </div>
-                </div>
-
-                <div class="divider" *ngIf="selectedComplaint.adminResponse"></div>
-
-                <!-- Admin Response -->
-                <div class="detail-section" *ngIf="selectedComplaint.adminResponse">
-                    <div class="admin-response">
-                        <div class="response-header">
-                            <i class="bi bi-chat-square-text"></i>
-                            <strong>Admin Response</strong>
-                        </div>
-                        <p class="response-text">
-                            {{ selectedComplaint.adminResponse }}
-                        </p>
+                    <div class="image-preview-mobile" *ngIf="hasImage">
+                        <img [src]="newComplaint.imagePreview">
+                        <button class="remove-btn" (click)="removeImage()"><i class="bi bi-trash"></i></button>
                     </div>
                 </div>
             </div>
+        </ng-container>
+    </div>
 
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button class="btn-secondary" (click)="closeComplaintDetail()">
-                    Close
-                </button>
+    <!-- Submit Footer -->
+    <div class="bottom-footer" *ngIf="activeView === 'create'">
+        <button class="btn-primary-mobile" (click)="onSubmitComplaint()" [disabled]="!isFormValid() || isSubmitting">
+            <span *ngIf="!isSubmitting">Submit Complaint</span>
+            <span *ngIf="isSubmitting" class="spinner-border"></span>
+        </button>
+    </div>
+
+    <!-- Detail Bottom Sheet -->
+    <div class="bottom-sheet-overlay" *ngIf="selectedComplaint" (click)="closeComplaintDetail()">
+        <div class="bottom-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <span class="status-badge" [class]="getStatusClass(selectedComplaint.status || 'PENDING')">
+                    {{ (selectedComplaint.status || 'PENDING').replace('_', ' ') }}
+                </span>
+                <button class="close-btn" (click)="closeComplaintDetail()"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="sheet-body">
+                <h2 class="detail-title">{{ selectedComplaint.title }}</h2>
+                <div class="detail-info-grid">
+                    <div class="info-item">
+                        <label>Category</label>
+                        <span>{{ selectedComplaint.category }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Priority</label>
+                        <span>{{ selectedComplaint.priority }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Submitted</label>
+                        <span>{{ formatDate(selectedComplaint.submittedDate) }}</span>
+                    </div>
+                </div>
+                <div class="detail-desc">
+                    {{ selectedComplaint.description }}
+                </div>
+                <div class="detail-image" *ngIf="selectedComplaint.imagePreview">
+                    <img [src]="selectedComplaint.imagePreview">
+                </div>
+                <div class="admin-reply" *ngIf="selectedComplaint.adminResponse">
+                    <label>Admin Response</label>
+                    <p>{{ selectedComplaint.adminResponse }}</p>
+                </div>
             </div>
         </div>
     </div>

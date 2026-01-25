@@ -31,7 +31,7 @@ export class TenantComplaintsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   activeView: 'list' | 'create' = 'list';
-  
+
   myComplaints: Complaint[] = [];
   filteredComplaints: Complaint[] = [];
   selectedComplaint: Complaint | null = null;
@@ -245,7 +245,7 @@ export class TenantComplaintsComponent implements OnInit, OnDestroy {
 
       this.isSubmitting = false;
       this.showComplaintsList();
-      
+
       alert('Complaint submitted successfully!');
     }, 1500);
   }
@@ -292,7 +292,7 @@ export class TenantComplaintsComponent implements OnInit, OnDestroy {
     this.newComplaint.imageFile = undefined;
     this.newComplaint.imagePreview = undefined;
     this.newComplaint.imageName = undefined;
-    
+
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
@@ -378,18 +378,18 @@ export class TenantComplaintsComponent implements OnInit, OnDestroy {
     const canvas = document.createElement('canvas');
     canvas.width = videoElement.videoWidth;
     canvas.height = videoElement.videoHeight;
-    
+
     const context = canvas.getContext('2d');
     if (context) {
       context.drawImage(videoElement, 0, 0);
-      
+
       canvas.toBlob((blob) => {
         if (blob) {
           const file = new File([blob], `capture-${Date.now()}.jpg`, { type: 'image/jpeg' });
           this.newComplaint.imageFile = file;
           this.newComplaint.imageName = file.name;
           this.newComplaint.imagePreview = canvas.toDataURL('image/jpeg');
-          
+
           this.stopCamera();
         }
       }, 'image/jpeg', 0.9);
@@ -444,7 +444,8 @@ export class TenantComplaintsComponent implements OnInit, OnDestroy {
     return icons[category] || 'bi-circle';
   }
 
-  formatDate(date: Date): string {
+  formatDate(date: Date | undefined): string {
+    if (!date) return 'N/A';
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -452,7 +453,8 @@ export class TenantComplaintsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getDaysSince(date: Date): number {
+  getDaysSince(date: Date | undefined): number {
+    if (!date) return 0;
     const diff = new Date().getTime() - new Date(date).getTime();
     return Math.floor(diff / (1000 * 60 * 60 * 24));
   }

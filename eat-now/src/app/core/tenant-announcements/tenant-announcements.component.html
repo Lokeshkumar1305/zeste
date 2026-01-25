@@ -1,198 +1,105 @@
-<div class="page-container announcements-page">
-    <div class="container">
-        <!-- HEADER (mat-card) -->
-        <mat-card class="page-header-card">
-            <div class="header-top">
-                <div class="header-left">
-                    <h1 class="page-title">Announcements</h1>
-                    <p class="page-description">Stay informed with the latest updates</p>
-                </div>
-                <div class="header-right">
-                    <button class="btn-refresh" (click)="refreshAnnouncements()" [disabled]="isLoading">
-                        <i class="bi bi-arrow-clockwise" [class.spinning]="isLoading"></i>
-                    </button>
-                </div>
+<div class="mobile-screen announcements-page">
+    <header class="app-bar">
+        <h1 class="app-title">Announcements</h1>
+        <button class="icon-btn" (click)="refreshAnnouncements()" [disabled]="isLoading">
+            <i class="bi bi-arrow-clockwise" [class.spinning]="isLoading"></i>
+        </button>
+    </header>
+
+    <div class="screen-content">
+        <!-- Search -->
+        <div class="search-bar-mobile">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search updates..." [(ngModel)]="searchTerm" (input)="onSearch($event)">
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-scroll">
+            <button *ngFor="let filter of filterOptions" class="filter-chip"
+                [class.active]="selectedFilter === filter.value" (click)="onFilterChange(filter.value)">
+                <i class="bi {{ filter.icon }}"></i>
+                <span>{{ filter.label }}</span>
+            </button>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="mini-stat unread">
+                <span class="count">{{ stats.unread }}</span>
+                <span class="label">Unread</span>
             </div>
-        </mat-card>
-
-        <!-- WIDGETS / STATS CARDS -->
-        <div class="widgets-section">
-            <div class="stats-cards">
-                <!-- Total -->
-                <mat-card class="stat-card total">
-                    <mat-card-content class="stat-content">
-                        <div class="stat-icon">
-                            <i class="bi bi-megaphone-fill"></i>
-                        </div>
-                        <div class="stat-text">
-                            <div class="stat-label">TOTAL</div>
-                            <div class="stat-number">{{ stats.total }}</div>
-                            <div class="stat-subtext mobile-hidden">All announcements</div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-
-                <!-- Unread -->
-                <mat-card class="stat-card unread">
-                    <mat-card-content class="stat-content">
-                        <div class="stat-icon">
-                            <i class="bi bi-envelope-open-fill"></i>
-                        </div>
-                        <div class="stat-text">
-                            <div class="stat-label">UNREAD</div>
-                            <div class="stat-number">{{ stats.unread }}</div>
-                            <div class="stat-subtext mobile-hidden">Awaiting your attention</div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-
-                <!-- Important -->
-                <mat-card class="stat-card important">
-                    <mat-card-content class="stat-content">
-                        <div class="stat-icon">
-                            <i class="bi bi-exclamation-diamond-fill"></i>
-                        </div>
-                        <div class="stat-text">
-                            <div class="stat-label">IMPORTANT</div>
-                            <div class="stat-number">{{ stats.important }}</div>
-                            <div class="stat-subtext mobile-hidden">Marked as priority</div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
+            <div class="mini-stat important">
+                <span class="count">{{ stats.important }}</span>
+                <span class="label">Urgent</span>
             </div>
         </div>
 
-        <!-- SEARCH AND FILTERS -->
-        <mat-card class="search-filter-card">
-            <div class="search-box">
-                <i class="bi bi-search search-icon"></i>
-                <input type="text" class="search-input" placeholder="Search announcements..." [(ngModel)]="searchTerm"
-                    (input)="onSearch($event)" />
-                <button class="clear-search" *ngIf="searchTerm" (click)="clearSearch()">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
+        <!-- Loading / Empty -->
+        <div class="center-content" *ngIf="isLoading">
+            <div class="spinner"></div>
+        </div>
 
-            <div class="filter-tabs">
-                <button *ngFor="let filter of filterOptions" class="filter-tab"
-                    [class.active]="selectedFilter === filter.value" (click)="onFilterChange(filter.value)">
-                    <i class="bi {{ filter.icon }}"></i>
-                    <span>{{ filter.label }}</span>
-                </button>
-            </div>
+        <div class="empty-state" *ngIf="!isLoading && filteredAnnouncements.length === 0">
+            <div class="empty-icon">📭</div>
+            <p>No announcements found</p>
+        </div>
 
-            <button class="btn-mark-all" *ngIf="stats.unread > 0" (click)="markAllAsRead()">
-                <i class="bi bi-check-all"></i>
-                Mark all as read
-            </button>
-        </mat-card>
+        <!-- List -->
+        <div class="announcements-list-mobile" *ngIf="!isLoading && filteredAnnouncements.length > 0">
+            <div *ngFor="let announcement of filteredAnnouncements" class="announcement-card-mobile"
+                [class.unread]="!announcement.isRead" [class.priority-urgent]="announcement.priority === 'urgent'"
+                (click)="viewAnnouncement(announcement)">
 
-        <!-- ANNOUNCEMENTS LIST -->
-        <div class="announcements-section">
-            <mat-card class="announcements-card">
-                <div class="loading-state" *ngIf="isLoading">
-                    <div class="spinner"></div>
-                    <p>Loading announcements...</p>
-                </div>
-
-                <div class="empty-state" *ngIf="!isLoading && filteredAnnouncements.length === 0">
-                    <div class="empty-icon">📭</div>
-                    <h3>No announcements found</h3>
-                    <p>{{ searchTerm ? 'Try a different search term' : 'Check back later for updates' }}</p>
-                </div>
-
-                <div class="announcements-list" *ngIf="!isLoading && filteredAnnouncements.length > 0">
-                    <div *ngFor="let announcement of filteredAnnouncements" class="announcement-item"
-                        [class.unread]="!announcement.isRead" [class.read-card]="announcement.isRead"
-                        [class.important]="announcement.priority === 'urgent' || announcement.priority === 'high'"
-                        (click)="viewAnnouncement(announcement)">
-                        <div class="announcement-main">
-                            <div class="announcement-icon" [style.background]="getTypeColor(announcement.type)">
-                                <i class="bi {{ getTypeIcon(announcement.type) }}"></i>
-                            </div>
-                            <div class="announcement-content">
-                                <div class="announcement-header">
-                                    <h3 class="announcement-title">
-                                        <span class="unread-dot" *ngIf="!announcement.isRead"></span>
-                                        {{ announcement.title }}
-                                    </h3>
-                                    <span class="announcement-priority"
-                                        [class]="getPriorityClass(announcement.priority)">
-                                        {{ announcement.priority }}
-                                    </span>
-                                </div>
-                                <p class="announcement-message">{{ announcement.message }}</p>
-                                <div class="announcement-meta">
-                                    <span class="meta-item"><i class="bi bi-person"></i>{{ announcement.author }}</span>
-                                    <span class="meta-item"><i class="bi bi-calendar3"></i>{{ announcement.createdAt |
-                                        date: 'MMM d, y' }}</span>
-                                    <span class="meta-item" *ngIf="announcement.expiryDate">
-                                        <i class="bi bi-clock"></i>{{ getDaysUntilExpiry(announcement) }} days left
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="announcement-actions" (click)="$event.stopPropagation()">
-                            <ng-container *ngIf="!announcement.isRead; else readPill">
-                                <button class="btn-action" (click)="markAsRead(announcement, $event)">
-                                    <i class="bi bi-check-lg"></i>
-                                </button>
-                            </ng-container>
-                            <ng-template #readPill>
-                                <div class="read-pill">
-                                    <i class="bi bi-check-circle-fill"></i>
-                                    <span>Read</span>
-                                </div>
-                            </ng-template>
-                            <i class="bi bi-chevron-right"></i>
-                        </div>
+                <div class="card-left">
+                    <div class="icon-circle" [style.background]="getTypeColor(announcement.type)">
+                        <i class="bi {{ getTypeIcon(announcement.type) }}"></i>
                     </div>
                 </div>
-            </mat-card>
+
+                <div class="card-main">
+                    <div class="card-header-row">
+                        <span class="type-name">{{ announcement.type }}</span>
+                        <span class="date">{{ announcement.createdAt | date: 'MMM d' }}</span>
+                    </div>
+                    <h3 class="title">{{ announcement.title }}</h3>
+                    <p class="summary">{{ announcement.message }}</p>
+                </div>
+
+                <div class="card-right">
+                    <div class="unread-indicator" *ngIf="!announcement.isRead"></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- DETAIL MODAL -->
-    <div class="modal-overlay" *ngIf="selectedAnnouncement" (click)="closeAnnouncementDetail()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-            <div class="modal-header">
-                <div class="modal-type-badge" [style.background]="getTypeColor(selectedAnnouncement.type)">
-                    <i class="bi {{ getTypeIcon(selectedAnnouncement.type) }}"></i>
+    <!-- Detail Bottom Sheet -->
+    <div class="bottom-sheet-overlay" *ngIf="selectedAnnouncement" (click)="closeAnnouncementDetail()">
+        <div class="bottom-sheet" (click)="$event.stopPropagation()">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <div class="header-badge" [style.background]="getTypeColor(selectedAnnouncement.type)">
                     {{ selectedAnnouncement.type }}
                 </div>
-                <button class="btn-close-modal" (click)="closeAnnouncementDetail()">
-                    <i class="bi bi-x-lg"></i>
-                </button>
+                <button class="close-btn" (click)="closeAnnouncementDetail()"><i class="bi bi-x-lg"></i></button>
             </div>
-            <div class="modal-body">
-                <h2 class="modal-title">{{ selectedAnnouncement.title }}</h2>
-                <div class="modal-info">
-                    <div class="info-row">
-                        <i class="bi bi-person-circle"></i>
-                        <span><strong>Posted by:</strong> {{ selectedAnnouncement.author }}</span>
-                    </div>
-                    <div class="info-row">
-                        <i class="bi bi-calendar3"></i>
-                        <span><strong>Date:</strong> {{ selectedAnnouncement.createdAt | date: 'EEEE, MMMM d, y'
-                            }}</span>
-                    </div>
-                    <div class="info-row" *ngIf="selectedAnnouncement.expiryDate">
-                        <i class="bi bi-hourglass-split"></i>
-                        <span><strong>Expires:</strong> {{ selectedAnnouncement.expiryDate | date: 'MMMM d, y' }}</span>
-                    </div>
+            <div class="sheet-body">
+                <h2 class="detail-title">{{ selectedAnnouncement.title }}</h2>
+                <div class="detail-meta">
+                    <span><i class="bi bi-person"></i> {{ selectedAnnouncement.author }}</span>
+                    <span><i class="bi bi-calendar"></i> {{ selectedAnnouncement.createdAt | date: 'mediumDate'
+                        }}</span>
                 </div>
-                <div class="modal-message">{{ selectedAnnouncement.message }}</div>
-                <div class="expiry-warning" *ngIf="isExpiringSoon(selectedAnnouncement)">
-                    <i class="bi bi-exclamation-triangle-fill"></i>
-                    <span>This announcement expires in {{ getDaysUntilExpiry(selectedAnnouncement) }} days</span>
+                <div class="detail-content">
+                    {{ selectedAnnouncement.message }}
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" (click)="closeAnnouncementDetail()">Close</button>
-                <button class="btn-primary" *ngIf="!selectedAnnouncement.isRead"
-                    (click)="markAsRead(selectedAnnouncement); closeAnnouncementDetail()">
-                    <i class="bi bi-check-lg"></i> Mark as Read
-                </button>
+
+                <div class="sheet-footer">
+                    <button class="btn-primary-mobile" *ngIf="!selectedAnnouncement.isRead"
+                        (click)="markAsRead(selectedAnnouncement); closeAnnouncementDetail()">
+                        <i class="bi bi-check-lg"></i> Mark as Read
+                    </button>
+                    <button class="btn-secondary-mobile" (click)="closeAnnouncementDetail()">Close</button>
+                </div>
             </div>
         </div>
     </div>

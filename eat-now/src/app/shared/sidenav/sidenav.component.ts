@@ -148,7 +148,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
       items: [
         { title: 'NAV.ANNOUNCEMENTS', route: '/core/tenant-announcements' },
         { title: 'NAV.COMPLAINTS', route: '/core/tenant-complaints' },
-        { title: 'NAV.MENU', route: '/core/tenant-menu' }
+        { title: 'NAV.MENU', route: '/core/tenant-menu' },
+        { title: 'NAV.PAY_RENT', route: '/core/tenant-pay-rent' }
       ]
     }
   ];

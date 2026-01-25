@@ -45,6 +45,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { TenantAnnouncementsComponent } from './tenant-announcements/tenant-announcements.component';
 import { TenantComplaintsComponent } from './tenant-complaints/tenant-complaints.component';
 import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
+import { TenantPayRentComponent } from './tenant-pay-rent/tenant-pay-rent.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -90,7 +91,7 @@ const routes: Routes = [
   { path: 'tenant-announcements', component: TenantAnnouncementsComponent },
   { path: 'tenant-complaints', component: TenantComplaintsComponent },
   { path: 'tenant-menu', component: TenantMenuComponent },
-
+  { path: 'tenant-pay-rent', component: TenantPayRentComponent },
 ];
 
 @NgModule({

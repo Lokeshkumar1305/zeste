@@ -1,855 +1,281 @@
-// ========================
-// THEME-MAPPED VARIABLES
-// ========================
-// Map to your shared CSS variables so design stays consistent
-$primary-color: unquote("var(--brand-primary)");
-$text-primary: unquote("var(--text-color)");
-$text-secondary: unquote("var(--text-muted)");
-$border-color: unquote("var(--card-border)");
-$bg-light: unquote("var(--bg-page)");
-$white: unquote("var(--card-background)");
-
-// item type colors
-$veg-color: #10b981;
-$non-veg-color: #ef4444;
-$egg-color: #f59e0b;
-
-// ========================
-// BASE STYLES
-// ========================
-.tenant-menu-page {
-  min-height: 100vh;
-  background: $bg-light;
-  padding-bottom: 2rem;
-}
-
-/**
- * Main content container.
- * Centered with side space; slightly shifted to the right on large screens.
- */
-.menu-container {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 24px;
-  box-sizing: border-box;
-}
-
-// Shift the entire block slightly right on desktop
-@media (min-width: 1200px) {
-  .page-header .menu-container,
-  .view-tabs-section .menu-container,
-  .filter-section .menu-container,
-  .menu-content .menu-container {
-    transform: translateX(24px);
-  }
-}
-
-// Vertical spacing between cards
-.page-header,
-.view-tabs-section,
-.filter-section,
-.menu-content {
-  padding-block: 0.75rem;
-}
-
-// ========================
-// PAGE HEADER CARD
-// ========================
-.page-header {
-  background: transparent;
-
-  .menu-container {
-    background: $white;
-    border-radius: 14px;
-    border: 1px solid $border-color;
-    padding: 1.5rem 1.75rem;
-  }
-
-  .header-content {
+.menu-page {
+  .view-mode-tabs {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: var(--card-background);
+    padding: 6px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--card-border);
 
-    .header-left {
-      .page-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: $text-primary;
-        margin: 0 0 0.5rem 0;
-      }
-
-      .page-subtitle {
-        font-size: 1rem;
-        color: $text-secondary;
-        margin: 0;
-      }
-    }
-
-    .header-right {
-      .btn-refresh {
-        width: 44px;
-        height: 44px;
-        border: 2px solid $border-color;
-        border-radius: 12px;
-        background: $white;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-
-        i {
-          font-size: 1.25rem;
-          color: $text-secondary;
-
-          &.spinning {
-            animation: spin 0.8s linear infinite;
-          }
-        }
-
-        &:hover:not(:disabled) {
-          border-color: $primary-color;
-          background: rgba(79, 70, 229, 0.06);
-
-          i {
-            color: $primary-color;
-          }
-        }
-
-        &:disabled {
-          cursor: not-allowed;
-          opacity: 0.6;
-        }
-      }
-    }
-  }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-// ========================
-// VIEW TABS CARD
-// ========================
-.view-tabs-section {
-  background: transparent;
-
-  .menu-container {
-    background: $white;
-    border-radius: 14px;
-    border: 1px solid $border-color;
-    padding: 1rem 1.75rem;
-  }
-
-  .view-tabs {
-    display: flex;
-    gap: 0.5rem;
-
-    .view-tab {
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      border: 2px solid transparent;
-      border-radius: 12px;
-      background: transparent;
-      color: $text-secondary;
-      font-size: 0.9375rem;
-      font-weight: 500;
+      justify-content: center;
+      gap: 8px;
       cursor: pointer;
-      transition: all 0.3s ease;
-
-      i {
-        font-size: 1.125rem;
-      }
-
-      &:hover {
-        background: $bg-light;
-        color: $text-primary;
-      }
+      transition: all 0.2s;
 
       &.active {
-        background: $primary-color;
-        color: $white;
-        border-color: $primary-color;
+        background: var(--brand-primary);
+        color: #fff;
       }
     }
   }
-}
 
-// ========================
-// MEAL FILTER CARD
-// ========================
-.filter-section {
-  background: transparent;
-
-  .menu-container {
-    background: $white;
-    border-radius: 14px;
-    border: 1px solid $border-color;
-    padding: 1rem 1.75rem 1.25rem;
-  }
-
-  .meal-filters {
+  .meal-filters-scroll {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    padding: 0.25rem 0 0.25rem;
-    overflow: visible;
-    align-items: center;
-    justify-content: flex-start;
-  }
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    margin: 0 -16px 12px;
+    padding-left: 16px;
+    padding-right: 16px;
 
-  .meal-filter-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.625rem 1.25rem;
-    border: 2px solid $border-color;
-    border-radius: 10px;
-    background: $white;
-    color: $text-secondary;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    flex-shrink: 0;
-
-    i {
-      font-size: 1rem;
+    &::-webkit-scrollbar {
+      display: none;
     }
 
-    &:hover {
-      border-color: $primary-color;
-      color: $primary-color;
-      background: rgba(79, 70, 229, 0.06);
-    }
+    .filter-chip {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      background: var(--card-background);
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
 
-    &.active {
-      background: $primary-color;
-      color: $white;
-      border-color: $primary-color;
-    }
-  }
-}
-
-// ========================
-// MAIN CONTENT CARD
-// ========================
-.menu-content {
-  background: transparent;
-
-  .menu-container {
-    background: $bg-light;
-    border-radius: 14px;
-    border: 1px solid $border-color;
-    padding: 1.5rem 1.75rem 2rem;
-  }
-
-  .loading-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    background: $white;
-    border-radius: 16px;
-
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid $border-color;
-      border-top-color: $primary-color;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    p {
-      margin-top: 1.5rem;
-      color: $text-secondary;
-      font-size: 1rem;
+      &.active {
+        background: var(--brand-primary-light);
+        color: var(--brand-primary);
+        border-color: var(--brand-primary);
+      }
     }
   }
 
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: $white;
-    border-radius: 16px;
-
-    .empty-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-
-    h3 {
-      font-size: 1.5rem;
-      color: $text-primary;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      color: $text-secondary;
-      font-size: 1rem;
-    }
-  }
-}
-
-// ========================
-// TODAY'S MENUS
-// ========================
-.menus-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-  .menu-card {
-    background: $white;
-    border-radius: 14px;
-    padding: 1.25rem 1.25rem 1.5rem;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-    width: 100%;
+  .mobile-menu-card {
+    background: var(--card-background);
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-sm);
 
     &.serving {
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.18);
+      border-color: var(--status-success-color);
+      box-shadow: 0 8px 20px rgba(var(--status-success-color-rgb), 0.1);
     }
 
-    &.upcoming {
-      border-color: $border-color;
-    }
-
-    &.completed {
-      opacity: 0.7;
-      background: #f9fafb;
-    }
-
-    .menu-header {
+    .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.9rem;
-      border-bottom: 2px solid $bg-light;
+      margin-bottom: 20px;
 
-      .menu-title-section {
+      .meal-info {
         display: flex;
         align-items: center;
-        gap: 1.25rem;
+        gap: 12px;
 
-        .meal-icon {
-          width: 56px;
-          height: 56px;
-          border-radius: 14px;
-          background-color: #eef2ff;
+        .meal-icon-box {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          background: var(--brand-primary-light);
+          color: var(--brand-primary);
           display: flex;
           align-items: center;
           justify-content: center;
-
-          i {
-            font-size: 1.75rem;
-            color: $primary-color;
-          }
+          font-size: 1.25rem;
         }
 
-        .meal-info {
-          .meal-name {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: $text-primary;
-            margin: 0 0 0.4rem 0;
-          }
+        h3 {
+          font-size: 1.125rem;
+          font-weight: 700;
+          color: var(--text-color);
+          margin: 0;
+        }
 
-          .meal-timing {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: $text-secondary;
-            font-size: 0.95rem;
-            font-weight: 500;
-
-            i {
-              font-size: 1.05rem;
-            }
-          }
+        .time {
+          font-size: 0.75rem;
+          color: var(--text-secondary);
         }
       }
 
-      .status-badge {
-        padding: 0.5rem 1.1rem;
-        border-radius: 10px;
-        font-size: 0.875rem;
-        font-weight: 600;
+      .serving-pill {
+        padding: 4px 12px;
+        background: var(--status-success-bg);
+        color: var(--status-success-color);
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 6px;
 
-        i {
-          font-size: 0.95rem;
-
-          &.pulse {
-            animation: pulse 2s infinite;
-          }
-        }
-
-        &.serving {
-          background: #d1fae5;
-          color: #065f46;
-        }
-
-        &.upcoming {
-          background: #dbeafe;
-          color: #1e40af;
-        }
-
-        &.completed {
-          background: #f3f4f6;
-          color: #6b7280;
+        .dot {
+          width: 6px;
+          height: 6px;
+          background: currentColor;
+          border-radius: 50%;
+          animation: pulse 1.5s infinite;
         }
       }
     }
 
-    .menu-items-grid {
-      display: grid;
-      gap: 0.85rem;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .items-horizontal {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      margin: 0 -10px;
+      padding: 0 10px;
+      padding-bottom: 4px;
 
-      .menu-item-card {
-        background: $bg-light;
-        border-radius: 10px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        border: 1px solid transparent;
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
-        &:hover:not(.unavailable) {
-          transform: translateY(-3px);
-          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-          border-color: $primary-color;
-        }
+      .food-item-mobile {
+        width: 100px;
+        flex-shrink: 0;
+        text-align: center;
 
-        &.unavailable {
-          opacity: 0.6;
-          filter: grayscale(0.5);
-        }
-
-        .item-image {
-          position: relative;
-          width: 100%;
-          height: 135px;
+        .img-wrapper {
+          width: 80px;
+          height: 80px;
+          border-radius: 20px;
           overflow: hidden;
+          margin: 0 auto 8px;
+          position: relative;
+          border: 2px solid var(--card-border);
 
           img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
           }
 
-          &:hover img {
-            transform: scale(1.08);
-          }
-
-          .item-type-badge {
+          .veg-non-veg {
             position: absolute;
-            top: 0.6rem;
-            right: 0.6rem;
-            padding: 0.3rem 0.6rem;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(4px);
-            font-size: 0.7rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 1px solid #fff;
 
-            .type-dot {
-              font-size: 0.95rem;
+            &.veg {
+              background: #10b981;
             }
 
-            &.veg    { color: $veg-color; }
-            &.non-veg { color: $non-veg-color; }
-            &.egg    { color: $egg-color; }
-          }
-
-          .unavailable-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: $white;
-            font-weight: 600;
-
-            i {
-              font-size: 2rem;
-              margin-bottom: 0.5rem;
+            &.non-veg {
+              background: #ef4444;
             }
           }
         }
 
-        .item-details {
-          padding: 0.75rem;
-
-          .item-name {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: $text-primary;
-            margin: 0 0 0.35rem 0;
-          }
-
-          .item-description {
-            font-size: 0.78rem;
-            color: $text-secondary;
-            margin: 0;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
+        .item-name {
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: var(--text-color);
+          display: block;
+          line-height: 1.2;
         }
       }
     }
+  }
 
-    .no-items {
-      text-align: center;
-      padding: 3rem;
-      color: $text-secondary;
+  .weekly-accordion {
+    .day-row {
+      background: var(--card-background);
+      border-radius: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--card-border);
+      overflow: hidden;
 
-      i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        display: block;
+      &.today {
+        border-color: var(--brand-primary);
       }
 
-      p {
-        margin: 0;
-        font-size: 1rem;
+      .day-header {
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+
+        .day-name {
+          font-weight: 600;
+          color: var(--text-color);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .badge {
+            padding: 2px 8px;
+            background: var(--brand-primary);
+            color: #fff;
+            font-size: 0.625rem;
+            border-radius: 4px;
+          }
+        }
+      }
+
+      .day-content {
+        padding: 0 16px 16px;
+        border-top: 1px solid var(--card-border);
+
+        .mini-menu-row {
+          padding: 10px 0;
+          border-bottom: 1px solid var(--card-border);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .meal {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            display: block;
+            margin-bottom: 4px;
+          }
+
+          .items {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+          }
+        }
       }
     }
   }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.5; }
-}
-
-// ========================
-// WEEKLY VIEW
-// ========================
-.weekly-view {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-  .day-section {
-    background: $white;
-    border-radius: 16px;
-    padding: 1.5rem;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-
-    &.today {
-      border-color: $primary-color;
-      box-shadow: 0 4px 20px rgba(79, 70, 229, 0.1);
-    }
-
-    .day-header {
-      margin-bottom: 1.25rem;
-
-      .day-name {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: $text-primary;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-
-        .today-badge {
-          padding: 0.25rem 0.75rem;
-          border-radius: 6px;
-          background: $primary-color;
-          color: $white;
-          font-size: 0.75rem;
-          font-weight: 600;
-        }
-      }
-    }
-
-    .day-menus {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      .weekly-menu-card {
-        background: $bg-light;
-        border-radius: 12px;
-        padding: 1.25rem;
-        border: 1px solid $border-color;
-
-        .weekly-menu-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1rem;
-
-          .meal-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            background: $primary-color;
-            color: $white;
-            font-weight: 600;
-            font-size: 0.9375rem;
-
-            i {
-              font-size: 1.125rem;
-            }
-          }
-
-          .meal-time {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            color: $text-secondary;
-            font-size: 0.875rem;
-
-            i {
-              font-size: 1rem;
-            }
-          }
-        }
-
-        .weekly-items-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-
-          .weekly-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem;
-            border-radius: 6px;
-            background: $white;
-
-            .item-type-indicator {
-              font-size: 1rem;
-              flex-shrink: 0;
-
-              &.veg    { color: $veg-color; }
-              &.non-veg { color: $non-veg-color; }
-              &.egg    { color: $egg-color; }
-            }
-
-            .item-title {
-              font-size: 0.9375rem;
-              color: $text-primary;
-              font-weight: 500;
-            }
-          }
-        }
-      }
-    }
-
-    .no-day-menu {
-      text-align: center;
-      padding: 2rem;
-      color: $text-secondary;
-
-      i {
-        font-size: 2.5rem;
-        margin-bottom: 0.75rem;
-        display: block;
-      }
-
-      p {
-        margin: 0;
-        font-size: 0.9375rem;
-      }
-    }
-  }
-}
-
-// ========================
-// RESPONSIVE DESIGN
-// ========================
-
-// Tablets (768px - 1024px)
-@media (max-width: 1024px) {
-  .menu-container {
-    max-width: 100%;
-    padding: 0 16px;
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
   }
 
-  .page-header .menu-container,
-  .view-tabs-section .menu-container,
-  .filter-section .menu-container,
-  .menu-content .menu-container {
-    transform: none;
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
   }
 
-  .menus-list .menu-card .menu-items-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.8rem;
-  }
-}
-
-// Mobile Devices (< 768px)
-@media (max-width: 767px) {
-  .tenant-menu-page {
-    padding-bottom: 1rem;
-  }
-
-  .menu-container {
-    padding: 0 12px;
-  }
-
-  .page-header .header-content .header-left .page-title {
-    font-size: 1.5rem;
-  }
-
-  .page-header .header-content .header-left .page-subtitle {
-    font-size: 0.875rem;
-  }
-
-  .view-tabs-section .view-tabs .view-tab {
-    padding: 0.625rem 1rem;
-    font-size: 0.875rem;
-
-    i {
-      font-size: 1rem;
-    }
-
-    span {
-      display: none;
-    }
-  }
-
-  .filter-section .menu-container {
-    padding: 0.75rem 1.25rem 1.25rem;
-  }
-
-  .filter-section .meal-filters {
-    gap: 0.6rem;
-    padding: 0.2rem 0 0.4rem;
-    justify-content: flex-start;
-  }
-
-  .filter-section .meal-filter-btn {
-    padding: 0.55rem 1rem;
-    font-size: 0.82rem;
-    border-radius: 999px;
-  }
-
-  .menus-list {
-    gap: 1rem;
-
-    .menu-card {
-      padding: 1.1rem;
-
-      .menu-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-      }
-
-      .menu-items-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem;
-
-        .menu-item-card {
-          .item-image {
-            height: 125px;
-          }
-
-          .item-details {
-            padding: 0.7rem;
-
-            .item-name {
-              font-size: 0.88rem;
-            }
-
-            .item-description {
-              font-size: 0.76rem;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .weekly-view .day-section {
-    padding: 1.25rem;
-
-    .day-header .day-name {
-      font-size: 1.25rem;
-
-      .today-badge {
-        font-size: 0.7rem;
-        padding: 0.25rem 0.5rem;
-      }
-    }
-
-    .day-menus .weekly-menu-card {
-      padding: 1rem;
-
-      .weekly-menu-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-
-        .meal-badge {
-          padding: 0.375rem 0.75rem;
-          font-size: 0.875rem;
-
-          i {
-            font-size: 1rem;
-          }
-        }
-
-        .meal-time {
-          font-size: 0.8125rem;
-        }
-      }
-
-      .weekly-items-list .weekly-item .item-title {
-        font-size: 0.875rem;
-      }
-    }
-  }
-}
-
-// Small Mobile (< 480px)
-@media (max-width: 479px) {
-  .page-header .header-content .header-left .page-title {
-    font-size: 1.25rem;
-  }
-
-  .page-header .header-content .header-left .page-subtitle {
-    font-size: 0.8125rem;
-  }
-
-  .menus-list .menu-card {
-    padding: 1rem;
-
-    .menu-items-grid {
-      grid-template-columns: 1fr;
-    }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
   }
 }

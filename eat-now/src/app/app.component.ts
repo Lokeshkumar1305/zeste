@@ -135,13 +135,18 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
+  isTenantView = false;
+
   private subscribeToRouteChanges(): void {
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         takeUntil(this.destroy$)
       )
-      .subscribe(() => {
+      .subscribe((event: any) => {
+        const url = event.urlAfterRedirects || event.url;
+        this.isTenantView = url.includes('/core/tenant-');
+
         // Auto-close only on mobile after navigation
         if (this.isMobile && !this.sidebarCollapsed) {
           this.sidebarCollapsed = true;
