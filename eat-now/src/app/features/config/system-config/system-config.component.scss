@@ -15,14 +15,13 @@
     width: 1300px;
     max-width: 95%;
     height: 800px;
-    background: var(--card-background);
+    background: var(--bg-page);
     font-family: var(--font-family);
     color: var(--text-color);
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
     position: relative;
-    border: none;
-    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--card-border);
 }
 
 .wizard-header {
@@ -103,7 +102,7 @@
         display: flex;
         align-items: center;
         gap: 14px;
-        padding: 12px 14px;
+        padding: 16px 20px;
         border-radius: 14px;
         cursor: pointer;
         transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -158,7 +157,6 @@
 
         &.active {
             background: var(--brand-primary-light);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 
             .step-icon {
                 background: var(--brand-primary);
@@ -243,6 +241,12 @@
         max-width: 950px;
         margin: 0 auto;
         animation: slideUp 0.3s ease-out;
+
+        background: var(--card-background);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 32px 48px;
+        margin-bottom: 24px;
     }
 
     .section-title {

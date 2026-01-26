@@ -15,13 +15,13 @@
   width: 1350px;
   max-width: 95%;
   height: 820px;
-  background: var(--card-background);
+  background: var(--bg-page);
   font-family: var(--font-family);
   color: var(--text-color);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   position: relative;
-  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--card-border);
 }
 
 .wizard-header {
@@ -201,6 +201,12 @@
     max-width: 900px;
     margin: 0 auto;
     animation: slideUp 0.3s ease-out;
+
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 32px 48px;
+    margin-bottom: 24px;
   }
 
   .section-title {

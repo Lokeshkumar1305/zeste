@@ -3,7 +3,8 @@
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 120px);
-  padding: 20px;
+  padding: 40px 20px;
+  /* Increased padding */
   background: var(--bg-page);
   width: 100%;
   box-sizing: border-box;
@@ -15,13 +16,15 @@
   width: 1400px;
   max-width: 95%;
   height: 850px;
-  background: var(--card-background);
+  background: var(--bg-page);
+  /* Changed from card-background to page background */
   font-family: var(--font-family);
   color: var(--text-color);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   position: relative;
-  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--card-border);
+  /* Explicit border */
 }
 
 .wizard-header {
@@ -92,7 +95,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 16px;
+    padding: 18px 20px;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -146,7 +149,6 @@
       .step-icon {
         background: var(--brand-primary);
         color: #ffffff;
-        box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.3);
       }
 
       .step-title {
@@ -212,6 +214,12 @@
     max-width: 1000px;
     margin: 0 auto;
     animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 32px 48px;
+    margin-bottom: 24px;
   }
 
   .section-title {
