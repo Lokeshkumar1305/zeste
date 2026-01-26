@@ -43,7 +43,13 @@ export interface RoomDetails {
 })
 
 export class OutletOnboardingComponent implements OnInit {
-  @ViewChild('stepper') stepper!: MatStepper;
+  activeStep: number = 1;
+
+  steps = [
+    { id: 1, title: 'Owner Details', subtitle: 'Personal information', icon: 'bi bi-person-fill', status: 'active' },
+    { id: 2, title: 'Hostel Details', subtitle: 'Basic hostel info', icon: 'bi bi-building-fill', status: 'pending' },
+    { id: 3, title: 'License & Property', subtitle: 'Legal certifications', icon: 'bi bi-file-earmark-check-fill', status: 'pending' }
+  ];
 
   ownerForm!: FormGroup;
   hostelForm!: FormGroup;
@@ -66,9 +72,52 @@ export class OutletOnboardingComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private router: Router,
+    public router: Router,
     private onboardingService: HostelService
-  ) {}
+  ) { }
+
+  setStep(stepId: number) {
+    if (stepId < this.activeStep || this.isStepValid(stepId - 1)) {
+      this.activeStep = stepId;
+      this.updateStepStatus();
+    }
+  }
+
+  isStepValid(stepId: number): boolean {
+    if (stepId === 1) return this.ownerForm.valid;
+    if (stepId === 2) return this.hostelForm.valid;
+    if (stepId === 3) return this.licenseForm.valid;
+    return true;
+  }
+
+  nextStep() {
+    if (this.isStepValid(this.activeStep)) {
+      if (this.activeStep < this.steps.length) {
+        this.steps[this.activeStep - 1].status = 'completed';
+        this.activeStep++;
+        this.steps[this.activeStep - 1].status = 'active';
+      } else {
+        // Submit logic
+      }
+    } else {
+      this.snackBar.open('Please complete the current step.', 'Close', { duration: 2000 });
+    }
+  }
+
+  prevStep() {
+    if (this.activeStep > 1) {
+      this.activeStep--;
+      this.updateStepStatus();
+    }
+  }
+
+  updateStepStatus() {
+    this.steps.forEach(step => {
+      if (step.id < this.activeStep) step.status = 'completed';
+      else if (step.id === this.activeStep) step.status = 'active';
+      else step.status = 'pending';
+    });
+  }
 
   ngOnInit(): void {
     this.initForms();
@@ -90,9 +139,6 @@ export class OutletOnboardingComponent implements OnInit {
     this.hostelForm = this.fb.group({
       hostelName: ['', [Validators.required, Validators.minLength(3)]],
       hostelType: ['', Validators.required],
-      totalFloors: ['', [Validators.required, Validators.min(1)]],
-      totalRooms: ['', [Validators.required, Validators.min(1)]],
-      totalBeds: ['', [Validators.required, Validators.min(1)]],
       addressLine1: ['', Validators.required],
       addressLine2: [''],
       landmark: [''],
@@ -100,7 +146,6 @@ export class OutletOnboardingComponent implements OnInit {
       state: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
       googleMapsLink: [''],
-      contactPhone: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
       contactEmail: ['', Validators.email]
     });
 
@@ -165,9 +210,9 @@ export class OutletOnboardingComponent implements OnInit {
 
   // Form Validation
   canSubmit(): boolean {
-    return this.ownerForm.valid && 
-           this.hostelForm.valid && 
-           this.licenseForm.valid;
+    return this.ownerForm.valid &&
+      this.hostelForm.valid &&
+      this.licenseForm.valid;
   }
 
   // Save Draft

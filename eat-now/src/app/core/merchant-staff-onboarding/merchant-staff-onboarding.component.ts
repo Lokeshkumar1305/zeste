@@ -11,6 +11,15 @@ import { Location } from '@angular/common';
   styleUrl: './merchant-staff-onboarding.component.scss'
 })
 export class MerchantStaffOnboardingComponent {
+  activeStep: number = 1;
+
+  steps = [
+    { id: 1, title: 'Identity', subtitle: 'Basic staff details', icon: 'bi bi-person-fill', status: 'active' },
+    { id: 2, title: 'Contact', subtitle: 'Communication info', icon: 'bi bi-telephone-fill', status: 'pending' },
+    { id: 3, title: 'Employment', subtitle: 'Work & Bank info', icon: 'bi bi-briefcase-fill', status: 'pending' },
+    { id: 4, title: 'Address', subtitle: 'Location details', icon: 'bi bi-geo-alt-fill', status: 'pending' }
+  ];
+
   id!: any;
   shiftStartTimes!: string;
   shiftEndTimes!: string;
@@ -39,7 +48,6 @@ export class MerchantStaffOnboardingComponent {
   certificationDocPath!: any;
   otherDocName!: any;
   otherDocPath!: any;
-  selectedTabIndex: number = 0;
   isCreateMode!: boolean;
   datasource = new Array<EmergencyContactInfo>();
   datasource2 = new Array<Skills>();
@@ -228,10 +236,43 @@ export class MerchantStaffOnboardingComponent {
   //   }
   // }
 
-  goToNextTab() {
-    if (this.selectedTabIndex < 6) {
-      this.selectedTabIndex += 1;
+  setStep(stepId: number) {
+    if (stepId < this.activeStep || this.isStepValid(stepId - 1)) {
+      this.activeStep = stepId;
+      this.updateStepStatus();
     }
+  }
+
+  isStepValid(stepId: number): boolean {
+    // For now returning true, but you can add actual validation logic here
+    return true;
+  }
+
+  nextStep() {
+    if (this.isStepValid(this.activeStep)) {
+      if (this.activeStep < this.steps.length) {
+        this.steps[this.activeStep - 1].status = 'completed';
+        this.activeStep++;
+        this.steps[this.activeStep - 1].status = 'active';
+      } else {
+        // Save logic
+      }
+    }
+  }
+
+  prevStep() {
+    if (this.activeStep > 1) {
+      this.activeStep--;
+      this.updateStepStatus();
+    }
+  }
+
+  updateStepStatus() {
+    this.steps.forEach(step => {
+      if (step.id < this.activeStep) step.status = 'completed';
+      else if (step.id === this.activeStep) step.status = 'active';
+      else step.status = 'pending';
+    });
   }
 
   backToMain() {

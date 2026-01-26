@@ -1,1013 +1,304 @@
-<!-- staff-onboarding.component.html -->
-<div class="staff-onboarding-root">
-    <div class="staff-onboarding-shell">
-        <!-- Header card (same style as hostel onboarding) -->
-        <mat-card class="case-card onboarding-card">
-            <mat-card-content>
-                <div class="onboarding-header">
-                    <div class="onboarding-header-left">
-                        <button class="btn-back" type="button" (click)="goBack()">
-                            <i class="bi bi-arrow-left"></i>
-                        </button>
-                        <div class="header-title">
-                            <h1>{{ isEditMode ? 'Edit Staff' : 'Staff Onboarding' }}</h1>
-                            <p>
-                                {{
-                                isEditMode
-                                ? 'Update staff information'
-                                : 'Add new staff member to your hostel'
-                                }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="onboarding-header-right">
-                        <!-- Optional: show Save Draft on create mode -->
-                        <button *ngIf="!isEditMode" mat-stroked-button type="button" class="btn btn-secondary btn-sm"
-                            (click)="onSaveAsDraft()" [disabled]="isSaving">
-                            <i class="bi bi-save me-1"></i>
-                            Save as Draft
-                        </button>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-
-        <!-- Loading state -->
-        <div class="loading-container" *ngIf="isLoading">
-            <div class="spinner"></div>
-            <p>Loading staff details...</p>
+<div class="wizard-wrapper">
+    <div class="wizard-container">
+        <!-- Header -->
+        <div class="wizard-header">
+            <div class="header-info">
+                <h1>Staff Onboarding</h1>
+                <p>Register and configure new staff member profiles for your hostel</p>
+            </div>
         </div>
 
-        <!-- Main stepper content -->
-        <div *ngIf="!isLoading">
-            <form [formGroup]="staffForm">
-                <mat-horizontal-stepper #stepper [linear]="false" class="mt-4 staff-stepper">
-                    <!-- STEP 1: Personal Information -->
-                    <mat-step label="Personal Info">
-                        <div class="step-content">
-                            <mat-card class="case-card section-card">
-                                <mat-card-header>
-                                    <mat-card-title class="f-16-m">
-                                        <i class="bi bi-person me-2"></i>
-                                        Personal Information
-                                    </mat-card-title>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <!-- Profile Photo -->
-                                    <div class="profile-photo-wrapper">
-                                        <div class="profile-photo" [class.has-photo]="profilePhotoPreview">
-                                            <img *ngIf="profilePhotoPreview" [src]="profilePhotoPreview"
-                                                alt="Profile" />
-                                            <i *ngIf="!profilePhotoPreview" class="bi bi-person"></i>
-                                        </div>
-                                        <div class="photo-actions">
-                                            <input type="file" #photoInput hidden accept="image/jpeg,image/png"
-                                                (change)="onProfilePhotoSelect($event)" />
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                (click)="photoInput.click()">
-                                                <i class="bi bi-upload me-1"></i> Upload Photo
-                                            </button>
-                                            <button *ngIf="profilePhotoPreview" type="button"
-                                                class="btn btn-sm btn-outline-danger" (click)="removeProfilePhoto()">
-                                                <i class="bi bi-trash me-1"></i> Remove
-                                            </button>
-                                            <small class="text-muted">JPG or PNG, max 2MB</small>
-                                        </div>
-                                    </div>
-
-                                    <!-- Personal fields -->
-                                    <div class="form-grid">
-                                        <!-- Employee ID -->
-                                        <div class="form-group">
-                                            <label>Employee ID</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <input matInput formControlName="employeeId" />
-                                                <mat-icon matSuffix>badge</mat-icon>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- First Name -->
-                                        <div class="form-group">
-                                            <label class="required">First Name</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <input matInput formControlName="firstName"
-                                                    placeholder="Enter first name" />
-                                                <mat-error *ngIf="hasError('firstName', 'required')">
-                                                    First name is required
-                                                </mat-error>
-                                                <mat-error *ngIf="hasError('firstName', 'minlength')">
-                                                    Minimum 2 characters
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Last Name -->
-                                        <div class="form-group">
-                                            <label class="required">Last Name</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <input matInput formControlName="lastName"
-                                                    placeholder="Enter last name" />
-                                                <mat-error *ngIf="hasError('lastName', 'required')">
-                                                    Last name is required
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Email -->
-                                        <div class="form-group">
-                                            <label class="required">Email Address</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <input matInput formControlName="email" placeholder="example@email.com"
-                                                    type="email" />
-                                                <mat-icon matSuffix>email</mat-icon>
-                                                <mat-error *ngIf="hasError('email', 'required')">
-                                                    Email is required
-                                                </mat-error>
-                                                <mat-error *ngIf="hasError('email', 'email')">
-                                                    Enter valid email
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Phone -->
-                                        <div class="form-group">
-                                            <label class="required">Phone Number</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <span matPrefix class="country-code">+91 </span>
-                                                <input matInput formControlName="phone" placeholder="9876543210"
-                                                    maxlength="10" />
-                                                <mat-error *ngIf="hasError('phone', 'required')">
-                                                    Phone is required
-                                                </mat-error>
-                                                <mat-error *ngIf="hasError('phone', 'pattern')">
-                                                    Enter valid 10-digit number
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Alternate Phone -->
-                                        <div class="form-group">
-                                            <label>Alternate Phone</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <span matPrefix class="country-code">+91 </span>
-                                                <input matInput formControlName="alternatePhone"
-                                                    placeholder="9876543210" maxlength="10" />
-                                                <mat-error *ngIf="hasError('alternatePhone', 'pattern')">
-                                                    Enter valid number
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Date of Birth -->
-                                        <div class="form-group">
-                                            <label class="required">Date of Birth</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <input matInput [matDatepicker]="dobPicker"
-                                                    formControlName="dateOfBirth" placeholder="Select date" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="dobPicker"></mat-datepicker-toggle>
-                                                <mat-datepicker #dobPicker></mat-datepicker>
-                                                <mat-hint *ngIf="calculateAge() !== null">
-                                                    Age: {{ calculateAge() }} years
-                                                </mat-hint>
-                                                <mat-error *ngIf="hasError('dateOfBirth', 'required')">
-                                                    Date of birth is required
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Gender -->
-                                        <div class="form-group">
-                                            <label class="required">Gender</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="gender" placeholder="Select gender">
-                                                    <mat-option *ngFor="let g of genders" [value]="g">
-                                                        {{ g }}
-                                                    </mat-option>
-                                                </mat-select>
-                                                <mat-error *ngIf="hasError('gender', 'required')">
-                                                    Gender is required
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Marital Status -->
-                                        <div class="form-group">
-                                            <label>Marital Status</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="maritalStatus" placeholder="Select status">
-                                                    <mat-option *ngFor="let s of maritalStatuses" [value]="s">
-                                                        {{ s }}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Blood Group -->
-                                        <div class="form-group">
-                                            <label>Blood Group</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="bloodGroup"
-                                                    placeholder="Select blood group">
-                                                    <mat-option *ngFor="let bg of bloodGroups" [value]="bg">
-                                                        {{ bg }}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-
-                            <div class="step-actions mt-4">
-                                <span></span>
-                                <button mat-raised-button color="primary" type="button" class="btn btn-primary btn-sm"
-                                    matStepperNext>
-                                    Next
-                                    <i class="bi bi-arrow-right ms-1"></i>
-                                </button>
-                            </div>
+        <div class="wizard-main">
+            <!-- Sidebar -->
+            <aside class="wizard-sidebar">
+                <div class="steps-list">
+                    <div class="step-item" *ngFor="let step of steps" [class.active]="activeStep === step.id"
+                        [class.completed]="step.status === 'completed'" (click)="setStep(step.id)" matRipple>
+                        <div class="step-icon">
+                            <i [class]="step.icon" *ngIf="step.status !== 'completed'"></i>
+                            <mat-icon *ngIf="step.status === 'completed'">check</mat-icon>
                         </div>
-                    </mat-step>
-
-                    <!-- STEP 2: Address Information -->
-                    <mat-step label="Address Info">
                         <div class="step-content">
-                            <mat-card class="case-card section-card">
-                                <mat-card-header>
-                                    <mat-card-title class="f-16-m">
-                                        <i class="bi bi-geo-alt me-2"></i>
-                                        Address Information
-                                    </mat-card-title>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <!-- Current Address -->
-                                    <div class="address-section">
-                                        <h3 class="section-subtitle">
-                                            <i class="bi bi-house"></i> Current Address
-                                        </h3>
-
-                                        <div class="form-grid" formGroupName="currentAddress">
-                                            <div class="form-group full-width">
-                                                <label class="required">Street Address</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <textarea matInput formControlName="street"
-                                                        placeholder="Enter street address" rows="2"></textarea>
-                                                    <mat-error>Street address is required</mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="required">City</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="city" placeholder="Enter city" />
-                                                    <mat-error>City is required</mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="required">State</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="state" placeholder="Enter state" />
-                                                    <mat-error>State is required</mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="required">Pincode</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="pincode"
-                                                        placeholder="Enter pincode" maxlength="6" />
-                                                    <mat-error>
-                                                        Enter valid 6-digit pincode
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Country</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="country" />
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Same Address Checkbox -->
-                                    <div class="same-address-check">
-                                        <mat-checkbox formControlName="sameAsCurrentAddress" color="primary">
-                                            Permanent address is same as current address
-                                        </mat-checkbox>
-                                    </div>
-
-                                    <!-- Permanent Address -->
-                                    <div class="address-section">
-                                        <h3 class="section-subtitle">
-                                            <i class="bi bi-house-door"></i> Permanent Address
-                                        </h3>
-
-                                        <div class="form-grid" formGroupName="permanentAddress">
-                                            <div class="form-group full-width">
-                                                <label>Street Address</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <textarea matInput formControlName="street"
-                                                        placeholder="Enter street address" rows="2"></textarea>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>City</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="city" placeholder="Enter city" />
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>State</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="state" placeholder="Enter state" />
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Pincode</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="pincode"
-                                                        placeholder="Enter pincode" maxlength="6" />
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Country</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="country" />
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-
-                            <div class="step-actions mt-4">
-                                <button mat-button type="button" class="btn btn-secondary btn-sm" matStepperPrevious>
-                                    <i class="bi bi-arrow-left me-1"></i>
-                                    Previous
-                                </button>
-                                <button mat-raised-button color="primary" type="button" class="btn btn-primary btn-sm"
-                                    matStepperNext>
-                                    Next
-                                    <i class="bi bi-arrow-right ms-1"></i>
-                                </button>
-                            </div>
+                            <span class="step-title">{{step.title}}</span>
+                            <span class="step-subtitle">{{step.subtitle}}</span>
                         </div>
-                    </mat-step>
+                    </div>
+                </div>
 
-                    <!-- STEP 3: Employment Details -->
-                    <mat-step label="Employment">
-                        <div class="step-content">
-                            <mat-card class="case-card section-card">
-                                <mat-card-header>
-                                    <mat-card-title class="f-16-m">
-                                        <i class="bi bi-briefcase me-2"></i>
-                                        Employment Details
-                                    </mat-card-title>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <div class="form-grid">
-                                        <!-- Department -->
-                                        <div class="form-group">
-                                            <label class="required">Department</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="department"
-                                                    placeholder="Select department">
-                                                    <mat-option *ngFor="let d of departments" [value]="d">
-                                                        {{ d }}
-                                                    </mat-option>
-                                                </mat-select>
-                                                <mat-error>Department is required</mat-error>
-                                            </mat-form-field>
-                                        </div>
+                <div class="auto-save-banner">
+                    <div class="banner-icon"><mat-icon>security</mat-icon></div>
+                    <div class="banner-text">
+                        <strong>Secure Processing</strong>
+                        <p>All staff data is encrypted and handled securely.</p>
+                    </div>
+                </div>
+            </aside>
 
-                                        <!-- Designation -->
-                                        <div class="form-group">
-                                            <label class="required">Designation</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="designation"
-                                                    placeholder="Select designation">
-                                                    <mat-option *ngFor="let d of designations" [value]="d">
-                                                        {{ d }}
-                                                    </mat-option>
-                                                </mat-select>
-                                                <mat-error>Designation is required</mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Role -->
-                                        <div class="form-group">
-                                            <label class="required">System Role</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="role" placeholder="Select role">
-                                                    <mat-option *ngFor="let r of roles" [value]="r">
-                                                        {{ r }}
-                                                    </mat-option>
-                                                </mat-select>
-                                                <mat-hint>Access level in the system</mat-hint>
-                                                <mat-error>Role is required</mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Employment Type -->
-                                        <div class="form-group">
-                                            <label class="required">Employment Type</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="employmentType" placeholder="Select type">
-                                                    <mat-option *ngFor="let t of employmentTypes" [value]="t">
-                                                        {{ t }}
-                                                    </mat-option>
-                                                </mat-select>
-                                                <mat-error>Employment type is required</mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Joining Date -->
-                                        <div class="form-group">
-                                            <label class="required">Joining Date</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <input matInput [matDatepicker]="joiningPicker"
-                                                    formControlName="joiningDate" placeholder="Select date" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="joiningPicker"></mat-datepicker-toggle>
-                                                <mat-datepicker #joiningPicker></mat-datepicker>
-                                                <mat-error>Joining date is required</mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Reporting To -->
-                                        <div class="form-group">
-                                            <label>Reporting To</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="reportingTo" placeholder="Select manager">
-                                                    <mat-option value="">None</mat-option>
-                                                    <mat-option *ngFor="let m of managers" [value]="m.id">
-                                                        {{ m.name }} - {{ m.designation }}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Assigned Shift -->
-                                        <div class="form-group">
-                                            <label>Assigned Shift</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="assignedShift" placeholder="Select shift">
-                                                    <mat-option *ngFor="let s of shifts" [value]="s.name">
-                                                        {{ s.name }} ({{ s.time }})
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Assigned Floors -->
-                                        <div class="form-group">
-                                            <label>Assigned Floors</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="assignedFloors" multiple
-                                                    placeholder="Select floors">
-                                                    <mat-option *ngFor="let f of floors" [value]="f">
-                                                        {{ f }}
-                                                    </mat-option>
-                                                </mat-select>
-                                                <mat-hint>Select multiple if applicable</mat-hint>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- Status -->
-                                        <div class="form-group">
-                                            <label class="required">Status</label>
-                                            <mat-form-field appearance="outline" class="w-100">
-                                                <mat-select formControlName="status" placeholder="Select status">
-                                                    <mat-option *ngFor="let s of statuses" [value]="s">
-                                                        <span class="status-dot" [class]="
-                                'status-' +
-                                s.toLowerCase().replace(' ', '-')
-                              "></span>
-                                                        {{ s }}
-                                                    </mat-option>
-                                                </mat-select>
-                                                <mat-error>Status is required</mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-
-                            <div class="step-actions mt-4">
-                                <button mat-button type="button" class="btn btn-secondary btn-sm" matStepperPrevious>
-                                    <i class="bi bi-arrow-left me-1"></i>
-                                    Previous
-                                </button>
-                                <button mat-raised-button color="primary" type="button" class="btn btn-primary btn-sm"
-                                    matStepperNext>
-                                    Next
-                                    <i class="bi bi-arrow-right ms-1"></i>
-                                </button>
+            <!-- Content Area -->
+            <main class="wizard-content">
+                <form [formGroup]="staffForm">
+                    <!-- Step 1: Identity -->
+                    <div class="step-view" *ngIf="activeStep === 1">
+                        <h2 class="section-title">Identity Details</h2>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">First Name<span class="required">*</span></label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput formControlName="firstName" placeholder="Enter first name">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Last Name<span class="required">*</span></label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput formControlName="lastName" placeholder="Enter last name">
+                                    </mat-form-field>
+                                </div>
                             </div>
-                        </div>
-                    </mat-step>
 
-                    <!-- STEP 4: Salary & Bank Details -->
-                    <mat-step label="Salary & Bank">
-                        <div class="step-content">
-                            <mat-card class="case-card section-card">
-                                <mat-card-header>
-                                    <mat-card-title class="f-16-m">
-                                        <i class="bi bi-wallet2 me-2"></i>
-                                        Salary &amp; Bank Details
-                                    </mat-card-title>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <!-- Salary Section -->
-                                    <div class="salary-section">
-                                        <h3 class="section-subtitle">
-                                            <i class="bi bi-cash-stack"></i> Salary Information
-                                        </h3>
-
-                                        <div class="form-grid">
-                                            <!-- Basic Salary -->
-                                            <div class="form-group">
-                                                <label class="required">Basic Salary</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <span matPrefix class="currency-prefix">₹
-                                                    </span>
-                                                    <input matInput type="number" formControlName="basicSalary"
-                                                        placeholder="Enter basic salary" />
-                                                    <mat-error>Basic salary is required</mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <!-- Allowances -->
-                                            <div class="form-group">
-                                                <label>Allowances</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <span matPrefix class="currency-prefix">₹
-                                                    </span>
-                                                    <input matInput type="number" formControlName="allowances"
-                                                        placeholder="HRA, DA, etc." />
-                                                </mat-form-field>
-                                            </div>
-
-                                            <!-- Deductions -->
-                                            <div class="form-group">
-                                                <label>Deductions</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <span matPrefix class="currency-prefix">₹
-                                                    </span>
-                                                    <input matInput type="number" formControlName="deductions"
-                                                        placeholder="PF, ESI, etc." />
-                                                </mat-form-field>
-                                            </div>
-
-                                            <!-- Net Salary -->
-                                            <div class="form-group">
-                                                <label>Net Salary</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <span matPrefix class="currency-prefix">₹
-                                                    </span>
-                                                    <input matInput formControlName="netSalary" />
-                                                    <mat-hint>Auto-calculated</mat-hint>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <!-- Payment Frequency -->
-                                            <div class="form-group">
-                                                <label>Payment Frequency</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <mat-select formControlName="paymentFrequency"
-                                                        placeholder="Select frequency">
-                                                        <mat-option *ngFor="let f of paymentFrequencies" [value]="f">
-                                                            {{ f }}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-
-                                        <!-- Salary Summary -->
-                                        <div class="salary-summary" *ngIf="staffForm.get('basicSalary')?.value">
-                                            <div class="summary-header">
-                                                Salary Breakdown
-                                            </div>
-                                            <div class="summary-row">
-                                                <span>Basic Salary</span>
-                                                <span>
-                                                    {{
-                                                    formatCurrency(
-                                                    staffForm.get('basicSalary')?.value || 0
-                                                    )
-                                                    }}
-                                                </span>
-                                            </div>
-                                            <div class="summary-row add">
-                                                <span>(+) Allowances</span>
-                                                <span>
-                                                    {{
-                                                    formatCurrency(
-                                                    staffForm.get('allowances')?.value || 0
-                                                    )
-                                                    }}
-                                                </span>
-                                            </div>
-                                            <div class="summary-row subtract">
-                                                <span>(-) Deductions</span>
-                                                <span>
-                                                    {{
-                                                    formatCurrency(
-                                                    staffForm.get('deductions')?.value || 0
-                                                    )
-                                                    }}
-                                                </span>
-                                            </div>
-                                            <div class="summary-row total">
-                                                <span>Net Salary</span>
-                                                <span>
-                                                    {{
-                                                    formatCurrency(
-                                                    staffForm.get('netSalary')?.value || 0
-                                                    )
-                                                    }}
-                                                </span>
-                                            </div>
-                                        </div>
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Date of Birth<span class="required">*</span></label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput [matDatepicker]="dbPicker" formControlName="dateOfBirth"
+                                            placeholder="Select DOB">
+                                        <mat-datepicker-toggle matSuffix [for]="dbPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #dbPicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Gender<span class="required">*</span></label>
+                                    <div class="radio-group-container">
+                                        <mat-radio-group formControlName="gender">
+                                            <mat-radio-button value="Male">Male</mat-radio-button>
+                                            <mat-radio-button value="Female">Female</mat-radio-button>
+                                            <mat-radio-button value="Other">Other</mat-radio-button>
+                                        </mat-radio-group>
                                     </div>
-
-                                    <!-- Bank Details -->
-                                    <div class="bank-section">
-                                        <h3 class="section-subtitle">
-                                            <i class="bi bi-bank"></i> Bank Details
-                                        </h3>
-
-                                        <div class="form-grid" formGroupName="bankDetails">
-                                            <div class="form-group">
-                                                <label>Account Holder Name</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="accountHolderName"
-                                                        placeholder="As per bank records" />
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Account Number</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="accountNumber"
-                                                        placeholder="Enter account number" />
-                                                    <mat-error>
-                                                        Enter valid account number
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Bank Name</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="bankName"
-                                                        placeholder="Enter bank name" />
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>IFSC Code</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="ifscCode"
-                                                        placeholder="e.g., SBIN0001234"
-                                                        style="text-transform: uppercase;" />
-                                                    <mat-error>Enter valid IFSC code</mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Branch Name</label>
-                                                <mat-form-field appearance="outline" class="w-100">
-                                                    <input matInput formControlName="branchName"
-                                                        placeholder="Enter branch name" />
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-
-                            <div class="step-actions mt-4">
-                                <button mat-button type="button" class="btn btn-secondary btn-sm" matStepperPrevious>
-                                    <i class="bi bi-arrow-left me-1"></i>
-                                    Previous
-                                </button>
-                                <button mat-raised-button color="primary" type="button" class="btn btn-primary btn-sm"
-                                    matStepperNext>
-                                    Next
-                                    <i class="bi bi-arrow-right ms-1"></i>
-                                </button>
+                                </div>
                             </div>
-                        </div>
-                    </mat-step>
 
-                    <!-- STEP 5: Documents -->
-                    <mat-step label="Documents">
-                        <div class="step-content">
-                            <mat-card class="case-card section-card">
-                                <mat-card-header>
-                                    <mat-card-title class="f-16-m">
-                                        <i class="bi bi-file-earmark-text me-2"></i>
-                                        Documents
-                                    </mat-card-title>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <div class="panel-documents">
-                                        <!-- Empty State -->
-                                        <div class="empty-state" *ngIf="documents.length === 0">
-                                            <i class="bi bi-file-earmark-plus"></i>
-                                            <p>No documents added yet</p>
-                                            <button type="button" class="btn btn-primary btn-sm"
-                                                (click)="addDocument()">
-                                                <i class="bi bi-plus me-1"></i> Add First
-                                                Document
-                                            </button>
-                                        </div>
-
-                                        <!-- Document List -->
-                                        <div formArrayName="documents">
-                                            <div *ngFor="
-                          let doc of documents.controls;
-                          let i = index
-                        " [formGroupName]="i" class="document-card">
-                                                <div class="document-row">
-                                                    <div class="form-group">
-                                                        <label class="required">Document Type</label>
-                                                        <mat-form-field appearance="outline" class="w-100">
-                                                            <mat-select formControlName="type"
-                                                                placeholder="Select type">
-                                                                <mat-option *ngFor="let t of documentTypes" [value]="t">
-                                                                    {{ t }}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                            <mat-error>Required</mat-error>
-                                                        </mat-form-field>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="required">Document Number</label>
-                                                        <mat-form-field appearance="outline" class="w-100">
-                                                            <input matInput formControlName="number"
-                                                                placeholder="Enter number" />
-                                                            <mat-error>Required</mat-error>
-                                                        </mat-form-field>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label>Upload File</label>
-                                                        <div class="file-input-wrapper">
-                                                            <input type="file" [id]="'doc-' + i" hidden
-                                                                accept=".pdf,.jpg,.jpeg,.png"
-                                                                (change)="onDocumentFileSelect($event, i)" />
-                                                            <label [for]="'doc-' + i" class="file-input-label">
-                                                                <i class="bi bi-cloud-upload"></i>
-                                                                <span>
-                                                                    {{
-                                                                    doc.get('fileName')?.value ||
-                                                                    'Choose file'
-                                                                    }}
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group checkbox-group">
-                                                        <mat-checkbox formControlName="verified" color="primary">
-                                                            Verified
-                                                        </mat-checkbox>
-                                                    </div>
-
-                                                    <button type="button" class="btn-remove"
-                                                        (click)="removeDocument(i)">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Document Info -->
-                                        <div class="info-box" *ngIf="documents.length > 0">
-                                            <i class="bi bi-info-circle"></i>
-                                            <div>
-                                                <p>
-                                                    Accepted formats: PDF, JPG, PNG (Max 5MB
-                                                    each)
-                                                </p>
-                                                <p>
-                                                    Recommended: Aadhar Card, PAN Card, Address
-                                                    Proof
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-
-                            <div class="step-actions mt-4">
-                                <button mat-button type="button" class="btn btn-secondary btn-sm" matStepperPrevious>
-                                    <i class="bi bi-arrow-left me-1"></i>
-                                    Previous
-                                </button>
-                                <button mat-raised-button color="primary" type="button" class="btn btn-primary btn-sm"
-                                    matStepperNext (click)="addDocument()">
-                                    Next
-                                    <i class="bi bi-arrow-right ms-1"></i>
-                                </button>
+                            <div class="form-item">
+                                <label class="field-label">Aadhar Card Number<span class="required">*</span></label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <input matInput formControlName="aadharNumber" placeholder="12-digit Aadhar number"
+                                        maxlength="12">
+                                    <mat-icon matPrefix>vignette</mat-icon>
+                                </mat-form-field>
                             </div>
-                        </div>
-                    </mat-step>
 
-                    <!-- STEP 6: Schedule & Others -->
-                    <mat-step label="Schedule & Others">
-                        <div class="step-content">
-                            <mat-card class="case-card section-card">
-                                <mat-card-header>
-                                    <mat-card-title class="f-16-m">
-                                        <i class="bi bi-calendar-check me-2"></i>
-                                        Schedule &amp; Additional Info
-                                    </mat-card-title>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <!-- Emergency Contacts -->
-                                    <div class="section-block">
-                                        <div class="section-header">
-                                            <h3 class="section-subtitle">
-                                                <i class="bi bi-telephone"></i> Emergency
-                                                Contacts
-                                            </h3>
-                                            <button type="button" class="btn btn-sm btn-outline-primary"
-                                                (click)="addEmergencyContact()"
-                                                [disabled]="emergencyContacts.length >= 3">
-                                                <i class="bi bi-plus me-1"></i> Add Contact
-                                            </button>
-                                        </div>
-
-                                        <div formArrayName="emergencyContacts">
-                                            <div *ngFor="
-                          let contact of emergencyContacts.controls;
-                          let i = index
-                        " [formGroupName]="i" class="contact-card">
-                                                <div class="contact-header">
-                                                    <span class="contact-number">Contact {{ i + 1 }}</span>
-                                                    <button *ngIf="emergencyContacts.length > 1" type="button"
-                                                        class="btn-remove-sm" (click)="removeEmergencyContact(i)">
-                                                        <i class="bi bi-x"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="contact-row">
-                                                    <div class="form-group">
-                                                        <label class="required">Name</label>
-                                                        <mat-form-field appearance="outline" class="w-100">
-                                                            <input matInput formControlName="name"
-                                                                placeholder="Contact name" />
-                                                            <mat-error>Required</mat-error>
-                                                        </mat-form-field>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="required">Relationship</label>
-                                                        <mat-form-field appearance="outline" class="w-100">
-                                                            <mat-select formControlName="relationship"
-                                                                placeholder="Select">
-                                                                <mat-option *ngFor="let r of relationships" [value]="r">
-                                                                    {{ r }}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                            <mat-error>Required</mat-error>
-                                                        </mat-form-field>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="required">Phone Number</label>
-                                                        <mat-form-field appearance="outline" class="w-100">
-                                                            <span matPrefix class="country-code">+91
-                                                            </span>
-                                                            <input matInput formControlName="phone"
-                                                                placeholder="9876543210" maxlength="10" />
-                                                            <mat-error>
-                                                                Valid phone required
-                                                            </mat-error>
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <div class="photo-upload-section mt-2">
+                                <label class="field-label">Profile Photo</label>
+                                <div class="upload-area" matRipple (click)="profPhoto.click()">
+                                    <input type="file" #profPhoto accept="image/*" hidden
+                                        (change)="onProfilePhotoSelect($event)">
+                                    <div class="upload-icon-box" *ngIf="!profilePhotoPreview">
+                                        <mat-icon>add_a_photo</mat-icon>
                                     </div>
-
-                                    <!-- Work Schedule -->
-                                    <div class="section-block">
-                                        <h3 class="section-subtitle">
-                                            <i class="bi bi-clock"></i> Work Schedule
-                                        </h3>
-
-                                        <div class="schedule-grid" formArrayName="workSchedule">
-                                            <div *ngFor="
-                          let day of workSchedule.controls;
-                          let i = index
-                        " [formGroupName]="i" class="schedule-item" [class.day-off]="!day.get('isWorking')?.value">
-                                                <div class="day-toggle">
-                                                    <mat-checkbox formControlName="isWorking" color="primary">
-                                                        {{ day.get('day')?.value }}
-                                                    </mat-checkbox>
-                                                </div>
-
-                                                <div class="time-range" *ngIf="day.get('isWorking')?.value">
-                                                    <mat-form-field appearance="outline" class="time-input">
-                                                        <input matInput type="time" formControlName="startTime" />
-                                                    </mat-form-field>
-                                                    <span class="time-separator">to</span>
-                                                    <mat-form-field appearance="outline" class="time-input">
-                                                        <input matInput type="time" formControlName="endTime" />
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <span class="off-label" *ngIf="!day.get('isWorking')?.value">
-                                                    Day Off
-                                                </span>
-                                            </div>
-                                        </div>
+                                    <div class="preview-box" *ngIf="profilePhotoPreview">
+                                        <img [src]="profilePhotoPreview" class="photo-preview">
                                     </div>
-
-                                    <!-- Skills -->
-                                    <div class="section-block">
-                                        <h3 class="section-subtitle">
-                                            <i class="bi bi-tools"></i> Skills
-                                        </h3>
-                                        <div class="chip-list">
-                                            <div *ngFor="let skill of skillOptions" class="chip"
-                                                [class.selected]="isSkillSelected(skill)" (click)="toggleSkill(skill)">
-                                                {{ skill }}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Languages -->
-                                    <div class="section-block">
-                                        <h3 class="section-subtitle">
-                                            <i class="bi bi-translate"></i> Languages
-                                            Known
-                                        </h3>
-                                        <div class="chip-list">
-                                            <div *ngFor="let lang of languageOptions" class="chip"
-                                                [class.selected]="isLanguageSelected(lang)"
-                                                (click)="toggleLanguage(lang)">
-                                                {{ lang }}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Notes -->
-                                    <div class="section-block">
-                                        <h3 class="section-subtitle">
-                                            <i class="bi bi-sticky"></i> Additional Notes
-                                        </h3>
-                                        <mat-form-field appearance="outline" class="w-100">
-                                            <textarea matInput formControlName="notes" rows="4"
-                                                placeholder="Any additional information..."></textarea>
-                                            <mat-hint align="end">
-                                                {{
-                                                staffForm.get('notes')?.value?.length || 0
-                                                }}/500
-                                            </mat-hint>
-                                        </mat-form-field>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-
-                            <div class="step-actions mt-4">
-                                <button mat-button type="button" class="btn btn-secondary btn-sm" matStepperPrevious>
-                                    <i class="bi bi-arrow-left me-1"></i>
-                                    Previous
-                                </button>
-
-                                <div class="d-flex gap-2">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="goBack()">
-                                        Cancel
-                                    </button>
-                                    <button mat-raised-button color="primary" type="button"
-                                        class="btn btn-success btn-sm" (click)="onSave()" [disabled]="isSaving">
-                                        <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-1"></span>
-                                        <i *ngIf="!isSaving" class="bi bi-check2 me-1"></i>
-                                        {{
-                                        isEditMode ? 'Update Staff' : 'Complete Onboarding'
-                                        }}
-                                    </button>
+                                    <p>{{ profilePhotoPreview ? 'Click to change photo' : 'Upload Staff Photo' }}</p>
+                                    <span>JPG or PNG (max 2MB)</span>
                                 </div>
                             </div>
                         </div>
-                    </mat-step>
-                </mat-horizontal-stepper>
-            </form>
+                    </div>
+
+                    <!-- Step 2: Contact -->
+                    <div class="step-view" *ngIf="activeStep === 2">
+                        <h2 class="section-title">Communication Details</h2>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Primary Mobile Number<span
+                                            class="required">*</span></label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <span matPrefix>+91&nbsp;</span>
+                                        <input matInput formControlName="phone" placeholder="10-digit mobile number">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Email Address</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput formControlName="email" type="email"
+                                            placeholder="staff@example.com">
+                                        <mat-icon matPrefix>email</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="emergency-box mt-4">
+                                <h3 class="f-15-m mb-3">Emergency Contact</h3>
+                                <div class="form-row">
+                                    <div class="form-item flex-1">
+                                        <label class="field-label">Relative Name<span class="required">*</span></label>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <input matInput formControlName="emergencyContactName"
+                                                placeholder="Full name">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-item flex-1">
+                                        <label class="field-label">Mobile Number<span class="required">*</span></label>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <span matPrefix>+91&nbsp;</span>
+                                            <input matInput formControlName="emergencyContactPhone"
+                                                placeholder="Relative's mobile">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Employment & Bank -->
+                    <div class="step-view" *ngIf="activeStep === 3">
+                        <h2 class="section-title">Work & Bank Profile</h2>
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Hostel Role<span class="required">*</span></label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-select formControlName="role" placeholder="Select role">
+                                            <mat-option *ngFor="let role of hostelRoles"
+                                                [value]="role">{{role}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Shift Type<span class="required">*</span></label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-select formControlName="assignedShift" placeholder="Select shift">
+                                            <mat-option *ngFor="let shift of shifts" [value]="shift.name">{{shift.name}}
+                                                ({{shift.time}})</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label class="field-label">Basic Salary (Monthly)<span class="required">*</span></label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <span matPrefix>₹&nbsp;</span>
+                                    <input matInput type="number" formControlName="basicSalary"
+                                        placeholder="e.g. 15000">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="bank-section-box mt-4">
+                                <h3 class="f-15-m mb-3">Salary Account Details</h3>
+                                <div class="form-item">
+                                    <label class="field-label">Bank Name</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput formControlName="bankName" placeholder="e.g. HDFC Bank">
+                                        <mat-icon matPrefix>account_balance</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-item flex-2">
+                                        <label class="field-label">Account Number</label>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <input matInput formControlName="accountNumber"
+                                                placeholder="Enter bank account no">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-item flex-1">
+                                        <label class="field-label">IFSC Code</label>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <input matInput formControlName="ifscCode" placeholder="IFSC0001234"
+                                                style="text-transform: uppercase;">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Address -->
+                    <div class="step-view" *ngIf="activeStep === 4">
+                        <h2 class="section-title">Address Details</h2>
+                        <div class="form-grid">
+                            <h3 class="f-15-m mb-3">Current Address</h3>
+                            <div formGroupName="currentAddress">
+                                <div class="form-item">
+                                    <label class="field-label">Street Address<span class="required">*</span></label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput formControlName="street"
+                                            placeholder="House No, Street, Landmark">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-item flex-1">
+                                        <label class="field-label">City<span class="required">*</span></label>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <input matInput formControlName="city" placeholder="City">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-item flex-1">
+                                        <label class="field-label">Pincode<span class="required">*</span></label>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <input matInput formControlName="pincode" placeholder="6-digit ZIP"
+                                                maxlength="6">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-top">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h3 class="f-15-m mb-0">Permanent Address</h3>
+                                    <mat-checkbox formControlName="sameAsCurrentAddress">
+                                        Same as current address
+                                    </mat-checkbox>
+                                </div>
+                                <div formGroupName="permanentAddress"
+                                    *ngIf="!staffForm.get('sameAsCurrentAddress')?.value">
+                                    <div class="form-item">
+                                        <label class="field-label">Street Address<span class="required">*</span></label>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <input matInput formControlName="street"
+                                                placeholder="House No, Street, Landmark">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-item flex-1">
+                                            <label class="field-label">City<span class="required">*</span></label>
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <input matInput formControlName="city" placeholder="City">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="form-item flex-1">
+                                            <label class="field-label">Pincode<span class="required">*</span></label>
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <input matInput formControlName="pincode" placeholder="6-digit ZIP"
+                                                    maxlength="6">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <div class="wizard-footer">
+            <button mat-stroked-button color="warn" class="btn-cancel" (click)="backToMain()">
+                <mat-icon>close</mat-icon> Cancel
+            </button>
+            <div class="footer-actions">
+                <button mat-stroked-button (click)="prevStep()" [disabled]="activeStep === 1" class="btn-prev">
+                    <mat-icon>chevron_left</mat-icon> Previous
+                </button>
+                <button mat-flat-button class="btn-next" [disabled]="activeStep === steps.length && !staffForm.valid"
+                    (click)="nextStep()">
+                    <span>{{activeStep === steps.length ? 'Finalize Onboarding' : 'Continue'}}</span>
+                    <mat-icon *ngIf="activeStep < steps.length">chevron_right</mat-icon>
+                    <mat-icon *ngIf="activeStep === steps.length">person_add_check</mat-icon>
+                </button>
+            </div>
         </div>
     </div>
 </div>
