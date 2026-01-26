@@ -1,24 +1,26 @@
 <div class="hostel-menu-page page-container">
     <!-- HEADER -->
-    <div class="page-header">
-        <div class="title-block">
-            <h2>Create Hostel Menu</h2>
-            <p>Select items from your configured list to show in tenants app.</p>
-            <div class="editing-badge" *ngIf="editingMenuId">
-                <mat-icon>edit</mat-icon>
-                <span>Editing Mode: All changes will update the existing menu.</span>
+    <div class="header-card">
+        <div class="page-header">
+            <div class="title-block">
+                <h2>Create Hostel Menu</h2>
+                <p>Select items from your configured list to show in tenants app.</p>
+                <div class="editing-badge" *ngIf="editingMenuId">
+                    <mat-icon>edit</mat-icon>
+                    <span>Editing Mode: All changes will update the existing menu.</span>
+                </div>
             </div>
-        </div>
 
-        <div class="header-actions">
-            <button mat-stroked-button class="btn-reset" (click)="clearAll()">
-                <mat-icon>refresh</mat-icon>
-                <span>Reset</span>
-            </button>
-            <button mat-flat-button color="primary" class="btn-publish" (click)="onSaveMenu()">
-                <mat-icon>{{ editingMenuId ? 'save' : 'publish' }}</mat-icon>
-                <span>{{ editingMenuId ? 'Update Menu' : 'Publish Menu' }}</span>
-            </button>
+            <div class="header-actions">
+                <button mat-stroked-button class="btn-reset" (click)="clearAll()">
+                    <mat-icon>refresh</mat-icon>
+                    <span>Reset</span>
+                </button>
+                <button mat-flat-button color="primary" class="btn-publish" (click)="onSaveMenu()">
+                    <mat-icon>{{ editingMenuId ? 'save' : 'publish' }}</mat-icon>
+                    <span>{{ editingMenuId ? 'Update Menu' : 'Publish Menu' }}</span>
+                </button>
+            </div>
         </div>
     </div>
 

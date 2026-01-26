@@ -7,11 +7,19 @@
 }
 
 /* ---------------- HEADER ---------------- */
+.header-card {
+  background: var(--card-background);
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
   gap: 20px;
 
 
