@@ -1,18 +1,18 @@
 <div class="page-container billing-history-page">
-    <!-- Header -->
-    <mat-card>
+    <!-- Page Header -->
+    <mat-card class="case-card mb-4 mt-3">
         <mat-card-content>
-            <div class="page-header">
+            <div class="page-header billing-header">
                 <div class="page-header-title">
-                    <h1 class="f-20-b">Billing History</h1>
-                    <p class="subtitle f-12-r-07">
-                        View all subscription invoices, payments and refunds.
-                    </p>
+                    <h1 class="page-title f-20-b">
+                        <i class="bi bi-receipt-cutoff me-2"></i>Billing History
+                    </h1>
+                    <p class="subtitle f-12-r-07">View and manage your subscription invoices and payments</p>
                 </div>
 
                 <div class="page-header-actions">
-                    <button mat-stroked-button color="primary" type="button">
-                        <i class="bi bi-download me-1"></i>
+                    <button mat-stroked-button class="btn-secondary">
+                        <i class="bi bi-download me-2"></i>
                         <span class="btn-text">Export CSV</span>
                     </button>
                 </div>
@@ -20,165 +20,267 @@
         </mat-card-content>
     </mat-card>
 
-    <!-- Summary cards -->
-    <div class="summary-grid">
-        <div class="summary-card case-card">
-            <div class="summary-title">
-                <span>Current Plan</span>
-            </div>
-            <div class="summary-value">
-                {{ currentPlanName }}
-            </div>
-            <div class="summary-meta">
-                <ng-container *ngIf="renewalDate; else noRenewal">
-                    <i class="bi bi-clock-history me-1"></i>
-                    Renews on
-                    <strong>{{ renewalDate | date: 'mediumDate' }}</strong>
-                </ng-container>
-                <ng-template #noRenewal>
-                    <i class="bi bi-info-circle me-1"></i>
-                    No active subscription
-                </ng-template>
-            </div>
+    <!-- Summary Cards -->
+    <div class="row g-3 stats-row mb-4">
+        <div class="col-12 col-md-4">
+            <mat-card class="stat-card stat-plan">
+                <mat-card-content>
+                    <div class="stat-icon bg-info-light">
+                        <i class="bi bi-calendar-check color-info"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="f-20-b">{{ currentPlanName }}</h3>
+                        <p class="f-12-r-07">
+                            <ng-container *ngIf="renewalDate; else noRenewal">
+                                Renews on {{ renewalDate | date: 'mediumDate' }}
+                            </ng-container>
+                            <ng-template #noRenewal>No active subscription</ng-template>
+                        </p>
+                    </div>
+                </mat-card-content>
+            </mat-card>
         </div>
-
-        <div class="summary-card case-card">
-            <div class="summary-title">
-                <span>Total Paid (Last 12 Months)</span>
-            </div>
-            <div class="summary-value">
-                ₹{{ totalPaidAmount | number: '1.0-0' }}
-            </div>
-            <div class="summary-meta">
-                <i class="bi bi-check2-circle me-1 text-success"></i>
-                All payments up to date
-            </div>
+        <div class="col-12 col-md-4">
+            <mat-card class="stat-card stat-paid">
+                <mat-card-content>
+                    <div class="stat-icon bg-success-light">
+                        <i class="bi bi-cash-stack color-success"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="f-20-b">₹{{ totalPaidAmount | number: '1.0-0' }}</h3>
+                        <p class="f-12-r-07">Total Paid (Last 12 Mo)</p>
+                    </div>
+                </mat-card-content>
+            </mat-card>
         </div>
-
-        <div class="summary-card case-card">
-            <div class="summary-title">
-                <span>Outstanding</span>
-            </div>
-            <div class="summary-value">
-                ₹{{ totalOutstandingAmount | number: '1.0-0' }}
-            </div>
-            <div class="summary-meta">
-                <i class="bi bi-info-circle me-1 text-warning"></i>
-                Includes pending or failed invoices
-            </div>
-        </div>
-    </div>
-
-    <!-- Filters -->
-    <div class="filters-card case-card">
-        <div class="filters-row">
-            <mat-form-field appearance="outline" class="filter search-filter">
-                <mat-label>Search by invoice or plan</mat-label>
-                <span matPrefix><i class="bi bi-search"></i>&nbsp;</span>
-                <input matInput [(ngModel)]="searchTerm" />
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="filter status-filter">
-                <mat-label>Status</mat-label>
-                <mat-select [(ngModel)]="statusFilter">
-                    <mat-option value="all">All</mat-option>
-                    <mat-option value="paid">Paid</mat-option>
-                    <mat-option value="pending">Pending</mat-option>
-                    <mat-option value="failed">Failed</mat-option>
-                    <mat-option value="refunded">Refunded</mat-option>
-                </mat-select>
-            </mat-form-field>
+        <div class="col-12 col-md-4">
+            <mat-card class="stat-card stat-outstanding">
+                <mat-card-content>
+                    <div class="stat-icon bg-warning-light">
+                        <i class="bi bi-exclamation-circle color-warning"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="f-20-b">₹{{ totalOutstandingAmount | number: '1.0-0' }}</h3>
+                        <p class="f-12-r-07">Outstanding Amount</p>
+                    </div>
+                </mat-card-content>
+            </mat-card>
         </div>
     </div>
 
-    <!-- Table -->
-    <div class="table case-card">
-        <div class="table-row table-header">
-            <div class="col col-date">Date</div>
-            <div class="col col-invoice">Invoice</div>
-            <div class="col col-plan">Plan & Period</div>
-            <div class="col col-amount">Amount</div>
-            <div class="col col-status">Status</div>
-            <div class="col col-method">Payment Method</div>
-            <div class="col col-actions">Action</div>
+    <!-- Filters Section -->
+    <mat-card class="case-card mb-4 filter-card">
+        <mat-card-content>
+            <div class="row g-3 align-items-center">
+                <div class="col-md">
+                    <mat-form-field appearance="outline" class="w-100 mb-0">
+                        <mat-label>Search Invoice or Plan</mat-label>
+                        <input matInput [(ngModel)]="searchTerm" placeholder="Search..." />
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-auto">
+                    <mat-form-field appearance="outline" class="status-select mb-0">
+                        <mat-label>Status</mat-label>
+                        <mat-select [(ngModel)]="statusFilter">
+                            <mat-option value="all">All Status</mat-option>
+                            <mat-option value="paid">Paid</mat-option>
+                            <mat-option value="pending">Pending</mat-option>
+                            <mat-option value="failed">Failed</mat-option>
+                            <mat-option value="refunded">Refunded</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Billing Table -->
+    <mat-card class="case-card mb-4 report-table-card">
+        <div class="tenant-card-header d-flex justify-content-between align-items-center p-3">
+            <div class="tenant-card-title-wrapper">
+                <h2 class="tenant-card-title f-16-b">
+                    <i class="bi bi-list-columns-reverse me-2"></i> Invoices & Payments
+                </h2>
+                <p class="tenant-card-subtitle f-12-r-07">Detailed history of all your subscription transactions</p>
+            </div>
         </div>
+        <mat-divider></mat-divider>
+        <mat-card-content class="mt-0">
+            <!-- Desktop Table -->
+            <div class="table-container desktop-table">
+                <table mat-table [dataSource]="paginatedRecords" matSort class="report-table">
+                    <!-- Date Column -->
+                    <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                        <td mat-cell *matCellDef="let r">
+                            <div class="f-14-m">{{ r.date | date: 'dd/MM/yy' }}</div>
+                            <div class="f-10-r-07">{{ r.date | date: 'shortTime' }}</div>
+                        </td>
+                    </ng-container>
 
-        <ng-container *ngFor="let r of filteredRecords; trackBy: trackByRecordId">
-            <div class="table-row">
-                <div class="col col-date">
-                    <div>{{ r.date | date: 'mediumDate' }}</div>
-                    <div class="date-sub">
-                        {{ r.date | date: 'shortTime' }}
+                    <!-- Invoice Column -->
+                    <ng-container matColumnDef="invoice">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice</th>
+                        <td mat-cell *matCellDef="let r">
+                            <div class="f-14-b color-primary">{{ r.invoiceNumber }}</div>
+                            <div class="f-10-r-07">ID: #{{ r.id }}</div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Plan Column -->
+                    <ng-container matColumnDef="plan">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Plan & Period</th>
+                        <td mat-cell *matCellDef="let r">
+                            <div class="f-14-m">{{ r.planName }}</div>
+                            <div class="f-12-r-07">{{ r.periodFrom | date: 'dd/MM/yy' }} - {{ r.periodTo | date:
+                                'dd/MM/yy' }}</div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Amount Column -->
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+                        <td mat-cell *matCellDef="let r" class="f-14-b">
+                            ₹{{ r.amount | number: '1.0-0' }}
+                        </td>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                        <td mat-cell *matCellDef="let r">
+                            <span class="status-badge" [ngClass]="'status-' + r.status">
+                                <i class="bi me-1" [ngClass]="getStatusIcon(r.status)"></i>
+                                {{ getStatusLabel(r.status) }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Method Column -->
+                    <ng-container matColumnDef="method">
+                        <th mat-header-cell *matHeaderCellDef>Method</th>
+                        <td mat-cell *matCellDef="let r">
+                            <div class="f-12-m"><i class="bi bi-credit-card-2-back me-1"></i> {{ getPaymentLabel(r) }}
+                            </div>
+                            <div class="f-10-r-07">{{ r.paymentMethod | titlecase }}</div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Action</th>
+                        <td mat-cell *matCellDef="let r">
+                            <div class="d-flex gap-2">
+                                <button mat-icon-button color="primary" class="table-action-btn"
+                                    matTooltip="View Invoice" (click)="viewInvoice(r)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button mat-icon-button color="accent" class="table-action-btn"
+                                    matTooltip="Download PDF" (click)="downloadInvoice(r)">
+                                    <i class="bi bi-download"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row
+                        *matHeaderRowDef="['date', 'invoice', 'plan', 'amount', 'status', 'method', 'actions']"></tr>
+                    <tr mat-row
+                        *matRowDef="let row; columns: ['date', 'invoice', 'plan', 'amount', 'status', 'method', 'actions']">
+                    </tr>
+
+                    <tr class="no-data-row" *matNoDataRow>
+                        <td [attr.colspan]="7" class="no-data p-5 text-center">
+                            <i class="bi bi-inbox fs-1 d-block mb-3 opacity-50"></i>
+                            <p>No billing records found</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Custom Pagination -->
+            <div
+                class="custom-pagination-bar border-top p-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div class="pagination-left d-flex align-items-center gap-4 flex-wrap">
+                    <div class="pagination-info f-12-r-07">
+                        Showing {{ startIndex }} to {{ endIndex }} of {{ totalRecords }} entries
+                    </div>
+
+                    <div class="rows-per-page d-flex align-items-center gap-2 f-12-r-07">
+                        <span>Rows per page:</span>
+                        <select class="form-select form-select-sm" (change)="onPageSizeChange($event)">
+                            <option *ngFor="let size of pageSizeOptions" [value]="size" [selected]="size === pageSize">
+                                {{ size }}</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="col col-invoice">
-                    <div class="invoice-no">
-                        <i class="bi bi-receipt-cutoff me-1"></i>
-                        {{ r.invoiceNumber }}
-                    </div>
-                    <div class="invoice-meta">
-                        ID: #{{ r.id }}
+                <div class="pagination-controls d-flex align-items-center">
+                    <div class="page-navigation d-flex gap-1">
+                        <button mat-stroked-button class="btn-sm" [disabled]="pageIndex === 0"
+                            (click)="onPageChange(pageIndex - 1)">
+                            <i class="bi bi-chevron-left"></i> Previous
+                        </button>
+
+                        <div class="page-numbers d-flex gap-1">
+                            <button *ngFor="let page of getPageNumbers()" mat-flat-button
+                                [color]="page === pageIndex ? 'primary' : ''" class="btn-sm page-num-btn"
+                                [class.active]="page === pageIndex" (click)="onPageChange(page)">
+                                {{ page + 1 }}
+                            </button>
+                        </div>
+
+                        <button mat-stroked-button class="btn-sm" [disabled]="endIndex === totalRecords"
+                            (click)="onPageChange(pageIndex + 1)">
+                            Next <i class="bi bi-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <div class="col col-plan">
-                    <div class="plan-name">{{ r.planName }}</div>
-                    <div class="plan-period">
-                        {{ r.periodFrom | date: 'mediumDate' }} –
-                        {{ r.periodTo | date: 'mediumDate' }}
-                    </div>
-                    <div class="plan-autorenew" *ngIf="r.autoRenew">
-                        <i class="bi bi-arrow-repeat me-1"></i>
-                        Auto-renew on {{ r.periodTo | date: 'mediumDate' }}
-                    </div>
-                </div>
-
-                <div class="col col-amount">
-                    <div class="amount">
-                        ₹{{ r.amount | number: '1.0-0' }}
-                    </div>
-                </div>
-
-                <div class="col col-status">
-                    <span class="status-pill" [ngClass]="'status-' + r.status">
-                        <i class="bi me-1" [ngClass]="getStatusIcon(r.status)"></i>
-                        {{ getStatusLabel(r.status) }}
-                    </span>
-                </div>
-
-                <div class="col col-method">
-                    <div class="method-main">
-                        <i class="bi bi-credit-card-2-back me-1"></i>
-                        {{ getPaymentLabel(r) }}
-                    </div>
-                    <div class="method-sub">
-                        {{ r.paymentMethod | titlecase }}
-                    </div>
-                </div>
-
-                <div class="col col-actions">
-                    <button mat-stroked-button color="primary" class="action-btn" type="button"
-                        (click)="viewInvoice(r)">
-                        <span class="mat-mdc-button__label">
-                            <i class="bi bi-eye"></i>
-                            <span>View</span>
+            <!-- Mobile Cards -->
+            <div class="mobile-cards">
+                <div class="mobile-card mb-3" *ngFor="let r of paginatedRecords; trackBy: trackByRecordId">
+                    <div class="mobile-card-header d-flex justify-content-between">
+                        <div>
+                            <div class="mobile-card-title f-14-b">{{ r.invoiceNumber }}</div>
+                            <div class="mobile-card-subtitle f-12-r-07">{{ r.date | date: 'mediumDate' }}</div>
+                        </div>
+                        <span class="status-badge" [ngClass]="'status-' + r.status">
+                            {{ getStatusLabel(r.status) }}
                         </span>
-                    </button>
+                    </div>
+                    <div class="mobile-card-body mt-2">
+                        <div class="mobile-field d-flex justify-content-between mb-1">
+                            <span class="field-label f-12-r-07">Plan</span>
+                            <span class="field-value f-12-m">{{ r.planName }}</span>
+                        </div>
+                        <div class="mobile-field d-flex justify-content-between mb-1">
+                            <span class="field-label f-12-r-07">Amount</span>
+                            <span class="field-value f-12-m">₹{{ r.amount | number: '1.0-0' }}</span>
+                        </div>
+                        <div class="mobile-field d-flex justify-content-between mb-3">
+                            <span class="field-label f-12-r-07">Method</span>
+                            <span class="field-value f-12-m">{{ getPaymentLabel(r) }}</span>
+                        </div>
+                        <div class="mobile-actions d-flex gap-2 justify-content-end">
+                            <button mat-stroked-button color="primary" class="btn-sm" (click)="viewInvoice(r)">
+                                <i class="bi bi-eye me-1"></i> View
+                            </button>
+                            <button mat-stroked-button color="accent" class="btn-sm" (click)="downloadInvoice(r)">
+                                <i class="bi bi-download me-1"></i> PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                    <button mat-stroked-button color="accent" class="action-btn" type="button"
-                        (click)="downloadInvoice(r)">
-                        <span class="mat-mdc-button__label">
-                            <i class="bi bi-download"></i>
-                            <span>Download</span>
-                        </span>
-                    </button>
+                <div class="no-data-card text-center p-4" *ngIf="filteredRecords.length === 0">
+                    <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
+                    <p>No records found</p>
                 </div>
             </div>
-        </ng-container>
-
-        <div class="empty-state" *ngIf="filteredRecords.length === 0">
-            No invoices found for the selected filters.
-        </div>
-    </div>
+        </mat-card-content>
+    </mat-card>
 </div>

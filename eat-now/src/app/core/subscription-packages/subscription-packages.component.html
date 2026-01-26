@@ -1,185 +1,222 @@
-<div class="page subscription-page">
-    <div class="subscription-page-inner">
-        <!-- Header -->
-        <mat-card>
-            <mat-card-content>
-                <div class="page-header">
-                    <div>
-                        <h1>Subscription Packages</h1>
-                        <p class="subtitle">
-                            Configure the plans and modules available to your hostel clients.
-                        </p>
-                    </div>
+<div class="page-container subscription-page">
+    <!-- Page Header -->
+    <mat-card class="case-card mb-4 mt-3">
+        <mat-card-content>
+            <div class="page-header subscription-header">
+                <div class="page-header-title">
+                    <h1 class="page-title f-20-b">
+                        <i class="bi bi-box-seam me-2"></i>Subscription Packages
+                    </h1>
+                    <p class="subtitle f-12-r-07">Configure and manage subscription plans and module access</p>
+                </div>
 
-                    <button mat-flat-button color="primary" (click)="openCreateModal()">
-                        <i class="bi bi-plus-lg header-add-icon me-1"></i>
-                        <span>Add Package</span>
+                <div class="page-header-actions">
+                    <button mat-raised-button color="primary" (click)="openCreateModal()" class="btn-create">
+                        <i class="bi bi-plus-lg me-2"></i>
+                        <span class="btn-text">Add Package</span>
                     </button>
                 </div>
-            </mat-card-content>
-        </mat-card>
+            </div>
+        </mat-card-content>
+    </mat-card>
 
-        <!-- Toolbar -->
-        <mat-card class="mt-3">
-            <mat-card-content>
-                <div class="toolbar">
-                    <mat-form-field appearance="outline" class="search-field">
+    <!-- Toolbar/Filters -->
+    <mat-card class="case-card mb-4 filter-card">
+        <mat-card-content>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100 mb-0">
                         <mat-label>Search by package name or ID</mat-label>
-                        <span matPrefix>
-                            <i class="bi bi-search search-icon"></i>&nbsp;
-                        </span>
-                        <input matInput [(ngModel)]="searchTerm" />
+                        <mat-icon matPrefix>search</mat-icon>
+                        <input matInput [(ngModel)]="searchTerm" placeholder="Search..." />
                     </mat-form-field>
                 </div>
-            </mat-card-content>
-        </mat-card>
+            </div>
+        </mat-card-content>
+    </mat-card>
 
-        <!-- Table -->
-        <div class="table mt-3">
-            <!-- Header Row -->
-            <div class="table-row table-header">
-                <div class="col col-id">ID</div>
-                <div class="col col-name">Package Name</div>
-                <div class="col col-price">Monthly</div>
-                <div class="col col-price">Annual</div>
-                <div class="col col-price">Lifetime</div>
-                <div class="col col-modules">Modules in Package</div>
-                <div class="col col-actions">Action</div>
+    <!-- Packages Table -->
+    <mat-card class="case-card mb-4 report-table-card">
+        <div class="tenant-card-header d-flex justify-content-between align-items-center p-3">
+            <div class="tenant-card-title-wrapper">
+                <h2 class="tenant-card-title f-16-b">
+                    <i class="bi bi-grid-3x3-gap me-2"></i> Available Plans
+                </h2>
+                <p class="tenant-card-subtitle f-12-r-07">List of all configured subscription packages and their pricing
+                </p>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <mat-card-content class="mt-0">
+            <!-- Desktop Table -->
+            <div class="table-container desktop-table">
+                <table mat-table [dataSource]="paginatedPackages" class="report-table">
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef>ID</th>
+                        <td mat-cell *matCellDef="let pkg" class="f-12-m color-muted">{{ pkg.id }}</td>
+                    </ng-container>
+
+                    <!-- Name & Subtitle Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Package Name</th>
+                        <td mat-cell *matCellDef="let pkg">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="f-14-b">{{ pkg.name }}</span>
+                                <span *ngIf="pkg.recommended" class="status-badge status-primary sm">Recommended</span>
+                            </div>
+                            <div class="f-10-r-07 text-truncate" style="max-width: 200px;">{{ pkg.description }}</div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Pricing Column -->
+                    <ng-container matColumnDef="pricing">
+                        <th mat-header-cell *matHeaderCellDef>Pricing (Monthly / Annual)</th>
+                        <td mat-cell *matCellDef="let pkg">
+                            <div class="f-14-m">
+                                <span *ngIf="pkg.monthlyPrice != null">₹{{ pkg.monthlyPrice | number }} <small
+                                        class="f-10-r-07">/mo</small></span>
+                                <span *ngIf="pkg.monthlyPrice == null && pkg.planType === 'free'"
+                                    class="color-success">Free</span>
+                                <span *ngIf="pkg.monthlyPrice == null && pkg.planType !== 'free'">-</span>
+                            </div>
+                            <div class="f-12-r-07">
+                                <span *ngIf="pkg.annualPrice != null">₹{{ pkg.annualPrice | number }} <small
+                                        class="f-10-r-07">/yr</small></span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Modules Column -->
+                    <ng-container matColumnDef="modules">
+                        <th mat-header-cell *matHeaderCellDef>Modules</th>
+                        <td mat-cell *matCellDef="let pkg">
+                            <div class="modules-summary mb-1 f-11-m">
+                                {{ countIncludedModules(pkg) }} / {{ pkg.modules.length }} Enabled
+                            </div>
+                            <div class="d-flex flex-wrap gap-1">
+                                <span *ngFor="let mod of pkg.modules | slice:0:3" class="mini-pill"
+                                    [class.included]="$any(mod).included">
+                                    {{ $any(mod).label }}
+                                </span>
+                                <span *ngIf="pkg.modules.length > 3" class="mini-pill more">+{{ pkg.modules.length - 3
+                                    }}</span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let pkg">
+                            <span class="status-badge" [ngClass]="pkg.isActive ? 'status-active' : 'status-inactive'">
+                                {{ pkg.isActive ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Actions</th>
+                        <td mat-cell *matCellDef="let pkg">
+                            <div class="d-flex gap-2">
+                                <button mat-icon-button color="primary" class="table-action-btn"
+                                    (click)="openEditModal(pkg)" matTooltip="Edit Package">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button mat-icon-button color="warn" class="table-action-btn"
+                                    (click)="deletePackage(pkg)" [disabled]="pkg.isDefault" matTooltip="Delete Package">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="['id', 'name', 'pricing', 'modules', 'status', 'actions']">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'pricing', 'modules', 'status', 'actions']"
+                        [class.recommended-row]="row.recommended"></tr>
+                </table>
             </div>
 
-            <!-- Data Rows -->
-            <ng-container *ngFor="let pkg of filteredPackages">
-                <div class="table-row package-row" [class.inactive]="!pkg.isActive"
-                    [class.recommended]="pkg.recommended">
-                    <!-- ID -->
-                    <div class="col col-id">
-                        {{ pkg.id }}
+            <!-- Custom Pagination -->
+            <div
+                class="custom-pagination-bar border-top p-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div class="pagination-left d-flex align-items-center gap-4 flex-wrap">
+                    <div class="pagination-info f-12-r-07">
+                        Showing {{ startIndex }} to {{ endIndex }} of {{ totalRecords }} entries
                     </div>
 
-                    <!-- Name & Badges -->
-                    <div class="col col-name">
-                        <div class="name-line">
-                            <span class="pkg-name">{{ pkg.name }}</span>
-
-                            <span *ngIf="pkg.isDefault" class="badge badge-neutral"
-                                title="Default package for new clients">
-                                Default
-                            </span>
-
-                            <span *ngIf="pkg.planType === 'free'" class="badge badge-free">
-                                Free
-                            </span>
-
-                            <span *ngIf="pkg.planType === 'paid'" class="badge badge-paid">
-                                Paid
-                            </span>
-
-                            <span *ngIf="pkg.recommended" class="badge badge-recommended">
-                                Recommended
-                            </span>
-
-                            <span *ngIf="pkg.packageType === 'trial'" class="badge badge-trial">
-                                Trial
-                            </span>
-
-                            <span *ngIf="pkg.isActive" class="badge badge-active">
-                                Active
-                            </span>
-                            <span *ngIf="!pkg.isActive" class="badge badge-inactive">
-                                Inactive
-                            </span>
-                        </div>
-
-                        <div class="meta-line">
-                            <span class="meta-text" *ngIf="pkg.trialDays">
-                                Trial period: {{ pkg.trialDays }} days
-                            </span>
-                            <span class="meta-dot" *ngIf="pkg.trialDays && pkg.isPrivate"></span>
-                            <span class="meta-text" *ngIf="pkg.isPrivate">
-                                Private package
-                            </span>
-                        </div>
-
-                        <div class="description" *ngIf="pkg.description">
-                            {{ pkg.description }}
-                        </div>
+                    <div class="rows-per-page d-flex align-items-center gap-2 f-12-r-07">
+                        <span>Rows per page:</span>
+                        <select class="form-select form-select-sm" (change)="onPageSizeChange($event)">
+                            <option *ngFor="let size of pageSizeOptions" [value]="size" [selected]="size === pageSize">
+                                {{ size }}</option>
+                        </select>
                     </div>
+                </div>
 
-                    <!-- Prices -->
-                    <div class="col col-price col-price-monthly">
-                        <span *ngIf="pkg.monthlyPrice != null; else noMonthly">
-                            ₹{{ pkg.monthlyPrice | number: '1.0-0' }}
-                            <span class="billing-text">/month</span>
-                        </span>
-                        <ng-template #noMonthly>—</ng-template>
-                    </div>
-
-                    <div class="col col-price col-price-annual">
-                        <span *ngIf="pkg.annualPrice != null; else noAnnual">
-                            ₹{{ pkg.annualPrice | number: '1.0-0' }}
-                            <span class="billing-text">/year</span>
-                        </span>
-                        <ng-template #noAnnual>—</ng-template>
-                    </div>
-
-                    <div class="col col-price col-price-life">
-                        <span *ngIf="pkg.lifetimePrice != null; else noLife">
-                            ₹{{ pkg.lifetimePrice | number: '1.0-0' }}
-                        </span>
-                        <ng-template #noLife>—</ng-template>
-                    </div>
-
-                    <!-- Modules (chips) -->
-                    <div class="col col-modules">
-                        <div class="modules-card">
-                            <div class="modules-summary">
-                                <i class="bi bi-grip-horizontal drag-icon"></i>
-                                {{ countIncludedModules(pkg) }} of
-                                {{ pkg.modules.length }} module(s) enabled
-                            </div>
-
-                            <mat-chip-set class="modules-chip-set" aria-label="Modules in package">
-                                <mat-chip *ngFor="let mod of pkg.modules | slice: 0:10"
-                                    [ngClass]="mod.included ? 'chip-included' : 'chip-excluded'" selectable="false"
-                                    removable="false">
-                                    <i class="bi me-1" [ngClass]="
-                      mod.included ? 'bi-check-circle-fill' : 'bi-x-circle'
-                    "></i>
-                                    <span class="chip-label">{{ mod.label }}</span>
-                                </mat-chip>
-
-                                <mat-chip *ngIf="pkg.modules.length > 10" class="chip-more" selectable="false"
-                                    removable="false">
-                                    +{{ pkg.modules.length - 10 }} more
-                                </mat-chip>
-                            </mat-chip-set>
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="col col-actions">
-                        <button mat-stroked-button color="primary" class="action-btn action-btn-edit"
-                            (click)="openEditModal(pkg)">
-                            <span class="btn-content">
-                                <i class="bi bi-pencil-square"></i>
-                                <span>Edit</span>
-                            </span>
+                <div class="pagination-controls d-flex align-items-center">
+                    <div class="page-navigation d-flex gap-1">
+                        <button mat-stroked-button class="btn-sm" [disabled]="pageIndex === 0"
+                            (click)="onPageChange(pageIndex - 1)">
+                            <i class="bi bi-chevron-left"></i> Previous
                         </button>
 
-                        <button mat-stroked-button color="warn" class="action-btn action-btn-delete"
-                            [disabled]="pkg.isDefault" (click)="deletePackage(pkg)">
-                            <span class="btn-content">
-                                <i class="bi bi-trash"></i>
-                                <span>Delete</span>
-                            </span>
+                        <div class="page-numbers d-flex gap-1">
+                            <button *ngFor="let page of getPageNumbers()" mat-flat-button
+                                [color]="page === pageIndex ? 'primary' : ''" class="btn-sm page-num-btn"
+                                [class.active]="page === pageIndex" (click)="onPageChange(page)">
+                                {{ page + 1 }}
+                            </button>
+                        </div>
+
+                        <button mat-stroked-button class="btn-sm" [disabled]="endIndex === totalRecords"
+                            (click)="onPageChange(pageIndex + 1)">
+                            Next <i class="bi bi-chevron-right"></i>
                         </button>
                     </div>
                 </div>
-            </ng-container>
-
-            <div class="empty-state" *ngIf="filteredPackages.length === 0">
-                No packages found. Try a different search or create a new package.
             </div>
-        </div>
-    </div>
+
+            <!-- Mobile Cards -->
+            <div class="mobile-cards">
+                <div class="mobile-package-card mb-3" *ngFor="let pkg of paginatedPackages">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <div class="f-14-b">{{ pkg.name }}</div>
+                            <div class="f-10-r-07">ID: #{{ pkg.id }}</div>
+                        </div>
+                        <span class="status-badge" [ngClass]="pkg.isActive ? 'status-active' : 'status-inactive'">
+                            {{ pkg.isActive ? 'Active' : 'Inactive' }}
+                        </span>
+                    </div>
+                    <div class="f-12-r-07 mb-2">{{ pkg.description }}</div>
+                    <div class="pricing-row d-flex gap-3 mb-3">
+                        <div class="price-item">
+                            <div class="f-10-r-07 uppercase">Monthly</div>
+                            <div class="f-14-m">{{ pkg.monthlyPrice ? '₹' + (pkg.monthlyPrice | number) : (pkg.planType
+                                === 'free' ? 'Free' : '-') }}</div>
+                        </div>
+                        <div class="price-item">
+                            <div class="f-10-r-07 uppercase">Annual</div>
+                            <div class="f-14-m">{{ pkg.annualPrice ? '₹' + (pkg.annualPrice | number) : '-' }}</div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                        <span class="f-11-m">{{ countIncludedModules(pkg) }} Modules</span>
+                        <div class="d-flex gap-1">
+                            <button mat-stroked-button color="primary" class="btn-sm" (click)="openEditModal(pkg)">
+                                <i class="bi bi-pencil me-1"></i> Edit
+                            </button>
+                            <button mat-stroked-button color="warn" class="btn-sm" (click)="deletePackage(pkg)"
+                                [disabled]="pkg.isDefault">
+                                <i class="bi bi-trash me-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>

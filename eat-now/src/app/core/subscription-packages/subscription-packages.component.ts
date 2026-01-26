@@ -35,6 +35,9 @@ export interface SubscriptionPackage {
 })
 export class SubscriptionPackagesComponent implements OnInit {
   searchTerm = '';
+  pageIndex = 0;
+  pageSize = 5;
+  pageSizeOptions = [5, 10, 25, 50, 100];
 
   packages: SubscriptionPackage[] = [
     {
@@ -115,7 +118,7 @@ export class SubscriptionPackagesComponent implements OnInit {
     },
   ];
 
-  constructor(public router: Router, private api: ApiService) {}
+  constructor(public router: Router, private api: ApiService) { }
 
   ngOnInit(): void {
     // Optional: handle data when you navigate back from the edit screen
@@ -145,6 +148,39 @@ export class SubscriptionPackagesComponent implements OnInit {
     return this.packages.filter(
       (p) => p.name.toLowerCase().includes(term) || String(p.id).includes(term)
     );
+  }
+
+  get paginatedPackages(): SubscriptionPackage[] {
+    const start = this.pageIndex * this.pageSize;
+    return this.filteredPackages.slice(start, start + this.pageSize);
+  }
+
+  onPageChange(index: number): void {
+    this.pageIndex = index;
+  }
+
+  onPageSizeChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.pageSize = Number(target.value);
+    this.pageIndex = 0;
+  }
+
+  getPageNumbers(): number[] {
+    const total = this.filteredPackages.length;
+    const pages = Math.ceil(total / this.pageSize);
+    return Array.from({ length: pages }, (_, i) => i);
+  }
+
+  get totalRecords(): number {
+    return this.filteredPackages.length;
+  }
+
+  get startIndex(): number {
+    return this.pageIndex * this.pageSize + 1;
+  }
+
+  get endIndex(): number {
+    return Math.min((this.pageIndex + 1) * this.pageSize, this.totalRecords);
   }
 
   openCreateModal(): void {
