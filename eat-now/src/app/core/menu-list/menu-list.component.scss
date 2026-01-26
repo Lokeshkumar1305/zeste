@@ -119,12 +119,31 @@
       &.mat-button-toggle-checked {
         background: var(--brand-primary) !important;
 
-        &::ng-deep .mat-button-toggle-label-content {
-          color: #ffffff !important;
+        ::ng-deep {
 
-          mat-icon,
-          i,
-          span {
+          /* Force all text, icons, and SVGs to white */
+          .mat-button-toggle-label-content,
+          .mat-button-toggle-label-content *,
+          .mat-mdc-button-toggle-label-content,
+          .mat-mdc-button-toggle-label-content * {
+            color: #ffffff !important;
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+          }
+
+          /* Specifically target the MDC checkmark/tickmark indicator */
+          .mat-mdc-button-toggle-checked-indicator,
+          .mat-mdc-button-toggle-checked-indicator svg,
+          .mat-mdc-button-toggle-checked-indicator path {
+            color: #ffffff !important;
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+          }
+
+          /* Target pseudoelements if they are used for the checkmark */
+          .mat-button-toggle-label-content::after,
+          .mat-button-toggle-label-content::before {
+            border-color: #ffffff !important;
             color: #ffffff !important;
           }
         }
