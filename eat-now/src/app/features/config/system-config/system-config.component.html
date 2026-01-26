@@ -2,8 +2,8 @@
     <div class="wizard-container">
         <div class="wizard-header">
             <div class="header-info">
-                <h1>System Configuration</h1>
-                <p>Configure system parameters, endpoints, and settings</p>
+                <h1>{{steps[activeStep-1].title}}</h1>
+                <p>{{steps[activeStep-1].subtitle}}</p>
             </div>
         </div>
 
@@ -25,229 +25,460 @@
                 </div>
 
                 <div class="auto-save-banner">
-                    <div class="banner-icon"><mat-icon>info</mat-icon></div>
+                    <div class="banner-icon"><mat-icon>security</mat-icon></div>
                     <div class="banner-text">
-                        <strong>Auto-save enabled</strong>
-                        <p>Your progress is automatically saved as you work</p>
+                        <strong>Zeste Sentinel</strong>
+                        <p>Global system parameters are encrypted and stored securely.</p>
                     </div>
                 </div>
             </aside>
 
             <!-- Dynamic Content Area -->
             <main class="wizard-content">
-                <!-- Step 1: System Config -->
+                <!-- Step 1: App Identity -->
                 <div class="step-view" *ngIf="activeStep === 1">
-                    <h2 class="section-title">System Configuration</h2>
-
+                    <h2 class="section-title">Application Identity</h2>
                     <div class="form-grid">
-                        <div class="form-item">
-                            <label class="field-label">Collection Name<span class="required">*</span></label>
-                            <mat-form-field appearance="outline" class="full-width">
-                                <input matInput [(ngModel)]="systemSettings.collectionName" required
-                                    placeholder="Project Name">
-                                <mat-icon matPrefix>edit_note</mat-icon>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="form-item">
-                            <label class="field-label">Environment<span class="required">*</span></label>
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-select [(ngModel)]="systemSettings.environment">
-                                    <mat-option value="Production">Production</mat-option>
-                                    <mat-option value="Staging">Staging</mat-option>
-                                    <mat-option value="Development">Development</mat-option>
-                                </mat-select>
-                                <mat-icon matPrefix>language</mat-icon>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="form-item">
-                            <label class="field-label">AES Encryption Key<span class="required">*</span></label>
-                            <mat-form-field appearance="outline" class="full-width">
-                                <input matInput [(ngModel)]="systemSettings.aesKey" required
-                                    placeholder="Encryption Key">
-                                <mat-icon matPrefix>key</mat-icon>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="form-item">
-                            <label class="field-label">Description (Optional)</label>
-                            <mat-form-field appearance="outline" class="full-width">
-                                <textarea matInput [(ngModel)]="systemSettings.description" rows="3"
-                                    placeholder="Brief description..."></textarea>
-                                <mat-icon matPrefix>description</mat-icon>
-                            </mat-form-field>
-                        </div>
-
                         <div class="form-row">
-                            <div class="form-item flex-1">
-                                <label class="field-label">Timezone</label>
+                            <div class="form-item flex-2">
+                                <label class="field-label">Application Name<span class="required">*</span></label>
                                 <mat-form-field appearance="outline" class="full-width">
-                                    <mat-select [(ngModel)]="systemSettings.timezone">
-                                        <mat-option value="IST (UTC+05:30)">IST (UTC+05:30)</mat-option>
-                                        <mat-option value="UTC">UTC</mat-option>
-                                        <mat-option value="EST">EST (UTC-05:00)</mat-option>
-                                    </mat-select>
+                                    <input matInput [(ngModel)]="identitySettings.appName"
+                                        placeholder="e.g. Zeste SaaS">
                                 </mat-form-field>
                             </div>
-
                             <div class="form-item flex-1">
-                                <label class="field-label">Date Format</label>
+                                <label class="field-label">Version</label>
                                 <mat-form-field appearance="outline" class="full-width">
-                                    <mat-select [(ngModel)]="systemSettings.dateFormat">
-                                        <mat-option value="DD/MM/YYYY">DD/MM/YYYY</mat-option>
-                                        <mat-option value="MM/DD/YYYY">MM/DD/YYYY</mat-option>
-                                        <mat-option value="YYYY-MM-DD">YYYY-MM-DD</mat-option>
-                                    </mat-select>
+                                    <input matInput [(ngModel)]="identitySettings.version" readonly>
                                 </mat-form-field>
                             </div>
                         </div>
-
+                        <div class="form-item">
+                            <label class="field-label">About Us / Platform Description</label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <textarea matInput rows="4" [(ngModel)]="identitySettings.aboutUs"
+                                    placeholder="Company mission..."></textarea>
+                            </mat-form-field>
+                        </div>
                         <div class="form-row">
                             <div class="form-item flex-1">
-                                <label class="field-label">Default Language</label>
+                                <label class="field-label">Company Name</label>
                                 <mat-form-field appearance="outline" class="full-width">
-                                    <mat-select [(ngModel)]="systemSettings.organizationName">
-                                        <mat-option value="English">English (US)</mat-option>
-                                        <mat-option value="Spanish">Spanish</mat-option>
+                                    <input matInput [(ngModel)]="identitySettings.companyName">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-item flex-1">
+                                <label class="field-label">Support Email</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <input matInput [(ngModel)]="identitySettings.supportEmail" type="email">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Branding & UI -->
+                <div class="step-view" *ngIf="activeStep === 2">
+                    <h2 class="section-title">Visual Branding</h2>
+                    <div class="theme-section">
+                        <h3 class="group-title">Theme Mode</h3>
+                        <div class="theme-mode-toggle">
+                            <div class="mode-item" [class.active]="themeState.mode === 'light'"
+                                (click)="setMode('light')" matRipple>
+                                <mat-icon>light_mode</mat-icon><span>Light</span>
+                            </div>
+                            <div class="mode-item" [class.active]="themeState.mode === 'dark'" (click)="setMode('dark')"
+                                matRipple>
+                                <mat-icon>dark_mode</mat-icon><span>Dark</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-section mt-5">
+                        <h3 class="group-title">Primary Brand Color</h3>
+                        <div class="color-grid">
+                            <div *ngFor="let color of presetColors" class="color-swatch-wrapper"
+                                [class.active]="themeState.color === color" (click)="setBrandColor(color)">
+                                <div class="color-swatch" [style.background-color]="color"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-section mt-5">
+                        <h3 class="group-title">Typography</h3>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-select [value]="themeState.fontFamily" (selectionChange)="setFontFamily($event.value)">
+                                <mat-option value="Poppins">Poppins</mat-option>
+                                <mat-option value="Outfit">Outfit</mat-option>
+                                <mat-option value="Inter">Inter</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Step 3: Finance & Taxes -->
+                <div class="step-view" *ngIf="activeStep === 3">
+                    <h2 class="section-title">Regional & Financial Config</h2>
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <div class="form-item flex-1">
+                                <label class="field-label">System Currency</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-select [(ngModel)]="financeSettings.currency">
+                                        <mat-option value="INR (₹)">INR (₹)</mat-option>
+                                        <mat-option value="USD ($)">USD ($)</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-item flex-1">
+                                <label class="field-label">Primary Language</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-select [(ngModel)]="financeSettings.language">
+                                        <mat-option value="English (India)">English (India)</mat-option>
                                         <mat-option value="Hindi">Hindi</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+                        </div>
+                        <div class="emergency-box mt-3">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <h3 class="f-15-m mb-0">Tax Configuration</h3>
+                                <mat-slide-toggle [(ngModel)]="financeSettings.taxEnabled" color="primary">Enable
+                                    Tax</mat-slide-toggle>
+                            </div>
+                            <div class="form-row" *ngIf="financeSettings.taxEnabled">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Tax ID (GST/VAT)</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput [(ngModel)]="financeSettings.gstNumber"
+                                            placeholder="Enter Tax ID">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Tax Percentage (%)</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput type="number" [(ngModel)]="financeSettings.taxPercentage">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <div class="form-item flex-1">
-                                <label class="field-label">Currency Symbol</label>
+                <!-- Step 4: Communication -->
+                <div class="step-view" *ngIf="activeStep === 4">
+                    <h2 class="section-title">Communication Channels</h2>
+                    <div class="form-grid">
+                        <div class="bank-section-box">
+                            <h3 class="f-15-m mb-3">SMTP / Email Settings</h3>
+                            <div class="form-row">
+                                <div class="form-item flex-2">
+                                    <label class="field-label">SMTP Host</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput [(ngModel)]="commSettings.smtpHost">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Port</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput type="number" [(ngModel)]="commSettings.smtpPort">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Sender Name</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput [(ngModel)]="commSettings.senderName">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Sender Email</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput [(ngModel)]="commSettings.senderEmail" type="email">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="f-15-m mb-3">System Notification Triggers</h3>
+                            <div class="form-grid">
+                                <mat-checkbox [(ngModel)]="commSettings.notifyOnNewBooking">Notify admin on new tenant
+                                    booking</mat-checkbox>
+                                <mat-checkbox [(ngModel)]="commSettings.notifyOnPayment">Notify tenant on successful
+                                    payment</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Connectivity -->
+                <div class="step-view" *ngIf="activeStep === 5">
+                    <h2 class="section-title">Integrations & Storage</h2>
+                    <div class="form-grid">
+                        <div class="emergency-box">
+                            <h3 class="f-15-m mb-3">Payment Gateway (Razorpay)</h3>
+                            <div class="form-item">
+                                <label class="field-label">Key ID</label>
                                 <mat-form-field appearance="outline" class="full-width">
-                                    <mat-select [(ngModel)]="systemSettings.currency">
-                                        <mat-option value="INR (₹)">INR (₹)</mat-option>
-                                        <mat-option value="USD ($)">USD ($)</mat-option>
-                                        <mat-option value="EUR (€)">EUR (€)</mat-option>
-                                    </mat-select>
+                                    <input matInput [(ngModel)]="connSettings.razorpayKeyId" type="password">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="bank-section-box mt-4">
+                            <h3 class="f-15-m mb-3">Cloud Asset Storage (AWS S3)</h3>
+                            <div class="form-row">
+                                <div class="form-item flex-2">
+                                    <label class="field-label">Bucket Name</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput [(ngModel)]="connSettings.s3Bucket">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Region</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput [(ngModel)]="connSettings.s3Region">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Security & Backup -->
+                <div class="step-view" *ngIf="activeStep === 6">
+                    <h2 class="section-title">Maintenance & Disaster Recovery</h2>
+                    <div class="form-grid">
+                        <div class="form-item">
+                            <label class="field-label">AES Encryption Key (System Level)</label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <input matInput [(ngModel)]="securitySettings.aesKey" type="password">
+                                <mat-icon matSuffix>lock</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="emergency-box mt-3">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div>
+                                    <h3 class="f-15-m mb-1">Automated Database Backups</h3>
+                                    <p class="text-muted small mb-0">Last successful sync:
+                                        {{securitySettings.lastBackup}}</p>
+                                </div>
+                                <mat-slide-toggle [(ngModel)]="securitySettings.autoBackup"
+                                    color="primary"></mat-slide-toggle>
+                            </div>
+                            <div class="form-row" *ngIf="securitySettings.autoBackup">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Frequency</label>
+                                    <mat-select-trigger>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <mat-select [(ngModel)]="securitySettings.backupFrequency">
+                                                <mat-option value="Hourly">Hourly</mat-option>
+                                                <mat-option value="Daily">Daily (At 4:00 AM)</mat-option>
+                                                <mat-option value="Weekly">Weekly</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </mat-select-trigger>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7: Distribution -->
+                <div class="step-view" *ngIf="activeStep === 7">
+                    <h2 class="section-title">Application Distribution</h2>
+                    <div class="form-grid">
+                        <div class="emergency-box">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div>
+                                    <h3 class="f-15-m mb-1">PWA (Progressive Web App)</h3>
+                                    <p class="text-muted small mb-0">Current Service Worker:
+                                        v{{distSettings.pwaVersion}}</p>
+                                </div>
+                                <mat-slide-toggle [(ngModel)]="distSettings.pwaEnabled"
+                                    color="primary"></mat-slide-toggle>
+                            </div>
+                            <button mat-stroked-button color="primary" class="full-width mt-2">
+                                <mat-icon>download</mat-icon> Generate PWA Asset Manifest
+                            </button>
+                        </div>
+                        <div class="bank-section-box mt-4">
+                            <h3 class="f-15-m mb-3">Desktop Binary Distribution</h3>
+                            <div class="form-item">
+                                <label class="field-label">Windows Build URL (.exe / .msi)</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <input matInput [(ngModel)]="distSettings.desktopAppWindows">
+                                    <mat-icon matPrefix>window</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-item">
+                                <label class="field-label">macOS Build URL (.dmg)</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <input matInput [(ngModel)]="distSettings.desktopAppMac">
+                                    <mat-icon matPrefix>apple</mat-icon>
                                 </mat-form-field>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 2: Storage Config -->
-                <div class="step-view" *ngIf="activeStep === 2">
-                    <h2 class="section-title">Storage Configuration</h2>
-                    <p class="subtitle mt-n3 mb-4 text-muted">Select your primary storage provider</p>
-
-                    <div class="storage-grid">
-                        <mat-card class="storage-card" *ngFor="let opt of storageConfig.options"
-                            [class.selected]="storageConfig.provider === opt.id"
-                            (click)="storageConfig.provider = opt.id" matRipple>
-                            <div class="card-icon-main">
-                                <i [class]="opt.icon"></i>
-                            </div>
-                            <mat-card-header>
-                                <mat-card-title>{{opt.title}}</mat-card-title>
-                                <mat-card-subtitle>{{opt.subtitle}}</mat-card-subtitle>
-                            </mat-card-header>
-                        </mat-card>
-                    </div>
-                </div>
-
-                <!-- Step 3: Email Config -->
-                <div class="step-view" *ngIf="activeStep === 3">
-                    <h2 class="section-title">Email Configuration</h2>
+                <!-- Step 8: Hostel Settings -->
+                <div class="step-view" *ngIf="activeStep === 8">
+                    <h2 class="section-title">Property Profile (Hostel)</h2>
                     <div class="form-grid">
                         <div class="form-item">
-                            <label class="field-label">SMTP Host</label>
+                            <label class="field-label">Official Property Name</label>
                             <mat-form-field appearance="outline" class="full-width">
-                                <input matInput [(ngModel)]="emailConfig.smtpHost" placeholder="e.g. smtp.gmail.com">
+                                <input matInput [(ngModel)]="hostelSettings.propertyName">
+                                <mat-icon matPrefix>business</mat-icon>
                             </mat-form-field>
                         </div>
-
+                        <div class="form-row">
+                            <div class="form-item flex-1">
+                                <label class="field-label">Hostel Email</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <input matInput [(ngModel)]="hostelSettings.hostelEmail" type="email">
+                                    <mat-icon matPrefix>email</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-item flex-1">
+                                <label class="field-label">Contact Mobile</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <span matPrefix>+91&nbsp;</span>
+                                    <input matInput [(ngModel)]="hostelSettings.hostelMobile">
+                                </mat-form-field>
+                            </div>
+                        </div>
                         <div class="form-item">
-                            <label class="field-label">SMTP Port</label>
+                            <label class="field-label">Property Address</label>
                             <mat-form-field appearance="outline" class="full-width">
-                                <input matInput type="number" [(ngModel)]="emailConfig.smtpPort" placeholder="587">
+                                <textarea matInput rows="2" [(ngModel)]="hostelSettings.hostelAddress"></textarea>
+                                <mat-icon matPrefix>place</mat-icon>
                             </mat-form-field>
                         </div>
-
-                        <div class="form-item">
-                            <label class="field-label">Sender Email</label>
-                            <mat-form-field appearance="outline" class="full-width">
-                                <input matInput type="email" [(ngModel)]="emailConfig.senderEmail"
-                                    placeholder="admin@example.com">
-                            </mat-form-field>
+                        <div class="form-row mt-2">
+                            <div class="form-item flex-1">
+                                <label class="field-label">Check-in Time</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <input matInput [(ngModel)]="hostelSettings.checkInTime">
+                                    <mat-icon matSuffix>schedule</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-item flex-1">
+                                <label class="field-label">Check-out Time</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <input matInput [(ngModel)]="hostelSettings.checkOutTime">
+                                    <mat-icon matSuffix>history</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <label class="field-label">Enabled Amenities</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <mat-chip-set>
+                                    <mat-chip *ngFor="let am of hostelSettings.amenities" highlighted
+                                        color="accent">{{am}}</mat-chip>
+                                </mat-chip-set>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 4: Data Source -->
-                <div class="step-view" *ngIf="activeStep === 4">
-                    <h2 class="section-title">Data Source & Collection</h2>
-                    <div class="upload-container">
-                        <div class="upload-area" matRipple>
-                            <div class="upload-icon-box">
-                                <mat-icon>cloud_upload</mat-icon>
+                <!-- Step 9: Tenant Protocol -->
+                <div class="step-view" *ngIf="activeStep === 9">
+                    <h2 class="section-title">Tenant Management Rules</h2>
+                    <div class="form-grid">
+                        <div class="emergency-box">
+                            <h3 class="f-15-m mb-3">Billing & Penalties</h3>
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Monthly Rent Due Date</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-select [(ngModel)]="tenantSettings.rentDueDate">
+                                            <mat-option *ngFor="let d of [1,2,3,4,5,10,15]"
+                                                [value]="d">{{d}}{{d==1?'st':d==2?'nd':d==3?'rd':'th'}} of
+                                                month</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Late Payment Fine (Daily)</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <span matPrefix>₹&nbsp;</span>
+                                        <input matInput type="number" [(ngModel)]="tenantSettings.latePaymentFine">
+                                    </mat-form-field>
+                                </div>
                             </div>
-                            <p>Click to upload or drag and drop PEM file</p>
-                            <span>SVG, PNG, JPG or GIF (max. 800x400px)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 5: Theme Config -->
-                <div class="step-view" *ngIf="activeStep === 5">
-                    <h2 class="section-title">Theme Configuration</h2>
-
-                    <div class="theme-section">
-                        <h3 class="group-title">Appearance Mode</h3>
-                        <div class="theme-mode-toggle">
-                            <div class="mode-item" [class.active]="themeState.mode === 'light'"
-                                (click)="setMode('light')" matRipple>
-                                <mat-icon>light_mode</mat-icon>
-                                <span>Light</span>
-                            </div>
-                            <div class="mode-item" [class.active]="themeState.mode === 'dark'" (click)="setMode('dark')"
-                                matRipple>
-                                <mat-icon>dark_mode</mat-icon>
-                                <span>Dark</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="theme-section mt-5">
-                        <h3 class="group-title">Brand Color Palette</h3>
-                        <div class="color-grid">
-                            <div *ngFor="let color of presetColors" class="color-swatch-wrapper"
-                                [class.active]="themeState.color === color" (click)="setBrandColor(color)"
-                                matTooltip="{{color}}">
-                                <div class="color-swatch" [style.background-color]="color"></div>
-                            </div>
-                        </div>
-
-                        <div class="custom-color-picker mt-4">
-                            <div class="picker-label">Custom Hex Code</div>
-                            <div class="picker-control">
-                                <input type="color" [value]="themeState.color" (input)="onCustomColorChange($event)">
-                                <span class="hex-val">{{themeState.color}}</span>
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Electricity Charging</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-select [(ngModel)]="tenantSettings.electricityChargeType">
+                                            <mat-option value="Fixed">Fixed Monthly</mat-option>
+                                            <mat-option value="Unit">Unit Based</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1" *ngIf="tenantSettings.electricityChargeType === 'Fixed'">
+                                    <label class="field-label">Fixed Amount</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <span matPrefix>₹&nbsp;</span>
+                                        <input matInput type="number" [(ngModel)]="tenantSettings.electricityFixedRate">
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="theme-section mt-5">
-                        <h3 class="group-title">Typography</h3>
-                        <div class="form-item">
-                            <label class="field-label">Font Family</label>
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-select [value]="themeState.fontFamily"
-                                    (selectionChange)="setFontFamily($event.value)">
-                                    <mat-option value="Poppins">Poppins (Default)</mat-option>
-                                    <mat-option value="Inter">Inter</mat-option>
-                                    <mat-option value="Roboto">Roboto</mat-option>
-                                    <mat-option value="Outfit">Outfit</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                        <div class="bank-section-box mt-4">
+                            <h3 class="f-15-m mb-3">Living Standards & Restrictions</h3>
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Visitor / Guest Entry</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-select [(ngModel)]="tenantSettings.visitorEntryRestriction">
+                                            <mat-option value="Open">Unrestricted Entry</mat-option>
+                                            <mat-option value="Strict">Restricted (After 8 PM)</mat-option>
+                                            <mat-option value="No-Entry">No Boys/Girls Entry</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Weekly Laundry Limit</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput type="number" [(ngModel)]="tenantSettings.laundryLimitWeekly">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column gap-2 mt-2">
+                                <mat-checkbox [(ngModel)]="tenantSettings.allowRoommateRequests">Allow tenants to
+                                    request internal roommate changes</mat-checkbox>
+                                <mat-checkbox [(ngModel)]="tenantSettings.guestStayAllowed">Allow overnight guest stay
+                                    (Paid)</mat-checkbox>
+                            </div>
                         </div>
-                        <div class="font-preview mt-3">
-                            <p [style.font-family]="themeState.fontFamily">The quick brown fox jumps over the lazy dog.
-                            </p>
-                            <div class="text-muted small">0123456789 ABCabc</div>
+                        <div class="emergency-box mt-3">
+                            <h3 class="f-15-m mb-3">Application Policies</h3>
+                            <mat-checkbox [(ngModel)]="tenantSettings.autoApproveApplications">Auto-approve new
+                                applications (Instant Check-in)</mat-checkbox>
+                            <mat-checkbox [(ngModel)]="tenantSettings.requireAadhar">Mandatory Aadhar/ID
+                                verification</mat-checkbox>
+                        </div>
+                        <div class="bank-section-box mt-4">
+                            <h3 class="f-15-m mb-3">Lease Financials</h3>
+                            <div class="form-row">
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Security Deposit (Months)</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput type="number"
+                                            [(ngModel)]="tenantSettings.securityDepositMonths">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-item flex-1">
+                                    <label class="field-label">Notice Period (Days)</label>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput type="number" [(ngModel)]="tenantSettings.noticePeriodDays">
+                                    </mat-form-field>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -263,10 +494,11 @@
                 <button mat-stroked-button (click)="prevStep()" [disabled]="activeStep === 1" class="btn-prev">
                     <mat-icon>chevron_left</mat-icon> Previous
                 </button>
-                <button mat-flat-button color="primary" (click)="nextStep()" class="btn-next">
-                    <span>{{activeStep === steps.length ? 'Finish' : 'Next Step'}}</span>
+                <button mat-flat-button class="btn-next"
+                    [disabled]="activeStep === steps.length && !steps[activeStep-1].status" (click)="nextStep()">
+                    <span>{{activeStep === steps.length ? 'Finalize Zeste Config' : 'Continue'}}</span>
                     <mat-icon *ngIf="activeStep < steps.length">chevron_right</mat-icon>
-                    <mat-icon *ngIf="activeStep === steps.length">check</mat-icon>
+                    <mat-icon *ngIf="activeStep === steps.length">published_with_changes</mat-icon>
                 </button>
             </div>
         </div>

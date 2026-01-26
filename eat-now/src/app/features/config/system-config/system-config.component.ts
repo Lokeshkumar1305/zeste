@@ -20,54 +20,114 @@ export class SystemConfigComponent implements OnInit {
   themeState: any;
 
   steps: ConfigStep[] = [
-    { id: 1, title: 'System Configuration', subtitle: 'Basic project settings', icon: 'bi bi-gear-fill', status: 'active' },
-    { id: 2, title: 'Storage Configuration', subtitle: 'Cloud, Local, or SFTP storage', icon: 'bi bi-hdd-network', status: 'pending' },
-    { id: 3, title: 'Email Configuration', subtitle: 'Email provider setup', icon: 'bi bi-envelope-fill', status: 'pending' },
-    { id: 4, title: 'Data Source & Collection', subtitle: 'PEM with file attachment', icon: 'bi bi-database-fill', status: 'pending' },
-    { id: 5, title: 'Theme Configuration', subtitle: 'Visual appearance & branding', icon: 'bi bi-palette-fill', status: 'pending' }
+    { id: 1, title: 'App Identity', subtitle: 'General info & About us', icon: 'bi bi-info-circle-fill', status: 'active' },
+    { id: 2, title: 'Branding & UI', subtitle: 'Appearance & Themes', icon: 'bi bi-palette-fill', status: 'pending' },
+    { id: 3, title: 'Finance & Taxes', subtitle: 'Currency, Taxes & Billing', icon: 'bi bi-cash-coin', status: 'pending' },
+    { id: 4, title: 'Communication', subtitle: 'Email & Notification setup', icon: 'bi bi-envelope-check-fill', status: 'pending' },
+    { id: 5, title: 'Connectivity', subtitle: 'Gateway & Cloud Storage', icon: 'bi bi-signpost-split-fill', status: 'pending' },
+    { id: 6, title: 'Security & Backup', subtitle: 'Keys & DB Maintenance', icon: 'bi bi-shield-lock-fill', status: 'pending' },
+    { id: 7, title: 'Distribution', subtitle: 'PWA & Desktop Apps', icon: 'bi bi-cloud-download-fill', status: 'pending' },
+    { id: 8, title: 'Hostel Settings', subtitle: 'Hostel profile & rules', icon: 'bi bi-building-fill', status: 'pending' },
+    { id: 9, title: 'Tenant Protocol', subtitle: 'Application & UI workflows', icon: 'bi bi-person-badge-fill', status: 'pending' }
   ];
 
   presetColors = [
-    '#003B8A', // Zeste Primary
-    '#8A4A9F', // Purple
-    '#2A69A6', // Blue
-    '#28A745', // Green
-    '#F39C12', // Orange
-    '#DC3545', // Red
-    '#17A2B8', // Cyan
-    '#343A40', // Dark
-    '#FF6F61', // Coral
-    '#6B5B95'  // Royal
+    '#003B8A', '#8A4A9F', '#2A69A6', '#28A745', '#F39C12', '#DC3545', '#17A2B8', '#343A40', '#FF6F61', '#6B5B95'
   ];
 
-  systemSettings = {
-    collectionName: 'Zeste Project',
-    environment: 'Production',
-    aesKey: 'df-458-rt-99',
-    description: 'Main production configuration for Zeste Enterprise platform.',
-    organizationName: 'Zeste Enterprise',
-    timezone: 'IST (UTC+05:30)',
+  // IDENTITY SETTINGS
+  identitySettings = {
+    appName: 'Zeste SaaS',
+    version: '2.4.0',
+    aboutUs: 'Zeste is a leading Hostel Management SaaS providing end-to-end automation for property owners and tenants.',
+    companyName: 'Zeste Technologies Pvt Ltd',
+    supportEmail: 'support@zeste.io',
+    website: 'https://zeste.io'
+  };
+
+  // FINANCE SETTINGS
+  financeSettings = {
     currency: 'INR (₹)',
-    dateFormat: 'DD/MM/YYYY',
-    pwaEnabled: true,
-    autoBackup: false
+    language: 'English (India)',
+    taxEnabled: true,
+    gstNumber: '',
+    taxPercentage: 18,
+    financialYearStart: 'April',
+    invoicePrefix: 'ZST-'
   };
 
-  storageConfig = {
-    provider: 'cloud',
-    options: [
-      { id: 'cloud', title: 'Cloud Storage', subtitle: 'AWS S3 cloud storage', icon: 'bi bi-cloud' },
-      { id: 'local', title: 'Local Storage', subtitle: 'On-premise directory', icon: 'bi bi-hdd' },
-      { id: 'sftp', title: 'SFTP Server', subtitle: 'Remote SFTP storage', icon: 'bi bi-server' }
-    ]
-  };
-
-  emailConfig = {
-    provider: 'smtp',
+  // COMMUNICATION
+  commSettings = {
+    emailProvider: 'smtp',
     smtpHost: 'smtp.gmail.com',
     smtpPort: 587,
-    useSsl: true,
-    senderEmail: 'admin@zeste.com'
+    senderName: 'Zeste Admin',
+    senderEmail: 'no-reply@zeste.io',
+    notifyOnNewBooking: true,
+    notifyOnPayment: true,
+    smsGatewayEnabled: false
+  };
+
+  // CONNECTIVITY
+  connSettings = {
+    paymentGateway: 'razorpay',
+    razorpayKeyId: '',
+    razorpaySecret: '',
+    storageProvider: 's3',
+    s3Bucket: 'zeste-assets',
+    s3Region: 'ap-south-1'
+  };
+
+  // SECURITY
+  securitySettings = {
+    aesKey: 'df-458-rt-99',
+    autoBackup: true,
+    backupFrequency: 'Daily',
+    retentionDays: 30,
+    lastBackup: '2024-03-20 04:00 AM'
+  };
+
+  // DISTRIBUTION
+  distSettings = {
+    pwaEnabled: true,
+    pwaVersion: '1.0.2',
+    desktopAppWindows: 'https://get.zeste.io/win',
+    desktopAppMac: 'https://get.zeste.io/mac',
+    appStoreLink: '',
+    playStoreLink: ''
+  };
+
+  // HOSTEL SETTINGS
+  hostelSettings = {
+    propertyName: 'Zeste Elite Residency',
+    hostelEmail: 'elite.residency@zeste.io',
+    hostelMobile: '9876543210',
+    hostelAddress: '123, Jubilee Hills, Hyderabad, 500033',
+    propertyType: 'Co-living / Hostel',
+    totalCapacity: 200,
+    checkInTime: '10:00 AM',
+    checkOutTime: '09:00 AM',
+    amenities: ['Wifi', 'Laundry', 'Gym', 'Meals']
+  };
+
+  // TENANT PROTOCOL
+  tenantSettings = {
+    autoApproveApplications: false,
+    requireAadhar: true,
+    securityDepositMonths: 1,
+    noticePeriodDays: 30,
+    allowPartialPayments: false,
+
+    // Owner-managed Tenant Rules
+    rentDueDate: 5, // 5th of every month
+    latePaymentFine: 100, // INR per day
+    electricityChargeType: 'Fixed', // Fixed or Unit-base
+    electricityFixedRate: 500,
+    allowRoommateRequests: true,
+    visitorEntryRestriction: 'Strict', // Open, Strictly 8PM, No-Entry
+    laundryLimitWeekly: 2,
+    guestStayAllowed: true,
+    guestChargePerNight: 500
   };
 
   dynamicFields: DynamicField[] = [];
@@ -79,17 +139,14 @@ export class SystemConfigComponent implements OnInit {
 
   ngOnInit(): void {
     this.themeState = this.theme.getState();
-
     this.fieldService.fields$.subscribe(fields => {
       this.dynamicFields = fields.filter(f => f.page === 'system');
     });
   }
 
   setStep(stepId: number) {
-    if (stepId < this.activeStep || this.steps[stepId - 2]?.status === 'completed' || stepId === this.activeStep) {
-      this.activeStep = stepId;
-      this.updateStepStatus();
-    }
+    this.activeStep = stepId;
+    this.updateStepStatus();
   }
 
   nextStep() {
@@ -117,7 +174,6 @@ export class SystemConfigComponent implements OnInit {
     });
   }
 
-  // Theme Config Methods
   setMode(mode: 'light' | 'dark'): void {
     this.theme.setMode(mode);
     this.themeState.mode = mode;
@@ -133,18 +189,16 @@ export class SystemConfigComponent implements OnInit {
     this.themeState.fontFamily = font;
   }
 
-  onCustomColorChange(event: any): void {
-    const color = event.target.value;
-    this.setBrandColor(color);
-  }
-
   saveSettings() {
-    console.log('Saving all configurations:', {
-      system: this.systemSettings,
-      storage: this.storageConfig,
-      email: this.emailConfig,
-      theme: this.themeState,
-      dynamic: this.dynamicFields
+    console.log('Final System Config:', {
+      identity: this.identitySettings,
+      finance: this.financeSettings,
+      comm: this.commSettings,
+      conn: this.connSettings,
+      security: this.securitySettings,
+      dist: this.distSettings,
+      hostel: this.hostelSettings,
+      tenant: this.tenantSettings
     });
   }
 }
