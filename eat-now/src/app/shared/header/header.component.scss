@@ -1,8 +1,8 @@
 // ===== Layout variables =====
 $header-height: 64px;
-$sidenav-width: 260px;          // expanded desktop
-$sidenav-width-tablet: 240px;   // expanded tablet
-$collapsed-width: 72px;         // collapsed rail
+$sidenav-width: 260px; // expanded desktop
+$sidenav-width-tablet: 240px; // expanded tablet
+$collapsed-width: 72px; // collapsed rail
 
 // ===== Icon sizes (other header icons) =====
 $icon-size-desktop: 40px;
@@ -12,7 +12,7 @@ $icon-size-mobile: 30px;
 // ===== Menu toggle specific sizes (smaller circle) =====
 $menu-toggle-size-desktop: 32px;
 $menu-toggle-size-tablet: 30px;
-$menu-toggle-size-mobile: 26px;
+$menu-toggle-size-mobile: 36px;
 
 // ===== Color system =====
 $primary-color: var(--brand-primary);
@@ -43,21 +43,25 @@ $tablet-breakpoint: 1024px;
     @content;
   }
 }
+
 @mixin small-mobile {
   @media (max-width: #{$small-mobile-breakpoint - 1px}) {
     @content;
   }
 }
+
 @mixin tablet {
   @media (min-width: $mobile-breakpoint) and (max-width: #{$tablet-breakpoint - 1px}) {
     @content;
   }
 }
+
 @mixin tablet-and-below {
   @media (max-width: #{$tablet-breakpoint - 1px}) {
     @content;
   }
 }
+
 @mixin desktop {
   @media (min-width: $tablet-breakpoint) {
     @content;
@@ -70,7 +74,7 @@ $tablet-breakpoint: 1024px;
 .app-header {
   position: fixed !important;
   top: 0;
-  left: 0;    // header background covers entire width
+  left: 0; // header background covers entire width
   right: 0;
   width: 100% !important;
 
@@ -117,6 +121,7 @@ $tablet-breakpoint: 1024px;
 
 // -------- MOBILE (< 768px) --------
 @include mobile {
+
   .app-header,
   .app-header.collapsed {
     padding-left: 12px !important;
@@ -128,6 +133,7 @@ $tablet-breakpoint: 1024px;
 }
 
 @include small-mobile {
+
   .app-header,
   .app-header.collapsed {
     padding-left: 8px !important;
@@ -172,9 +178,11 @@ $tablet-breakpoint: 1024px;
   @include tablet {
     gap: 12px;
   }
+
   @include mobile {
     gap: 8px;
   }
+
   @include small-mobile {
     gap: 6px;
   }
@@ -188,6 +196,7 @@ $tablet-breakpoint: 1024px;
   @include mobile {
     gap: 8px;
   }
+
   @include small-mobile {
     gap: 6px;
   }
@@ -224,6 +233,7 @@ $tablet-breakpoint: 1024px;
       height: 18px !important;
       line-height: 18px !important;
     }
+
     @include small-mobile {
       font-size: 16px !important;
       width: 16px !important;
@@ -318,6 +328,7 @@ $tablet-breakpoint: 1024px;
     height: 30px;
     font-size: 12px;
   }
+
   @include small-mobile {
     width: 28px;
     height: 28px;
@@ -430,11 +441,13 @@ $tablet-breakpoint: 1024px;
     min-width: 300px !important;
     max-width: 340px !important;
   }
+
   @include mobile {
     min-width: 260px !important;
     max-width: 300px !important;
     margin-right: 8px;
   }
+
   @include small-mobile {
     min-width: 240px !important;
     max-width: 280px !important;
@@ -452,6 +465,7 @@ $tablet-breakpoint: 1024px;
   @include mobile {
     padding: 10px 12px;
   }
+
   @include small-mobile {
     padding: 8px 10px;
   }
@@ -500,6 +514,7 @@ $tablet-breakpoint: 1024px;
   @include mobile {
     max-height: 250px;
   }
+
   @include small-mobile {
     max-height: 220px;
   }
@@ -545,6 +560,7 @@ $tablet-breakpoint: 1024px;
     min-height: 56px !important;
     gap: 10px !important;
   }
+
   @include small-mobile {
     padding: 8px 10px !important;
     min-height: 50px !important;
@@ -578,6 +594,7 @@ $tablet-breakpoint: 1024px;
       border-radius: 8px;
       font-size: 16px;
     }
+
     @include small-mobile {
       width: 28px;
       height: 28px;
@@ -590,14 +607,17 @@ $tablet-breakpoint: 1024px;
       background: var(--status-info-bg);
       color: var(--status-info-color);
     }
+
     &.success {
       background: var(--status-success-bg);
       color: var(--status-success-color);
     }
+
     &.warning {
       background: var(--status-warning-bg);
       color: var(--status-warning-color);
     }
+
     &.error {
       background: var(--status-error-bg);
       color: var(--status-error-color);
@@ -628,6 +648,7 @@ $tablet-breakpoint: 1024px;
     @include mobile {
       font-size: 13px;
     }
+
     @include small-mobile {
       font-size: 12px;
     }
@@ -647,6 +668,7 @@ $tablet-breakpoint: 1024px;
       -webkit-line-clamp: 2;
       line-height: 1.3;
     }
+
     @include small-mobile {
       font-size: 11px;
       -webkit-line-clamp: 1;
@@ -872,6 +894,7 @@ $tablet-breakpoint: 1024px;
 }
 
 .logout-btn {
+
   i,
   span {
     color: var(--status-error-color) !important;
@@ -980,10 +1003,10 @@ $tablet-breakpoint: 1024px;
     min-height: $menu-toggle-size-mobile !important;
 
     mat-icon {
-      font-size: 16px !important;
-      width: 16px !important;
-      height: 16px !important;
-      line-height: 16px !important;
+      font-size: 20px !important;
+      width: 20px !important;
+      height: 20px !important;
+      line-height: 20px !important;
     }
   }
 }
@@ -991,16 +1014,16 @@ $tablet-breakpoint: 1024px;
 /* Very small mobile */
 @media (max-width: #{$small-mobile-breakpoint - 1px}) {
   .app-header .menu-toggle {
-    width: 24px !important;
-    height: 24px !important;
-    min-width: 24px !important;
-    min-height: 24px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
 
     mat-icon {
-      font-size: 14px !important;
-      width: 14px !important;
-      height: 14px !important;
-      line-height: 14px !important;
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+      line-height: 18px !important;
     }
   }
 }
