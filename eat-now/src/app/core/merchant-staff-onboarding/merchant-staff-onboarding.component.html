@@ -4,7 +4,27 @@
         <div class="wizard-header">
             <div class="header-info">
                 <h1>Staff Onboarding</h1>
-                <p>Register and configure new staff member profiles for your hostel</p>
+                <p>Register and configure new staff member profiles</p>
+            </div>
+        </div>
+
+        <!-- Mobile Stepper (Visible only on Mobile) -->
+        <div class="mobile-stepper">
+            <div class="stepper-progress">
+                <div class="progress-bar" [style.width.%]="(activeStep / steps.length) * 100"></div>
+            </div>
+            <div class="stepper-steps">
+                <div class="mobile-step-item" *ngFor="let step of steps" [class.active]="activeStep === step.id"
+                    [class.completed]="step.status === 'completed'">
+                    <div class="step-dot">
+                        <mat-icon *ngIf="step.status === 'completed'">check</mat-icon>
+                        <span *ngIf="step.status !== 'completed'">{{step.id}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-step-label">
+                <span class="step-num">Step {{activeStep}}/{{steps.length}}</span>
+                <span class="step-title">{{steps[activeStep-1].title}}</span>
             </div>
         </div>
 
