@@ -44,45 +44,52 @@
             <form [formGroup]="menuForm" class="menu-filters">
                 <!-- Date Mode Specific -->
                 <ng-container *ngIf="menuMode === 'DATE'">
-                    <mat-form-field appearance="outline" class="filter-field">
-                        <mat-label>Menu Date</mat-label>
-                        <input matInput [matDatepicker]="datePicker" formControlName="date" />
-                        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #datePicker></mat-datepicker>
-                    </mat-form-field>
+                    <div class="filter-field">
+                        <label class="field-label">Menu Date</label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input matInput [matDatepicker]="datePicker" formControlName="date" />
+                            <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #datePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
 
-                    <mat-form-field appearance="outline" class="filter-field">
-                        <mat-label>Repeat</mat-label>
-                        <mat-select formControlName="recurrence">
-                            <mat-option *ngFor="let opt of recurrenceOptions" [value]="opt.value">{{ opt.label
-                                }}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <div class="filter-field">
+                        <label class="field-label">Repeat</label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-select formControlName="recurrence">
+                                <mat-option *ngFor="let opt of recurrenceOptions" [value]="opt.value">{{ opt.label
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
-                    <mat-form-field appearance="outline" class="filter-field"
-                        *ngIf="menuForm.get('recurrence')?.value !== 'ONE_TIME'">
-                        <mat-label>Valid Till</mat-label>
-                        <input matInput [matDatepicker]="validTillPicker" formControlName="validTill" />
-                        <mat-datepicker-toggle matSuffix [for]="validTillPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #validTillPicker></mat-datepicker>
-                    </mat-form-field>
+                    <div class="filter-field" *ngIf="menuForm.get('recurrence')?.value !== 'ONE_TIME'">
+                        <label class="field-label">Valid Till</label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input matInput [matDatepicker]="validTillPicker" formControlName="validTill" />
+                            <mat-datepicker-toggle matSuffix [for]="validTillPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #validTillPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </ng-container>
 
                 <!-- Day Mode Specific -->
                 <ng-container *ngIf="menuMode === 'DAY_OF_WEEK'">
-                    <mat-form-field appearance="outline" class="filter-field">
-                        <mat-label>Select Day</mat-label>
-                        <mat-select formControlName="dayOfWeek">
-                            <mat-option *ngFor="let day of daysOfWeek; trackBy: trackByDay" [value]="day.value">
-                                <div class="d-flex justify-content-between w-100">
-                                    <span>{{ day.label }}</span>
-                                    <small class="text-muted" *ngIf="getMenuCountForDay(day.value) > 0">
-                                        {{ getMenuCountForDay(day.value) }} menu(s)
-                                    </small>
-                                </div>
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <div class="filter-field">
+                        <label class="field-label">Select Day</label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-select formControlName="dayOfWeek">
+                                <mat-option *ngFor="let day of daysOfWeek; trackBy: trackByDay" [value]="day.value">
+                                    <div class="d-flex justify-content-between w-100">
+                                        <span>{{ day.label }}</span>
+                                        <small class="text-muted" *ngIf="getMenuCountForDay(day.value) > 0">
+                                            {{ getMenuCountForDay(day.value) }} menu(s)
+                                        </small>
+                                    </div>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
                     <div class="day-info-chip">
                         <mat-icon>event_repeat</mat-icon>
@@ -91,24 +98,30 @@
                 </ng-container>
 
                 <!-- Common -->
-                <mat-form-field appearance="outline" class="filter-field">
-                    <mat-label>Meal Type</mat-label>
-                    <mat-select formControlName="mealType">
-                        <mat-option *ngFor="let type of availableMealTypes" [value]="type">{{ type }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <div class="filter-field">
+                    <label class="field-label">Meal Type</label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-select formControlName="mealType">
+                            <mat-option *ngFor="let type of availableMealTypes" [value]="type">{{ type }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-                <mat-form-field appearance="outline" class="filter-field" style="max-width: 140px;">
-                    <mat-label>From</mat-label>
-                    <input matInput type="time" formControlName="serveFrom" />
-                    <mat-icon matSuffix>schedule</mat-icon>
-                </mat-form-field>
+                <div class="filter-field" style="max-width: 140px;">
+                    <label class="field-label">From</label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input matInput type="time" formControlName="serveFrom" />
+                        <mat-icon matSuffix>schedule</mat-icon>
+                    </mat-form-field>
+                </div>
 
-                <mat-form-field appearance="outline" class="filter-field" style="max-width: 140px;">
-                    <mat-label>Till</mat-label>
-                    <input matInput type="time" formControlName="serveTo" />
-                    <mat-icon matSuffix>history</mat-icon>
-                </mat-form-field>
+                <div class="filter-field" style="max-width: 140px;">
+                    <label class="field-label">Till</label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input matInput type="time" formControlName="serveTo" />
+                        <mat-icon matSuffix>history</mat-icon>
+                    </mat-form-field>
+                </div>
             </form>
 
             <div class="search-row">
