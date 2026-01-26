@@ -234,6 +234,14 @@
       color: var(--text-muted);
     }
 
+    .rows-per-page {
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      display: flex;
+      align-items: center;
+    }
+
     .form-select-sm {
       width: auto;
       min-width: 70px;
