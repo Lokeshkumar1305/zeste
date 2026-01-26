@@ -229,6 +229,27 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="theme-section mt-5">
+                        <h3 class="group-title">Typography</h3>
+                        <div class="form-item">
+                            <label class="field-label">Font Family</label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-select [value]="themeState.fontFamily"
+                                    (selectionChange)="setFontFamily($event.value)">
+                                    <mat-option value="Poppins">Poppins (Default)</mat-option>
+                                    <mat-option value="Inter">Inter</mat-option>
+                                    <mat-option value="Roboto">Roboto</mat-option>
+                                    <mat-option value="Outfit">Outfit</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="font-preview mt-3">
+                            <p [style.font-family]="themeState.fontFamily">The quick brown fox jumps over the lazy dog.
+                            </p>
+                            <div class="text-muted small">0123456789 ABCabc</div>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>

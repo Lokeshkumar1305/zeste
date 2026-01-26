@@ -5,6 +5,7 @@ type ThemeMode = 'light' | 'dark';
 interface ThemeState {
   mode: ThemeMode;
   color: string;
+  fontFamily: string;
   _initialized?: boolean;
 }
 
@@ -12,11 +13,13 @@ interface ThemeState {
 export class ThemeService {
   private readonly MODE_KEY = 'app-mode';
   private readonly BRAND_KEY = 'app-brand';
+  private readonly FONT_KEY = 'app-font';
   private readonly STORAGE_KEY = 'app-theme';
 
   private state: ThemeState = {
     mode: 'light',
     color: '#8A4A9F',
+    fontFamily: 'Poppins',
     _initialized: false
   };
 
@@ -28,6 +31,7 @@ export class ThemeService {
         const parsed = JSON.parse(saved) as Partial<ThemeState>;
         if (parsed.mode === 'light' || parsed.mode === 'dark') this.state.mode = parsed.mode;
         if (typeof parsed.color === 'string' && parsed.color) this.state.color = parsed.color;
+        if (typeof parsed.fontFamily === 'string' && parsed.fontFamily) this.state.fontFamily = parsed.fontFamily;
         this.state._initialized = true;
       } catch {
         // ignore malformed storage
@@ -36,8 +40,10 @@ export class ThemeService {
       // Fallback to legacy keys if they exist
       const m = localStorage.getItem(this.MODE_KEY);
       const b = localStorage.getItem(this.BRAND_KEY);
+      const f = localStorage.getItem(this.FONT_KEY);
       if (m === 'light' || m === 'dark') this.state.mode = m;
       if (b) this.state.color = b;
+      if (f) this.state.fontFamily = f;
     }
 
     // Apply on service creation so app looks correct before user toggles
@@ -73,9 +79,16 @@ export class ThemeService {
     this.apply();
   }
 
+  setFontFamily(font: string, opts?: { silent?: boolean }): void {
+    if (!font) return;
+    this.state.fontFamily = font;
+    if (!opts?.silent) this.persist();
+    this.apply();
+  }
+
   // Applies CSS variables + data attributes so your SCSS picks them up
   private apply(): void {
-    const { color, mode } = this.state;
+    const { color, mode, fontFamily } = this.state;
     const root = document.documentElement;
 
     root.setAttribute('data-theme', mode);
@@ -88,9 +101,13 @@ export class ThemeService {
     root.style.setProperty('--brand-primary-light', this.shade(color, 42));
     root.style.setProperty('--brand-primary-dark', this.shade(color, -24));
 
+    // Dynamic font
+    root.style.setProperty('--font-family', fontFamily + ', sans-serif');
+
     // Also keep legacy keys in sync if other parts read them
     localStorage.setItem(this.MODE_KEY, mode);
     localStorage.setItem(this.BRAND_KEY, color);
+    localStorage.setItem(this.FONT_KEY, fontFamily);
   }
 
   private persist(): void {

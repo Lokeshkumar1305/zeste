@@ -506,6 +506,20 @@
     }
 }
 
+.font-preview {
+    padding: 24px;
+    background: var(--input-background);
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    margin-top: 16px;
+
+    p {
+        font-size: 18px;
+        margin-bottom: 8px;
+        color: var(--text-color);
+    }
+}
+
 // Footer
 .wizard-footer {
     display: flex;
@@ -518,6 +532,7 @@
 
     button {
         height: 40px;
+        border-radius: 10px;
     }
 
     .btn-cancel {
@@ -531,16 +546,34 @@
         gap: 12px;
 
         .btn-prev {
+            color: var(--brand-primary);
+            border-color: var(--brand-primary);
+
             mat-icon {
                 margin-right: 4px;
+            }
+
+            &:hover {
+                background: var(--brand-primary-light);
             }
         }
 
         .btn-next {
             min-width: 120px;
+            background: var(--brand-primary);
+            color: #ffffff;
 
             mat-icon {
                 margin-left: 8px;
+            }
+
+            &:hover {
+                background: var(--brand-primary-dark);
+            }
+
+            &:disabled {
+                background: var(--text-muted);
+                opacity: 0.6;
             }
         }
     }

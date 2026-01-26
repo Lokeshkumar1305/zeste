@@ -128,6 +128,11 @@ export class SystemConfigComponent implements OnInit {
     this.themeState.color = color;
   }
 
+  setFontFamily(font: string): void {
+    this.theme.setFontFamily(font);
+    this.themeState.fontFamily = font;
+  }
+
   onCustomColorChange(event: any): void {
     const color = event.target.value;
     this.setBrandColor(color);
