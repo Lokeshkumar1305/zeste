@@ -1,115 +1,254 @@
-<div class="config-container">
-    <header class="config-header">
-        <h1>{{ 'SYSTEM_CONFIG.TITLE' | translate }}</h1>
-        <p>{{ 'SYSTEM_CONFIG.DESCRIPTION' | translate }}</p>
-    </header>
+<div class="wizard-wrapper">
+    <div class="wizard-container">
+        <div class="wizard-header">
+            <div class="header-info">
+                <h1>System Configuration</h1>
+                <p>Configure system parameters, endpoints, and settings</p>
+            </div>
+            <button mat-icon-button class="btn-close"><mat-icon>close</mat-icon></button>
+        </div>
 
-    <div class="config-grid-full">
-        <mat-card class="premium-card">
-            <mat-card-header>
-                <div class="card-icon"><i class="bi bi-gear-wide-connected"></i></div>
-                <mat-card-title>General Settings</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="settings-form">
-                    <div class="form-row">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Organization Name</mat-label>
-                            <input matInput [(ngModel)]="systemSettings.organizationName">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>{{ 'SYSTEM_CONFIG.TIMEZONE' | translate }}</mat-label>
-                            <mat-select [(ngModel)]="systemSettings.timezone">
-                                <mat-option value="IST (UTC+05:30)">IST (UTC+05:30)</mat-option>
-                                <mat-option value="UTC">UTC</mat-option>
-                                <mat-option value="EST">EST</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div class="form-row">
-                        <mat-form-field appearance="outline">
-                            <mat-label>{{ 'SYSTEM_CONFIG.CURRENCY' | translate }}</mat-label>
-                            <mat-select [(ngModel)]="systemSettings.currency">
-                                <mat-option value="INR (₹)">INR (₹)</mat-option>
-                                <mat-option value="USD ($)">USD ($)</mat-option>
-                                <mat-option value="EUR (€)">EUR (€)</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Date Format</mat-label>
-                            <mat-select [(ngModel)]="systemSettings.dateFormat">
-                                <mat-option value="DD/MM/YYYY">DD/MM/YYYY</mat-option>
-                                <mat-option value="MM/DD/YYYY">MM/DD/YYYY</mat-option>
-                                <mat-option value="YYYY-MM-DD">YYYY-MM-DD</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div class="toggle-section">
-                        <div class="toggle-item">
-                            <div class="toggle-info">
-                                <h3>PWA Support</h3>
-                                <p>Enable installation and offline capabilities</p>
-                            </div>
-                            <mat-slide-toggle [(ngModel)]="systemSettings.pwaEnabled"
-                                color="primary"></mat-slide-toggle>
+        <div class="wizard-main">
+            <!-- Sidebar Navigation -->
+            <aside class="wizard-sidebar">
+                <div class="steps-list">
+                    <div class="step-item" *ngFor="let step of steps" [class.active]="activeStep === step.id"
+                        [class.completed]="step.status === 'completed'" (click)="setStep(step.id)" matRipple>
+                        <div class="step-icon">
+                            <i [class]="step.icon" *ngIf="step.status !== 'completed'"></i>
+                            <mat-icon *ngIf="step.status === 'completed'">check</mat-icon>
                         </div>
-
-                        <div class="toggle-item">
-                            <div class="toggle-info">
-                                <h3>Automatic Backup</h3>
-                                <p>Schedule daily database backups</p>
-                            </div>
-                            <mat-slide-toggle [(ngModel)]="systemSettings.autoBackup"
-                                color="primary"></mat-slide-toggle>
+                        <div class="step-content">
+                            <span class="step-title">{{step.title}}</span>
+                            <span class="step-subtitle">{{step.subtitle}}</span>
                         </div>
-                    </div>
-
-                    <!-- Dynamic Fields Section -->
-                    <div class="dynamic-fields-divider mt-4" *ngIf="dynamicFields.length > 0">
-                        <span class="divider-text">Custom Fields</span>
-                    </div>
-
-                    <div class="form-row" *ngIf="dynamicFields.length > 0">
-                        <ng-container *ngFor="let field of dynamicFields">
-                            <mat-form-field appearance="outline" *ngIf="field.type === 'text'">
-                                <mat-label>{{field.label}}</mat-label>
-                                <input matInput [(ngModel)]="field.value" [required]="field.required">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" *ngIf="field.type === 'number'">
-                                <mat-label>{{field.label}}</mat-label>
-                                <input matInput type="number" [(ngModel)]="field.value" [required]="field.required">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" *ngIf="field.type === 'date'">
-                                <mat-label>{{field.label}}</mat-label>
-                                <input matInput [matDatepicker]="picker" [(ngModel)]="field.value">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-
-                            <div class="flex items-center gap-2" *ngIf="field.type === 'boolean'"
-                                style="padding: 10px 0;">
-                                <mat-slide-toggle [(ngModel)]="field.value"
-                                    color="accent">{{field.label}}</mat-slide-toggle>
-                            </div>
-                        </ng-container>
-                    </div>
-
-                    <div class="form-actions mt-4">
-                        <button mat-flat-button color="primary" class="btn-save" (click)="saveSettings()">
-                            {{ 'COMMON.SAVE' | translate }}
-                        </button>
-                        <button mat-stroked-button class="btn-cancel">
-                            {{ 'COMMON.CANCEL' | translate }}
-                        </button>
                     </div>
                 </div>
-            </mat-card-content>
-        </mat-card>
+
+                <div class="auto-save-banner">
+                    <div class="banner-icon"><mat-icon>info</mat-icon></div>
+                    <div class="banner-text">
+                        <strong>Auto-save enabled</strong>
+                        <p>Your progress is automatically saved as you work</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Dynamic Content Area -->
+            <main class="wizard-content">
+                <!-- Step 1: System Config -->
+                <div class="step-view" *ngIf="activeStep === 1">
+                    <h2 class="section-title">System Configuration</h2>
+
+                    <div class="form-grid">
+                        <div class="form-item">
+                            <label class="field-label">Collection Name<span class="required">*</span></label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <input matInput [(ngModel)]="systemSettings.collectionName" required
+                                    placeholder="Project Name">
+                                <mat-icon matPrefix>edit_note</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="form-item">
+                            <label class="field-label">Environment<span class="required">*</span></label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-select [(ngModel)]="systemSettings.environment">
+                                    <mat-option value="Production">Production</mat-option>
+                                    <mat-option value="Staging">Staging</mat-option>
+                                    <mat-option value="Development">Development</mat-option>
+                                </mat-select>
+                                <mat-icon matPrefix>language</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="form-item">
+                            <label class="field-label">AES Encryption Key<span class="required">*</span></label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <input matInput [(ngModel)]="systemSettings.aesKey" required
+                                    placeholder="Encryption Key">
+                                <mat-icon matPrefix>key</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="form-item">
+                            <label class="field-label">Description (Optional)</label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <textarea matInput [(ngModel)]="systemSettings.description" rows="3"
+                                    placeholder="Brief description..."></textarea>
+                                <mat-icon matPrefix>description</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-item flex-1">
+                                <label class="field-label">Timezone</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-select [(ngModel)]="systemSettings.timezone">
+                                        <mat-option value="IST (UTC+05:30)">IST (UTC+05:30)</mat-option>
+                                        <mat-option value="UTC">UTC</mat-option>
+                                        <mat-option value="EST">EST (UTC-05:00)</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-item flex-1">
+                                <label class="field-label">Date Format</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-select [(ngModel)]="systemSettings.dateFormat">
+                                        <mat-option value="DD/MM/YYYY">DD/MM/YYYY</mat-option>
+                                        <mat-option value="MM/DD/YYYY">MM/DD/YYYY</mat-option>
+                                        <mat-option value="YYYY-MM-DD">YYYY-MM-DD</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-item flex-1">
+                                <label class="field-label">Default Language</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-select [(ngModel)]="systemSettings.organizationName">
+                                        <mat-option value="English">English (US)</mat-option>
+                                        <mat-option value="Spanish">Spanish</mat-option>
+                                        <mat-option value="Hindi">Hindi</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-item flex-1">
+                                <label class="field-label">Currency Symbol</label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-select [(ngModel)]="systemSettings.currency">
+                                        <mat-option value="INR (₹)">INR (₹)</mat-option>
+                                        <mat-option value="USD ($)">USD ($)</mat-option>
+                                        <mat-option value="EUR (€)">EUR (€)</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Storage Config -->
+                <div class="step-view" *ngIf="activeStep === 2">
+                    <h2 class="section-title">Storage Configuration</h2>
+                    <p class="subtitle mt-n3 mb-4 text-muted">Select your primary storage provider</p>
+
+                    <div class="storage-grid">
+                        <mat-card class="storage-card" *ngFor="let opt of storageConfig.options"
+                            [class.selected]="storageConfig.provider === opt.id"
+                            (click)="storageConfig.provider = opt.id" matRipple>
+                            <div class="card-icon-main">
+                                <i [class]="opt.icon"></i>
+                            </div>
+                            <mat-card-header>
+                                <mat-card-title>{{opt.title}}</mat-card-title>
+                                <mat-card-subtitle>{{opt.subtitle}}</mat-card-subtitle>
+                            </mat-card-header>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- Step 3: Email Config -->
+                <div class="step-view" *ngIf="activeStep === 3">
+                    <h2 class="section-title">Email Configuration</h2>
+                    <div class="form-grid">
+                        <div class="form-item">
+                            <label class="field-label">SMTP Host</label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <input matInput [(ngModel)]="emailConfig.smtpHost" placeholder="e.g. smtp.gmail.com">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="form-item">
+                            <label class="field-label">SMTP Port</label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <input matInput type="number" [(ngModel)]="emailConfig.smtpPort" placeholder="587">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="form-item">
+                            <label class="field-label">Sender Email</label>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <input matInput type="email" [(ngModel)]="emailConfig.senderEmail"
+                                    placeholder="admin@example.com">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Data Source -->
+                <div class="step-view" *ngIf="activeStep === 4">
+                    <h2 class="section-title">Data Source & Collection</h2>
+                    <div class="upload-container">
+                        <div class="upload-area" matRipple>
+                            <div class="upload-icon-box">
+                                <mat-icon>cloud_upload</mat-icon>
+                            </div>
+                            <p>Click to upload or drag and drop PEM file</p>
+                            <span>SVG, PNG, JPG or GIF (max. 800x400px)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Theme Config -->
+                <div class="step-view" *ngIf="activeStep === 5">
+                    <h2 class="section-title">Theme Configuration</h2>
+
+                    <div class="theme-section">
+                        <h3 class="group-title">Appearance Mode</h3>
+                        <div class="theme-mode-toggle">
+                            <div class="mode-item" [class.active]="themeState.mode === 'light'"
+                                (click)="setMode('light')" matRipple>
+                                <mat-icon>light_mode</mat-icon>
+                                <span>Light</span>
+                            </div>
+                            <div class="mode-item" [class.active]="themeState.mode === 'dark'" (click)="setMode('dark')"
+                                matRipple>
+                                <mat-icon>dark_mode</mat-icon>
+                                <span>Dark</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="theme-section mt-5">
+                        <h3 class="group-title">Brand Color Palette</h3>
+                        <div class="color-grid">
+                            <div *ngFor="let color of presetColors" class="color-swatch-wrapper"
+                                [class.active]="themeState.color === color" (click)="setBrandColor(color)"
+                                matTooltip="{{color}}">
+                                <div class="color-swatch" [style.background-color]="color"></div>
+                            </div>
+                        </div>
+
+                        <div class="custom-color-picker mt-4">
+                            <div class="picker-label">Custom Hex Code</div>
+                            <div class="picker-control">
+                                <input type="color" [value]="themeState.color" (input)="onCustomColorChange($event)">
+                                <span class="hex-val">{{themeState.color}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Wizard Footer -->
+        <div class="wizard-footer">
+            <button mat-stroked-button color="warn" class="btn-cancel">
+                <mat-icon>close</mat-icon> Cancel
+            </button>
+            <div class="footer-actions">
+                <button mat-stroked-button (click)="prevStep()" [disabled]="activeStep === 1" class="btn-prev">
+                    <mat-icon>chevron_left</mat-icon> Previous
+                </button>
+                <button mat-flat-button color="primary" (click)="nextStep()" class="btn-next">
+                    <span>{{activeStep === steps.length ? 'Finish' : 'Next Step'}}</span>
+                    <mat-icon *ngIf="activeStep < steps.length">chevron_right</mat-icon>
+                    <mat-icon *ngIf="activeStep === steps.length">check</mat-icon>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
