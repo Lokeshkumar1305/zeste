@@ -255,8 +255,8 @@ export class InventoryDashboardComponent implements OnInit {
       datasets: [
         {
           data: categoryStock,
-          backgroundColor: '#1976d2',
-          hoverBackgroundColor: '#1565c0',
+          backgroundColor: '#003B8A',
+          hoverBackgroundColor: '#002B61',
           borderRadius: 6,
           maxBarThickness: 40,
         },
@@ -274,8 +274,8 @@ export class InventoryDashboardComponent implements OnInit {
       datasets: [
         {
           data: [okCount, lowCount, outCount],
-          backgroundColor: ['#4caf50', '#ffb300', '#e53935'],
-          hoverBackgroundColor: ['#388e3c', '#ffa000', '#d32f2f'],
+          backgroundColor: ['#16a34a', '#d97706', '#dc2626'],
+          hoverBackgroundColor: ['#15803d', '#b45309', '#b91c1c'],
         },
       ],
     };
@@ -308,10 +308,10 @@ export class InventoryDashboardComponent implements OnInit {
       .slice(0, 5);
   }
 
-  onAddItem(): void {}
-  onAddCategory(): void {}
-  onAddSupplier(): void {}
-  onAddUnit(): void {}
-  onStockMovement(): void {}
-  onCreatePO(): void {}
+  onAddItem(): void { }
+  onAddCategory(): void { }
+  onAddSupplier(): void { }
+  onAddUnit(): void { }
+  onStockMovement(): void { }
+  onCreatePO(): void { }
 }

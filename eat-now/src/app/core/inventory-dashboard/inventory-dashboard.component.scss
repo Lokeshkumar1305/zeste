@@ -47,16 +47,21 @@
 .inventory-dashboard .quick-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   flex-shrink: 0;
-}
 
-.inventory-dashboard .quick-actions button {
-  white-space: nowrap;
-}
+  button {
+    height: 42px;
+    border-radius: 10px;
+    font-weight: 500;
+    padding-inline: 20px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-.inventory-dashboard .quick-actions-mobile {
-  margin-left: auto;
+    &.mat-mdc-flat-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+  }
 }
 
 /* ---------- SUMMARY CARDS ---------- */
@@ -73,7 +78,8 @@
   }
 
   @media (min-width: 1200px) {
-    grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 per row like design */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* 4 per row like design */
     gap: 18px;
   }
 }
@@ -81,14 +87,14 @@
 .inventory-dashboard .summary-card {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
-  padding: 1rem 1.1rem;
-  border-radius: 0.9rem;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
   background: var(--card-background);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--card-border);
-  transition: box-shadow 0.18s ease, transform 0.18s ease;
-  min-height: 90px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100px;
 
   &:hover {
     box-shadow: var(--shadow-md);
@@ -137,27 +143,54 @@
   color: var(--text-muted);
 }
 
-/* icon colors */
-.inventory-dashboard .summary-primary .summary-icon {
-  background: var(--brand-primary-dark);
+/* icon colors - premium lite theme */
+.inventory-dashboard .summary-primary {
+  .summary-icon {
+    background: var(--status-info-bg);
+    color: var(--status-info-color);
+  }
 }
-.inventory-dashboard .summary-accent .summary-icon {
-  background: var(--brand-accent);
+
+.inventory-dashboard .summary-accent {
+  .summary-icon {
+    background: var(--status-success-bg);
+    color: var(--status-success-color);
+  }
 }
-.inventory-dashboard .summary-info .summary-icon {
-  background: var(--status-info-color);
+
+.inventory-dashboard .summary-info {
+  .summary-icon {
+    background: var(--status-info-bg);
+    color: var(--status-info-color);
+  }
 }
-.inventory-dashboard .summary-success .summary-icon {
-  background: var(--status-success-color);
+
+.inventory-dashboard .summary-success {
+  .summary-icon {
+    background: var(--status-success-bg);
+    color: var(--status-success-color);
+  }
 }
-.inventory-dashboard .summary-warning .summary-icon {
-  background: var(--status-warning-color);
+
+.inventory-dashboard .summary-warning {
+  .summary-icon {
+    background: var(--status-warning-bg);
+    color: var(--status-warning-color);
+  }
 }
-.inventory-dashboard .summary-danger .summary-icon {
-  background: var(--status-error-color);
+
+.inventory-dashboard .summary-danger {
+  .summary-icon {
+    background: var(--status-error-bg);
+    color: var(--status-error-color);
+  }
 }
-.inventory-dashboard .summary-secondary .summary-icon {
-  background: var(--brand-primary-700);
+
+.inventory-dashboard .summary-secondary {
+  .summary-icon {
+    background: var(--brand-primary-light);
+    color: var(--brand-primary);
+  }
 }
 
 /* ---------- MAIN CONTENT ---------- */
@@ -199,17 +232,19 @@
 }
 
 .inventory-dashboard .panel-header {
-  padding: 0.85rem 1.1rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--card-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
   flex-wrap: wrap;
+  // background: var(--brand-primary-light);
+  opacity: 0.6;
 }
 
 .inventory-dashboard .panel-title {
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-color);
   display: flex;
@@ -330,10 +365,12 @@
   background: var(--status-success-bg);
   color: var(--status-success-color);
 }
+
 .inventory-dashboard .status-low {
   background: var(--status-warning-bg);
   color: var(--status-warning-color);
 }
+
 .inventory-dashboard .status-out {
   background: var(--status-error-bg);
   color: var(--status-error-color);
@@ -385,19 +422,23 @@
   background: var(--input-background);
   color: var(--text-muted);
 }
+
 .inventory-dashboard .status-pending {
   background: var(--status-warning-bg);
   color: var(--status-warning-color);
 }
+
 .inventory-dashboard .status-approved,
 .inventory-dashboard .status-ordered {
   background: var(--status-info-bg);
   color: var(--status-info-color);
 }
+
 .inventory-dashboard .status-received {
   background: var(--status-success-bg);
   color: var(--status-success-color);
 }
+
 .inventory-dashboard .status-cancelled {
   background: var(--status-error-bg);
   color: var(--status-error-color);
@@ -461,6 +502,7 @@
   background: var(--status-success-bg);
   color: var(--status-success-color);
 }
+
 .inventory-dashboard .type-out {
   background: var(--status-error-bg);
   color: var(--status-error-color);
@@ -495,13 +537,16 @@
   .inventory-dashboard .list-body::-webkit-scrollbar {
     width: 6px;
   }
+
   .inventory-dashboard .list-body::-webkit-scrollbar-track {
     background: transparent;
   }
+
   .inventory-dashboard .list-body::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar-thumb);
     border-radius: 999px;
   }
+
   .inventory-dashboard .list-body::-webkit-scrollbar-thumb:hover {
     background-color: var(--scrollbar-thumb-hover);
   }
