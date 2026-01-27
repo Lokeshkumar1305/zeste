@@ -16,23 +16,23 @@ $app-font-family: 'Poppins', -apple-system, BlinkMacSystemFont,
   'Segoe UI', Roboto, sans-serif;
 
 /* Primary palette */
-$color-primary-50: #E5F1F8;
-$color-primary-100: #E5E9F2;
+$color-primary-50: #E8EFF6;
+$color-primary-100: #E5EBF2;
 $color-primary-200: #376DAA;
 $color-primary-300: #2D5A90;
 $color-primary-400: #234B76;
-$color-primary-500: #003B8A;
-$color-primary-600: #1A315D;
+$color-primary-500: #003DBA;
+$color-primary-600: #1A355D;
 $color-primary-700: #002B61;
 $color-primary-800: #001B30;
 $color-primary-900: #000D1F;
 
 /* Secondary (teal) palette */
-$color-secondary-50: #E3F7F3;
-$color-secondary-300: #12B293;
-$color-secondary-500: #0B8777;
-$color-secondary-700: #046F68;
-$color-secondary-900: #045B40;
+$color-secondary-100: #E0F6F3;
+$color-secondary-300: #12B393;
+$color-secondary-500: #0E9177;
+$color-secondary-700: #0A6F5B;
+$color-secondary-900: #064E40;
 
 /* Neutral palette */
 $color-neutral-100: #1A1A1A;
@@ -77,7 +77,7 @@ $color-neutral-900: #F2F2F2;
   --color-primary-900: #{$color-primary-900};
 
   /* Secondary */
-  --color-secondary-50: #{$color-secondary-50};
+  --color-secondary-100: #{$color-secondary-100};
   --color-secondary-300: #{$color-secondary-300};
   --color-secondary-500: #{$color-secondary-500};
   --color-secondary-700: #{$color-secondary-700};
@@ -93,11 +93,17 @@ $color-neutral-900: #F2F2F2;
   /* Semantic aliases */
   --brand-primary: var(--color-primary-500);
   --brand-primary-700: var(--color-primary-700);
-  --brand-primary-dark: var(--color-primary-700);
+  --brand-primary-dark: var(--color-primary-800);
   --brand-primary-light: var(--color-primary-50);
+  /* Ultra light for backgrounds */
+  --brand-primary-soft: var(--color-primary-100);
+  /* Soft tint for subtle UI */
 
-  --brand-accent: var(--color-secondary-500);
-  --brand-green: var(--color-secondary-500);
+  --brand-secondary: var(--color-secondary-500);
+  --brand-secondary-dark: var(--color-secondary-700);
+  --brand-secondary-light: var(--color-secondary-100);
+  --brand-accent: var(--brand-secondary);
+  --brand-green: var(--brand-secondary);
 
   --text-color: var(--color-neutral-100);
   --text-secondary: var(--color-neutral-300);
@@ -141,20 +147,20 @@ $color-neutral-900: #F2F2F2;
   --avatar-bg: var(--brand-primary-light);
   --avatar-color: var(--brand-primary-700);
 
-  --status-info-color: #0284c7;
-  --status-info-bg: #e0f2fe;
-  --status-success-color: #16a34a;
-  --status-success-bg: #dcfce7;
+  --status-info-color: var(--color-primary-300);
+  --status-info-bg: var(--color-primary-50);
+  --status-success-color: var(--color-secondary-700);
+  --status-success-bg: var(--color-secondary-100);
   --status-warning-color: #d97706;
   --status-warning-bg: #fef3c7;
   --status-error-color: #dc2626;
   --status-error-bg: #fee2e2;
 
   /* Status for room table */
-  --status-available-color: var(--brand-green);
-  --status-available-bg: rgba(11, 135, 119, 0.12);
-  --status-maintenance-color: #94a3b8;
-  --status-maintenance-bg: rgba(148, 163, 184, 0.16);
+  --status-available-color: var(--brand-secondary);
+  --status-available-bg: var(--brand-secondary-light);
+  --status-maintenance-color: var(--text-muted);
+  --status-maintenance-bg: var(--color-neutral-900);
   --status-occupied-color: #f59e0b;
   --status-occupied-bg: rgba(245, 158, 11, 0.16);
 }
@@ -826,8 +832,8 @@ $app-primary-palette: (
 );
 
 $app-accent-palette: (
-  50: $color-secondary-50,
-  100: $color-secondary-50,
+  50: $color-secondary-100,
+  100: $color-secondary-100,
   200: $color-secondary-300,
   300: $color-secondary-300,
   400: $color-secondary-500,
@@ -836,7 +842,7 @@ $app-accent-palette: (
   700: $color-secondary-700,
   800: $color-secondary-900,
   900: $color-secondary-900,
-  A100: $color-secondary-50,
+  A100: $color-secondary-100,
   A200: $color-secondary-300,
   A400: $color-secondary-500,
   A700: $color-secondary-700,
@@ -887,15 +893,14 @@ $app-theme-dark: mat.define-dark-theme((color: (primary: $app-primary,
       density: 0));
 
 :root {
-  @include mat.all-component-colors($app-theme-light);
-  @include mat.all-component-typographies($app-theme-light);
+  @include mat.all-component-themes($app-theme-light);
   @include mat.all-component-densities(-3);
   @include mat.button-density(-1);
   @include mat.form-field-density(-3);
 }
 
 [data-theme='dark'] {
-  @include mat.all-component-colors($app-theme-dark);
+  @include mat.all-component-themes($app-theme-dark);
 }
 
 /* ---------------------------------------------------------------
@@ -2362,6 +2367,221 @@ app-breadcrumb,
 
   .prev-next-text {
     display: inline;
+  }
+}
+
+/* ---------------------------------------------------------------
+  NEW DESIGN SYSTEM OVERRIDES (Based on Image Analysis)
+--------------------------------------------------------------- */
+
+/* Buttons */
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button {
+  border-radius: 10px !important;
+  /* Slightly more rounded like in image */
+  font-family: var(--font-family) !important;
+  padding: 0 24px !important;
+  height: 48px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background-color: var(--brand-primary) !important;
+  color: #ffffff !important;
+
+  &:hover {
+    background-color: var(--brand-primary-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 61, 186, 0.3) !important;
+  }
+}
+
+.mat-mdc-raised-button.mat-accent {
+  background-color: var(--brand-accent) !important;
+  color: #ffffff !important;
+
+  &:hover {
+    background-color: var(--color-secondary-700) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(14, 145, 119, 0.3) !important;
+  }
+}
+
+.mat-mdc-outlined-button {
+  border-color: var(--card-border) !important;
+  color: var(--text-color) !important;
+  border-width: 1.5px !important;
+
+  &:hover {
+    background-color: var(--surface-hover) !important;
+    border-color: var(--text-muted) !important;
+  }
+}
+
+.mat-mdc-button {
+  color: var(--brand-primary) !important;
+
+  &:hover {
+    background-color: var(--brand-primary-light) !important;
+  }
+}
+
+/* Chips */
+.mat-mdc-chip-set {
+  gap: 10px !important;
+}
+
+.mat-mdc-chip {
+  border-radius: 100px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+  --mdc-chip-label-text-color: var(--text-secondary);
+  --mdc-chip-elevated-container-color: var(--color-neutral-900);
+  border: 1px solid transparent !important;
+
+  &.mat-primary {
+    --mdc-chip-label-text-color: var(--brand-primary);
+    --mdc-chip-elevated-container-color: var(--brand-primary-light);
+    border: 1px solid rgba(0, 61, 186, 0.1) !important;
+  }
+
+  &.mat-accent {
+    --mdc-chip-label-text-color: var(--brand-accent);
+    --mdc-chip-elevated-container-color: var(--status-success-bg);
+  }
+}
+
+/* Form Fields */
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-container-shape: 10px;
+  --mdc-outlined-text-field-outline-color: var(--card-border);
+  --mdc-outlined-text-field-focus-outline-color: var(--brand-primary);
+  --mdc-outlined-text-field-label-text-color: var(--text-muted);
+  --mdc-outlined-text-field-focus-label-text-color: var(--brand-primary);
+  margin-bottom: 8px;
+
+  .mat-mdc-text-field-wrapper {
+    background-color: var(--input-background) !important;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: var(--surface-hover) !important;
+    }
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #ffffff !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    font-size: 11px;
+  }
+}
+
+/* Selection Controls – Using Brand Secondary (Teal) */
+.mat-mdc-checkbox {
+  --mdc-checkbox-selected-icon-color: var(--brand-secondary) !important;
+  --mdc-checkbox-selected-focus-icon-color: var(--brand-secondary) !important;
+  --mdc-checkbox-selected-hover-icon-color: var(--brand-secondary) !important;
+  --mdc-checkbox-selected-pressed-icon-color: var(--brand-secondary) !important;
+  --mdc-checkbox-unselected-icon-color: var(--card-border) !important;
+}
+
+.mat-mdc-radio-button {
+  --mdc-radio-selected-focus-handle-color: var(--brand-secondary) !important;
+  --mdc-radio-selected-hover-handle-color: var(--brand-secondary) !important;
+  --mdc-radio-selected-pressed-handle-color: var(--brand-secondary) !important;
+  --mdc-radio-selected-handle-color: var(--brand-secondary) !important;
+  --mdc-radio-unselected-icon-color: var(--card-border) !important;
+}
+
+/* Secondary Action Button (Neutral/Teal contrast for Cancel/Back) */
+.btn-secondary-action {
+  background-color: var(--brand-secondary-light) !important;
+  color: var(--brand-secondary) !important;
+  border: 1px solid transparent;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+
+  &:hover {
+    background-color: var(--brand-secondary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(14, 145, 119, 0.2) !important;
+    transform: translateY(-1px);
+  }
+}
+
+.mat-mdc-raised-button.mat-accent {
+  background-color: var(--brand-secondary) !important;
+  color: #ffffff !important;
+
+  &:hover {
+    background-color: var(--brand-secondary-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(14, 145, 119, 0.3) !important;
+  }
+}
+
+/* Tooltips */
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-color: var(--color-neutral-100);
+  background-color: var(--color-neutral-100) !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  padding: 6px 12px !important;
+}
+
+/* Snackbars */
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    --mdc-snackbar-container-color: var(--status-success-bg);
+    --mdc-snackbar-label-text-color: var(--status-success-color);
+  }
+
+  .mdc-snackbar__surface {
+    border-radius: 14px !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+
+  .mdc-snackbar__label {
+    font-weight: 500 !important;
+    font-family: var(--font-family) !important;
+  }
+}
+
+/* Modals / Popups */
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 24px;
+
+  .mdc-dialog__surface {
+    border-radius: 24px !important;
+    padding: 8px !important;
+    /* Internal padding handled by content */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .mat-mdc-dialog-title {
+    font-family: var(--font-family) !important;
+    font-weight: 700 !important;
+    font-size: 22px !important;
+  }
+
+  .mat-mdc-dialog-content {
+    font-family: var(--font-family) !important;
+    color: var(--text-secondary) !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+  }
+
+  .mat-mdc-dialog-actions {
+    padding: 16px 24px 24px !important;
+    gap: 12px;
   }
 }
 

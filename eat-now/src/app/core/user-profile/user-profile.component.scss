@@ -145,63 +145,14 @@
         --bs-gutter-y: 1.5rem;
     }
 
-    /* Material Form Field Overrides */
+    /* Material Form Field Specific Adjustments */
     ::v-deep {
         .mat-mdc-form-field {
             margin-bottom: 0.5rem;
 
-            .mat-mdc-text-field-wrapper {
-                background-color: var(--input-background) !important;
-                border-radius: 12px !important;
-
-                &:hover {
-                    background-color: var(--surface-hover) !important;
-                }
+            .mat-mdc-form-field-icon-prefix {
+                padding: 0 4px 0 12px !important;
             }
-
-            .mdc-notched-outline__leading,
-            .mdc-notched-outline__notch,
-            .mdc-notched-outline__trailing {
-                border-color: var(--card-border) !important;
-                border-width: 1px !important;
-            }
-
-            &.mat-focused {
-
-                .mdc-notched-outline__leading,
-                .mdc-notched-outline__notch,
-                .mdc-notched-outline__trailing {
-                    border-color: var(--brand-primary) !important;
-                    border-width: 2px !important;
-                }
-            }
-
-            &.mat-form-field-invalid {
-
-                .mdc-notched-outline__leading,
-                .mdc-notched-outline__notch,
-                .mdc-notched-outline__trailing {
-                    border-color: var(--status-error-color) !important;
-                }
-            }
-        }
-
-        .mat-mdc-raised-button {
-            border-radius: 12px !important;
-            padding: 0 1.5rem !important;
-            height: 48px !important;
-            font-weight: 600 !important;
-            box-shadow: var(--shadow-sm) !important;
-
-            &:hover:not([disabled]) {
-                box-shadow: var(--shadow-md) !important;
-                transform: translateY(-1px);
-            }
-        }
-
-        .mat-mdc-button {
-            border-radius: 10px !important;
-            font-weight: 500 !important;
         }
     }
 

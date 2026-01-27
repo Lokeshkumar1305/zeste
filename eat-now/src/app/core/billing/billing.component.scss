@@ -2,6 +2,7 @@
   font-family: 'Segoe UI', sans-serif;
   padding: 1rem;
 }
+
 .welcome-text {
   margin-right: 20px;
 }
@@ -17,8 +18,8 @@
   font-weight: 600;
 }
 
-.serch-field{
-    margin-left: 430px;
+.serch-field {
+  margin-left: 430px;
 }
 
 .search-bar {
@@ -57,9 +58,9 @@
   user-select: none;
   transition: all 0.3s ease;
   transform: translateY(0);
-   margin-right: 1rem;
-   overflow: hidden;
-   position: relative;
+  margin-right: 1rem;
+  overflow: hidden;
+  position: relative;
 }
 
 .category:hover {
@@ -69,7 +70,8 @@
 .category.active {
   background-color: #ffc107;
   color: white;
-  transform: translateY(-8px); /* move slightly up when selected */
+  transform: translateY(-8px);
+  /* move slightly up when selected */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -108,7 +110,7 @@
 .item-card {
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   background: #fff;
   text-align: center;
   padding: 0.5rem;
@@ -226,33 +228,46 @@
 }
 
 .btn-purple {
-  background: #b68ac8;
-  color: white;
+  background: var(--brand-primary) !important;
+  color: white !important;
+
+  &:hover {
+    background: var(--brand-primary-dark) !important;
+  }
 }
 
 .btn-green {
-  background: #28a745;
-  color: white;
+  background: var(--brand-secondary) !important;
+  color: white !important;
+
+  &:hover {
+    background: var(--brand-secondary-dark) !important;
+  }
 }
 
 .btn-blue {
-  background: #007bff;
-  color: white;
+  background: var(--brand-primary) !important;
+  color: white !important;
+
+  &:hover {
+    background: var(--brand-primary-dark) !important;
+  }
 }
 
 
 .main-section {
   width: 100%;
-  gap: 16px; /* Optional spacing between the sections */
+  gap: 16px;
+  /* Optional spacing between the sections */
 }
 
 .items-section {
-  width:98%;
+  width: 98%;
 }
 
 .order-section {
   width: 90%;
-//   height:81vh;
+  //   height:81vh;
   height: 718px;
   background-color: #f8f9fa;
   padding: 16px;
@@ -265,9 +280,12 @@
   body * {
     visibility: hidden;
   }
-  #print-section, #print-section * {
+
+  #print-section,
+  #print-section * {
     visibility: visible;
   }
+
   #print-section {
     position: absolute;
     left: 0;
@@ -275,6 +293,3 @@
     width: 100%;
   }
 }
-
-
-
