@@ -1,0 +1,134 @@
+<div class="profile-container animate__animated animate__fadeIn">
+    <div class="profile-header mb-4">
+        <div class="header-content">
+            <h1 class="f-24-b mb-1">My Profile</h1>
+            <p class="text-muted f-14-r mb-0">Manage your personal information and account settings.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- LEFT SIDE: Profile Info -->
+        <div class="col-lg-4">
+            <div class="profile-card shadow-sm text-center p-4 h-100">
+                <div class="avatar-wrapper mb-3">
+                    <div class="avatar-circle">
+                        <span class="avatar-initials">{{user.name.charAt(0)}}</span>
+                        <button class="btn-avatar-edit">
+                            <i class="bi bi-camera"></i>
+                        </button>
+                    </div>
+                </div>
+                <h2 class="f-20-b mb-1">{{user.name}}</h2>
+                <span class="badge bg-primary-soft text-brand-primary mb-3">{{user.designation}}</span>
+                <div class="divider mb-3"></div>
+                <div class="quick-info text-start">
+                    <div class="info-item mb-3">
+                        <i class="bi bi-envelope me-2"></i>
+                        <span class="f-14-r">{{user.email}}</span>
+                    </div>
+                    <div class="info-item mb-3">
+                        <i class="bi bi-telephone me-2"></i>
+                        <span class="f-14-r">{{user.mobile}}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="bi bi-geo-alt me-2"></i>
+                        <span class="f-14-r">{{user.location}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: Forms -->
+        <div class="col-lg-8">
+            <!-- Profile Details Form -->
+            <div class="profile-card shadow-sm p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="f-18-b mb-0">Personal Information</h3>
+                    <button class="btn btn-outline-primary btn-sm" (click)="toggleEdit()">
+                        <i class="bi" [ngClass]="isViewMode ? 'bi-pencil-square' : 'bi-x-lg'"></i>
+                        {{isViewMode ? 'Edit Profile' : 'Cancel'}}
+                    </button>
+                </div>
+
+                <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label f-12-b">Full Name</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput formControlName="name" [readonly]="isViewMode" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label f-12-b">Email Address</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput formControlName="email" [readonly]="isViewMode" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label f-12-b">Phone Number</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput formControlName="mobile" [readonly]="isViewMode" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label f-12-b">Designation</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput formControlName="designation" [readonly]="isViewMode" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="mb-3" *ngIf="!isViewMode">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid">Save
+                            Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security / Password Form -->
+            <div class="profile-card shadow-sm p-4">
+                <h3 class="f-18-b mb-4">Security Settings</h3>
+                <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label f-12-b">Current Password</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput [type]="hideOld ? 'password' : 'text'" formControlName="oldPassword" />
+                                <button mat-icon-button type="button" matSuffix (click)="togglePassword('old')">
+                                    <mat-icon>{{hideOld ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label f-12-b">New Password</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput [type]="hideNew ? 'password' : 'text'" formControlName="newPassword" />
+                                <button mat-icon-button type="button" matSuffix (click)="togglePassword('new')">
+                                    <mat-icon>{{hideNew ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label f-12-b">Confirm Password</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput [type]="hideConfirm ? 'password' : 'text'"
+                                    formControlName="confirmPassword" />
+                                <button mat-icon-button type="button" matSuffix (click)="togglePassword('confirm')">
+                                    <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div
+                        class="alert alert-info d-flex align-items-center f-12-r bg-primary-soft text-brand-primary border-0">
+                        <i class="bi bi-info-circle-fill me-2 f-16"></i>
+                        Ensure your new password contains at least 6 characters.
+                    </div>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="passwordForm.invalid">Update
+                        Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

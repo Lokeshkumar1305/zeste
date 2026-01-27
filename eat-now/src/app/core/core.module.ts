@@ -96,6 +96,7 @@ import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
 import { TenantComplaintsComponent } from './tenant-complaints/tenant-complaints.component';
 import { TenantAnnouncementsComponent } from './tenant-announcements/tenant-announcements.component';
 import { TenantPayRentComponent } from './tenant-pay-rent/tenant-pay-rent.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -171,7 +172,8 @@ import { TenantPayRentComponent } from './tenant-pay-rent/tenant-pay-rent.compon
     TenantMenuComponent,
     TenantComplaintsComponent,
     TenantAnnouncementsComponent,
-    TenantPayRentComponent
+    TenantPayRentComponent,
+    UserProfileComponent
   ],
   imports: [
     CommonModule,

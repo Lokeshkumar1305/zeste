@@ -2,24 +2,11 @@
   <!-- LEFT HERO (diagonal blue area) -->
   <div class="hero-wrapper d-none d-lg-flex">
     <div class="hero-content">
-      <!-- Zeste logo (light/white version) -->
       <img src="assets/images/zeste-logo-light.svg" alt="Zeste Hostel Management" class="hero-logo" />
-
-      <h1 class="hero-title">
-        Manage any hostel,<br />
-        anywhere!
-      </h1>
-
-      <p class="hero-subtitle">
-        The most powerful platform, tailored for modern hostels and PGs.
-      </p>
-
-      <p class="hero-description">
-        Streamline student check‑ins, room allocation, fee collection, visitors
-        and complaints — all from a single, secure Zeste dashboard.
-      </p>
-
-      <!-- Hostel‑themed illustration -->
+      <h1 class="hero-title">Manage any hostel,<br />anywhere!</h1>
+      <p class="hero-subtitle">The most powerful platform, tailored for modern hostels and PGs.</p>
+      <p class="hero-description">Streamline student check‑ins, room allocation, fee collection, visitors and complaints
+        — all from a single, secure Zeste dashboard.</p>
       <div class="hero-illustration">
         <img src="assets/images/hostel-hero-illustration.svg" alt="Hostel Management Illustration" />
       </div>
@@ -29,61 +16,125 @@
   <!-- RIGHT LOGIN CARD -->
   <div class="login-wrapper">
     <div class="login-card">
-      <div class="login-header mb-4">
-        <h2 class="login-heading mb-1">Let’s Get Started</h2>
-        <p class="login-subtitle text-muted mb-0">
-          Your Zeste admin dashboard
-        </p>
+      <!-- Success/Error Messages -->
+      <div *ngIf="successMessage" class="alert alert-success animate__animated animate__fadeIn">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger animate__animated animate__fadeIn">
+        {{ errorMessage }}
       </div>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-        <!-- Username / Email -->
-        <div class="mb-3">
-          <label class="form-label mb-1">User name</label>
-          <mat-form-field appearance="outline" class="login-form-field w-100">
-            <input matInput formControlName="email" autocomplete="email" required />
-            <mat-error *ngIf="f.email?.hasError('required')">
-              User name is required
-            </mat-error>
-            <mat-error *ngIf="f.email?.hasError('email')">
-              Please enter a valid email
-            </mat-error>
-          </mat-form-field>
+      <!-- Mode: Login -->
+      <div *ngIf="currentMode === 'login'">
+        <div class="login-header mb-4">
+          <h2 class="login-heading mb-1">Let’s Get Started</h2>
+          <p class="login-subtitle text-muted mb-0">Your Zeste admin dashboard</p>
         </div>
 
-        <!-- Password -->
-        <div class="mb-1">
-          <label class="form-label mb-1">Password</label>
-          <mat-form-field appearance="outline" class="login-form-field w-100">
-            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
-              autocomplete="current-password" required />
-            <button mat-icon-button type="button" matSuffix class="visibility-btn" (click)="togglePassword()">
-              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="mb-3">
+            <label class="form-label mb-1">User name</label>
+            <mat-form-field appearance="outline" class="login-form-field w-100">
+              <input matInput formControlName="email" autocomplete="email" required placeholder="name@example.com" />
+              <mat-error *ngIf="f.email?.hasError('required')">User name is required</mat-error>
+              <mat-error *ngIf="f.email?.hasError('email')">Please enter a valid email</mat-error>
+            </mat-form-field>
+          </div>
 
-            <mat-error *ngIf="f.password?.hasError('required')">
-              Password is required
-            </mat-error>
-            <mat-error *ngIf="f.password?.hasError('minlength')">
-              Password must be at least 6 characters
-            </mat-error>
-          </mat-form-field>
+          <div class="mb-1">
+            <label class="form-label mb-1">Password</label>
+            <mat-form-field appearance="outline" class="login-form-field w-100">
+              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
+                autocomplete="current-password" required placeholder="Enter password" />
+              <button mat-icon-button type="button" matSuffix class="visibility-btn" (click)="togglePassword('hide')">
+                <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error *ngIf="f.password?.hasError('required')">Password is required</mat-error>
+              <mat-error *ngIf="f.password?.hasError('minlength')">Password must be at least 6 characters</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="d-flex justify-content-end mb-4">
+            <button type="button" class="btn btn-link p-0 forgot-link" (click)="onForgotPassword($event)">Forgot
+              Password?</button>
+          </div>
+
+          <button mat-raised-button color="primary" class="w-100 btn-signin" [disabled]="loginForm.invalid">Sign
+            In</button>
+        </form>
+      </div>
+
+      <!-- Mode: Forgot Password (Step 1) -->
+      <div *ngIf="currentMode === 'forgot'" class="animate__animated animate__fadeIn">
+        <div class="login-header mb-4">
+          <h2 class="login-heading mb-1">Forgot Password?</h2>
+          <p class="login-subtitle text-muted mb-0">Enter your email to receive a temporary password.</p>
         </div>
 
-        <!-- Forgot password -->
-        <div class="d-flex justify-content-end mb-4">
-          <button type="button" class="btn btn-link p-0 forgot-link" (click)="onForgotPassword($event)">
-            Forgot Password?
-          </button>
+        <form [formGroup]="forgotForm" (ngSubmit)="onForgotSubmit()" novalidate>
+          <div class="mb-4">
+            <label class="form-label mb-1">Email Address</label>
+            <mat-form-field appearance="outline" class="login-form-field w-100">
+              <input matInput formControlName="email" required placeholder="name@example.com" />
+              <mat-error *ngIf="forgotF.email?.hasError('required')">Email is required</mat-error>
+              <mat-error *ngIf="forgotF.email?.hasError('email')">Enter a valid email</mat-error>
+            </mat-form-field>
+          </div>
+
+          <button mat-raised-button color="primary" class="w-100 btn-signin mb-3" [disabled]="forgotForm.invalid">Send
+            Temp Password</button>
+          <button type="button" class="btn btn-outline-secondary w-100" (click)="setMode('login')">Back to
+            Login</button>
+        </form>
+      </div>
+
+      <!-- Mode: Reset Password (Step 2) -->
+      <div *ngIf="currentMode === 'reset'" class="animate__animated animate__fadeIn">
+        <div class="login-header mb-4">
+          <h2 class="login-heading mb-1">Update Password</h2>
+          <p class="login-subtitle text-muted mb-0">Enter temporary password and set new one.</p>
         </div>
 
-        <!-- Sign In button -->
-        <button mat-raised-button color="primary" class="w-100 btn-signin" [disabled]="loginForm.invalid">
-          Sign In
-        </button>
-      </form>
+        <form [formGroup]="resetForm" (ngSubmit)="onResetSubmit()" novalidate>
+          <div class="mb-3">
+            <label class="form-label mb-1">Temporary Password</label>
+            <mat-form-field appearance="outline" class="login-form-field w-100">
+              <input matInput formControlName="tempPassword" required placeholder="Check your email" />
+              <mat-error *ngIf="resetF.tempPassword?.hasError('required')">Temp password is required</mat-error>
+            </mat-form-field>
+          </div>
 
-      <!-- Powered by -->
+          <div class="mb-3">
+            <label class="form-label mb-1">New Password</label>
+            <mat-form-field appearance="outline" class="login-form-field w-100">
+              <input matInput [type]="hideNew ? 'password' : 'text'" formControlName="newPassword" required />
+              <button mat-icon-button type="button" matSuffix class="visibility-btn"
+                (click)="togglePassword('hideNew')">
+                <mat-icon>{{ hideNew ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error *ngIf="resetF.newPassword?.hasError('required')">New password is required</mat-error>
+              <mat-error *ngIf="resetF.newPassword?.hasError('minlength')">At least 6 characters</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label mb-1">Confirm New Password</label>
+            <mat-form-field appearance="outline" class="login-form-field w-100">
+              <input matInput [type]="hideConfirm ? 'password' : 'text'" formControlName="confirmPassword" required />
+              <button mat-icon-button type="button" matSuffix class="visibility-btn"
+                (click)="togglePassword('hideConfirm')">
+                <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error *ngIf="resetF.confirmPassword?.hasError('required')">Confirm password is required</mat-error>
+              <mat-error *ngIf="resetForm.hasError('mismatch')">Passwords do not match</mat-error>
+            </mat-form-field>
+          </div>
+
+          <button mat-raised-button color="primary" class="w-100 btn-signin" [disabled]="resetForm.invalid">Update
+            Password</button>
+        </form>
+      </div>
+
       <div class="powered-by text-center mt-4 text-muted small">
         Powered by
         <img src="assets/images/zeste-logo.svg" alt="Zeste Hostel Management" class="powered-logo ms-1" />

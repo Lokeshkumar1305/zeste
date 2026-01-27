@@ -205,7 +205,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToProfile(): void {
-    this.router.navigate(['/uam/user-profile/1']);
+    this.router.navigate(['/core/user-profile']);
   }
 
   goToSettings(): void {
@@ -213,7 +213,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   psdChange(): void {
-    this.router.navigate(['/core/change-password']);
+    this.router.navigate(['/core/user-profile']);
   }
 
   goToHelp(): void {
