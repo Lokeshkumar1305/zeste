@@ -23,6 +23,11 @@ export class ProductConfigComponent implements OnInit {
     isEditMode: boolean = false;
     editingId: string | null = null;
 
+    // Pagination
+    public pageSizeOptions: number[] = [5, 10, 25];
+    public pageSize = 5;
+    public currentPage = 1;
+
     masterData: { [key: string]: ConfigItem[] } = {
         'floors-management': [],
         'room-type-management': [],
@@ -31,6 +36,8 @@ export class ProductConfigComponent implements OnInit {
         'maintenance-category': [],
         'expenses-category': []
     };
+
+    public pagedData: ConfigItem[] = [];
 
     sections = [
         {
@@ -89,6 +96,7 @@ export class ProductConfigComponent implements OnInit {
             }
             if (params['item']) {
                 this.selectedSubItem = params['item'];
+                this.updatePagedData();
             }
         });
     }
@@ -134,7 +142,9 @@ export class ProductConfigComponent implements OnInit {
 
     selectSubItem(itemId: string) {
         this.selectedSubItem = itemId;
+        this.currentPage = 1;
         this.resetForm();
+        this.updatePagedData();
     }
 
     backToMain() {
@@ -164,6 +174,7 @@ export class ProductConfigComponent implements OnInit {
             if (this.selectedSubItem) {
                 this.masterData[this.selectedSubItem] = this.masterData[this.selectedSubItem].filter(i => i.id !== item.id);
                 this.saveData();
+                this.updatePagedData();
             }
         }
     }
@@ -193,6 +204,7 @@ export class ProductConfigComponent implements OnInit {
             }
 
             this.saveData();
+            this.updatePagedData();
             this.resetForm();
         }
     }
@@ -227,6 +239,63 @@ export class ProductConfigComponent implements OnInit {
         }
     }
 
+    /* ------------------- Pagination Logic ------------------- */
+    get totalItems(): number {
+        return this.selectedSubItem ? this.masterData[this.selectedSubItem].length : 0;
+    }
+
+    get totalPages(): number {
+        return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
+    }
+
+    get showingFrom(): number {
+        return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+    }
+
+    get showingTo(): number {
+        return Math.min(this.currentPage * this.pageSize, this.totalItems);
+    }
+
+    get pageNumbers(): number[] {
+        return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    }
+
+    onPageSizeChange(size: number): void {
+        this.pageSize = +size;
+        this.currentPage = 1;
+        this.updatePagedData();
+    }
+
+    goToPage(page: number): void {
+        if (page < 1 || page > this.totalPages) return;
+        this.currentPage = page;
+        this.updatePagedData();
+    }
+
+    prevPage(): void {
+        if (this.currentPage > 1) {
+            this.currentPage--;
+            this.updatePagedData();
+        }
+    }
+
+    nextPage(): void {
+        if (this.currentPage < this.totalPages) {
+            this.currentPage++;
+            this.updatePagedData();
+        }
+    }
+
+    updatePagedData(): void {
+        if (!this.selectedSubItem) {
+            this.pagedData = [];
+            return;
+        }
+        const start = (this.currentPage - 1) * this.pageSize;
+        const end = start + this.pageSize;
+        this.pagedData = this.masterData[this.selectedSubItem].slice(start, end);
+    }
+
     get currentSubItemLabel() {
         if (!this.selectedSubItem) return '';
         for (const section of this.sections) {
@@ -234,9 +303,5 @@ export class ProductConfigComponent implements OnInit {
             if (item) return item.label;
         }
         return '';
-    }
-
-    get currentDataList() {
-        return this.selectedSubItem ? this.masterData[this.selectedSubItem] : [];
     }
 }

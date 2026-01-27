@@ -5,6 +5,19 @@
     max-width: 1400px;
     margin: 0 auto;
 
+    .header-card {
+        background: var(--card-background);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+
+        &:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--brand-primary-light);
+        }
+    }
+
     .page-header {
         .header-left {
             h1 {
@@ -165,63 +178,65 @@
     }
 
     .management-view {
-        .table-card {
-            background: var(--card-background);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            overflow: hidden;
+        .case-card {
+            padding: 1rem;
+            border-radius: 16px;
             box-shadow: var(--shadow-sm);
         }
 
-        .premium-table {
+        .summary-card {
+            background: var(--card-background);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-md);
+                border-color: var(--brand-primary);
+            }
+
+            &.info-bg {
+                background: linear-gradient(135deg, var(--card-background) 0%, var(--brand-primary-light) 100%);
+            }
+
+            .sum-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+            }
+
+            .bg-primary-soft {
+                background: var(--brand-primary-light);
+            }
+
+            .bg-info-soft {
+                background: #e0f2fe;
+            }
+
+            .text-info {
+                color: #0284c7;
+            }
+        }
+
+        .table-container {
+            border-radius: 12px;
             margin-bottom: 0;
-
-            thead th {
-                background: var(--icon-bg);
-                color: var(--text-secondary);
-                font-weight: 600;
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                padding: 1rem 1.5rem;
-                border-bottom: 1px solid var(--card-border);
-            }
-
-            tbody td {
-                padding: 1rem 1.5rem;
-                vertical-align: middle;
-                border-bottom: 1px solid var(--card-border);
-            }
-
-            tbody tr:last-child td {
-                border-bottom: none;
-            }
         }
     }
 
-    .btn-icon-sm {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        border: 1px solid var(--card-border);
-        background: var(--card-background);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        color: var(--text-secondary);
+    .action-icons {
+        .icon-btn {
+            font-size: 1.1rem;
+            padding: 6px;
 
-        &:hover {
-            background: var(--icon-bg);
-            border-color: var(--brand-primary);
-            color: var(--brand-primary);
-            transform: scale(1.05);
-        }
-
-        &.text-danger:hover {
-            color: #dc3545;
-            border-color: #dc3545;
-            background: #fff5f5;
+            &:hover {
+                transform: scale(1.1);
+            }
         }
     }
 
@@ -300,42 +315,6 @@
             &:hover {
                 background: var(--brand-primary);
                 color: white;
-            }
-        }
-    }
-}
-
-// Dark Mode Adjustments
-[data-theme='dark'] {
-    .product-config-container {
-        .premium-input {
-            &:focus {
-                background: var(--input-background);
-            }
-        }
-
-        .quick-add-card {
-            background: #0a0f1e;
-        }
-
-        .hint-card {
-            background: rgba(var(--color-primary-300), 0.1);
-            border-color: rgba(var(--color-primary-300), 0.3);
-        }
-
-        .bottom-onboarding {
-            background: linear-gradient(to right, #0a0f1e, #020617);
-        }
-
-        .config-card {
-            &::before {
-                background: linear-gradient(135deg, transparent 50%, rgba(var(--color-primary-300), 0.05) 100%);
-            }
-        }
-
-        .premium-table {
-            thead th {
-                background: #0f172a;
             }
         }
     }

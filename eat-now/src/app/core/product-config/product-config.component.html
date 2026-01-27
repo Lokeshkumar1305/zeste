@@ -1,36 +1,40 @@
 <div class="product-config-container animate__animated animate__fadeIn">
-    <!-- Page Header -->
-    <header
-        class="page-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-        <div class="header-left">
-            <h1 class="f-28-b mb-1">{{ selectedSubItem ? 'Manage ' + currentSubItemLabel : 'Product Configuration' }}
-            </h1>
-            <p class="text-muted f-14-r mb-0">
-                {{ selectedSubItem ? 'View and edit ' + currentSubItemLabel + ' master data.' : 'Centralized workspace
-                to manage all master data and configurations.' }}
-            </p>
-        </div>
-
-        <!-- Back Button or Hint -->
-        <div *ngIf="selectedSubItem" class="header-actions">
-            <button class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3 py-2 f-14-m"
-                (click)="backToMain()">
-                <i class="bi bi-arrow-left"></i>
-                Back to Master List
-            </button>
-        </div>
-
-        <div *ngIf="!selectedSubItem"
-            class="hint-card d-flex align-items-center p-3 animate__animated animate__pulse animate__infinite">
-            <div class="hint-icon-wrapper me-3">
-                <i class="bi bi-lightbulb-fill"></i>
+    <!-- Page Header Wrapped in Card -->
+    <div class="header-card p-4 mb-4 animate__animated animate__fadeInDown">
+        <header
+            class="page-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+            <div class="header-left">
+                <h1 class="f-28-b mb-1">{{ selectedSubItem ? 'Manage ' + currentSubItemLabel : 'Product Configuration'
+                    }}
+                </h1>
+                <p class="text-muted f-14-r mb-0">
+                    {{ selectedSubItem ? 'View and edit ' + currentSubItemLabel + ' master data.' : 'Centralized
+                    workspace
+                    to manage all master data and configurations.' }}
+                </p>
             </div>
-            <div class="hint-text-wrapper">
-                <span class="f-12-b d-block text-primary">MASTER SETUP FIRST</span>
-                <span class="f-12-r text-muted">Initialize these settings before performing daily operations.</span>
+
+            <!-- Back Button or Hint -->
+            <div *ngIf="selectedSubItem" class="header-actions">
+                <button class="btn btn-secondary d-flex align-items-center gap-2 px-3 py-2 f-14-m"
+                    (click)="backToMain()">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Master List
+                </button>
             </div>
-        </div>
-    </header>
+
+            <div *ngIf="!selectedSubItem"
+                class="hint-card d-flex align-items-center p-3 animate__animated animate__pulse animate__infinite">
+                <div class="hint-icon-wrapper me-3">
+                    <i class="bi bi-lightbulb-fill"></i>
+                </div>
+                <div class="hint-text-wrapper">
+                    <span class="f-12-b d-block text-primary">MASTER SETUP FIRST</span>
+                    <span class="f-12-r text-muted">Initialize these settings before performing daily operations.</span>
+                </div>
+            </div>
+        </header>
+    </div>
 
     <!-- Navigation Tabs (Only if no sub-item selected) -->
     <div class="config-tabs-wrapper mb-4" *ngIf="!selectedSubItem">
@@ -77,56 +81,133 @@
                     </div>
                 </div>
 
-                <!-- Management View (Table) -->
+                <!-- Management View (Table) Replicating Room Management Style -->
                 <div *ngIf="selectedSubItem" class="management-view animate__animated animate__fadeIn">
-                    <div class="table-card p-0">
-                        <div class="table-responsive">
-                            <table class="table premium-table">
+                    <!-- Summary Cards for Heading Section -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="summary-card p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="sum-icon bg-primary-soft text-primary me-3">
+                                        <i class="bi bi-stack"></i>
+                                    </div>
+                                    <div>
+                                        <span class="f-12-m text-muted d-block">Total {{currentSubItemLabel}}</span>
+                                        <h4 class="f-20-b mb-0">{{totalItems}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-8">
+                            <div class="summary-card p-3 info-bg">
+                                <div class="d-flex align-items-center">
+                                    <div class="sum-icon bg-info-soft text-info me-3">
+                                        <i class="bi bi-info-circle"></i>
+                                    </div>
+                                    <div>
+                                        <span class="f-12-m text-muted d-block">Configuration Status</span>
+                                        <p class="f-14-m mb-0 text-dark">Managing master records for system-wide
+                                            availability.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="case-card">
+                        <div class="table-container">
+                            <table class="case-table" role="table" [attr.aria-label]="currentSubItemLabel">
                                 <thead>
                                     <tr>
-                                        <th>{{currentSubItemLabel}} Name</th>
-                                        <th>Description</th>
-                                        <th *ngIf="selectedSubItem === 'room-type-management'">Beds</th>
-                                        <th class="text-end">Actions</th>
+                                        <th scope="col">{{currentSubItemLabel}} Name</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col" *ngIf="selectedSubItem === 'room-type-management'">Beds</th>
+                                        <th scope="col" class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let data of currentDataList">
+                                    <tr *ngFor="let data of pagedData" class="table-row-hover">
                                         <td class="f-14-m">{{data.name}}</td>
                                         <td class="f-14-r text-muted">{{data.description || '-'}}</td>
                                         <td *ngIf="selectedSubItem === 'room-type-management'" class="f-14-r">
                                             {{data.extra || '0'}}</td>
-                                        <td class="text-end">
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <button class="btn-icon-sm" (click)="onEdit(data)" title="Edit">
-                                                    <i class="bi bi-pencil"></i>
+                                        <td class="text-center">
+                                            <div class="d-inline-flex align-items-center gap-2 action-icons">
+                                                <button type="button" class="btn-icon icon-btn" title="Edit"
+                                                    (click)="onEdit(data)">
+                                                    <i class="bi bi-pencil-square"></i>
                                                 </button>
-                                                <button class="btn-icon-sm text-danger" (click)="onDelete(data)"
-                                                    title="Delete">
-                                                    <i class="bi bi-trash"></i>
+                                                <button type="button" class="btn-icon icon-btn" title="Delete"
+                                                    (click)="onDelete(data)">
+                                                    <i class="bi bi-trash text-danger"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr *ngIf="currentDataList.length === 0">
-                                        <td colspan="4" class="text-center py-5">
-                                            <i class="bi bi-folder-x f-24 text-muted d-block mb-2"></i>
-                                            <span class="text-muted f-14-r">No records found. Use the Quick Add form to
-                                                create one.</span>
+                                    <tr *ngIf="pagedData.length === 0">
+                                        <td [attr.colspan]="selectedSubItem === 'room-type-management' ? 4 : 3"
+                                            class="text-center py-5 text-muted f-16-r">
+                                            No records found. Use the Quick Add form to create one.
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+
+                        <!-- Footer: Pagination Replica -->
+                        <div class="table-footer" *ngIf="totalItems > 0">
+                            <div
+                                class="footer-left d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+                                <div class="f-12-r text-muted text-high-contrast">
+                                    Showing {{ showingFrom }} to {{ showingTo }} of {{ totalItems }} entries
+                                </div>
+
+                                <div class="d-inline-flex align-items-center gap-2">
+                                    <span class="f-12-r text-muted text-high-contrast">
+                                        Rows per page:
+                                    </span>
+                                    <select class="rows-per-page" [ngModel]="pageSize"
+                                        (ngModelChange)="onPageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <nav aria-label="Table pagination">
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item" [class.disabled]="currentPage === 1">
+                                        <button type="button" class="page-link" (click)="prevPage()"
+                                            [disabled]="currentPage === 1">
+                                            <i class="bi bi-chevron-left"></i>
+                                            <span class="prev-next-text">Previous</span>
+                                        </button>
+                                    </li>
+
+                                    <li class="page-item" *ngFor="let page of pageNumbers"
+                                        [class.active]="page === currentPage">
+                                        <button type="button" class="page-link" (click)="goToPage(page)">
+                                            {{ page }}
+                                        </button>
+                                    </li>
+
+                                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                                        <button type="button" class="page-link" (click)="nextPage()"
+                                            [disabled]="currentPage === totalPages">
+                                            <span class="prev-next-text">Next</span>
+                                            <i class="bi bi-chevron-right"></i>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </section>
                 </div>
             </div>
 
-            <!-- Right Side: Quick Add / Edit Form (Always visible if sub-item selected) -->
-            <div class="col-lg-4" *ngIf="selectedSubItem || !selectedSubItem">
-                <!-- If no sub-item selected, show a general hint or let them add to the active section's first item? -->
-                <!-- For now, the user wants "only i want to add floors" when clicking card, so Quick Add is best inside sub-item view or always there -->
-
+            <!-- Right Side: Quick Add / Edit Form -->
+            <div class="col-lg-4">
                 <div class="quick-add-card p-4 animate__animated animate__fadeInRight" *ngIf="selectedSubItem">
                     <div class="d-flex align-items-center mb-4">
                         <div class="quick-add-icon me-3">
@@ -167,7 +248,7 @@
                                 {{ isEditMode ? 'Update Record' : 'Save Record' }}
                             </button>
                             <button type="button" *ngIf="isEditMode" (click)="resetForm()"
-                                class="btn btn-outline-secondary py-2 f-14-m">
+                                class="btn btn-secondary py-2 f-14-m">
                                 Cancel
                             </button>
                         </div>
