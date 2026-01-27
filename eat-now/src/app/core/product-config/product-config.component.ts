@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RoomConfigService } from '../../shared/services/room-config.service';
+import { RoomConfigService, RoomType } from '../../shared/services/room-config.service';
+import { ActivatedRoute } from '@angular/router';
+
+interface ConfigItem {
+    id: string;
+    name: string;
+    description?: string;
+    extra?: any;
+}
 
 @Component({
     selector: 'app-product-config',
@@ -9,7 +17,20 @@ import { RoomConfigService } from '../../shared/services/room-config.service';
 })
 export class ProductConfigComponent implements OnInit {
     activeSection: string = 'rooms';
+    selectedSubItem: string | null = null;
+
     quickAddForm: FormGroup;
+    isEditMode: boolean = false;
+    editingId: string | null = null;
+
+    masterData: { [key: string]: ConfigItem[] } = {
+        'floors-management': [],
+        'room-type-management': [],
+        'beds-management': [],
+        'amenities-management': [],
+        'maintenance-category': [],
+        'expenses-category': []
+    };
 
     sections = [
         {
@@ -18,10 +39,10 @@ export class ProductConfigComponent implements OnInit {
             icon: 'bi-door-open',
             description: 'Manage floors, room types, beds, and standard amenities.',
             items: [
-                { label: 'Floors', route: 'floors-management', icon: 'bi-layers' },
-                { label: 'Room Types', route: 'room-type-management', icon: 'bi-house-gear' },
-                { label: 'Beds', route: 'beds-management', icon: 'bi-bed' },
-                { label: 'Amenities', route: 'amenities-management', icon: 'bi-stars' }
+                { id: 'floors-management', label: 'Floors', icon: 'bi-layers' },
+                { id: 'room-type-management', label: 'Room Types', icon: 'bi-house-gear' },
+                { id: 'beds-management', label: 'Beds', icon: 'bi-bed' },
+                { id: 'amenities-management', label: 'Amenities', icon: 'bi-stars' }
             ]
         },
         {
@@ -30,7 +51,7 @@ export class ProductConfigComponent implements OnInit {
             icon: 'bi-tools',
             description: 'Define categories for maintenance tasks and service requests.',
             items: [
-                { label: 'Categories', route: 'maintenance-category', icon: 'bi-tags' }
+                { id: 'maintenance-category', label: 'Categories', icon: 'bi-tags' }
             ]
         },
         {
@@ -39,38 +60,183 @@ export class ProductConfigComponent implements OnInit {
             icon: 'bi-wallet2',
             description: 'Configure expense categories for better financial tracking.',
             items: [
-                { label: 'Categories', route: 'expenses-category', icon: 'bi-receipt' }
+                { id: 'expenses-category', label: 'Categories', icon: 'bi-receipt' }
             ]
         }
     ];
 
     constructor(
         private fb: FormBuilder,
-        private roomService: RoomConfigService
+        private roomService: RoomConfigService,
+        private route: ActivatedRoute
     ) {
         this.quickAddForm = this.fb.group({
             name: ['', Validators.required],
             description: [''],
-            assignedFloor: ['']
+            extra: ['']
         });
     }
 
     ngOnInit(): void {
+        this.loadAllData();
+        this.checkQueryParams();
+    }
+
+    checkQueryParams() {
+        this.route.queryParams.subscribe(params => {
+            if (params['section']) {
+                this.activeSection = params['section'];
+            }
+            if (params['item']) {
+                this.selectedSubItem = params['item'];
+            }
+        });
+    }
+
+    loadAllData() {
+        this.masterData['floors-management'] = this.loadDetailed('floors_detailed');
+        this.masterData['room-type-management'] = this.loadDetailed('roomTypes_detailed');
+        this.masterData['beds-management'] = this.loadDetailed('bedsMaster');
+        this.masterData['amenities-management'] = this.loadDetailed('amenities_detailed_info');
+        this.masterData['maintenance-category'] = this.loadDetailed('maintenanceCategories');
+        this.masterData['expenses-category'] = this.loadDetailed('expenseCategories');
+
+        // Fallback/Sync for Rooms from Service
+        if (this.masterData['floors-management'].length === 0) {
+            const floors = this.roomService.getFloors();
+            this.masterData['floors-management'] = floors.map((f, i) => ({ id: 'F' + i, name: f }));
+        }
+        if (this.masterData['room-type-management'].length === 0) {
+            const types = this.roomService.getRoomTypes();
+            this.masterData['room-type-management'] = types.map((t, i) => ({ id: 'RT' + i, name: t.name, extra: t.beds }));
+        }
+        if (this.masterData['amenities-management'].length === 0) {
+            const amenities = this.roomService.getAmenities();
+            this.masterData['amenities-management'] = amenities.map((a, i) => ({ id: 'AM' + i, name: a }));
+        }
+    }
+
+    private loadDetailed(key: string): ConfigItem[] {
+        const data = localStorage.getItem(key);
+        if (!data) return [];
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            return [];
+        }
     }
 
     setActiveSection(sectionId: string) {
         this.activeSection = sectionId;
+        this.selectedSubItem = null;
+        this.resetForm();
+    }
+
+    selectSubItem(itemId: string) {
+        this.selectedSubItem = itemId;
+        this.resetForm();
+    }
+
+    backToMain() {
+        this.selectedSubItem = null;
+        this.resetForm();
+    }
+
+    resetForm() {
         this.quickAddForm.reset();
+        this.isEditMode = false;
+        this.editingId = null;
+        this.quickAddForm.patchValue({ extra: '' });
+    }
+
+    onEdit(item: ConfigItem) {
+        this.isEditMode = true;
+        this.editingId = item.id;
+        this.quickAddForm.patchValue({
+            name: item.name,
+            description: item.description,
+            extra: item.extra
+        });
+    }
+
+    onDelete(item: ConfigItem) {
+        if (confirm(`Are you sure you want to delete ${item.name}?`)) {
+            if (this.selectedSubItem) {
+                this.masterData[this.selectedSubItem] = this.masterData[this.selectedSubItem].filter(i => i.id !== item.id);
+                this.saveData();
+            }
+        }
     }
 
     onSave() {
-        if (this.quickAddForm.valid) {
-            const formData = this.quickAddForm.value;
-            console.log('Saving config:', this.activeSection, formData);
-            // Integration with specific services would go here
-            // e.g. this.roomService.addRoomType({ name: formData.name, beds: 1 });
-            this.quickAddForm.reset();
-            // Add a success hint or notification
+        if (this.quickAddForm.valid && this.selectedSubItem) {
+            const formVal = this.quickAddForm.value;
+
+            if (this.isEditMode && this.editingId) {
+                const index = this.masterData[this.selectedSubItem].findIndex(i => i.id === this.editingId);
+                if (index !== -1) {
+                    this.masterData[this.selectedSubItem][index] = {
+                        ...this.masterData[this.selectedSubItem][index],
+                        name: formVal.name,
+                        description: formVal.description,
+                        extra: formVal.extra
+                    };
+                }
+            } else {
+                const newItem: ConfigItem = {
+                    id: 'ITEM_' + Date.now(),
+                    name: formVal.name,
+                    description: formVal.description,
+                    extra: formVal.extra
+                };
+                this.masterData[this.selectedSubItem].push(newItem);
+            }
+
+            this.saveData();
+            this.resetForm();
         }
+    }
+
+    saveData() {
+        if (!this.selectedSubItem) return;
+
+        const data = this.masterData[this.selectedSubItem];
+        let detailedKey = '';
+
+        switch (this.selectedSubItem) {
+            case 'floors-management':
+                detailedKey = 'floors_detailed';
+                this.roomService.setFloors(data.map(i => i.name));
+                break;
+            case 'room-type-management':
+                detailedKey = 'roomTypes_detailed';
+                const rt: RoomType[] = data.map(i => ({ name: i.name, beds: Number(i.extra) || 0 }));
+                this.roomService.setRoomTypes(rt);
+                break;
+            case 'amenities-management':
+                detailedKey = 'amenities_detailed_info';
+                this.roomService.setAmenities(data.map(i => i.name));
+                break;
+            case 'beds-management': detailedKey = 'bedsMaster'; break;
+            case 'maintenance-category': detailedKey = 'maintenanceCategories'; break;
+            case 'expenses-category': detailedKey = 'expenseCategories'; break;
+        }
+
+        if (detailedKey) {
+            localStorage.setItem(detailedKey, JSON.stringify(data));
+        }
+    }
+
+    get currentSubItemLabel() {
+        if (!this.selectedSubItem) return '';
+        for (const section of this.sections) {
+            const item = section.items.find(i => i.id === this.selectedSubItem);
+            if (item) return item.label;
+        }
+        return '';
+    }
+
+    get currentDataList() {
+        return this.selectedSubItem ? this.masterData[this.selectedSubItem] : [];
     }
 }

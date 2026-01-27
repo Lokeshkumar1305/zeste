@@ -10,27 +10,6 @@ export interface RoomType {
   providedIn: 'root'
 })
 export class RoomConfigService {
-  constructor() {
-    const savedRoomTypes = localStorage.getItem('roomTypes');
-    const savedFloors = localStorage.getItem('floors');
-
-    if (savedRoomTypes) {
-      const parsed = JSON.parse(savedRoomTypes);
-      // Validate parsed data to ensure it matches RoomType[]
-      if (Array.isArray(parsed) && parsed.every((t: any) => typeof t.name === 'string' && typeof t.beds === 'number')) {
-        this.roomTypesSubject.next(parsed);
-      }
-    }
-
-    if (savedFloors) {
-      const parsed = JSON.parse(savedFloors);
-      // Validate parsed data to ensure it's string[]
-      if (Array.isArray(parsed) && parsed.every((f: any) => typeof f === 'string')) {
-        this.floorsSubject.next(parsed);
-      }
-    }
-  }
-
   private roomTypesSubject = new BehaviorSubject<RoomType[]>([
     { name: 'Single', beds: 1 },
     { name: '2 Share', beds: 2 },
@@ -44,16 +23,48 @@ export class RoomConfigService {
     'Floor 3'
   ]);
 
+  private amenitiesSubject = new BehaviorSubject<string[]>([
+    'WiFi', 'AC', 'TV', 'Mini Fridge', 'Common Kitchen', 'Laundry'
+  ]);
+
+  constructor() {
+    this.loadFromStorage();
+  }
+
+  private loadFromStorage() {
+    const savedRoomTypes = localStorage.getItem('roomTypes');
+    const savedFloors = localStorage.getItem('floors');
+    const savedAmenities = localStorage.getItem('amenities_master_list');
+
+    if (savedRoomTypes) {
+      try {
+        const parsed = JSON.parse(savedRoomTypes);
+        if (Array.isArray(parsed)) this.roomTypesSubject.next(parsed);
+      } catch (e) { }
+    }
+
+    if (savedFloors) {
+      try {
+        const parsed = JSON.parse(savedFloors);
+        if (Array.isArray(parsed)) this.floorsSubject.next(parsed);
+      } catch (e) { }
+    }
+
+    if (savedAmenities) {
+      try {
+        const parsed = JSON.parse(savedAmenities);
+        if (Array.isArray(parsed)) this.amenitiesSubject.next(parsed);
+      } catch (e) { }
+    }
+  }
+
   public roomTypes$: Observable<RoomType[]> = this.roomTypesSubject.asObservable();
   public floors$: Observable<string[]> = this.floorsSubject.asObservable();
+  public amenities$: Observable<string[]> = this.amenitiesSubject.asObservable();
 
-  getRoomTypes(): RoomType[] {
-    return this.roomTypesSubject.value;
-  }
-
-  getFloors(): string[] {
-    return this.floorsSubject.value;
-  }
+  getRoomTypes(): RoomType[] { return this.roomTypesSubject.value; }
+  getFloors(): string[] { return this.floorsSubject.value; }
+  getAmenities(): string[] { return this.amenitiesSubject.value; }
 
   setRoomTypes(types: RoomType[]): void {
     this.roomTypesSubject.next(types);
@@ -65,40 +76,34 @@ export class RoomConfigService {
     localStorage.setItem('floors', JSON.stringify(floors));
   }
 
+  setAmenities(amenities: string[]): void {
+    this.amenitiesSubject.next(amenities);
+    localStorage.setItem('amenities_master_list', JSON.stringify(amenities));
+  }
+
   getBedCountForRoomType(roomTypeName: string): number {
     const type = this.roomTypesSubject.value.find(t => t.name === roomTypeName);
     return type?.beds ?? 0;
   }
 
   addRoomType(roomType: RoomType): void {
-    const currentTypes = this.roomTypesSubject.value;
-    const exists = currentTypes.some(t => t.name === roomType.name);
-    if (!exists) {
-      const updatedTypes = [...currentTypes, roomType];
-      this.roomTypesSubject.next(updatedTypes);
-      localStorage.setItem('roomTypes', JSON.stringify(updatedTypes));
+    const current = this.roomTypesSubject.value;
+    if (!current.some(t => t.name === roomType.name)) {
+      this.setRoomTypes([...current, roomType]);
     }
   }
 
   addFloor(floor: string): void {
-    const currentFloors = this.floorsSubject.value;
-    if (!currentFloors.includes(floor)) {
-      const updatedFloors = [...currentFloors, floor];
-      this.floorsSubject.next(updatedFloors);
-      localStorage.setItem('floors', JSON.stringify(updatedFloors));
+    const current = this.floorsSubject.value;
+    if (!current.includes(floor)) {
+      this.setFloors([...current, floor]);
     }
   }
 
-  // Uncomment and update if you need to remove room types (ensure beds remains number)
-  // removeRoomType(roomTypeName: string): void {
-  //   const updatedTypes = this.roomTypesSubject.value.filter(t => t.name !== roomTypeName);
-  //   this.roomTypesSubject.next(updatedTypes);
-  //   localStorage.setItem('roomTypes', JSON.stringify(updatedTypes));
-  // }
-
-  removeFloor(floor: string): void {
-    const updatedFloors = this.floorsSubject.value.filter(f => f !== floor);
-    this.floorsSubject.next(updatedFloors);
-    localStorage.setItem('floors', JSON.stringify(updatedFloors));
+  addAmenity(amenity: string): void {
+    const current = this.amenitiesSubject.value;
+    if (!current.includes(amenity)) {
+      this.setAmenities([...current, amenity]);
+    }
   }
 }

@@ -72,7 +72,7 @@
                 background: var(--brand-primary);
                 border-color: var(--brand-primary);
                 color: white;
-                box-shadow: 0 4px 12px rgba(var(--color-primary-500), 0.2);
+                box-shadow: 0 4px 12px rgba(0, 59, 138, 0.2);
                 transform: scale(1.02);
             }
         }
@@ -164,6 +164,67 @@
         }
     }
 
+    .management-view {
+        .table-card {
+            background: var(--card-background);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .premium-table {
+            margin-bottom: 0;
+
+            thead th {
+                background: var(--icon-bg);
+                color: var(--text-secondary);
+                font-weight: 600;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid var(--card-border);
+            }
+
+            tbody td {
+                padding: 1rem 1.5rem;
+                vertical-align: middle;
+                border-bottom: 1px solid var(--card-border);
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .btn-icon-sm {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: 1px solid var(--card-border);
+        background: var(--card-background);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        color: var(--text-secondary);
+
+        &:hover {
+            background: var(--icon-bg);
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: scale(1.05);
+        }
+
+        &.text-danger:hover {
+            color: #dc3545;
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+    }
+
     .quick-add-card {
         background: var(--card-background);
         border: 1px solid var(--card-border);
@@ -247,6 +308,16 @@
 // Dark Mode Adjustments
 [data-theme='dark'] {
     .product-config-container {
+        .premium-input {
+            &:focus {
+                background: var(--input-background);
+            }
+        }
+
+        .quick-add-card {
+            background: #0a0f1e;
+        }
+
         .hint-card {
             background: rgba(var(--color-primary-300), 0.1);
             border-color: rgba(var(--color-primary-300), 0.3);
@@ -259,6 +330,12 @@
         .config-card {
             &::before {
                 background: linear-gradient(135deg, transparent 50%, rgba(var(--color-primary-300), 0.05) 100%);
+            }
+        }
+
+        .premium-table {
+            thead th {
+                background: #0f172a;
             }
         }
     }
@@ -281,6 +358,11 @@
             margin-right: -1rem;
             padding-left: 1rem;
             padding-right: 1rem;
+        }
+
+        .quick-add-card {
+            position: static;
+            margin-top: 2rem;
         }
     }
 }

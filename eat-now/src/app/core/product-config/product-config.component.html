@@ -3,25 +3,37 @@
     <header
         class="page-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
         <div class="header-left">
-            <h1 class="f-28-b mb-1">Product Configuration</h1>
-            <p class="text-muted f-14-r mb-0">Centralized workspace to manage all master data and configurations.</p>
+            <h1 class="f-28-b mb-1">{{ selectedSubItem ? 'Manage ' + currentSubItemLabel : 'Product Configuration' }}
+            </h1>
+            <p class="text-muted f-14-r mb-0">
+                {{ selectedSubItem ? 'View and edit ' + currentSubItemLabel + ' master data.' : 'Centralized workspace
+                to manage all master data and configurations.' }}
+            </p>
         </div>
 
-        <!-- Smart Hint Card -->
-        <div class="hint-card d-flex align-items-center p-3 animate__animated animate__pulse animate__infinite">
+        <!-- Back Button or Hint -->
+        <div *ngIf="selectedSubItem" class="header-actions">
+            <button class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3 py-2 f-14-m"
+                (click)="backToMain()">
+                <i class="bi bi-arrow-left"></i>
+                Back to Master List
+            </button>
+        </div>
+
+        <div *ngIf="!selectedSubItem"
+            class="hint-card d-flex align-items-center p-3 animate__animated animate__pulse animate__infinite">
             <div class="hint-icon-wrapper me-3">
                 <i class="bi bi-lightbulb-fill"></i>
             </div>
             <div class="hint-text-wrapper">
                 <span class="f-12-b d-block text-primary">MASTER SETUP FIRST</span>
-                <span class="f-12-r text-muted">Initialize these settings before performing daily operations like
-                    bookings or maintenance.</span>
+                <span class="f-12-r text-muted">Initialize these settings before performing daily operations.</span>
             </div>
         </div>
     </header>
 
-    <!-- Navigation Sections -->
-    <div class="config-tabs-wrapper mb-4">
+    <!-- Navigation Tabs (Only if no sub-item selected) -->
+    <div class="config-tabs-wrapper mb-4" *ngIf="!selectedSubItem">
         <div class="d-flex gap-3 overflow-auto pb-2">
             <button *ngFor="let section of sections" (click)="setActiveSection(section.id)" class="tab-btn"
                 [class.active]="activeSection === section.id">
@@ -31,97 +43,163 @@
         </div>
     </div>
 
-    <!-- Active Section Content -->
-    <div class="section-content animate__animated animate__fadeIn" *ngFor="let section of sections">
-        <div *ngIf="activeSection === section.id">
-            <div class="row">
-                <!-- Main Config Cards -->
-                <div class="col-lg-8">
-                    <div class="section-info mb-4">
-                        <h2 class="f-20-m mb-1">{{section.title}}</h2>
-                        <p class="text-muted f-14-r">{{section.description}}</p>
-                    </div>
+    <!-- Main View or Management View -->
+    <div class="content-wrapper">
+        <div class="row">
+            <!-- Left Side: Cards or Table -->
+            <div class="col-lg-8">
+                <!-- Dashboard View -->
+                <div *ngIf="!selectedSubItem" class="dashboard-view animate__animated animate__fadeIn">
+                    <div class="section-info mb-4" *ngFor="let section of sections">
+                        <div *ngIf="activeSection === section.id">
+                            <h2 class="f-20-m mb-1">{{section.title}}</h2>
+                            <p class="text-muted f-14-r mb-4">{{section.description}}</p>
 
-                    <div class="row g-4">
-                        <div class="col-12 col-sm-6" *ngFor="let item of section.items">
-                            <div class="config-card" [routerLink]="['/core', item.route]">
-                                <div class="card-icon-box">
-                                    <i class="bi {{item.icon}}"></i>
-                                </div>
-                                <div class="card-details">
-                                    <h3 class="f-16-m mb-1">{{item.label}}</h3>
-                                    <p class="f-12-r text-muted mb-3">Manage and view all {{item.label}} records.</p>
-                                    <button class="btn-manage">
-                                        <span>Manage List</span>
-                                        <i class="bi bi-arrow-right ms-2"></i>
-                                    </button>
+                            <div class="row g-4">
+                                <div class="col-12 col-sm-6" *ngFor="let item of section.items">
+                                    <div class="config-card" (click)="selectSubItem(item.id)">
+                                        <div class="card-icon-box">
+                                            <i class="bi {{item.icon}}"></i>
+                                        </div>
+                                        <div class="card-details">
+                                            <h3 class="f-16-m mb-1">{{item.label}}</h3>
+                                            <p class="f-12-r text-muted mb-3">Manage and update all {{item.label}}
+                                                master records.</p>
+                                            <button class="btn-manage">
+                                                <span>Manage List</span>
+                                                <i class="bi bi-arrow-right ms-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Quick Add Sidebar -->
-                <div class="col-lg-4 mt-4 mt-lg-0">
-                    <div class="quick-add-card p-4">
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="quick-add-icon me-3">
-                                <i class="bi bi-lightning-charge-fill"></i>
-                            </div>
-                            <h3 class="f-18-m mb-0">Quick Add</h3>
+                <!-- Management View (Table) -->
+                <div *ngIf="selectedSubItem" class="management-view animate__animated animate__fadeIn">
+                    <div class="table-card p-0">
+                        <div class="table-responsive">
+                            <table class="table premium-table">
+                                <thead>
+                                    <tr>
+                                        <th>{{currentSubItemLabel}} Name</th>
+                                        <th>Description</th>
+                                        <th *ngIf="selectedSubItem === 'room-type-management'">Beds</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of currentDataList">
+                                        <td class="f-14-m">{{data.name}}</td>
+                                        <td class="f-14-r text-muted">{{data.description || '-'}}</td>
+                                        <td *ngIf="selectedSubItem === 'room-type-management'" class="f-14-r">
+                                            {{data.extra || '0'}}</td>
+                                        <td class="text-end">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn-icon-sm" (click)="onEdit(data)" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn-icon-sm text-danger" (click)="onDelete(data)"
+                                                    title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="currentDataList.length === 0">
+                                        <td colspan="4" class="text-center py-5">
+                                            <i class="bi bi-folder-x f-24 text-muted d-block mb-2"></i>
+                                            <span class="text-muted f-14-r">No records found. Use the Quick Add form to
+                                                create one.</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Quick Add / Edit Form (Always visible if sub-item selected) -->
+            <div class="col-lg-4" *ngIf="selectedSubItem || !selectedSubItem">
+                <!-- If no sub-item selected, show a general hint or let them add to the active section's first item? -->
+                <!-- For now, the user wants "only i want to add floors" when clicking card, so Quick Add is best inside sub-item view or always there -->
+
+                <div class="quick-add-card p-4 animate__animated animate__fadeInRight" *ngIf="selectedSubItem">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="quick-add-icon me-3">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                        </div>
+                        <h3 class="f-18-m mb-0">{{ isEditMode ? 'Update' : 'Quick Add' }} {{currentSubItemLabel}}</h3>
+                    </div>
+
+                    <form [formGroup]="quickAddForm" (ngSubmit)="onSave()" class="form-wrapper">
+                        <p class="f-12-r text-muted mb-4">
+                            {{ isEditMode ? 'Modify' : 'Add a new record to' }} <strong>{{currentSubItemLabel}}</strong>
+                            master instantly.
+                        </p>
+
+                        <div class="mb-3">
+                            <label class="f-12-m mb-2">Name / Title</label>
+                            <input type="text" formControlName="name" class="form-control premium-input"
+                                [placeholder]="'e.g. ' + currentSubItemLabel + ' name...'">
                         </div>
 
-                        <form [formGroup]="quickAddForm" (ngSubmit)="onSave()" class="form-wrapper">
-                            <p class="f-12-r text-muted mb-4">Add a new record to <strong>{{section.title}}</strong>
-                                masters instantly.</p>
+                        <div class="mb-3">
+                            <label class="f-12-m mb-2">Description</label>
+                            <textarea formControlName="description" class="form-control premium-input" rows="3"
+                                placeholder="Enter brief details..."></textarea>
+                        </div>
 
-                            <div class="mb-3">
-                                <label class="f-12-m mb-2">Category / Type Name</label>
-                                <input type="text" formControlName="name" class="form-control premium-input"
-                                    placeholder="e.g. Deluxe Room, Maintenance Fee...">
-                            </div>
+                        <!-- Extra field for Room Types (Bed count) -->
+                        <div class="mb-3" *ngIf="selectedSubItem === 'room-type-management'">
+                            <label class="f-12-m mb-2">Number of Beds</label>
+                            <input type="number" formControlName="extra" class="form-control premium-input"
+                                placeholder="e.g. 2">
+                        </div>
 
-                            <div class="mb-3">
-                                <label class="f-12-m mb-2">Short Description</label>
-                                <textarea formControlName="description" class="form-control premium-input" rows="3"
-                                    placeholder="Enter brief details..."></textarea>
-                            </div>
-
-                            <div class="mb-3" *ngIf="section.id === 'rooms'">
-                                <label class="f-12-m mb-2">Assign to Floor</label>
-                                <select formControlName="assignedFloor" class="form-select premium-input">
-                                    <option value="" selected disabled>Select Floor</option>
-                                    <option value="1">1st Floor</option>
-                                    <option value="2">2nd Floor</option>
-                                </select>
-                            </div>
-
+                        <div class="d-flex gap-2">
                             <button type="submit" [disabled]="quickAddForm.invalid"
-                                class="btn btn-primary w-100 py-2 f-14-m">
-                                <i class="bi bi-plus-lg me-2"></i>
-                                Save Record
+                                class="btn btn-primary flex-grow-1 py-2 f-14-m">
+                                <i class="bi" [class.bi-plus-lg]="!isEditMode" [class.bi-check-lg]="isEditMode"></i>
+                                {{ isEditMode ? 'Update Record' : 'Save Record' }}
                             </button>
+                            <button type="button" *ngIf="isEditMode" (click)="resetForm()"
+                                class="btn btn-outline-secondary py-2 f-14-m">
+                                Cancel
+                            </button>
+                        </div>
 
-                            <div class="mt-4 p-3 info-box d-flex align-items-start">
-                                <i class="bi bi-info-circle me-2 mt-1"></i>
-                                <p class="f-12-r mb-0">Records added here will be available across the entire system
-                                    immediately.</p>
-                            </div>
-                        </form>
+                        <div class="mt-4 p-3 info-box d-flex align-items-start">
+                            <i class="bi bi-info-circle me-2 mt-1"></i>
+                            <p class="f-12-r mb-0">Changes are synchronized across the system instantly.</p>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Empty state for Right Side when no sub-item selected -->
+                <div class="empty-quick-add text-center p-5" *ngIf="!selectedSubItem">
+                    <div class="illus-box mb-4">
+                        <i class="bi bi-card-checklist f-48 text-muted opacity-25"></i>
                     </div>
+                    <h4 class="f-16-m mb-2">Manage Master Data</h4>
+                    <p class="f-12-r text-muted">Select a category from the left to start adding or updating master
+                        records.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Quick Actions / Bottom Hint -->
-    <div class="bottom-onboarding mt-5 p-4 text-center">
+    <!-- Footer Guide -->
+    <div class="bottom-onboarding mt-5 p-4 text-center" *ngIf="!selectedSubItem">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <i class="bi bi-rocket-takeoff f-24 mb-3 text-primary d-block"></i>
                 <h4 class="f-18-m mb-2">Ready to take action?</h4>
-                <p class="f-14-r text-muted mb-4 px-lg-5">Once you've configured your product master data, you can head
-                    over to Room Management or Maintenance Management to start your daily operations.</p>
+                <p class="f-14-r text-muted mb-4 px-lg-5">Once master data is configured, they will appear in your daily
+                    management options like bookings or maintenance requests.</p>
                 <div class="d-flex justify-content-center gap-3">
                     <button class="btn btn-outline-primary px-4 py-2 f-14-m"
                         [routerLink]="['/core/room-management']">Manage Rooms</button>

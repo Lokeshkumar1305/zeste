@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 
 import { RoomConfigService, RoomType } from '../../shared/services/room-config.service';
 import { BedsService } from '../../shared/services/beds.service';
+import { Router } from '@angular/router';
 
 export interface RoomDetails {
   roomNumber: string;
@@ -49,7 +50,8 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private roomConfigService: RoomConfigService,
-    private bedsService: BedsService
+    private bedsService: BedsService,
+    private router: Router
   ) {
     if (data?.room) {
       this.room = { ...this.room, ...data.room };
@@ -75,7 +77,11 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptions.push(roomTypeSub, floorsSub);
+    const amenitiesSub = this.roomConfigService.amenities$.subscribe(amenities => {
+      this.amenityOptions = amenities;
+    });
+
+    this.subscriptions.push(roomTypeSub, floorsSub, amenitiesSub);
   }
 
   ngOnDestroy(): void {
@@ -88,22 +94,9 @@ export class RoomManagementModalComponent implements OnInit, OnDestroy {
   }
 
   openAmenityConfig(): void {
-    const isMobile = window.innerWidth < 768;
-    const width = isMobile ? '100vw' : '520px';
-    const ref = this.dialog.open(AmenitiesManagementModalComponent, {
-      width: width,
-      maxWidth: '100vw',
-      height: '100vh',
-      position: { right: '0', top: '0' },
-      panelClass: 'custom-dialog-container',
-      data: { amenities: this.amenityOptions },
-    });
-
-    ref.afterClosed().subscribe((amenities: string[] | undefined) => {
-      if (amenities) {
-        this.amenityOptions = amenities;
-        this.room.amenities = this.room.amenities.filter(a => amenities.includes(a));
-      }
+    this.dialogRef.close();
+    this.router.navigate(['/core/product-config'], {
+      queryParams: { section: 'rooms', item: 'amenities-management' }
     });
   }
 
