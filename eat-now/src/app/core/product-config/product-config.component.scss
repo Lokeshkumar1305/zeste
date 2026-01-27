@@ -15,6 +15,27 @@
         &:hover {
             box-shadow: var(--shadow-md);
         }
+
+        .mobile-back-btn {
+            background: var(--brand-primary-light);
+            border: none;
+            color: var(--brand-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+
+            &:active {
+                transform: scale(0.9);
+                background: var(--brand-primary);
+                color: white;
+            }
+        }
     }
 
     .page-header {
@@ -324,28 +345,217 @@
     }
 }
 
-// Mobile Responsiveness
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     .product-config-container {
         padding: 1rem;
 
-        .page-header {
+        .header-card {
+            padding: 1.5rem 1.25rem !important;
+            border-radius: 20px;
+            text-align: center;
+
+            .header-left {
+                width: 100%;
+                margin-bottom: 1.25rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+
+                &.has-back-btn {
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 12px;
+                    text-align: left;
+                }
+
+                .title-meta {
+                    flex: 1;
+
+                    h1 {
+                        font-size: 1.4rem;
+                        margin-bottom: 0.2rem;
+                    }
+
+                    p {
+                        font-size: 0.8rem;
+                        line-height: 1.4;
+                    }
+                }
+            }
+
             .hint-card {
-                margin-top: 1rem;
                 max-width: 100%;
+                margin: 0 auto;
+                text-align: left;
+                padding: 1rem !important;
+                background: rgba(103, 58, 183, 0.08);
+                border: 1px solid rgba(103, 58, 183, 0.2);
+
+                .hint-icon-wrapper {
+                    min-width: 44px;
+                    height: 44px;
+                    background: #673ab7;
+                    box-shadow: 0 4px 10px rgba(103, 58, 183, 0.3);
+                }
+
+                .hint-content {
+                    .f-12-b {
+                        font-size: 0.7rem;
+                        letter-spacing: 0.05em;
+                    }
+
+                    .f-13-r {
+                        font-size: 0.8rem;
+                        line-height: 1.3;
+                    }
+                }
             }
         }
 
         .config-tabs-wrapper {
-            margin-left: -1rem;
-            margin-right: -1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--bg-page);
+            padding: 1rem 0;
+            margin: 0 -1rem 1.5rem -1rem;
             padding-left: 1rem;
-            padding-right: 1rem;
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            gap: 10px;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+
+            .tab-btn {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
+                min-width: max-content;
+                flex-shrink: 0;
+
+                i {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+    }
+
+    .col-lg-8,
+    .col-lg-4 {
+        padding: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .product-config-container {
+        .dashboard-view {
+            .config-card {
+                padding: 1.25rem;
+
+                .card-icon-box {
+                    width: 48px;
+                    height: 48px;
+                    font-size: 1.5rem;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+
+        /* Convert Table to Card-View for Mobile */
+        .management-view {
+            .case-table {
+                display: block;
+                border: none;
+
+                thead {
+                    display: none !important;
+                }
+
+                tbody {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
+
+                    tr {
+                        display: flex !important;
+                        flex-direction: column;
+                        background: var(--card-background);
+                        border: 1px solid var(--card-border);
+                        border-radius: 16px;
+                        padding: 1.25rem;
+                        position: relative;
+                        margin-bottom: 0;
+                        box-shadow: var(--shadow-sm);
+
+                        td {
+                            display: block;
+                            border: none;
+                            padding: 0.4rem 0;
+                            text-align: left !important;
+
+                            &::before {
+                                content: attr(data-label);
+                                font-weight: 600;
+                                font-size: 0.7rem;
+                                color: var(--text-muted);
+                                text-transform: uppercase;
+                                letter-spacing: 0.05em;
+                                display: block;
+                                margin-bottom: 2px;
+                            }
+
+                            &.text-center {
+                                margin-top: 1rem;
+                                padding-top: 1rem;
+                                border-top: 1px solid var(--card-border);
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+
+                                &::before {
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         .quick-add-card {
-            position: static;
             margin-top: 2rem;
+            border-radius: 16px;
+            position: static;
+
+            .f-18-m {
+                font-size: 1.1rem;
+            }
         }
+
+        .summary-card {
+            .sum-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+            }
+
+            h4 {
+                font-size: 1.5rem;
+            }
+        }
+    }
+}
+
+/* PWA Specific Optimizations (Standalone mode) */
+@media all and (display-mode: standalone) {
+    .product-config-container {
+        padding-top: env(safe-area-inset-top, 20px);
+        padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 60px);
     }
 }
