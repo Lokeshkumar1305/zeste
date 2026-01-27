@@ -9,29 +9,29 @@
     <div class="row g-4">
         <!-- LEFT SIDE: Profile Info -->
         <div class="col-lg-4">
-            <div class="profile-card shadow-sm text-center p-4 h-100">
+            <div class="profile-card shadow-sm text-center p-4 h-100 animate__animated animate__fadeInLeft">
                 <div class="avatar-wrapper mb-3">
                     <div class="avatar-circle">
                         <span class="avatar-initials">{{user.name.charAt(0)}}</span>
-                        <button class="btn-avatar-edit">
+                        <button class="btn-avatar-edit" title="Change Avatar">
                             <i class="bi bi-camera"></i>
                         </button>
                     </div>
                 </div>
-                <h2 class="f-20-b mb-1">{{user.name}}</h2>
-                <span class="badge bg-primary-soft text-brand-primary mb-3">{{user.designation}}</span>
+                <h2 class="f-20-b mb-1 text-dark">{{user.name}}</h2>
+                <span class="bg-primary-soft text-brand-primary mb-3">{{user.designation}}</span>
                 <div class="divider mb-3"></div>
                 <div class="quick-info text-start">
-                    <div class="info-item mb-3">
-                        <i class="bi bi-envelope me-2"></i>
+                    <div class="info-item mb-2">
+                        <i class="bi bi-envelope"></i>
                         <span class="f-14-r">{{user.email}}</span>
                     </div>
-                    <div class="info-item mb-3">
-                        <i class="bi bi-telephone me-2"></i>
+                    <div class="info-item mb-2">
+                        <i class="bi bi-telephone"></i>
                         <span class="f-14-r">{{user.mobile}}</span>
                     </div>
                     <div class="info-item">
-                        <i class="bi bi-geo-alt me-2"></i>
+                        <i class="bi bi-geo-alt"></i>
                         <span class="f-14-r">{{user.location}}</span>
                     </div>
                 </div>
@@ -41,79 +41,96 @@
         <!-- RIGHT SIDE: Forms -->
         <div class="col-lg-8">
             <!-- Profile Details Form -->
-            <div class="profile-card shadow-sm p-4 mb-4">
+            <div class="profile-card shadow-sm p-4 mb-4 animate__animated animate__fadeInRight">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="f-18-b mb-0">Personal Information</h3>
-                    <button class="btn btn-outline-primary btn-sm" (click)="toggleEdit()">
+                    <div class="section-title-wrapper">
+                        <h3 class="f-18-b mb-1">Personal Information</h3>
+                        <p class="text-muted f-12-r mb-0">Update your public profile information.</p>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2"
+                        (click)="toggleEdit()">
                         <i class="bi" [ngClass]="isViewMode ? 'bi-pencil-square' : 'bi-x-lg'"></i>
-                        {{isViewMode ? 'Edit Profile' : 'Cancel'}}
+                        <span>{{isViewMode ? 'Edit Profile' : 'Cancel'}}</span>
                     </button>
                 </div>
 
                 <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label f-12-b">Full Name</label>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Full Name</label>
                             <mat-form-field appearance="outline" class="w-100">
+                                <mat-icon matPrefix class="text-muted me-2">person</mat-icon>
                                 <input matInput formControlName="name" [readonly]="isViewMode" />
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label f-12-b">Email Address</label>
+                        <div class="col-md-6">
+                            <label class="form-label">Email Address</label>
                             <mat-form-field appearance="outline" class="w-100">
+                                <mat-icon matPrefix class="text-muted me-2">alternate_email</mat-icon>
                                 <input matInput formControlName="email" [readonly]="isViewMode" />
                             </mat-form-field>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label f-12-b">Phone Number</label>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number</label>
                             <mat-form-field appearance="outline" class="w-100">
+                                <mat-icon matPrefix class="text-muted me-2">phone</mat-icon>
                                 <input matInput formControlName="mobile" [readonly]="isViewMode" />
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label f-12-b">Designation</label>
+                        <div class="col-md-6">
+                            <label class="form-label">Designation</label>
                             <mat-form-field appearance="outline" class="w-100">
+                                <mat-icon matPrefix class="text-muted me-2">badge</mat-icon>
                                 <input matInput formControlName="designation" [readonly]="isViewMode" />
                             </mat-form-field>
                         </div>
-                    </div>
-                    <div class="mb-3" *ngIf="!isViewMode">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid">Save
-                            Changes</button>
+                        <div class="col-12 text-end" *ngIf="!isViewMode">
+                            <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid"
+                                class="px-4">
+                                <i class="bi bi-check2-circle me-2"></i> Save Changes
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
 
             <!-- Security / Password Form -->
-            <div class="profile-card shadow-sm p-4">
-                <h3 class="f-18-b mb-4">Security Settings</h3>
+            <div class="profile-card shadow-sm p-4 animate__animated animate__fadeInRight animate__delay-1s">
+                <div class="section-title-wrapper mb-4">
+                    <h3 class="f-18-b mb-1">Account Security</h3>
+                    <p class="text-muted f-12-r mb-0">Keep your account safe by updating your password.</p>
+                </div>
+
                 <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label f-12-b">Current Password</label>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label">Current Password</label>
                             <mat-form-field appearance="outline" class="w-100">
-                                <input matInput [type]="hideOld ? 'password' : 'text'" formControlName="oldPassword" />
+                                <mat-icon matPrefix class="text-muted me-2">lock_open</mat-icon>
+                                <input matInput [type]="hideOld ? 'password' : 'text'" formControlName="oldPassword"
+                                    placeholder="••••••••" />
                                 <button mat-icon-button type="button" matSuffix (click)="togglePassword('old')">
                                     <mat-icon>{{hideOld ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label f-12-b">New Password</label>
+                        <div class="col-md-4">
+                            <label class="form-label">New Password</label>
                             <mat-form-field appearance="outline" class="w-100">
-                                <input matInput [type]="hideNew ? 'password' : 'text'" formControlName="newPassword" />
+                                <mat-icon matPrefix class="text-muted me-2">lock</mat-icon>
+                                <input matInput [type]="hideNew ? 'password' : 'text'" formControlName="newPassword"
+                                    placeholder="New Password" />
                                 <button mat-icon-button type="button" matSuffix (click)="togglePassword('new')">
                                     <mat-icon>{{hideNew ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label f-12-b">Confirm Password</label>
+                        <div class="col-md-4">
+                            <label class="form-label">Confirm Password</label>
                             <mat-form-field appearance="outline" class="w-100">
+                                <mat-icon matPrefix class="text-muted me-2">verified_user</mat-icon>
                                 <input matInput [type]="hideConfirm ? 'password' : 'text'"
-                                    formControlName="confirmPassword" />
+                                    formControlName="confirmPassword" placeholder="Confirm" />
                                 <button mat-icon-button type="button" matSuffix (click)="togglePassword('confirm')">
                                     <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
@@ -121,12 +138,17 @@
                         </div>
                     </div>
                     <div
-                        class="alert alert-info d-flex align-items-center f-12-r bg-primary-soft text-brand-primary border-0">
-                        <i class="bi bi-info-circle-fill me-2 f-16"></i>
-                        Ensure your new password contains at least 6 characters.
+                        class="alert alert-info d-flex align-items-center bg-primary-soft text-brand-primary border-0 mt-3 mb-4">
+                        <i class="bi bi-shield-lock-fill me-3 f-20"></i>
+                        <span class="f-12-r">Ensure your new password contains at least 6 characters and mixed case for
+                            better security.</span>
                     </div>
-                    <button mat-raised-button color="primary" type="submit" [disabled]="passwordForm.invalid">Update
-                        Password</button>
+                    <div class="text-end">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="passwordForm.invalid"
+                            class="px-4">
+                            <i class="bi bi-arrow-repeat me-2"></i> Update Password
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
