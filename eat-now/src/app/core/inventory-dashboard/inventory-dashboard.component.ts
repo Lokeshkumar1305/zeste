@@ -255,7 +255,7 @@ export class InventoryDashboardComponent implements OnInit {
       datasets: [
         {
           data: categoryStock,
-          backgroundColor: '#003B8A',
+          backgroundColor: '#002B61',
           hoverBackgroundColor: '#002B61',
           borderRadius: 6,
           maxBarThickness: 40,

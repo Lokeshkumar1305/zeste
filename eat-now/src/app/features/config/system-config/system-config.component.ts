@@ -32,7 +32,7 @@ export class SystemConfigComponent implements OnInit {
   ];
 
   presetColors = [
-    '#003B8A', '#8A4A9F', '#2A69A6', '#28A745', '#F39C12', '#DC3545', '#17A2B8', '#343A40', '#FF6F61', '#6B5B95'
+    '#002B61', '#8A4A9F', '#2A69A6', '#28A745', '#F39C12', '#DC3545', '#17A2B8', '#343A40', '#FF6F61', '#6B5B95'
   ];
 
   // IDENTITY SETTINGS

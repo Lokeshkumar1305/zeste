@@ -9,7 +9,7 @@ import { ThemeService } from '../../../shared/services/theme.service';
 export class ThemeConfigComponent implements OnInit {
   state: any;
   presetColors = [
-    '#003B8A', // Zeste Primary
+    '#002B61', // Zeste Primary
     '#8A4A9F', // Purple
     '#2A69A6', // blue
     '#28A745', // green

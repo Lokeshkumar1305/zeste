@@ -15,28 +15,30 @@
 $app-font-family: 'Poppins', -apple-system, BlinkMacSystemFont,
   'Segoe UI', Roboto, sans-serif;
 
-/* Primary palette */
-$color-primary-50: #E8EFF6;
-$color-primary-100: #E5EBF2;
-$color-primary-200: #376DAA;
-$color-primary-300: #2D5A90;
-$color-primary-400: #234B76;
-$color-primary-500: #003DBA;
-$color-primary-600: #1A355D;
-$color-primary-700: #002B61;
-$color-primary-800: #001B30;
-$color-primary-900: #000D1F;
+/* Primary palette - Brand Solid #1A365D */
+$color-primary-50: #F0F4F8;
+$color-primary-100: #DEE9F2;
+$color-primary-200: #A8C6DF;
+$color-primary-300: #71A2CC;
+$color-primary-400: #407DB3;
+$color-primary-500: #002B61;
+/* New Brand Primary */
+$color-primary-600: #162E50;
+$color-primary-700: #122543;
+$color-primary-800: #0E1D36;
+$color-primary-900: #0A1529;
 
-/* Secondary (teal) palette */
+/* Secondary (Teal/Green) palette from image */
 $color-secondary-100: #E0F6F3;
 $color-secondary-300: #12B393;
+/* User requested secondary color */
 $color-secondary-500: #0E9177;
 $color-secondary-700: #0A6F5B;
 $color-secondary-900: #064E40;
 
-/* Neutral palette */
+/* Neutral palette from image */
 $color-neutral-100: #1A1A1A;
-$color-neutral-300: #4D4D4D;
+$color-neutral-300: #404040;
 $color-neutral-500: #808080;
 $color-neutral-700: #B3B3B3;
 $color-neutral-900: #F2F2F2;
@@ -92,15 +94,15 @@ $color-neutral-900: #F2F2F2;
 
   /* Semantic aliases */
   --brand-primary: var(--color-primary-500);
+  /* Primary Branding Color #1A365D */
   --brand-primary-700: var(--color-primary-700);
   --brand-primary-dark: var(--color-primary-800);
   --brand-primary-light: var(--color-primary-50);
-  /* Ultra light for backgrounds */
   --brand-primary-soft: var(--color-primary-100);
-  /* Soft tint for subtle UI */
 
-  --brand-secondary: var(--color-secondary-500);
-  --brand-secondary-dark: var(--color-secondary-700);
+  --brand-secondary: var(--color-secondary-300);
+  /* #12B393 */
+  --brand-secondary-dark: var(--color-secondary-500);
   --brand-secondary-light: var(--color-secondary-100);
   --brand-accent: var(--brand-secondary);
   --brand-green: var(--brand-secondary);
@@ -120,8 +122,8 @@ $color-neutral-900: #F2F2F2;
 
   --button-background: var(--brand-primary);
   --button-text: #ffffff;
-  --button-hover: var(--color-primary-700);
-  --button-active: var(--color-primary-800);
+  --button-hover: var(--brand-primary-dark);
+  --button-active: var(--color-primary-900);
 
   --scrollbar-track: #F3F4F6;
   --scrollbar-thumb: #D1D5DB;
@@ -946,6 +948,77 @@ $app-theme-dark: mat.define-dark-theme((color: (primary: $app-primary,
   background: var(--card-background) !important;
   color: var(--text-color) !important;
   border-color: var(--card-border) !important;
+  border-radius: 12px !important;
+  /* Perfect rounded corners */
+}
+
+/* Perfect Table Design from Image */
+.mat-mdc-table {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: var(--shadow-sm) !important;
+  width: 100% !important;
+
+  /* Force Table Header Background precisely to #1A365D for ALL table types */
+  .mdc-data-table__header-row,
+  .mat-mdc-header-row,
+  .case-table thead tr,
+  .report-table thead tr,
+  tr[mat-header-row],
+  thead tr {
+    background-color: #1A365D !important;
+    height: 56px !important;
+  }
+
+  .mdc-data-table__header-cell,
+  .mat-mdc-header-cell,
+  th.mat-mdc-header-cell,
+  .case-table thead th,
+  .report-table thead th,
+  th {
+    background-color: #1A365D !important;
+    /* Force cell background too */
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.02em !important;
+    border-bottom: none !important;
+    padding: 0 16px !important;
+  }
+
+  .mdc-data-table__row {
+    height: 52px !important;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--surface-hover) !important;
+    }
+  }
+
+  .mdc-data-table__cell {
+    font-size: 14px !important;
+    color: var(--text-color) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+    padding: 0 16px !important;
+  }
+
+  /* Action Links in Table */
+  .action-link {
+    font-weight: 500;
+    text-decoration: underline;
+    font-size: 13px;
+    cursor: pointer;
+
+    &.view {
+      color: var(--brand-primary);
+    }
+
+    &.delete {
+      color: #f05252;
+      margin-left: 8px;
+    }
+  }
 }
 
 .mat-mdc-card {
@@ -962,7 +1035,8 @@ $app-theme-dark: mat.define-dark-theme((color: (primary: $app-primary,
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
-  border-radius: 6px;
+  border-radius: 10px;
+  /* Perfect rounded corners from image 2 */
   border: 1px solid transparent;
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
@@ -993,33 +1067,58 @@ $app-theme-dark: mat.define-dark-theme((color: (primary: $app-primary,
   box-shadow: none;
 }
 
-/* Primary */
 .btn-primary,
 .btn-create,
-.btn-login {
+.btn-login,
+.btn-primary-action {
   background-color: var(--brand-primary) !important;
-  color: var(--button-text) !important;
+  color: #ffffff !important;
   border-color: var(--brand-primary) !important;
-  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.14);
+  font-weight: 600 !important;
+
+  /* Ensure nested spans or icons are also white */
+  span,
+  i,
+  .btn-text,
+  .btn-text-primary {
+    color: #ffffff !important;
+  }
+
+  &:hover {
+    background-color: var(--brand-primary-dark) !important;
+    box-shadow: 0 4px 12px rgba(26, 54, 93, 0.2) !important;
+    transform: translateY(-1px);
+  }
 }
 
-.btn-primary:hover:not(:disabled),
-.btn-create:hover:not(:disabled),
-.btn-login:hover:not(:disabled) {
-  background-color: var(--button-hover) !important;
-  border-color: var(--button-hover) !important;
-  box-shadow: 0 3px 6px rgba(15, 23, 42, 0.18);
-  transform: translateY(-1px);
+.btn-outline-primary {
+  background-color: transparent !important;
+  color: var(--brand-primary) !important;
+  border: 1.5px solid var(--brand-primary) !important;
+  font-weight: 600 !important;
+
+  &:hover {
+    background-color: var(--brand-primary-light) !important;
+    border-color: var(--brand-primary-700) !important;
+  }
 }
 
-.btn-primary:active:not(:disabled),
-.btn-create:active:not(:disabled),
-.btn-login:active:not(:disabled) {
-  background-color: var(--button-active) !important;
-  border-color: var(--button-active) !important;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
-  transform: translateY(0);
+.btn-text-primary {
+  background-color: transparent !important;
+  color: var(--brand-primary);
+  border: none !important;
+  font-weight: 600 !important;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--brand-primary-dark) !important;
+    text-decoration: underline !important;
+  }
 }
+
+
 
 /* Secondary / outlined */
 .btn-secondary {
@@ -2390,25 +2489,42 @@ app-breadcrumb,
   letter-spacing: 0.01em !important;
 }
 
-.mat-mdc-raised-button.mat-primary {
-  background-color: var(--brand-primary) !important;
-  color: #ffffff !important;
+/* Standardize all Material Buttons to have White Text on Primary/Accent */
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-flat-button {
+  &.mat-primary {
+    background-color: var(--brand-primary) !important;
+    color: #ffffff !important;
 
-  &:hover {
-    background-color: var(--brand-primary-dark) !important;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0, 61, 186, 0.3) !important;
+    span,
+    mat-icon,
+    i,
+    .btn-text,
+    .btn-text-primary {
+      color: #ffffff !important;
+    }
+
+    &:hover {
+      background-color: var(--brand-primary-dark) !important;
+    }
   }
-}
 
-.mat-mdc-raised-button.mat-accent {
-  background-color: var(--brand-accent) !important;
-  color: #ffffff !important;
+  &.mat-accent {
+    background-color: var(--brand-secondary) !important;
+    color: #ffffff !important;
 
-  &:hover {
-    background-color: var(--color-secondary-700) !important;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(14, 145, 119, 0.3) !important;
+    span,
+    mat-icon,
+    i,
+    .btn-text,
+    .btn-text-primary {
+      color: #ffffff !important;
+    }
+
+    &:hover {
+      background-color: var(--brand-secondary-dark) !important;
+    }
   }
 }
 
@@ -2460,6 +2576,7 @@ app-breadcrumb,
 /* Form Fields */
 .mat-mdc-form-field {
   --mdc-outlined-text-field-container-shape: 10px;
+  /* Rounded corners like in image 2 */
   --mdc-outlined-text-field-outline-color: var(--card-border);
   --mdc-outlined-text-field-focus-outline-color: var(--brand-primary);
   --mdc-outlined-text-field-label-text-color: var(--text-muted);
@@ -2468,6 +2585,7 @@ app-breadcrumb,
 
   .mat-mdc-text-field-wrapper {
     background-color: var(--input-background) !important;
+    border-radius: 10px !important;
     transition: background 0.2s ease;
 
     &:hover {
@@ -2501,6 +2619,16 @@ app-breadcrumb,
   --mdc-radio-unselected-icon-color: var(--card-border) !important;
 }
 
+.mat-mdc-slide-toggle {
+  --mdc-switch-selected-track-color: var(--brand-secondary-light) !important;
+  --mdc-switch-selected-handle-color: var(--brand-secondary) !important;
+  --mdc-switch-selected-focus-handle-color: var(--brand-secondary) !important;
+  --mdc-switch-selected-hover-handle-color: var(--brand-secondary) !important;
+  --mdc-switch-selected-pressed-handle-color: var(--brand-secondary) !important;
+  --mdc-switch-unselected-track-color: #e0e0e0 !important;
+  --mdc-switch-unselected-handle-color: #ffffff !important;
+}
+
 /* Secondary Action Button (Neutral/Teal contrast for Cancel/Back) */
 .btn-secondary-action {
   background-color: var(--brand-secondary-light) !important;
@@ -2512,7 +2640,7 @@ app-breadcrumb,
   &:hover {
     background-color: var(--brand-secondary) !important;
     color: #ffffff !important;
-    box-shadow: 0 4px 12px rgba(14, 145, 119, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(18, 179, 147, 0.2) !important;
     transform: translateY(-1px);
   }
 }

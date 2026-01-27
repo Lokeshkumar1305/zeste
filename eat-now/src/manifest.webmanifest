@@ -1,7 +1,7 @@
 {
   "name": "Zeste Enterprise",
   "short_name": "Zeste",
-  "theme_color": "#003B8A",
+  "theme_color": "#002B61",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
