@@ -14,7 +14,6 @@
 
         &:hover {
             box-shadow: var(--shadow-md);
-            border-color: var(--brand-primary-light);
         }
     }
 
@@ -208,6 +207,7 @@
                 align-items: center;
                 justify-content: center;
                 font-size: 1.5rem;
+                color: var(--brand-primary);
             }
 
             .bg-primary-soft {
@@ -215,11 +215,15 @@
             }
 
             .bg-info-soft {
-                background: #e0f2fe;
+                background: var(--status-info-bg);
+            }
+
+            .text-brand-primary {
+                color: var(--brand-primary) !important;
             }
 
             .text-info {
-                color: #0284c7;
+                color: var(--status-info-color);
             }
         }
 

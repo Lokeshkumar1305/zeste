@@ -296,6 +296,15 @@ export class ProductConfigComponent implements OnInit {
         this.pagedData = this.masterData[this.selectedSubItem].slice(start, end);
     }
 
+    get currentSubItemIcon() {
+        if (!this.selectedSubItem) return 'bi-stack';
+        for (const section of this.sections) {
+            const item = section.items.find(i => i.id === this.selectedSubItem);
+            if (item) return item.icon;
+        }
+        return 'bi-stack';
+    }
+
     get currentSubItemLabel() {
         if (!this.selectedSubItem) return '';
         for (const section of this.sections) {
