@@ -160,7 +160,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       title: 'NAV.CONFIG',
       icon: 'gear',
       items: [
-        { title: 'NAV.PRODUCT_CONFIG', route: '/features/config/product-config' },
+        { title: 'NAV.PRODUCT_CONFIG', route: '/core/product-config' },
         { title: 'NAV.SYSTEM_CONFIG', route: '/features/config/system-config' },
         { title: 'NAV.PAYMENT_CONFIG', route: '/features/config/payment-config' },
         { title: 'NAV.THEME_CONFIG', route: '/features/config/theme-config' },

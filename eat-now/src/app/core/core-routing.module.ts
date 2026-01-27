@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OutletOnboardingComponent } from './outlet-onboarding/outlet-onboarding.component';
+import { ProductConfigComponent } from './product-config/product-config.component';
 import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
 import { StaffOnboardingComponent } from './staff-onboarding/staff-onboarding.component';
 import { StaffOnboardingGetAllComponent } from './staff-onboarding-get-all/staff-onboarding-get-all.component';
@@ -49,6 +50,7 @@ import { TenantPayRentComponent } from './tenant-pay-rent/tenant-pay-rent.compon
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'product-config', component: ProductConfigComponent },
   { path: 'outlet-onboarding', component: OutletOnboardingComponent },
   { path: 'merchant-staff-onboarding', component: MerchantStaffOnboardingComponent },
   { path: 'staff-onboarding', component: StaffOnboardingComponent },

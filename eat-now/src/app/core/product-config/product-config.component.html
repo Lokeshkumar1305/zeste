@@ -1,0 +1,134 @@
+<div class="product-config-container animate__animated animate__fadeIn">
+    <!-- Page Header -->
+    <header
+        class="page-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+        <div class="header-left">
+            <h1 class="f-28-b mb-1">Product Configuration</h1>
+            <p class="text-muted f-14-r mb-0">Centralized workspace to manage all master data and configurations.</p>
+        </div>
+
+        <!-- Smart Hint Card -->
+        <div class="hint-card d-flex align-items-center p-3 animate__animated animate__pulse animate__infinite">
+            <div class="hint-icon-wrapper me-3">
+                <i class="bi bi-lightbulb-fill"></i>
+            </div>
+            <div class="hint-text-wrapper">
+                <span class="f-12-b d-block text-primary">MASTER SETUP FIRST</span>
+                <span class="f-12-r text-muted">Initialize these settings before performing daily operations like
+                    bookings or maintenance.</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Sections -->
+    <div class="config-tabs-wrapper mb-4">
+        <div class="d-flex gap-3 overflow-auto pb-2">
+            <button *ngFor="let section of sections" (click)="setActiveSection(section.id)" class="tab-btn"
+                [class.active]="activeSection === section.id">
+                <i class="bi {{section.icon}} me-2"></i>
+                <span>{{section.title}}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Active Section Content -->
+    <div class="section-content animate__animated animate__fadeIn" *ngFor="let section of sections">
+        <div *ngIf="activeSection === section.id">
+            <div class="row">
+                <!-- Main Config Cards -->
+                <div class="col-lg-8">
+                    <div class="section-info mb-4">
+                        <h2 class="f-20-m mb-1">{{section.title}}</h2>
+                        <p class="text-muted f-14-r">{{section.description}}</p>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-12 col-sm-6" *ngFor="let item of section.items">
+                            <div class="config-card" [routerLink]="['/core', item.route]">
+                                <div class="card-icon-box">
+                                    <i class="bi {{item.icon}}"></i>
+                                </div>
+                                <div class="card-details">
+                                    <h3 class="f-16-m mb-1">{{item.label}}</h3>
+                                    <p class="f-12-r text-muted mb-3">Manage and view all {{item.label}} records.</p>
+                                    <button class="btn-manage">
+                                        <span>Manage List</span>
+                                        <i class="bi bi-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Add Sidebar -->
+                <div class="col-lg-4 mt-4 mt-lg-0">
+                    <div class="quick-add-card p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="quick-add-icon me-3">
+                                <i class="bi bi-lightning-charge-fill"></i>
+                            </div>
+                            <h3 class="f-18-m mb-0">Quick Add</h3>
+                        </div>
+
+                        <form [formGroup]="quickAddForm" (ngSubmit)="onSave()" class="form-wrapper">
+                            <p class="f-12-r text-muted mb-4">Add a new record to <strong>{{section.title}}</strong>
+                                masters instantly.</p>
+
+                            <div class="mb-3">
+                                <label class="f-12-m mb-2">Category / Type Name</label>
+                                <input type="text" formControlName="name" class="form-control premium-input"
+                                    placeholder="e.g. Deluxe Room, Maintenance Fee...">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="f-12-m mb-2">Short Description</label>
+                                <textarea formControlName="description" class="form-control premium-input" rows="3"
+                                    placeholder="Enter brief details..."></textarea>
+                            </div>
+
+                            <div class="mb-3" *ngIf="section.id === 'rooms'">
+                                <label class="f-12-m mb-2">Assign to Floor</label>
+                                <select formControlName="assignedFloor" class="form-select premium-input">
+                                    <option value="" selected disabled>Select Floor</option>
+                                    <option value="1">1st Floor</option>
+                                    <option value="2">2nd Floor</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" [disabled]="quickAddForm.invalid"
+                                class="btn btn-primary w-100 py-2 f-14-m">
+                                <i class="bi bi-plus-lg me-2"></i>
+                                Save Record
+                            </button>
+
+                            <div class="mt-4 p-3 info-box d-flex align-items-start">
+                                <i class="bi bi-info-circle me-2 mt-1"></i>
+                                <p class="f-12-r mb-0">Records added here will be available across the entire system
+                                    immediately.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions / Bottom Hint -->
+    <div class="bottom-onboarding mt-5 p-4 text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <i class="bi bi-rocket-takeoff f-24 mb-3 text-primary d-block"></i>
+                <h4 class="f-18-m mb-2">Ready to take action?</h4>
+                <p class="f-14-r text-muted mb-4 px-lg-5">Once you've configured your product master data, you can head
+                    over to Room Management or Maintenance Management to start your daily operations.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <button class="btn btn-outline-primary px-4 py-2 f-14-m"
+                        [routerLink]="['/core/room-management']">Manage Rooms</button>
+                    <button class="btn btn-primary px-4 py-2 f-14-m" [routerLink]="['/core/dashboard']">Go to
+                        Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

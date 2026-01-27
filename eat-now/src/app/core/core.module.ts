@@ -13,6 +13,7 @@ import { MaterialModule } from '../material/material.module';
 import { BaseChartDirective } from 'ng2-charts';
 
 // All your component imports...
+import { ProductConfigComponent } from './product-config/product-config.component';
 import { OutletOnboardingComponent } from './outlet-onboarding/outlet-onboarding.component';
 import { MerchantStaffOnboardingComponent } from './merchant-staff-onboarding/merchant-staff-onboarding.component';
 import { OutletsComponent } from './outlets/outlets.component';
@@ -98,6 +99,7 @@ import { TenantPayRentComponent } from './tenant-pay-rent/tenant-pay-rent.compon
 
 @NgModule({
   declarations: [
+    ProductConfigComponent,
     OutletOnboardingComponent,
     MerchantStaffOnboardingComponent,
     OutletsComponent,
